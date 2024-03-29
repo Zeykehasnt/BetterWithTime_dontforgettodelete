@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "bwt:soul_forge_shaped",
   "category": "redstone",
   "key": {
     "o": {
@@ -7,7 +7,7 @@
     }
   },
   "pattern": [
-    "oo"
+    "oooo"
   ],
   "result": {
     "item": "bwt:obsidian_pressure_plate"

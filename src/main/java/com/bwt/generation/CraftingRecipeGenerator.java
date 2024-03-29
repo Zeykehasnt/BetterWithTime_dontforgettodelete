@@ -75,11 +75,6 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('r', Items.REDSTONE)
                 .criterion(hasItem(BwtBlocks.obsidianPressuePlateBlock), conditionsFromItem(BwtBlocks.obsidianPressuePlateBlock))
                 .offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, BwtBlocks.obsidianPressuePlateBlock)
-                .pattern("oo")
-                .input('o', Items.OBSIDIAN)
-                .criterion(hasItem(Items.OBSIDIAN), conditionsFromItem(Items.OBSIDIAN))
-                .offerTo(exporter);
     }
 
     private void generateDungDyeingRecipes(RecipeExporter exporter) {
