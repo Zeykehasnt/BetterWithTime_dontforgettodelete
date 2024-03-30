@@ -58,6 +58,7 @@ public class BlockLootTableGenerator extends FabricBlockLootTableProvider {
         addDrop(BwtBlocks.obsidianDetectorRailBlock);
 //        addDrop(BwtBlocks.pedestalBlock);
         addDrop(BwtBlocks.planterBlock);
+        addDrop(BwtBlocks.soulForgeBlock);
         addDrop(BwtBlocks.soilPlanterBlock);
         addDrop(BwtBlocks.soulSandPlanterBlock);
         addDrop(BwtBlocks.grassPlanterBlock);
