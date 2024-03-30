@@ -48,6 +48,13 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(Blocks.WHEAT)
                 .add(Blocks.CARROTS)
                 .add(Blocks.POTATOES);
+        getOrCreateTagBuilder(BwtBlockTags.TRANSFERS_ROTATION_UPWARD_OVERRIDE)
+                .forceAddTag(BlockTags.STAIRS)
+                .forceAddTag(BlockTags.WALLS)
+                .forceAddTag(BlockTags.ANVIL)
+                .add(Blocks.SOUL_SAND)
+                .add(Blocks.MUD)
+                .add(Blocks.HONEY_BLOCK);
         getOrCreateTagBuilder(BlockTags.INFINIBURN_OVERWORLD).add(BwtBlocks.hibachiBlock);
         getOrCreateTagBuilder(BlockTags.INFINIBURN_NETHER).add(BwtBlocks.hibachiBlock);
         getOrCreateTagBuilder(BlockTags.INFINIBURN_END).add(BwtBlocks.hibachiBlock);

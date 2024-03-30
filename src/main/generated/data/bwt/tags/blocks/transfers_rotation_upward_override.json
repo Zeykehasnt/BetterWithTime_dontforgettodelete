@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:stairs",
+    "#minecraft:walls",
+    "#minecraft:anvil",
+    "minecraft:soul_sand",
+    "minecraft:mud",
+    "minecraft:honey_block"
+  ]
+}
