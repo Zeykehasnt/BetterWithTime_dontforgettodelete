@@ -394,6 +394,7 @@ public class BwtBlocks implements ModInitializer {
                 }
             }
             content.add(companionCubeBlock);
+            content.add(companionSlabBlock);
             content.add(grateBlock);
             content.add(slatsBlock);
             content.add(wickerBlock);
