@@ -58,6 +58,10 @@ public class LangGenerator extends FabricLanguageProvider {
         translationBuilder.add(BwtItems.refinedSwordItem, "Refined Sword");
         translationBuilder.add(BwtItems.mattockItem, "Mattock");
         translationBuilder.add(BwtItems.battleAxeItem, "Battle Axe");
+        translationBuilder.add(BwtItems.plateHelmArmorItem, "Plate Helm");
+        translationBuilder.add(BwtItems.chestPlateArmorItem, "Chest Plate");
+        translationBuilder.add(BwtItems.plateLeggingsArmorItem, "Plate Leggings");
+        translationBuilder.add(BwtItems.plateBootsArmorItem, "Plate Boots");
 
         // Load an existing language file.
         try {
