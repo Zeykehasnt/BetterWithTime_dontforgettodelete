@@ -1,7 +1,5 @@
 package com.bwt.blocks;
 
-import com.bwt.blocks.pulley.PulleyBlockEntity;
-import com.bwt.entities.MovingAnchorEntity;
 import com.bwt.items.BwtItems;
 import com.bwt.sounds.BwtSoundEvents;
 import com.bwt.utils.BlockUtils;
@@ -13,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
@@ -26,6 +25,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -34,6 +34,9 @@ import java.util.stream.Collectors;
 
 public class AnchorBlock extends Block {
     public static final DirectionProperty FACING = Properties.FACING;
+    public static final BooleanProperty CONNECTED_ABOVE = BooleanProperty.of("connected_above");
+    public static final BooleanProperty CONNECTED_BELOW = BooleanProperty.of("connected_below");
+
     public static final Box baseBox = new Box(0.0, 0.0, 0.0, 16.0, 6.0, 16.0);
     protected static final VoxelShape NUB_SHAPE = Block.createCuboidShape(6, 6, 6, 10, 10, 10);
     protected static final List<VoxelShape> SHAPES = Arrays.stream(Direction.values())
@@ -44,57 +47,10 @@ public class AnchorBlock extends Block {
         super(settings);
     }
 
-    public static boolean notifyAnchorOfAttachedPulleyStateChange(World world, BlockPos pos, BlockState state, PulleyBlockEntity pulleyBlockEntity) {
-        int movementDirection = 0;
-
-        if (pulleyBlockEntity.isRaising(pulleyBlockEntity.getCachedState())) {
-            if (world.getBlockState(pos.up()).isOf(BwtBlocks.ropeBlock)) {
-                movementDirection = 1;
-            }
-        }
-        else if (pulleyBlockEntity.isLowering(pulleyBlockEntity.getCachedState())) {
-            BlockState downState = world.getBlockState(pos.down());
-            if (downState.isReplaceable() || downState.isOf(BwtBlocks.platformBlock)) {
-                movementDirection = -1;
-            }
-        }
-
-        if (movementDirection != 0) {
-            convertAnchorToEntity(world, pos, pulleyBlockEntity, movementDirection);
-            return true;
-        }
-
-        return false;
-    }
-
-    protected static void convertAnchorToEntity(World world, BlockPos pos, PulleyBlockEntity pulleyBlockEntity, int movementDirection) {
-        BlockPos pulleyPos = pulleyBlockEntity.getPos();
-
-        MovingAnchorEntity anchorEntity = new MovingAnchorEntity(world, pulleyPos, pos, movementDirection);
-        world.removeBlock(pos, false);
-        world.spawnEntity(anchorEntity);
-
-//        ConvertConnectedPlatformsToEntities( world, i, j, k, entityAnchor );
-
-    }
-
-//    private void ConvertConnectedPlatformsToEntities( World world, int i, int j, int k, FCEntityMovingAnchor associatedAnchorEntity )
-//    {
-//        int iTargetJ = j - 1;
-//
-//        int iTargetBlockID = world.getBlockId( i, iTargetJ, k );
-//
-//        if ( iTargetBlockID == FCBetterThanWolves.fcPlatform.blockID )
-//        {
-//            ( (FCBlockPlatform)FCBetterThanWolves.fcPlatform ).CovertToEntitiesFromThisPlatform(
-//                    world, i, iTargetJ, k, associatedAnchorEntity );
-//        }
-//    }
-
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
-        builder.add(FACING);
+        builder.add(FACING, CONNECTED_ABOVE, CONNECTED_BELOW);
     }
 
     @Override
@@ -105,7 +61,24 @@ public class AnchorBlock extends Block {
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return this.getDefaultState().with(FACING, ctx.getSide());
+        BlockState upState = ctx.getWorld().getBlockState(ctx.getBlockPos().up());
+        BlockState downState = ctx.getWorld().getBlockState(ctx.getBlockPos().down());
+        BlockState placementState = getDefaultState().with(FACING, ctx.getSide());
+        return placementState
+                .with(CONNECTED_ABOVE, placementState.get(FACING) != Direction.DOWN && (upState.isOf(BwtBlocks.ropeBlock) || upState.isOf(BwtBlocks.pulleyBlock)))
+                .with(CONNECTED_BELOW, placementState.get(FACING) != Direction.UP && (downState.isOf(BwtBlocks.ropeBlock)));
+    }
+
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        return switch (direction) {
+            case UP -> state.with(CONNECTED_ABOVE,
+                    (state.get(FACING) != Direction.DOWN && neighborState.isOf(BwtBlocks.ropeBlock))
+                            || (state.get(FACING) == Direction.UP && neighborState.isOf(BwtBlocks.pulleyBlock)));
+            case DOWN -> state.with(CONNECTED_BELOW,
+                    (state.get(FACING) != Direction.UP && neighborState.isOf(BwtBlocks.ropeBlock)));
+            default -> state;
+        };
     }
 
     @Override
@@ -130,6 +103,9 @@ public class AnchorBlock extends Block {
     @Override
     public BlockState rotate(BlockState state, BlockRotation rotation) {
         return state.with(FACING, rotation.rotate(state.get(FACING)));
+    }
+
+    public static void onLand(World world, BlockPos blockPos, BlockState previousState) {
     }
 
     public static boolean isHorizontal(BlockState state) {

@@ -4,12 +4,17 @@ import com.bwt.block_entities.BwtBlockEntities;
 import com.bwt.blocks.AnchorBlock;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.blocks.RopeBlock;
+import com.bwt.entities.MovingRopeEntity;
 import com.bwt.items.BwtItems;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.enums.RailShape;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -20,10 +25,18 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, Inventory {
     protected static final int INVENTORY_SIZE = 4;
@@ -32,9 +45,8 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
     public final InventoryStorage inventoryWrapper = InventoryStorage.of(inventory, null);
     protected int mechPower;
 
-    public final static int ticksToUpdateRopeState = 20;
-    protected boolean hasAssociatedAnchorEntity;
-    public int updateRopeStateCounter;
+    private MovingRopeEntity rope;
+
 
     protected final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
@@ -61,7 +73,6 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
 
     public PulleyBlockEntity(BlockPos pos, BlockState state) {
         super(BwtBlockEntities.pulleyBlockEntity, pos, state);
-        updateRopeStateCounter = ticksToUpdateRopeState;
     }
 
     public static boolean isMechPowered(BlockState state) {
@@ -86,31 +97,218 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         if (world.isClient) {
             return;
         }
+        blockEntity.tryNextOperation(world, pos, state);
+    }
 
-        blockEntity.mechPower = isMechPowered(state) ? 1 : 0;
-
-        blockEntity.updateRopeStateCounter--;
-
-        if (blockEntity.updateRopeStateCounter <= 0) {
-            // if the pulley has an associated anchor, that's what controls the dispensing and retracting of rope
-
-            if (!blockEntity.hasAssociatedAnchorEntity) {
-                // redstone prevents the pulley from doing anything
-                if (!isRedstonePowered(state)) {
-                    if (isMechPowered(state)) {
-                        blockEntity.attemptToRetractRope(world);
-                    }
-                    else {
-                        blockEntity.attemptToDispenseRope(world);
-                    }
-                }
-            }
-            blockEntity.updateRopeStateCounter = ticksToUpdateRopeState;
+    private void tryNextOperation(World world, BlockPos pos, BlockState state) {
+        if (rope != null && rope.isAlive()) {
+            return;
+        }
+        if (canGoDown(world, pos, state, false)) {
+            goDown(world, pos);
+            return;
+        }
+        if (canGoUp(world, pos, state)) {
+            goUp(world, pos);
         }
     }
 
     private boolean validRopeConnector(BlockState state) {
-        return state.isOf(BwtBlocks.anchorBlock) && state.get(AnchorBlock.FACING).equals(Direction.UP);
+        return (state.isOf(BwtBlocks.anchorBlock) && state.get(AnchorBlock.FACING) == Direction.UP) || state.isOf(BwtBlocks.ropeBlock);
+    }
+
+    private boolean canGoUp(World world, BlockPos pos, BlockState state) {
+        if (!isRaising(state)) {
+            return false;
+        }
+        if (!putRope(true)) {
+            return false;
+        }
+        BlockPos lowest = RopeBlock.getBottomRopePos(world, pos);
+        return !lowest.equals(pos);
+    }
+
+    private boolean canGoDown(World world, BlockPos pos, BlockState state, boolean isMoving) {
+        if (!isLowering(state)) {
+            return false;
+        }
+        if (!hasRope()) {
+            return false;
+        }
+        BlockPos newPos = RopeBlock.getBottomRopePos(world, pos).down();
+        BlockState newState = world.getBlockState(newPos);
+        boolean flag = !isMoving && validRopeConnector(newState);
+        return newPos.getY() > world.getBottomY() && (newState.isReplaceable() || flag) && newPos.up().getY() > world.getBottomY();
+    }
+
+    private void goUp(World world, BlockPos pos) {
+        BlockPos lowest = RopeBlock.getBottomRopePos(world, pos);
+        BlockState belowState = world.getBlockState(lowest.down());
+        rope = new MovingRopeEntity(world, pos, lowest, lowest.up().getY());
+        if (validRopeConnector(belowState) && !movePlatform(world, lowest.down(), true)) {
+            rope = null;
+            return;
+        }
+        world.playSound(null, pos.down(), BwtBlocks.ropeBlock.getDefaultState().getSoundGroup().getBreakSound(), SoundCategory.BLOCKS,
+                0.4F + (world.random.nextFloat() * 0.1F), 1.0F);
+        world.spawnEntity(rope);
+        world.removeBlock(lowest, false);
+        putRope(false);
+    }
+
+    private void goDown(World world, BlockPos pos) {
+        BlockPos newPos = RopeBlock.getBottomRopePos(world, pos).down();
+        BlockState bottomState = world.getBlockState(newPos);
+        rope = new MovingRopeEntity(world, pos, newPos.up(), newPos.getY());
+        if (validRopeConnector(bottomState) && !movePlatform(world, newPos, false)) {
+            rope = null;
+            return;
+        }
+        world.spawnEntity(rope);
+    }
+
+    private boolean movePlatform(World world, BlockPos anchor, boolean up) {
+        BlockState state = world.getBlockState(anchor);
+        if (!(validRopeConnector(state))) {
+            return false;
+        }
+
+        HashSet<BlockPos> platformBlocks = new HashSet<>();
+        platformBlocks.add(anchor);
+        BlockPos below = anchor.down();
+        BlockState belowState = world.getBlockState(below);
+        if (isPlatform(belowState)) {
+            if (!addToList(world, below, below, platformBlocks, up)) {
+                return false;
+            }
+        } else if (!(up || isIgnoreable(belowState))) {
+            return false;
+        }
+
+        for (BlockPos blockPos : platformBlocks) {
+            for (BlockPos p1 : new BlockPos[]{blockPos.north(), blockPos.south()}) {
+                if (!platformBlocks.contains(p1)) {
+                    fixRail(world, p1, RailShape.ASCENDING_NORTH, RailShape.ASCENDING_SOUTH);
+                }
+            }
+            for (BlockPos p : new BlockPos[]{blockPos.east(), blockPos.west()}) {
+                if (!platformBlocks.contains(p)) {
+                    fixRail(world, p, RailShape.ASCENDING_EAST, RailShape.ASCENDING_WEST);
+                }
+            }
+        }
+
+        if (!world.isClient) {
+            for (BlockPos blockPos : platformBlocks) {
+                Vec3i offset = blockPos.subtract(anchor.up());
+                rope.addBlock(offset, world, blockPos);
+                BlockState upState = world.getBlockState(blockPos.up());
+                if (isMoveableBlock(upState)) {
+                    rope.addBlock(new Vec3i(offset.getX(), offset.getY() + 1, offset.getZ()), world, blockPos.up());
+                    world.removeBlock(blockPos.up(), false);
+                }
+                world.removeBlock(blockPos, false);
+            }
+        }
+
+        return true;
+    }
+
+    public boolean isIgnoreable(BlockState state) {
+        return state.isReplaceable();
+    }
+
+    public boolean isMoveableBlock(BlockState state) {
+        return state.isOf(Blocks.REDSTONE_WIRE) || state.getBlock() instanceof AbstractRailBlock;
+    }
+
+    public boolean isPlatform(BlockState state) {
+        return state.isOf(BwtBlocks.platformBlock);
+    }
+
+    private void fixRail(World world, BlockPos rail, RailShape... directions) {
+        List<RailShape> list = Arrays.asList(directions);
+        BlockState state = world.getBlockState(rail);
+        if (!(state.getBlock() instanceof AbstractRailBlock)) {
+            return;
+        }
+        if (!state.contains(Properties.RAIL_SHAPE)) {
+            return;
+        }
+        RailShape currentShape = state.get(Properties.RAIL_SHAPE);
+        if (list.contains(currentShape)) {
+            world.setBlockState(rail, state.with(Properties.RAIL_SHAPE, flatten(currentShape)), 6);
+        }
+    }
+
+    private RailShape flatten(RailShape old) {
+        return switch (old) {
+            case ASCENDING_EAST, ASCENDING_WEST -> RailShape.EAST_WEST;
+            case ASCENDING_NORTH, ASCENDING_SOUTH -> RailShape.NORTH_SOUTH;
+            default -> old;
+        };
+    }
+
+    private boolean addToList(World world, BlockPos pos, BlockPos sourcePos, HashSet<BlockPos> set, boolean up) {
+        if (set.size() > 26)
+            return false;
+        if (!isPlatform(world.getBlockState(pos))) {
+            return true;
+        }
+
+        BlockPos blockCheck = up ? pos.up() : pos.down();
+        BlockState otherState = world.getBlockState(blockCheck);
+        if (!(isIgnoreable(otherState) || isMoveableBlock(otherState) || isPlatform(otherState)) && !set.contains(blockCheck))
+            return false;
+
+        set.add(pos);
+
+        List<BlockPos> fails = new ArrayList<>();
+
+        Arrays.stream(Direction.values()).map(pos::offset).forEach(offsetPos -> {
+            Vec3i distance = offsetPos.subtract(sourcePos);
+            if (Math.abs(distance.getX()) > 2 || Math.abs(distance.getZ()) > 2 || Math.abs(distance.getY()) > 5) {
+                return;
+            }
+            if (fails.isEmpty() && !set.contains(offsetPos)) {
+                if (!addToList(world, offsetPos, sourcePos, set, up))
+                    fails.add(offsetPos);
+            }
+        });
+
+        return fails.isEmpty();
+    }
+
+    public boolean onJobCompleted(World world, BlockPos pulleyPos, BlockState pulleyState, boolean up, int targetY, MovingRopeEntity theRope) {
+        BlockPos ropePos = new BlockPos(pulleyPos.getX(), targetY - (up ? 1 : 0), pulleyPos.getZ());
+        BlockState state = world.getBlockState(ropePos);
+        if (!up) {
+            if ((world.isAir(ropePos) || state.isReplaceable()) && BwtBlocks.ropeBlock.getDefaultState().canPlaceAt(world, ropePos) && hasRope()) {
+                world.playSound(null, pulleyPos.down(), BwtBlocks.ropeBlock.getSoundGroup(BwtBlocks.ropeBlock.getDefaultState()).getPlaceSound(), SoundCategory.BLOCKS, 0.4F, 1.0F);
+                world.setBlockState(ropePos, BwtBlocks.ropeBlock.getDefaultState());
+                takeRope(false);
+            } else {
+                tryNextOperation(world, pulleyPos, pulleyState);
+                theRope.discard();
+                return false;
+            }
+        }
+        if ((theRope.isMovingUp() ? canGoUp(world, pulleyPos, pulleyState) : canGoDown(world, pulleyPos, pulleyState, true)) && !theRope.isPathBlocked()) {
+            theRope.setTargetY(targetY + (theRope.isMovingUp() ? 1 : -1));
+            if (up) {
+                if (!world.isAir(ropePos.up())) {
+                    world.playSound(null, pulleyPos.down(), BwtBlocks.ropeBlock.getSoundGroup(BwtBlocks.ropeBlock.getDefaultState()).getBreakSound(), SoundCategory.BLOCKS,
+                            0.4F + (world.random.nextFloat() * 0.1F), 1.0F);
+                    world.removeBlock(ropePos.up(), false);
+                    putRope(false);
+                }
+            }
+            return true;
+        } else {
+            tryNextOperation(world, pulleyPos, pulleyState);
+            theRope.discard();
+            return false;
+        }
     }
 
     protected boolean takeRope(int count, boolean simulate) {
@@ -151,14 +349,27 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         return takeRope(count, true);
     }
 
+    public boolean hasRope() {
+        return hasRope(1);
+    }
+
 
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
         this.inventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE));
         this.mechPower = nbt.getInt("mechPower");
-        this.updateRopeStateCounter = nbt.getInt("updateRopeStateCounter");
-        this.hasAssociatedAnchorEntity = nbt.getBoolean("hasAssociatedAnchorEntity");
+        World world = getWorld();
+        if (world == null || !nbt.contains("rope")) {
+            return;
+        }
+        Entity entity = world.getEntityById(nbt.getInt("rope"));
+        if (entity == null) {
+            return;
+        }
+        if (entity instanceof MovingRopeEntity movingRopeEntity) {
+            this.rope = movingRopeEntity;
+        }
     }
 
     @Override
@@ -166,14 +377,13 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         super.writeNbt(nbt);
         nbt.put("Inventory", this.inventory.toNbtList());
         nbt.putInt("mechPower", this.mechPower);
-        nbt.putInt("updateRopeStateCounter", this.updateRopeStateCounter);
-        nbt.putBoolean("hasAssociatedAnchorEntity", this.hasAssociatedAnchorEntity);
+        if (this.rope != null) {
+            nbt.putInt("ropeId", this.rope.getId());
+        }
     }
 
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        //We provide *this* to the screenHandler as our class Implements Inventory
-        //Only the Server has the Inventory at the start, this will be synced to the client in the ScreenHandler
         return new PulleyScreenHandler(syncId, playerInventory, inventory, propertyDelegate);
     }
 
@@ -230,62 +440,5 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         public void markDirty() {
             PulleyBlockEntity.this.markDirty();
         }
-    }
-
-    public void notifyPulleyEntityOfBlockStateChange(World world) {
-        updateRopeStateCounter = ticksToUpdateRopeState;
-        NotifyAttachedAnchorOfEntityStateChange(world);
-    }
-
-    private void NotifyAttachedAnchorOfEntityStateChange(World world) {
-        // scan downward towards bottom of rope
-        BlockPos bottomRope = RopeBlock.getLowestRope(world, pos);
-        BlockState belowRopeState = world.getBlockState(bottomRope.down());
-        if (!belowRopeState.isOf(BwtBlocks.anchorBlock) || !belowRopeState.get(AnchorBlock.FACING).equals(Direction.UP)) {
-            return;
-        }
-//        if (AnchorBlock.notifyAnchorOfAttachedPulleyStateChange(world, bottomRope.down(), belowRopeState, this)) {
-//            hasAssociatedAnchorEntity = true;
-//        }
-    }
-
-    public void attemptToRetractRope(World world) {
-        BlockPos bottomRopePos = RopeBlock.getLowestRope(world, pos);
-        if (bottomRopePos.equals(pos)) {
-            return;
-        }
-        world.removeBlock(bottomRopePos, false);
-        putRope(false);
-    }
-
-    public void attemptToDispenseRope(World world) {
-        boolean hasRope = takeRope(true);
-        updateRopeStateCounter = ticksToUpdateRopeState;
-
-        if (!hasRope) {
-            return;
-        }
-
-        BlockPos belowRopePos = RopeBlock.getLowestRope(world, pos).down();
-        BlockState belowRopeState = world.getBlockState(belowRopePos);
-        if (!belowRopeState.isReplaceable()) {
-            return;
-        }
-
-        takeRope(false);
-        world.setBlockState(belowRopePos, BwtBlocks.ropeBlock.getDefaultState());
-
-        // check for an upwards facing anchor below that we have just attached to
-        belowRopePos = belowRopePos.down();
-        belowRopeState = world.getBlockState(belowRopePos);
-//        if (belowRopeState.isOf(BwtBlocks.anchorBlock) && belowRopeState.get(AnchorBlock.FACING).equals(Direction.UP)) {
-//            AnchorBlock.notifyAnchorOfAttachedPulleyStateChange(world, belowRopePos, belowRopeState, this);
-//        }
-
-    }
-
-    public void notifyOfLossOfAnchorEntity()
-    {
-        hasAssociatedAnchorEntity = false;
     }
 }

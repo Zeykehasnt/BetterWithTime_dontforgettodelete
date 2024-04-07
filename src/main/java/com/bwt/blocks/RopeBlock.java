@@ -23,14 +23,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class RopeBlock extends Block {
     public static final VoxelShape SHAPE = Block.createCuboidShape(7, 0, 7, 9, 16, 9);
-    public static final VoxelShape ANCHORED_ABOVE_SHAPE = Block.createCuboidShape(7, 16, 7, 9, 24, 9);
-    public static final VoxelShape ANCHORED_BELOW_SHAPE = Block.createCuboidShape(7, 16, 7, 9, 24, 9);
+    public static final VoxelShape ANCHORED_ABOVE_SHAPE = Block.createCuboidShape(7, 16, 7, 9, 26, 9);
+    public static final VoxelShape ANCHORED_BELOW_SHAPE = Block.createCuboidShape(7, -10, 7, 9, 0, 9);
 
     public static final BooleanProperty ANCHORED_ABOVE = BooleanProperty.of("anchored_above");
     public static final BooleanProperty ANCHORED_BELOW = BooleanProperty.of("anchored_below");
 
     public RopeBlock(Settings settings) {
         super(settings);
+        setDefaultState(getDefaultState().with(ANCHORED_BELOW, false).with(ANCHORED_ABOVE, false));
     }
 
     @Override
@@ -103,7 +104,7 @@ public class RopeBlock extends Block {
                 || upState.isOf(BwtBlocks.pulleyBlock));
     }
 
-    public static BlockPos getLowestRope(World world, BlockPos attachmentPos) {
+    public static BlockPos getBottomRopePos(World world, BlockPos attachmentPos) {
         BlockPos.Mutable mutablePos = attachmentPos.mutableCopy();
         while (world.getBlockState(mutablePos.down()).isOf(BwtBlocks.ropeBlock)) {
             mutablePos.move(Direction.DOWN);

@@ -35,7 +35,7 @@ public class BetterWithTimeClient implements ClientModInitializer {
 		BlockEntityRendererFactories.register(BwtBlockEntities.mechHopperBlockEntity, MechHopperBlockEntityRenderer::new);
 		EntityRendererRegistry.register(BwtEntities.windmillEntity, WindmillEntityRenderer::new);
 		EntityRendererRegistry.register(BwtEntities.waterWheelEntity, WaterWheelEntityRenderer::new);
-		EntityRendererRegistry.register(BwtEntities.movingAnchorEntity, MovingAnchorEntityRenderer::new);
+		EntityRendererRegistry.register(BwtEntities.movingRopeEntity, MovingRopeEntityRenderer::new);
 		EntityRendererRegistry.register(BwtEntities.broadheadArrowEntity, BroadheadArrowEntityRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(MODEL_WINDMILL_LAYER, WindmillEntityModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(MODEL_WATER_WHEEL_LAYER, WaterWheelEntityModel::getTexturedModelData);

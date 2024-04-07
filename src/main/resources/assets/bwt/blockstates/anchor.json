@@ -1,29 +1,36 @@
 {
-  "variants": {
-    "facing=up": {
-      "model": "bwt:block/anchor"
+  "multipart": [
+    {
+      "when": { "connected_above": "true" },
+      "apply": { "model": "bwt:block/rope_extension_above" }
     },
-    "facing=down": {
-      "model": "bwt:block/anchor",
-      "x": 180
+    {
+      "when": { "connected_below": "true" },
+      "apply": { "model": "bwt:block/rope_extension_below" }
     },
-    "facing=east": {
-      "model": "bwt:block/anchor",
-      "x": 90,
-      "y": 90
+    {
+      "when": { "facing": "up" },
+      "apply": { "model": "bwt:block/anchor" }
     },
-    "facing=west": {
-      "model": "bwt:block/anchor",
-      "x": 90,
-      "y": 270
+    {
+      "when": { "facing": "down" },
+      "apply": { "model": "bwt:block/anchor", "x": 180 }
     },
-    "facing=north": {
-      "model": "bwt:block/anchor",
-      "x": 90
+    {
+      "when": { "facing": "north" },
+      "apply": { "model": "bwt:block/anchor", "x": 90 }
     },
-    "facing=south": {
-      "model": "bwt:block/anchor",
-      "x": 270
+    {
+      "when": { "facing": "south" },
+      "apply": { "model": "bwt:block/anchor", "x": 270 }
+    },
+    {
+      "when": { "facing": "east" },
+      "apply": { "model": "bwt:block/anchor", "x": 90, "y": 90 }
+    },
+    {
+      "when": { "facing": "west" },
+      "apply": { "model": "bwt:block/anchor", "x": 90, "y": 270 }
     }
-  }
+  ]
 }

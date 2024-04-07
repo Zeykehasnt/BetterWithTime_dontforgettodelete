@@ -135,14 +135,8 @@ public class PulleyBlock extends BlockWithEntity implements MechPowerBlockBase {
 
     public void updatePowerTransfer(World world, BlockState blockState, BlockPos pos) {
         BlockState updatedState = getPowerStates(blockState, world, pos);
+        world.getBlockEntity(pos, BwtBlockEntities.pulleyBlockEntity).ifPresent(pulleyBlockEntity -> pulleyBlockEntity.mechPower = updatedState.get(MECH_POWERED) ? 1 : 0);
         world.setBlockState(pos, updatedState);
-        if (updatedState.get(POWERED).equals(blockState.get(POWERED)) && updatedState.get(MECH_POWERED).equals(blockState.get(MECH_POWERED))) {
-            return;
-        }
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof PulleyBlockEntity pulleyBlockEntity) {
-            pulleyBlockEntity.notifyPulleyEntityOfBlockStateChange(world);
-        }
     }
 
     @Override

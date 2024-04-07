@@ -13,6 +13,10 @@ public class EntityRectDimensions extends EntityDimensions {
         return new EntityRectDimensions(width, height, length, true);
     }
 
+    public static EntityRectDimensions changing(float width, float height, float length) {
+        return new EntityRectDimensions(width, height, length, false);
+    }
+
     @Override
     public Box getBoxAt(double x, double y, double z) {
         double half_width = this.width / 2.0f;

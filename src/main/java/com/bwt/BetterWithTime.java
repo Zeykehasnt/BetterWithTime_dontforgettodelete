@@ -21,6 +21,7 @@ import com.bwt.items.BwtItems;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.sounds.BwtSoundEvents;
 import com.bwt.tags.BwtItemTags;
+import com.bwt.utils.TrackedDataHandlers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
@@ -65,6 +66,7 @@ public class BetterWithTime implements ModInitializer {
 	public static final BwtDamageTypes damageTypes = new BwtDamageTypes();
 	public static final BwtGameRules gameRules = new BwtGameRules();
 	public static final BwtSoundEvents soundEvents = new BwtSoundEvents();
+	public static final TrackedDataHandlers dataHandlers = new TrackedDataHandlers();
 	public static ScreenHandlerType<BlockDispenserScreenHandler> blockDispenserScreenHandler = new ScreenHandlerType<>(BlockDispenserScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
 	public static ScreenHandlerType<CauldronScreenHandler> cauldronScreenHandler = new ScreenHandlerType<>(CauldronScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
 	public static ScreenHandlerType<CrucibleScreenHandler> crucibleScreenHandler = new ScreenHandlerType<>(CrucibleScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
@@ -98,6 +100,7 @@ public class BetterWithTime implements ModInitializer {
 		damageTypes.onInitialize();
 		gameRules.onInitialize();
 		soundEvents.onInitialize();
+		dataHandlers.onInitialize();
 
 		LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
 			if (source.isBuiltin() && id.equals(WOLF_LOOT_TABLE_ID)) {

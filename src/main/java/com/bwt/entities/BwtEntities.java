@@ -31,14 +31,14 @@ public class BwtEntities implements ModInitializer {
                 .dimensions(EntityRectDimensions.fixed(WaterWheelEntity.width, WaterWheelEntity.height, WaterWheelEntity.length))
                 .build()
     );
-    public static final EntityType<MovingAnchorEntity> movingAnchorEntity = Registry.register(
+    public static final EntityType<MovingRopeEntity> movingRopeEntity = Registry.register(
             Registries.ENTITY_TYPE,
-            new Identifier("bwt", "moving_anchor"),
+            new Identifier("bwt", "moving_rope"),
             FabricEntityTypeBuilder.create(
                     SpawnGroup.MISC,
-                    (EntityType.EntityFactory<MovingAnchorEntity>) MovingAnchorEntity::new
+                    (EntityType.EntityFactory<MovingRopeEntity>) MovingRopeEntity::new
             )
-            .dimensions(EntityDimensions.fixed(MovingAnchorEntity.width, MovingAnchorEntity.height))
+            .dimensions(EntityDimensions.fixed(0.98f, 0.98f))
             .build()
     );
     public static final EntityType<BroadheadArrowEntity> broadheadArrowEntity = Registry.register(
