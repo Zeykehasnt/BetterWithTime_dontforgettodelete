@@ -11,6 +11,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
@@ -31,6 +33,9 @@ public abstract class HorizontalMechPowerSourceEntity extends RectangularEntity 
     protected int ticksBeforeNextFullUpdate = 20;
 
     protected static final TrackedData<Float> rotationSpeed = DataTracker.registerData(HorizontalMechPowerSourceEntity.class, TrackedDataHandlerRegistry.FLOAT);
+    protected static final TrackedData<Integer> DAMAGE_WOBBLE_TICKS = DataTracker.registerData(HorizontalMechPowerSourceEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    protected static final TrackedData<Integer> DAMAGE_WOBBLE_SIDE = DataTracker.registerData(HorizontalMechPowerSourceEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    protected static final TrackedData<Float> DAMAGE_WOBBLE_STRENGTH = DataTracker.registerData(HorizontalMechPowerSourceEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
     public HorizontalMechPowerSourceEntity(EntityType<? extends HorizontalMechPowerSourceEntity> type, World world) {
         super(type, world);
@@ -65,7 +70,10 @@ public abstract class HorizontalMechPowerSourceEntity extends RectangularEntity 
 
     @Override
     protected void initDataTracker() {
-        this.getDataTracker().startTracking(rotationSpeed, 0f);
+        this.dataTracker.startTracking(rotationSpeed, 0f);
+        this.dataTracker.startTracking(DAMAGE_WOBBLE_TICKS, 0);
+        this.dataTracker.startTracking(DAMAGE_WOBBLE_SIDE, 1);
+        this.dataTracker.startTracking(DAMAGE_WOBBLE_STRENGTH, 0.0f);
     }
 
     public float getRotation() {
@@ -88,6 +96,30 @@ public abstract class HorizontalMechPowerSourceEntity extends RectangularEntity 
 
     public void setRotationSpeed(float speed) {
         getDataTracker().set(rotationSpeed, speed);
+    }
+
+    public void setDamageWobbleTicks(int damageWobbleTicks) {
+        this.dataTracker.set(DAMAGE_WOBBLE_TICKS, damageWobbleTicks);
+    }
+
+    public void setDamageWobbleSide(int damageWobbleSide) {
+        this.dataTracker.set(DAMAGE_WOBBLE_SIDE, damageWobbleSide);
+    }
+
+    public void setDamageWobbleStrength(float damageWobbleStrength) {
+        this.dataTracker.set(DAMAGE_WOBBLE_STRENGTH, Float.valueOf(damageWobbleStrength));
+    }
+
+    public float getDamageWobbleStrength() {
+        return this.dataTracker.get(DAMAGE_WOBBLE_STRENGTH).floatValue();
+    }
+
+    public int getDamageWobbleTicks() {
+        return this.dataTracker.get(DAMAGE_WOBBLE_TICKS);
+    }
+
+    public int getDamageWobbleSide() {
+        return this.dataTracker.get(DAMAGE_WOBBLE_SIDE);
     }
 
     @Override
@@ -185,6 +217,12 @@ public abstract class HorizontalMechPowerSourceEntity extends RectangularEntity 
         if (isRemoved()) {
             return;
         }
+        if (this.getDamageWobbleTicks() > 0) {
+            this.setDamageWobbleTicks(this.getDamageWobbleTicks() - 1);
+        }
+        if (this.getDamageWobbleStrength() > 0.0f) {
+            this.setDamageWobbleStrength(this.getDamageWobbleStrength() - 1.0f);
+        }
 
         if (getWorld().isClient) {
             updateRotation();
@@ -224,11 +262,18 @@ public abstract class HorizontalMechPowerSourceEntity extends RectangularEntity 
         if (this.isInvulnerableTo(source)) {
             return false;
         }
-        boolean bl = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity)source.getAttacker()).getAbilities().creativeMode;
-        if (!bl /* && this.getDamageWobbleStrength() > 40.0f || this.shouldAlwaysKill(source) */) {
-            destroyWithDrop();
-        } else /* if (bl) */{
+        this.setDamageWobbleSide(-this.getDamageWobbleSide());
+        this.setDamageWobbleTicks(10);
+        this.scheduleVelocityUpdate();
+        this.setDamageWobbleStrength(this.getDamageWobbleStrength() + amount * 10.0f);
+        this.emitGameEvent(GameEvent.ENTITY_DAMAGE, source.getAttacker());
+        boolean instantKill = source.getAttacker() instanceof PlayerEntity && ((PlayerEntity)source.getAttacker()).getAbilities().creativeMode;
+        if (instantKill) {
             discard();
+            return true;
+        }
+        if (this.getDamageWobbleStrength() > 40.0f) {
+            destroyWithDrop();
         }
         return true;
     }
