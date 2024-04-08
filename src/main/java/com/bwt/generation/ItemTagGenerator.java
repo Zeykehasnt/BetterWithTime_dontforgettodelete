@@ -26,6 +26,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
         copy(BwtBlockTags.SIDING_BLOCKS, BwtItemTags.SIDING_BLOCKS);
         copy(BwtBlockTags.MOULDING_BLOCKS, BwtItemTags.MOULDING_BLOCKS);
         copy(BwtBlockTags.CORNER_BLOCKS, BwtItemTags.CORNER_BLOCKS);
+        copy(BwtBlockTags.VASES, BwtItemTags.VASES);
+        copy(BwtBlockTags.WOOL_SLABS, BwtItemTags.WOOL_SLABS);
 
         getOrCreateTagBuilder(ItemTags.ARROWS).add(BwtItems.broadheadArrowItem, BwtItems.rottedArrowItem);
         getOrCreateTagBuilder(ItemTags.RAILS).add(BwtBlocks.stoneDetectorRailBlock.asItem(), BwtBlocks.obsidianDetectorRailBlock.asItem());

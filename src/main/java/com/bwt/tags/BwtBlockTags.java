@@ -19,6 +19,7 @@ public class BwtBlockTags {
     public static final TagKey<Block> CORNER_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "corner_blocks"));
     public static final TagKey<Block> WOODEN_CORNER_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "wooden_corner_blocks"));
     public static final TagKey<Block> VASES = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "vases"));
+    public static final TagKey<Block> WOOL_SLABS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "wool_slabs"));
     public static final TagKey<Block> CROPS_CAN_PLANT_ON = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "farmland"));
     public static final TagKey<Block> SOUL_SAND_PLANTS_CAN_PLANT_ON = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "soul_sand_plants_can_plant_on"));
     public static final TagKey<Block> TRANSFERS_ROTATION_UPWARD_OVERRIDE = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "transfers_rotation_upward_override"));

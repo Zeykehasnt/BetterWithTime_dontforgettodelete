@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "wool",
+  "ingredients": [
+    {
+      "item": "bwt:green_wool_slab"
+    },
+    {
+      "item": "bwt:green_wool_slab"
+    }
+  ],
+  "result": {
+    "item": "minecraft:green_wool"
+  }
+}

@@ -64,6 +64,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         addTools();
         addMiniBlockTags();
         addVases();
+        addWoolSlabs();
         addSawTags();
     }
 
@@ -154,6 +155,13 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
     private void addVases() {
         FabricTagBuilder vasesBuilder = getOrCreateTagBuilder(BwtBlockTags.VASES);
         DyeUtils.streamColorItemsSorted(BwtBlocks.vaseBlocks).forEach(vasesBuilder::add);
+    }
+
+    private void addWoolSlabs() {
+        FabricTagBuilder woolSlabsBuilder = getOrCreateTagBuilder(BwtBlockTags.WOOL_SLABS);
+        DyeUtils.streamColorItemsSorted(BwtBlocks.woolSlabBlocks).forEach(woolSlabsBuilder::add);
+        getOrCreateTagBuilder(BlockTags.WOOL).forceAddTag(BwtBlockTags.WOOL_SLABS);
+        getOrCreateTagBuilder(BlockTags.SLABS).forceAddTag(BwtBlockTags.WOOL_SLABS);
     }
 
     protected void addSawTags() {

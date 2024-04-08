@@ -1,0 +1,21 @@
+{
+  "type": "bwt:cauldron",
+  "category": "blocks",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "bwt:white_wool_slab"
+      }
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:gray_dye"
+      }
+    }
+  ],
+  "results": [
+    {
+      "item": "bwt:gray_wool_slab"
+    }
+  ]
+}

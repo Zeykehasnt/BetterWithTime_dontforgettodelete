@@ -81,7 +81,7 @@ public class BlockLootTableGenerator extends FabricBlockLootTableProvider {
         addDrop(BwtBlocks.urnBlock);
 //        addDrop(BwtBlocks.waterWheelBlock);
         addDrop(BwtBlocks.wickerBlock);
-//        addDrop(BwtBlocks.woolSlabBlock);
+        DyeUtils.streamColorItemsSorted(BwtBlocks.woolSlabBlocks).forEach(block -> addDrop(block, this::slabDrops));
         DyeUtils.streamColorItemsSorted(BwtBlocks.vaseBlocks).forEach(this::addDropWithSilkTouch);
         BwtBlocks.sidingBlocks.forEach(this::addDrop);
         BwtBlocks.mouldingBlocks.forEach(this::addDrop);

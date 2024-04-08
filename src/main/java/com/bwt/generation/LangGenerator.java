@@ -43,6 +43,7 @@ public class LangGenerator extends FabricLanguageProvider {
         translationBuilder.add(BwtBlocks.unfiredUrnBlock, "Unfired Urn");
         translationBuilder.add(BwtBlocks.unfiredMouldBlock, "Unfired Mould");
         BwtBlocks.vaseBlocks.entrySet().stream().sorted(DyeUtils.COMPARE_DYE_COLOR_ENTRY).forEach(entry -> translationBuilder.add(entry.getValue(), nameKeyToTitleCase(entry.getKey().getName() + "_vase")));
+        BwtBlocks.woolSlabBlocks.entrySet().stream().sorted(DyeUtils.COMPARE_DYE_COLOR_ENTRY).forEach(entry -> translationBuilder.add(entry.getValue(), nameKeyToTitleCase(entry.getKey().getName() + "_wool_slab")));
         translationBuilder.add(BwtBlocks.soilPlanterBlock, "Soil Planter");
         translationBuilder.add(BwtBlocks.soulSandPlanterBlock, "Soul Sand Planter");
         translationBuilder.add(BwtBlocks.grassPlanterBlock, "Grass Planter");

@@ -27,6 +27,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class BwtBlocks implements ModInitializer {
@@ -218,7 +219,7 @@ public class BwtBlocks implements ModInitializer {
             .burnable()
             .nonOpaque()
     );
-//	public static final Block woolSlabBlock = new WoolSlabBlock(FabricBlockSettings.create());
+    public static final HashMap<DyeColor, SlabBlock> woolSlabBlocks = new HashMap<>();
 
 
     @Override
@@ -338,6 +339,13 @@ public class BwtBlocks implements ModInitializer {
         // SoulForge
         Registry.register(Registries.BLOCK, new Identifier("bwt", "soul_forge"), soulForgeBlock);
         Registry.register(Registries.ITEM, new Identifier("bwt", "soul_forge"), new BlockItem(soulForgeBlock, new FabricItemSettings()));
+        // Wool slabs
+        DyeUtils.WOOL_COLORS.forEach((dyeColor, woolBlock) -> {
+            SlabBlock woolSlabBlock = new SlabBlock(FabricBlockSettings.copyOf(woolBlock));
+            woolSlabBlocks.put(dyeColor, woolSlabBlock);
+            Registry.register(Registries.BLOCK, new Identifier("bwt", dyeColor.getName() + "_wool_slab"), woolSlabBlock);
+            Registry.register(Registries.ITEM, new Identifier("bwt", dyeColor.getName() + "_wool_slab"), new BlockItem(woolSlabBlock, new FabricItemSettings()));
+        });
 
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {

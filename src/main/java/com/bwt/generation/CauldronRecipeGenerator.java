@@ -1,5 +1,6 @@
 package com.bwt.generation;
 
+import com.bwt.blocks.BwtBlocks;
 import com.bwt.items.BwtItems;
 import com.bwt.recipes.CauldronRecipe;
 import com.bwt.recipes.StokedCauldronRecipe;
@@ -22,6 +23,7 @@ import net.minecraft.recipe.SmokingRecipe;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Util;
 
 import java.util.Map;
@@ -56,10 +58,15 @@ public class CauldronRecipeGenerator extends FabricRecipeProvider {
         CauldronRecipe.JsonBuilder.create().ingredient(Items.STRING, 4).result(Items.WHITE_WOOL).offerTo(exporter, RecipeProvider.getItemPath(Items.WHITE_WOOL) + "_from_string_in_cauldron");
         Registries.ITEM.stream().filter(item -> item instanceof DyeItem).forEach(dyeItem -> {
             Item dyedWool = DyeUtils.WOOL_COLORS.get(((DyeItem) dyeItem).getColor()).asItem();
+            Item dyedWoolSlab = BwtBlocks.woolSlabBlocks.get(((DyeItem) dyeItem).getColor()).asItem();
             CauldronRecipe.JsonBuilder.create().ingredient(Items.WHITE_WOOL).ingredient(dyeItem).result(dyedWool).offerTo(exporter, RecipeProvider.getItemPath(dyedWool) + "_from_cauldron_dyeing_with_" + RecipeProvider.getItemPath(dyeItem));
+            CauldronRecipe.JsonBuilder.create().ingredient(BwtBlocks.woolSlabBlocks.get(DyeColor.WHITE).asItem()).ingredient(dyeItem).result(dyedWoolSlab).offerTo(exporter, RecipeProvider.getItemPath(dyedWoolSlab) + "_from_cauldron_dyeing_with_" + RecipeProvider.getItemPath(dyeItem));
         });
         DyeUtils.WOOL_COLORS.values().stream().map(ItemConvertible::asItem).forEach(woolItem ->
                 CauldronRecipe.JsonBuilder.create().ingredient(woolItem).ingredient(BwtItems.potashItem).result(Items.WHITE_WOOL).offerTo(exporter, RecipeProvider.getItemPath(Items.WHITE_WOOL) + "_from_cauldron_washing_" + RecipeProvider.getItemPath(woolItem))
+        );
+        BwtBlocks.woolSlabBlocks.values().stream().map(ItemConvertible::asItem).forEach(woolSlabItem ->
+                CauldronRecipe.JsonBuilder.create().ingredient(woolSlabItem).ingredient(BwtItems.potashItem).result(Items.WHITE_WOOL).offerTo(exporter, RecipeProvider.getItemPath(Items.WHITE_WOOL) + "_from_cauldron_washing_" + RecipeProvider.getItemPath(woolSlabItem))
         );
     }
 

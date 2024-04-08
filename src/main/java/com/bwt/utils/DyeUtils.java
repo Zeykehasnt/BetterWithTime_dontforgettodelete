@@ -1,6 +1,7 @@
 package com.bwt.utils;
 
 import com.google.common.collect.Maps;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.util.DyeColor;
@@ -31,7 +32,7 @@ public interface DyeUtils {
         DyeColor.PINK
     );
 
-    Map<DyeColor, ItemConvertible> WOOL_COLORS = Util.make(Maps.newEnumMap(DyeColor.class), map -> {
+    Map<DyeColor, Block> WOOL_COLORS = Util.make(Maps.newEnumMap(DyeColor.class), map -> {
         map.put(DyeColor.WHITE, Blocks.WHITE_WOOL);
         map.put(DyeColor.ORANGE, Blocks.ORANGE_WOOL);
         map.put(DyeColor.MAGENTA, Blocks.MAGENTA_WOOL);

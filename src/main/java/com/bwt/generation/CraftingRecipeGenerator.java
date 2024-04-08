@@ -11,6 +11,7 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.data.server.recipe.*;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
@@ -45,6 +46,7 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
         generateTier7Recipes(exporter);
 
         generateVaseDyeingRecipes(exporter);
+        generateWoolSlabRecipes(exporter);
         generateDungDyeingRecipes(exporter);
 
         SmithingTransformRecipeJsonBuilder.create(Ingredient.ofItems(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE), Ingredient.ofItems(BwtItems.plateHelmArmorItem), Ingredient.ofItems(Items.NETHERITE_INGOT), RecipeCategory.COMBAT, Items.NETHERITE_HELMET).criterion("hidden", Criteria.IMPOSSIBLE.create(new ImpossibleCriterion.Conditions())).offerTo(exporter, RecipeProvider.getItemPath(Items.NETHERITE_HELMET) + "_smithing");
@@ -133,6 +135,17 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
         List<Item> dyes = List.copyOf(DyeUtils.DYE_COLORS_ORDERED.stream().map(DyeItem::byColor).toList());
         List<Item> vases = DyeUtils.streamColorItemsSorted(BwtBlocks.vaseBlocks).map(VaseBlock::asItem).toList();
         offerDyeableRecipes(exporter, dyes, vases, "vases");
+    }
+
+    private void generateWoolSlabRecipes(RecipeExporter exporter) {
+        List<Item> dyes = List.copyOf(DyeUtils.DYE_COLORS_ORDERED.stream().map(DyeItem::byColor).toList());
+        List<Item> woolSlabs = DyeUtils.streamColorItemsSorted(BwtBlocks.woolSlabBlocks).map(SlabBlock::asItem).toList();
+        offerDyeableRecipes(exporter, dyes, woolSlabs, "wool_slabs");
+        BwtBlocks.woolSlabBlocks.forEach((dyeColor, woolSlab) -> {
+            Item woolBlockItem = DyeUtils.WOOL_COLORS.get(dyeColor).asItem();
+            createSlabRecipe(RecipeCategory.BUILDING_BLOCKS, woolSlab, Ingredient.ofItems(woolBlockItem)).criterion(hasItem(woolBlockItem), conditionsFromItem(woolBlockItem)).group("wool_slabs").offerTo(exporter);
+            ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, woolBlockItem, 1).input(woolSlab, 2).criterion(hasItem(woolSlab), conditionsFromItem(woolSlab)).group("wool").offerTo(exporter, "recombine_" + Registries.BLOCK.getId(woolSlab).getPath());
+        });
     }
 
     private void generateTier1Recipes(RecipeExporter exporter) {

@@ -3,13 +3,16 @@ package com.bwt.generation;
 import com.bwt.blocks.*;
 import com.bwt.blocks.turntable.TurntableBlock;
 import com.bwt.items.BwtItems;
+import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.data.client.*;
 import net.minecraft.item.Items;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
@@ -45,6 +48,7 @@ public class ModelGenerator extends FabricModelProvider {
         for (VaseBlock vaseBlock : BwtBlocks.vaseBlocks.values()) {
             generateVaseBlock(blockStateModelGenerator, vaseBlock);
         }
+        BwtBlocks.woolSlabBlocks.forEach((dyeColor, woolSlab) -> generateWoolSlab(blockStateModelGenerator, dyeColor, woolSlab));
         blockStateModelGenerator.registerStraightRail(BwtBlocks.stoneDetectorRailBlock);
         blockStateModelGenerator.registerStraightRail(BwtBlocks.obsidianDetectorRailBlock);
         generatePaneBlock(blockStateModelGenerator, BwtBlocks.grateBlock);
@@ -326,6 +330,15 @@ public class ModelGenerator extends FabricModelProvider {
     public void generateVaseBlock(BlockStateModelGenerator blockStateModelGenerator, VaseBlock vaseBlock) {
         Identifier modelId = new Model(Optional.of(new Identifier("bwt", "block/vase")), Optional.empty(), TextureKey.TEXTURE, TextureKey.PARTICLE).upload(ModelIds.getBlockModelId(vaseBlock), TextureMap.texture(vaseBlock).put(TextureKey.PARTICLE, TextureMap.getId(vaseBlock)), blockStateModelGenerator.modelCollector);
         blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(vaseBlock, BlockStateVariant.create().put(VariantSettings.MODEL, modelId)));
+    }
+
+    public void generateWoolSlab(BlockStateModelGenerator blockStateModelGenerator, DyeColor dyeColor, SlabBlock woolSlabBlock) {
+        Block woolBlock = DyeUtils.WOOL_COLORS.get(dyeColor);
+        Identifier identifier = ModelIds.getBlockModelId(woolBlock);
+        TexturedModel texturedModel = TexturedModel.CUBE_ALL.get(woolBlock);
+        Identifier identifier2 = Models.SLAB.upload(woolSlabBlock, texturedModel.getTextures(), blockStateModelGenerator.modelCollector);
+        Identifier identifier3 = Models.SLAB_TOP.upload(woolSlabBlock, texturedModel.getTextures(), blockStateModelGenerator.modelCollector);
+        blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSlabBlockState(woolSlabBlock, identifier2, identifier3, identifier));
     }
 
     public static BlockStateVariantMap createUpDefaultRotationStates() {

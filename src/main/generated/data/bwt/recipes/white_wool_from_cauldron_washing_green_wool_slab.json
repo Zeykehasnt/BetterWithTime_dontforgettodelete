@@ -1,0 +1,21 @@
+{
+  "type": "bwt:cauldron",
+  "category": "blocks",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "bwt:green_wool_slab"
+      }
+    },
+    {
+      "ingredient": {
+        "item": "bwt:potash"
+      }
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:white_wool"
+    }
+  ]
+}
