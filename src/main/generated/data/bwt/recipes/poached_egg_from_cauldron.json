@@ -1,0 +1,16 @@
+{
+  "type": "bwt:cauldron",
+  "category": "food",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "bwt:raw_egg"
+      }
+    }
+  ],
+  "results": [
+    {
+      "item": "bwt:poached_egg"
+    }
+  ]
+}

@@ -51,6 +51,7 @@ public class BwtItems implements ModInitializer {
                     .statusEffect(new StatusEffectInstance(StatusEffects.POISON, 20 * 30, 0), 0.8f)
                     .build())
     ));
+    public static final Item friedEggItem = Registry.register(Registries.ITEM, new Identifier("bwt", "fried_egg"), new Item(new FabricItemSettings().food(new FoodComponent.Builder().hunger(3).saturationModifier(0.25f).build())));
 //	public static final Item fuseItem = Registry.register(Registries.ITEM, new Identifier("bwt", "fuse"), new FuseItem(new FabricItemSettings()));
 	public static final Item gearItem = Registry.register(Registries.ITEM, new Identifier("bwt", "gear"), new Item(new FabricItemSettings()));
 	public static final Item glueItem = Registry.register(Registries.ITEM, new Identifier("bwt", "glue"), new Item(new FabricItemSettings()));
@@ -71,8 +72,10 @@ public class BwtItems implements ModInitializer {
     public static final ArmorItem chestPlateArmorItem = Registry.register(Registries.ITEM, new Identifier("bwt", "chest_plate"), new ArmorItem(SoulforgedSteelArmorMaterial.INSTANCE, ArmorItem.Type.CHESTPLATE, new Item.Settings().fireproof()));
     public static final ArmorItem plateLeggingsArmorItem = Registry.register(Registries.ITEM, new Identifier("bwt", "plate_leggings"), new ArmorItem(SoulforgedSteelArmorMaterial.INSTANCE, ArmorItem.Type.LEGGINGS, new Item.Settings().fireproof()));
     public static final ArmorItem plateBootsArmorItem = Registry.register(Registries.ITEM, new Identifier("bwt", "plate_boots"), new ArmorItem(SoulforgedSteelArmorMaterial.INSTANCE, ArmorItem.Type.BOOTS, new Item.Settings().fireproof()));
+	public static final Item poachedEggItem = Registry.register(Registries.ITEM, new Identifier("bwt", "poached_egg"), new Item(new FabricItemSettings().food(new FoodComponent.Builder().hunger(3).saturationModifier(0.25f).build())));
 	public static final Item potashItem = Registry.register(Registries.ITEM, new Identifier("bwt", "potash"), new Item(new FabricItemSettings()));
-	public static final Item redstoneEyeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "redstone_eye"), new Item(new FabricItemSettings()));
+    public static final Item rawEggItem = Registry.register(Registries.ITEM, new Identifier("bwt", "raw_egg"), new Item(new FabricItemSettings().food(new FoodComponent.Builder().hunger(2).saturationModifier(0.25f).build())));
+    public static final Item redstoneEyeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "redstone_eye"), new Item(new FabricItemSettings()));
 	public static final Item refinedPickaxeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "refined_pickaxe"), new PickaxeItem(SoulforgedSteelToolMaterial.INSTANCE, 1, -2.8f, new FabricItemSettings().fireproof()));
     public static final Item refinedShovelItem = Registry.register(Registries.ITEM, new Identifier("bwt", "refined_shovel"), new ShovelItem(SoulforgedSteelToolMaterial.INSTANCE, 1.5f, -3.0f, new Item.Settings().fireproof()));
     public static final Item refinedAxeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "refined_axe"), new AxeItem(SoulforgedSteelToolMaterial.INSTANCE, 5.0f, -3.0f, new Item.Settings().fireproof()));
@@ -144,6 +147,7 @@ public class BwtItems implements ModInitializer {
             content.addAfter(wolfChopItem, cookedWolfChopItem);
             content.addAfter(Items.BREAD, donutItem);
             content.add(kibbleItem);
+            content.addAfter(Items.DRIED_KELP, rawEggItem, poachedEggItem, friedEggItem);
         });
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(content -> {
             content.addAfter(Items.WHEAT_SEEDS, hempSeedsItem);

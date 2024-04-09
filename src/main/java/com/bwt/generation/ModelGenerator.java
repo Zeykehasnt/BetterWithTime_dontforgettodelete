@@ -168,6 +168,7 @@ public class ModelGenerator extends FabricModelProvider {
         itemModelGenerator.register(BwtItems.filamentItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.flourItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.foulFoodItem, Models.GENERATED);
+        itemModelGenerator.register(BwtItems.friedEggItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.gearItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.groundNetherrackItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.glueItem, Models.GENERATED);
@@ -181,7 +182,9 @@ public class ModelGenerator extends FabricModelProvider {
         itemModelGenerator.register(BwtItems.nethercoalItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.netherSludgeItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.paddingItem, Models.GENERATED);
+        itemModelGenerator.register(BwtItems.poachedEggItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.potashItem, Models.GENERATED);
+        itemModelGenerator.register(BwtItems.rawEggItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.redstoneEyeItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.refinedPickaxeItem, Models.HANDHELD);
         itemModelGenerator.register(BwtItems.refinedShovelItem, Models.HANDHELD);

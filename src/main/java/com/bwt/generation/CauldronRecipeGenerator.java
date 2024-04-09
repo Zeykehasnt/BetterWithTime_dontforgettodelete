@@ -110,6 +110,10 @@ public class CauldronRecipeGenerator extends FabricRecipeProvider {
 
     public void addNewGenericFood(Item input, Item output, RecipeExporter exporter) {
         CauldronRecipe.JsonBuilder.createFood().ingredient(input).result(output).offerTo(exporter);
+        addNewVanillaCookingRecipe(input, output, exporter);
+    }
+
+    public void addNewVanillaCookingRecipe(Item input, Item output, RecipeExporter exporter) {
         CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItems(input), RecipeCategory.FOOD, output, 0.35f, 200).criterion(RecipeProvider.hasItem(input), RecipeProvider.conditionsFromItem(input)).offerTo(exporter);
         RecipeProvider.offerFoodCookingRecipe(exporter, "smoking", RecipeSerializer.SMOKING, SmokingRecipe::new, 100, input, output, 0.35f);
         RecipeProvider.offerFoodCookingRecipe(exporter, "campfire_cooking", RecipeSerializer.CAMPFIRE_COOKING, CampfireCookingRecipe::new, 600, input, output, 0.35f);
@@ -127,5 +131,7 @@ public class CauldronRecipeGenerator extends FabricRecipeProvider {
         CauldronRecipe.JsonBuilder.createFood().ingredient(Items.RABBIT).result(Items.COOKED_RABBIT).offerTo(exporter);
         addNewGenericFood(BwtItems.wolfChopItem, BwtItems.cookedWolfChopItem, exporter);
         CauldronRecipe.JsonBuilder.createFood().ingredient(BwtItems.flourItem).result(BwtItems.donutItem, 4).offerTo(exporter);
+        CauldronRecipe.JsonBuilder.createFood().ingredient(BwtItems.rawEggItem).result(BwtItems.poachedEggItem).offerTo(exporter);
+        addNewVanillaCookingRecipe(BwtItems.rawEggItem, BwtItems.friedEggItem, exporter);
     }
 }

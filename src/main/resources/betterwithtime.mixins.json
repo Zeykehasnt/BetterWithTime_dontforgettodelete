@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "DetectorRailMixin",
+    "EggEntityMixin",
     "EntityVoxelShapeCollisionMixin",
     "ExampleMixin",
     "MovableBlockEntityMixin",
