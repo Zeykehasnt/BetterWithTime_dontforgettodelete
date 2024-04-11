@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "wooden_pressure_plate",
+  "key": {
+    "s": {
+      "item": "bwt:oak_planks_siding"
+    }
+  },
+  "pattern": [
+    "ss"
+  ],
+  "result": {
+    "item": "minecraft:oak_pressure_plate"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": {
+      "tag": "bwt:wooden_siding_blocks"
+    }
+  },
+  "pattern": [
+    "sss",
+    "s s",
+    "sss"
+  ],
+  "result": {
+    "item": "minecraft:chest"
+  }
+}

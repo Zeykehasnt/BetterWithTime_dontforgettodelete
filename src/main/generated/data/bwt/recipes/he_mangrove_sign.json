@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "wooden_sign",
+  "key": {
+    "m": {
+      "item": "bwt:mangrove_planks_moulding"
+    },
+    "s": {
+      "item": "bwt:mangrove_planks_siding"
+    }
+  },
+  "pattern": [
+    "s",
+    "m"
+  ],
+  "result": {
+    "item": "minecraft:mangrove_sign"
+  }
+}

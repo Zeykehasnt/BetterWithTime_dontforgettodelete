@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "wooden_sign",
+  "key": {
+    "m": {
+      "item": "bwt:birch_planks_moulding"
+    },
+    "s": {
+      "item": "bwt:birch_planks_siding"
+    }
+  },
+  "pattern": [
+    "s",
+    "m"
+  ],
+  "result": {
+    "item": "minecraft:birch_sign"
+  }
+}

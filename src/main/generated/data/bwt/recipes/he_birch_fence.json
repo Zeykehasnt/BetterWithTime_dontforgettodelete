@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "wooden_fence",
+  "key": {
+    "m": {
+      "item": "bwt:birch_planks_moulding"
+    },
+    "s": {
+      "item": "bwt:birch_planks_siding"
+    }
+  },
+  "pattern": [
+    "sms",
+    "sms"
+  ],
+  "result": {
+    "count": 3,
+    "item": "minecraft:birch_fence"
+  }
+}

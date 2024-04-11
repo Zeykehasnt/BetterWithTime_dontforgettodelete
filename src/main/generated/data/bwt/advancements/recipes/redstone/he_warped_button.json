@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "bwt:he_warped_button"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_warped_planks_corner": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bwt:warped_planks_corner"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_warped_planks_corner"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "bwt:he_warped_button"
+    ]
+  }
+}

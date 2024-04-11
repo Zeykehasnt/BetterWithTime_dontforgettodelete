@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "wooden_fence_gate",
+  "key": {
+    "m": {
+      "item": "bwt:birch_planks_moulding"
+    },
+    "s": {
+      "item": "bwt:birch_planks_siding"
+    }
+  },
+  "pattern": [
+    "msm",
+    "msm"
+  ],
+  "result": {
+    "item": "minecraft:birch_fence_gate"
+  }
+}

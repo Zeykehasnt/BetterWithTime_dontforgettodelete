@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "m": {
+      "tag": "bwt:wooden_moulding_blocks"
+    },
+    "t": {
+      "item": "bwt:tanned_leather"
+    }
+  },
+  "pattern": [
+    "mmm",
+    "mtm",
+    "mmm"
+  ],
+  "result": {
+    "count": 2,
+    "item": "minecraft:item_frame"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_moulding": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bwt:sandstone_moulding"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "bwt:he_sandstone_stairs"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_moulding"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "bwt:he_sandstone_stairs"
+    ]
+  }
+}

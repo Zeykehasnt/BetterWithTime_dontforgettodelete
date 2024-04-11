@@ -7,22 +7,32 @@ import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
+import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementCriterion;
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.data.family.BlockFamilies;
+import net.minecraft.data.family.BlockFamily;
 import net.minecraft.data.server.recipe.*;
-import net.minecraft.item.DyeItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
+import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class CraftingRecipeGenerator extends FabricRecipeProvider {
@@ -473,7 +483,13 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .offerTo(exporter);
     }
 
+    private Identifier highEfficiencyId(ItemConvertible itemConvertible) {
+        return new Identifier("bwt", Registries.ITEM.getId(itemConvertible.asItem()).withPrefixedPath("he_").getPath());
+    }
+
     private void generateHighEfficiencyRecipes(RecipeExporter exporter) {
+        Optional<SidingBlock> stoneSiding = BwtBlocks.sidingBlocks.stream().filter(sidingBlock -> sidingBlock.fullBlock == Blocks.STONE).findAny();
+
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, BwtItems.sailItem)
                 .pattern("fff")
                 .pattern("fff")
@@ -481,7 +497,7 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('f', BwtItems.fabricItem)
                 .input('m', BwtItemTags.WOODEN_MOULDING_BLOCKS)
                 .criterion(hasItem(BwtItems.fabricItem), conditionsFromItem(BwtItems.fabricItem))
-                .offerTo(exporter, "he_sail");
+                .offerTo(exporter, highEfficiencyId(BwtItems.sailItem));
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, BwtBlocks.sawBlock)
                 .pattern("iii")
                 .pattern("gbg")
@@ -491,13 +507,159 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('s', BwtItemTags.WOODEN_SIDING_BLOCKS)
                 .input('b', BwtItems.beltItem)
                 .criterion(hasItem(BwtItems.beltItem), conditionsFromItem(BwtItems.beltItem))
-                .offerTo(exporter, "he_saw");
+                .offerTo(exporter, highEfficiencyId(BwtBlocks.sawBlock));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, BwtBlocks.gearBoxBlock)
+                .pattern("sgs")
+                .pattern("grg")
+                .pattern("sgs")
+                .input('s', BwtItemTags.WOODEN_SIDING_BLOCKS)
+                .input('g', BwtItems.gearItem)
+                .input('r', Items.REDSTONE)
+                .criterion("has_wooden_siding", conditionsFromTag(BwtItemTags.WOODEN_SIDING_BLOCKS))
+                .offerTo(exporter, highEfficiencyId(BwtBlocks.gearBoxBlock));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Blocks.PISTON)
+                .pattern("sss")
+                .pattern("cic")
+                .pattern("crc")
+                .input('s', BwtItemTags.WOODEN_SIDING_BLOCKS)
+                .input('i', Items.IRON_INGOT)
+                .input('r', Items.REDSTONE)
+                .input('c', Items.COBBLESTONE)
+                .criterion("has_wooden_siding", conditionsFromTag(BwtItemTags.WOODEN_SIDING_BLOCKS))
+                .offerTo(exporter, highEfficiencyId(Items.PISTON));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, Blocks.BOOKSHELF)
+                .pattern("sss")
+                .pattern("bbb")
+                .pattern("sss")
+                .input('s', BwtItemTags.WOODEN_SIDING_BLOCKS)
+                .input('b', Items.BOOK)
+                .criterion("has_wooden_siding", conditionsFromTag(BwtItemTags.WOODEN_SIDING_BLOCKS))
+                .offerTo(exporter, highEfficiencyId(Items.BOOKSHELF));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, Blocks.CHEST)
+                .pattern("sss")
+                .pattern("s s")
+                .pattern("sss")
+                .input('s', BwtItemTags.WOODEN_SIDING_BLOCKS)
+                .criterion("has_wooden_siding", conditionsFromTag(BwtItemTags.WOODEN_SIDING_BLOCKS))
+                .offerTo(exporter, highEfficiencyId(Blocks.CHEST));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Blocks.NOTE_BLOCK)
+                .pattern("sss")
+                .pattern("srs")
+                .pattern("sss")
+                .input('s', BwtItemTags.WOODEN_SIDING_BLOCKS)
+                .input('r', Items.REDSTONE)
+                .criterion("has_wooden_siding", conditionsFromTag(BwtItemTags.WOODEN_SIDING_BLOCKS))
+                .offerTo(exporter, highEfficiencyId(Blocks.NOTE_BLOCK));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, Blocks.JUKEBOX)
+                .pattern("sss")
+                .pattern("sds")
+                .pattern("sss")
+                .input('s', BwtItemTags.WOODEN_SIDING_BLOCKS)
+                .input('d', Items.DIAMOND)
+                .criterion("has_wooden_siding", conditionsFromTag(BwtItemTags.WOODEN_SIDING_BLOCKS))
+                .offerTo(exporter, highEfficiencyId(Blocks.JUKEBOX));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, Blocks.LADDER, 3)
+                .pattern("m m")
+                .pattern("mmm")
+                .pattern("m m")
+                .input('m', BwtItemTags.WOODEN_MOULDING_BLOCKS)
+                .criterion("has_wooden_moulding", conditionsFromTag(BwtItemTags.WOODEN_MOULDING_BLOCKS))
+                .offerTo(exporter, highEfficiencyId(Blocks.LADDER));
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, Items.STICK)
+                .group("sticks")
                 .pattern("m")
                 .input('m', BwtItemTags.WOODEN_MOULDING_BLOCKS)
                 .criterion("has_wooden_moulding", conditionsFromTag(BwtItemTags.WOODEN_MOULDING_BLOCKS))
-                .offerTo(exporter, "he_stick");
+                .offerTo(exporter, highEfficiencyId(Items.STICK));
+        stoneSiding.ifPresent(sidingBlock -> ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, Blocks.REPEATER)
+                .pattern("trt")
+                .pattern("sss")
+                .input('t', Items.REDSTONE_TORCH)
+                .input('r', Items.REDSTONE)
+                .input('s', sidingBlock)
+                .criterion(hasItem(sidingBlock), conditionsFromItem(sidingBlock))
+                .offerTo(exporter, highEfficiencyId(Blocks.REPEATER)));
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, Items.BOOK)
+                .input(BwtItems.tannedLeatherItem)
+                .input(Items.PAPER, 6)
+                .criterion(hasItem(BwtItems.tannedLeatherItem), conditionsFromItem(BwtItems.tannedLeatherItem))
+                .offerTo(exporter, highEfficiencyId(Items.BOOK));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, Items.ITEM_FRAME, 2)
+                .pattern("mmm")
+                .pattern("mtm")
+                .pattern("mmm")
+                .input('m', BwtItemTags.WOODEN_MOULDING_BLOCKS)
+                .input('t', BwtItems.tannedLeatherItem)
+                .criterion("has_wooden_moulding", conditionsFromTag(BwtItemTags.WOODEN_MOULDING_BLOCKS))
+                .offerTo(exporter, highEfficiencyId(Items.ITEM_FRAME));
+        BlockFamilies.getFamilies()
+//                .filter(blockFamily -> blockFamily.getGroup().orElse("").equals("wooden"))
+                .forEach(blockFamily -> createHighEfficiencyBlockFamilyRecipes(blockFamily, exporter));
     }
 
+    private void createHighEfficiencyBlockFamilyRecipe(RecipeExporter exporter, BlockFamily blockFamily, BlockFamily.Variant variant, Function<Block, CraftingRecipeJsonBuilder> builder) {
+        Optional.ofNullable(blockFamily.getVariant(variant))
+                .ifPresent(result -> builder.apply(result)
+                        .group(blockFamily.getGroup().map(group -> group + "_" + variant.getName()).orElse(null))
+                        .offerTo(exporter, highEfficiencyId(result))
+                );
+    }
+
+    private void createHighEfficiencyBlockFamilyRecipes(BlockFamily blockFamily, RecipeExporter exporter) {
+        Block baseBlock = blockFamily.getBaseBlock();
+        Optional<SidingBlock> optionalSidingBlock = BwtBlocks.sidingBlocks.stream().filter(siding -> siding.fullBlock == baseBlock).findFirst();
+        Optional<MouldingBlock> optionalMouldingBlock = BwtBlocks.mouldingBlocks.stream().filter(siding -> siding.fullBlock == baseBlock).findFirst();
+        Optional<CornerBlock> optionalCornerBlock = BwtBlocks.cornerBlocks.stream().filter(siding -> siding.fullBlock == baseBlock).findFirst();
+
+        if (optionalSidingBlock.isEmpty() || optionalMouldingBlock.isEmpty() || optionalCornerBlock.isEmpty()) {
+            return;
+        }
+        SidingBlock sidingBlock = optionalSidingBlock.get();
+        MouldingBlock mouldingBlock = optionalMouldingBlock.get();
+        CornerBlock cornerBlock = optionalCornerBlock.get();
+
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.DOOR,
+                door -> createDoorRecipe(door, Ingredient.ofItems(sidingBlock))
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.TRAPDOOR,
+                trapdoor -> createTrapdoorRecipe(trapdoor, Ingredient.ofItems(sidingBlock))
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.PRESSURE_PLATE,
+                pressurePlate -> ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, pressurePlate)
+                        .pattern("ss")
+                        .input('s', sidingBlock)
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.FENCE,
+                fence -> ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, fence, 3)
+                        .pattern("sms")
+                        .pattern("sms")
+                        .input('s', sidingBlock)
+                        .input('m', mouldingBlock)
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.FENCE_GATE,
+                fenceGate -> ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, fenceGate)
+                        .pattern("msm")
+                        .pattern("msm")
+                        .input('s', sidingBlock)
+                        .input('m', mouldingBlock)
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.SIGN,
+                sign -> ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, sign)
+                        .pattern("s")
+                        .pattern("m")
+                        .input('s', sidingBlock)
+                        .input('m', mouldingBlock)
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.STAIRS,
+                stair -> ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, stair)
+                        .pattern("m ")
+                        .pattern("mm")
+                        .input('m', mouldingBlock)
+                        .criterion("has_moulding", conditionsFromItem(mouldingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.BUTTON,
+                button -> ShapelessRecipeJsonBuilder.create(RecipeCategory.REDSTONE, button)
+                        .input(cornerBlock)
+                        .criterion(hasItem(cornerBlock), conditionsFromItem(cornerBlock)));
+    }
 
 }
