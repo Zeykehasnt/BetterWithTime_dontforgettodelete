@@ -30,10 +30,7 @@ public class PickUpBreedingItemWhileSittingGoal extends Goal {
     }
 
     protected boolean wantsFood() {
-        if (wantsFoodCondition != null && wantsFoodCondition.test(animal)) {
-            return true;
-        }
-        return animal.getBreedingAge() == 0 && animal.canEat();
+        return wantsFoodCondition != null && wantsFoodCondition.test(animal);
     }
 
 
