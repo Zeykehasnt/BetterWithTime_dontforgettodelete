@@ -6,10 +6,12 @@ import com.bwt.items.BwtItems;
 import com.bwt.mixin.accessors.MobEntityAccessorMixin;
 import com.bwt.sounds.BwtSoundEvents;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -25,7 +27,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,28 +36,30 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Optional;
 
 @Mixin(WolfEntity.class)
-public abstract class WolfEntityMixin implements MobEntityAccessorMixin {
-    @Shadow protected abstract float getSoundVolume();
+public abstract class WolfEntityMixin extends TameableEntity implements MobEntityAccessorMixin {
+    protected WolfEntityMixin(EntityType<? extends TameableEntity> entityType, World world) {
+        super(entityType, world);
+    }
 
     @Unique
-    private static final TrackedData<Boolean> IS_FED = DataTracker.registerData(WolfEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> IS_FED = DataTracker.registerData(WolfEntityMixin.class, TrackedDataHandlerRegistry.BOOLEAN);
 
 
     @Inject(method = "initDataTracker", at = @At("TAIL"))
     public void initDataTracker(CallbackInfo ci) {
-        ((WolfEntity) ((Object) this)).getDataTracker().startTracking(IS_FED, false);
+        this.getDataTracker().startTracking(IS_FED, false);
     }
 
     @Inject(method = "initGoals", at = @At("TAIL"))
     public void addGoal(CallbackInfo ci) {
         this.getGoalSelector().add(1, new PickUpBreedingItemWhileSittingGoal(
-                (WolfEntity) ((Object) this),
+                this,
                 1.7,
                 wolf -> !wolf.getDataTracker().get(IS_FED),
                 this::feed
         ));
         this.getGoalSelector().add(7, new GoToAndPickUpBreedingItemGoal(
-                (WolfEntity) ((Object) this),
+                this,
                 8,
                 1.8,
                 1,
@@ -67,10 +70,9 @@ public abstract class WolfEntityMixin implements MobEntityAccessorMixin {
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     public void interactMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        WolfEntity wolfThis = ((WolfEntity) ((Object) this));
         ItemStack itemStack = player.getStackInHand(hand);
-        if (!wolfThis.isBaby() && wolfThis.isTamed() && wolfThis.isBreedingItem(itemStack) && !isFed()) {
-            if (wolfThis.getWorld().isClient) {
+        if (!this.isBaby() && this.isTamed() && this.isBreedingItem(itemStack) && !isFed()) {
+            if (this.getWorld().isClient) {
                 cir.setReturnValue(ActionResult.CONSUME);
                 return;
             }
@@ -95,13 +97,12 @@ public abstract class WolfEntityMixin implements MobEntityAccessorMixin {
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void tick(CallbackInfo ci) {
-        WolfEntity wolfThis = ((WolfEntity) ((Object) this));
-        World world = wolfThis.getWorld();
+        World world = getWorld();
         Random random = world.getRandom();
         if (world.isClient) {
             return;
         }
-        if (wolfThis.isBaby() || !isFed()) {
+        if (isBaby() || !isFed()) {
             return;
         }
         // A wolf produces dung on average every 20 minutes if in the light
@@ -119,16 +120,15 @@ public abstract class WolfEntityMixin implements MobEntityAccessorMixin {
 
     @Unique
     public boolean attemptProduceDung() {
-        WolfEntity wolfThis = ((WolfEntity) ((Object) this));
-        World world = wolfThis.getWorld();
-        Random random = wolfThis.getRandom();
+        World world = getWorld();
+        Random random = getRandom();
         
-        double dungVectorX = Math.sin(Math.toRadians(wolfThis.getHeadYaw()));
-        double dungVectorZ = -Math.cos(Math.toRadians(wolfThis.getHeadYaw()));
+        double dungVectorX = Math.sin(Math.toRadians(getHeadYaw()));
+        double dungVectorZ = -Math.cos(Math.toRadians(getHeadYaw()));
 
-        double dungPosX = wolfThis.getX() + dungVectorX;
-        double dungPosY = wolfThis.getY() + 0.25D;
-        double dungPosZ = wolfThis.getZ() + dungVectorZ;
+        double dungPosX = getX() + dungVectorX;
+        double dungPosY = getY() + 0.25D;
+        double dungPosZ = getZ() + dungVectorZ;
         BlockPos dungBlockPos = BlockPos.ofFloored(dungPosX, dungPosY, dungPosZ);
 
         if (!isPathToBlockOpenToDung(dungBlockPos))
@@ -146,13 +146,13 @@ public abstract class WolfEntityMixin implements MobEntityAccessorMixin {
         );
         itemEntity.setPickupDelay(10);
         world.spawnEntity(itemEntity);
-        world.playSound(wolfThis, wolfThis.getBlockPos(), BwtSoundEvents.WOLF_DUNG_PRODUCTION, wolfThis.getSoundCategory(), 0.2f, 1.25f);
-        world.playSound(wolfThis, wolfThis.getBlockPos(), BwtSoundEvents.WOLF_DUNG_EFFORT, wolfThis.getSoundCategory(), getSoundVolume(), (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+        world.playSound(this, getBlockPos(), BwtSoundEvents.WOLF_DUNG_PRODUCTION, getSoundCategory(), 0.2f, 1.25f);
+        world.playSound(this, getBlockPos(), BwtSoundEvents.WOLF_DUNG_EFFORT, getSoundCategory(), getSoundVolume(), (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         
         for (int counter = 0; counter < 5; counter++) {
-            double smokeX = wolfThis.getX() + (dungVectorX * 0.5f) + (random.nextDouble() * 0.25F);
-            double smokeY = wolfThis.getY() + random.nextDouble() * 0.5F + 0.25F;
-            double smokeZ = wolfThis.getZ() + (dungVectorZ * 0.5f) + (random.nextDouble() * 0.25F);
+            double smokeX = getX() + (dungVectorX * 0.5f) + (random.nextDouble() * 0.25F);
+            double smokeY = getY() + random.nextDouble() * 0.5F + 0.25F;
+            double smokeZ = getZ() + (dungVectorZ * 0.5f) + (random.nextDouble() * 0.25F);
             world.addParticle(ParticleTypes.SMOKE, smokeX, smokeY, smokeZ, 0D, 0D, 0D);
         }
 
@@ -161,14 +161,12 @@ public abstract class WolfEntityMixin implements MobEntityAccessorMixin {
 
     @Unique
     protected boolean isPathToBlockOpenToDung(BlockPos dungBlockPos) {
-        WolfEntity wolfThis = ((WolfEntity) ((Object) this));
-
         if (!isBlockOpenToDung(dungBlockPos.getX(), dungBlockPos.getY(), dungBlockPos.getZ())) {
             return false;
         }
 
-        int wolfX = MathHelper.floor(wolfThis.getX());
-        int wolfZ = MathHelper.floor(wolfThis.getZ());
+        int wolfX = MathHelper.floor(getX());
+        int wolfZ = MathHelper.floor(getZ());
 
         int deltaX = dungBlockPos.getX() - wolfX;
         int deltaZ = dungBlockPos.getZ() - wolfZ;
@@ -182,8 +180,7 @@ public abstract class WolfEntityMixin implements MobEntityAccessorMixin {
 
     @Unique
     protected boolean isBlockOpenToDung(int x, int y, int z) {
-        WolfEntity wolfThis = ((WolfEntity) ((Object) this));
-        World world = wolfThis.getWorld();
+        World world = getWorld();
         BlockState blockState = world.getBlockState(new BlockPos(x, y, z));
         FluidState fluidState = world.getFluidState(new BlockPos(x, y, z));
 
@@ -192,7 +189,12 @@ public abstract class WolfEntityMixin implements MobEntityAccessorMixin {
 
     @Unique
     public boolean isFed() {
-        return ((WolfEntity) ((Object) this)).getDataTracker().get(IS_FED);
+        return getDataTracker().get(IS_FED);
+    }
+
+    @Unique
+    public void setIsFed(boolean value) {
+        getDataTracker().set(IS_FED, value);
     }
 
     @Unique
@@ -203,18 +205,12 @@ public abstract class WolfEntityMixin implements MobEntityAccessorMixin {
     @Unique
     public void feed(ItemStack itemStack) {
         int hunger = itemStack.isOf(BwtItems.kibbleItem) ? 2 : Optional.ofNullable(itemStack.getFoodComponent()).orElse(new FoodComponent.Builder().build()).getHunger();
-        ((WolfEntity) ((Object) this)).heal(hunger);
-        this.feed(hunger);
-    }
-
-    @Unique
-    public void setIsFed(boolean value) {
-        ((WolfEntity) ((Object) this)).getDataTracker().set(IS_FED, value);
+        heal(hunger);
+        feed(hunger);
     }
 
     @Unique
     public boolean isInTheDark() {
-        WolfEntity wolfThis = ((WolfEntity) ((Object) this));
-        return wolfThis.getWorld().getLightLevel(wolfThis.getBlockPos()) < 5;
+        return getWorld().getLightLevel(getBlockPos()) < 5;
     }
 }
