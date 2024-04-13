@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_armor_plate": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bwt:armor_plate"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "bwt:netherite_boots"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_armor_plate"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "bwt:netherite_boots"
+    ]
+  }
+}

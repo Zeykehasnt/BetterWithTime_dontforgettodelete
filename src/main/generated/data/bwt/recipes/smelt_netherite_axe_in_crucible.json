@@ -1,0 +1,17 @@
+{
+  "type": "bwt:stoked_crucible",
+  "category": "misc",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:netherite_axe"
+      }
+    }
+  ],
+  "results": [
+    {
+      "count": 3,
+      "item": "minecraft:netherite_ingot"
+    }
+  ]
+}

@@ -24,7 +24,8 @@ public class CrucibleRecipeGenerator extends FabricRecipeProvider {
     }
 
     private void generateStoked(RecipeExporter exporter) {
-        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.IRON_INGOT).ingredient(BwtItems.coalDustItem).ingredient(BwtItems.soulUrnItem).result(BwtItems.soulforgedSteelItem).offerTo(exporter, "soulforged_steel");
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.IRON_INGOT).ingredient(Items.GOLD_INGOT).ingredient(BwtItems.coalDustItem).ingredient(BwtItems.soulUrnItem).result(Items.NETHERITE_INGOT).offerTo(exporter, "netherite_ingot_smelting");
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.NETHERITE_SCRAP, 4).ingredient(Items.GOLD_INGOT, 4).result(Items.NETHERITE_INGOT).offerTo(exporter, "netherite_ingot_from_scrap");
         StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.COBBLESTONE).result(Items.STONE).offerTo(exporter);
         StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.SAND).result(Items.GLASS).offerTo(exporter);
 
@@ -62,7 +63,20 @@ public class CrucibleRecipeGenerator extends FabricRecipeProvider {
         StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.GOLDEN_AXE).result(Items.GOLD_INGOT, 3).offerTo(exporter);
         StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.GOLDEN_HOE).result(Items.GOLD_INGOT, 2).offerTo(exporter);
         StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.GOLDEN_SWORD).result(Items.GOLD_INGOT, 2).offerTo(exporter);
-        // TODO SFS armor and tools
+        // Netherite armor
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.NETHERITE_HELMET).result(Items.NETHERITE_INGOT, 8).offerTo(exporter);
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.NETHERITE_CHESTPLATE).result(Items.NETHERITE_INGOT, 12).offerTo(exporter);
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.NETHERITE_LEGGINGS).result(Items.NETHERITE_INGOT, 6).offerTo(exporter);
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.NETHERITE_BOOTS).result(Items.NETHERITE_INGOT, 6).offerTo(exporter);
+        // Netherite tools
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(BwtItems.netheriteMattockItem).result(Items.NETHERITE_INGOT, 4).offerTo(exporter);
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(BwtItems.netheriteBattleAxeItem).result(Items.NETHERITE_INGOT, 5).offerTo(exporter);
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.NETHERITE_PICKAXE).result(Items.NETHERITE_INGOT, 3).offerTo(exporter);
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.NETHERITE_SHOVEL).result(Items.NETHERITE_INGOT, 1).offerTo(exporter);
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.NETHERITE_AXE).result(Items.NETHERITE_INGOT, 3).offerTo(exporter);
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.NETHERITE_HOE).result(Items.NETHERITE_INGOT, 2).offerTo(exporter);
+        StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.NETHERITE_SWORD).result(Items.NETHERITE_INGOT, 2).offerTo(exporter);
+
         StokedCrucibleRecipe.JsonBuilder.create().ingredient(BwtBlocks.cauldronBlock.asItem()).result(Items.IRON_INGOT, 7).offerTo(exporter);
         StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.RAIL, 8).result(Items.IRON_INGOT, 3).offerTo(exporter);
         StokedCrucibleRecipe.JsonBuilder.create().ingredient(Items.POWERED_RAIL).result(Items.GOLD_INGOT, 1).offerTo(exporter);

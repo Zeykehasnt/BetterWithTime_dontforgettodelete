@@ -68,21 +68,12 @@ public class BwtItems implements ModInitializer {
 	public static final Item nethercoalItem = Registry.register(Registries.ITEM, new Identifier("bwt", "nethercoal"), new Item(new FabricItemSettings()));
 //	public static final Item nitreItem = Registry.register(Registries.ITEM, new Identifier("bwt", "nitre"), new NitreItem(new FabricItemSettings()));
 	public static final Item paddingItem = Registry.register(Registries.ITEM, new Identifier("bwt", "padding"), new Item(new FabricItemSettings()));
-    public static final ArmorItem plateHelmArmorItem = Registry.register(Registries.ITEM, new Identifier("bwt", "plate_helm"), new ArmorItem(SoulforgedSteelArmorMaterial.INSTANCE, ArmorItem.Type.HELMET, new Item.Settings().fireproof()));
-    public static final ArmorItem chestPlateArmorItem = Registry.register(Registries.ITEM, new Identifier("bwt", "chest_plate"), new ArmorItem(SoulforgedSteelArmorMaterial.INSTANCE, ArmorItem.Type.CHESTPLATE, new Item.Settings().fireproof()));
-    public static final ArmorItem plateLeggingsArmorItem = Registry.register(Registries.ITEM, new Identifier("bwt", "plate_leggings"), new ArmorItem(SoulforgedSteelArmorMaterial.INSTANCE, ArmorItem.Type.LEGGINGS, new Item.Settings().fireproof()));
-    public static final ArmorItem plateBootsArmorItem = Registry.register(Registries.ITEM, new Identifier("bwt", "plate_boots"), new ArmorItem(SoulforgedSteelArmorMaterial.INSTANCE, ArmorItem.Type.BOOTS, new Item.Settings().fireproof()));
 	public static final Item poachedEggItem = Registry.register(Registries.ITEM, new Identifier("bwt", "poached_egg"), new Item(new FabricItemSettings().food(new FoodComponent.Builder().hunger(3).saturationModifier(0.25f).build())));
 	public static final Item potashItem = Registry.register(Registries.ITEM, new Identifier("bwt", "potash"), new Item(new FabricItemSettings()));
     public static final Item rawEggItem = Registry.register(Registries.ITEM, new Identifier("bwt", "raw_egg"), new Item(new FabricItemSettings().food(new FoodComponent.Builder().hunger(2).saturationModifier(0.25f).build())));
     public static final Item redstoneEyeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "redstone_eye"), new Item(new FabricItemSettings()));
-	public static final Item refinedPickaxeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "refined_pickaxe"), new PickaxeItem(SoulforgedSteelToolMaterial.INSTANCE, 1, -2.8f, new FabricItemSettings().fireproof()));
-    public static final Item refinedShovelItem = Registry.register(Registries.ITEM, new Identifier("bwt", "refined_shovel"), new ShovelItem(SoulforgedSteelToolMaterial.INSTANCE, 1.5f, -3.0f, new Item.Settings().fireproof()));
-    public static final Item refinedAxeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "refined_axe"), new AxeItem(SoulforgedSteelToolMaterial.INSTANCE, 5.0f, -3.0f, new Item.Settings().fireproof()));
-    public static final Item refinedHoeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "refined_hoe"), new HoeItem(SoulforgedSteelToolMaterial.INSTANCE, -4, 0.0f, new Item.Settings().fireproof()));
-    public static final Item refinedSwordItem = Registry.register(Registries.ITEM, new Identifier("bwt", "refined_sword"), new SwordItem(SoulforgedSteelToolMaterial.INSTANCE, 3, -2.4f, new Item.Settings().fireproof()));
-    public static final Item mattockItem = Registry.register(Registries.ITEM, new Identifier("bwt", "mattock"), new MattockItem(SoulforgedSteelToolMaterial.INSTANCE, 1, -3.0f, new Item.Settings().fireproof()));
-    public static final Item battleAxeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "battle_axe"), new BattleAxeItem(SoulforgedSteelToolMaterial.INSTANCE, 3, -2.4f, new Item.Settings().fireproof()));
+    public static final Item netheriteMattockItem = Registry.register(Registries.ITEM, new Identifier("bwt", "netherite_mattock"), new MattockItem(ToolMaterials.NETHERITE, 1, -3.0f, new Item.Settings().fireproof()));
+    public static final Item netheriteBattleAxeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "netherite_battle_axe"), new BattleAxeItem(ToolMaterials.NETHERITE, 3, -2.4f, new Item.Settings().fireproof()));
 	public static final Item ropeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "rope"), new RopeItem(new FabricItemSettings()));
 	public static final Item rottedArrowItem = Registry.register(Registries.ITEM, new Identifier("bwt", "rotted_arrow"), new Item(new FabricItemSettings()));
 	public static final Item sailItem = Registry.register(Registries.ITEM, new Identifier("bwt", "sail"), new Item(new FabricItemSettings().maxCount(1)));
@@ -90,7 +81,6 @@ public class BwtItems implements ModInitializer {
 	public static final Item scouredLeatherItem = Registry.register(Registries.ITEM, new Identifier("bwt", "scoured_leather"), new Item(new FabricItemSettings()));
 	public static final Item screwItem = Registry.register(Registries.ITEM, new Identifier("bwt", "screw"), new Item(new FabricItemSettings()));
     public static final Item soapItem = Registry.register(Registries.ITEM, new Identifier("bwt", "soap"), new Item(new FabricItemSettings()));
-    public static final Item soulforgedSteelItem = Registry.register(Registries.ITEM, new Identifier("bwt", "soulforged_steel"), new Item(new FabricItemSettings()));
     public static final Item soulDustItem = Registry.register(Registries.ITEM, new Identifier("bwt", "soul_dust"), new Item(new FabricItemSettings()));
 	public static final Item soulUrnItem = Registry.register(Registries.ITEM, new Identifier("bwt", "soul_urn"), new SoulUrnItem(new FabricItemSettings()));
 	public static final Item strapItem = Registry.register(Registries.ITEM, new Identifier("bwt", "strap"), new Item(new FabricItemSettings()));
@@ -117,23 +107,13 @@ public class BwtItems implements ModInitializer {
     @Override
     public void onInitialize() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> {
-            content.addAfter(Items.NETHERITE_PICKAXE, BwtItems.mattockItem);
-            content.addAfter(Items.NETHERITE_AXE, BwtItems.battleAxeItem);
-            replaceItem(content, Items.NETHERITE_PICKAXE, BwtItems.refinedPickaxeItem);
-            replaceItem(content, Items.NETHERITE_SHOVEL, BwtItems.refinedShovelItem);
-            replaceItem(content, Items.NETHERITE_AXE, BwtItems.refinedAxeItem);
-            replaceItem(content, Items.NETHERITE_HOE, BwtItems.refinedHoeItem);
+            content.addAfter(Items.NETHERITE_PICKAXE, BwtItems.netheriteMattockItem);
+            content.addAfter(Items.NETHERITE_AXE, BwtItems.netheriteBattleAxeItem);
             content.addAfter(Items.WATER_BUCKET, cementBucketItem);
             content.add(breedingHarnessItem);
         });
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(content -> {
-            replaceItem(content, Items.NETHERITE_SWORD, BwtItems.refinedSwordItem);
-            content.addAfter(Items.NETHERITE_AXE, BwtItems.battleAxeItem);
-            replaceItem(content, Items.NETHERITE_AXE, BwtItems.refinedAxeItem);
-            replaceItem(content, Items.NETHERITE_HELMET, BwtItems.plateHelmArmorItem);
-            replaceItem(content, Items.NETHERITE_CHESTPLATE, BwtItems.chestPlateArmorItem);
-            replaceItem(content, Items.NETHERITE_LEGGINGS, BwtItems.plateLeggingsArmorItem);
-            replaceItem(content, Items.NETHERITE_BOOTS, BwtItems.plateBootsArmorItem);
+            content.addAfter(Items.NETHERITE_AXE, BwtItems.netheriteBattleAxeItem);
 
             content.addAfter(Items.BOW, compositeBowItem);
             content.addAfter(Items.ARROW, broadheadArrowItem, rottedArrowItem);
@@ -181,7 +161,6 @@ public class BwtItems implements ModInitializer {
             content.add(screwItem);
             content.add(strapItem);
             content.add(beltItem);
-            content.add(soulforgedSteelItem);
             content.add(soulUrnItem);
             content.add(tallowItem);
             content.add(woodBladeItem);

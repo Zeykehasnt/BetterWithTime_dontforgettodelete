@@ -1,0 +1,17 @@
+{
+  "type": "bwt:stoked_crucible",
+  "category": "misc",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:netherite_chestplate"
+      }
+    }
+  ],
+  "results": [
+    {
+      "count": 12,
+      "item": "minecraft:netherite_ingot"
+    }
+  ]
+}

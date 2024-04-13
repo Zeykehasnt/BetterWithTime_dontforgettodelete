@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_soulforged_steel": {
+    "has_netherite_ingot": {
       "conditions": {
         "items": [
           {
             "items": [
-              "bwt:soulforged_steel"
+              "minecraft:netherite_ingot"
             ]
           }
         ]
@@ -23,7 +23,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_soulforged_steel"
+      "has_netherite_ingot"
     ]
   ],
   "rewards": {

@@ -37,8 +37,6 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
         getOrCreateTagBuilder(ItemTags.SOUL_FIRE_BASE_BLOCKS).add(BwtBlocks.soulSandPlanterBlock.asItem());
         getOrCreateTagBuilder(ItemTags.WOOL).add(BwtBlocks.companionCubeBlock.asItem(), BwtBlocks.companionSlabBlock.asItem());
 
-        getOrCreateTagBuilder(ItemTags.TRIMMABLE_ARMOR).add(BwtItems.plateHelmArmorItem, BwtItems.chestPlateArmorItem, BwtItems.plateLeggingsArmorItem, BwtItems.plateBootsArmorItem);
-
         addHopperFilters();
     }
 

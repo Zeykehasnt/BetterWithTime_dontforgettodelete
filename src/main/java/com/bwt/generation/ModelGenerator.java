@@ -186,17 +186,8 @@ public class ModelGenerator extends FabricModelProvider {
         itemModelGenerator.register(BwtItems.potashItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.rawEggItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.redstoneEyeItem, Models.GENERATED);
-        itemModelGenerator.register(BwtItems.refinedPickaxeItem, Models.HANDHELD);
-        itemModelGenerator.register(BwtItems.refinedShovelItem, Models.HANDHELD);
-        itemModelGenerator.register(BwtItems.refinedAxeItem, Models.HANDHELD);
-        itemModelGenerator.register(BwtItems.refinedHoeItem, Models.HANDHELD);
-        itemModelGenerator.register(BwtItems.refinedSwordItem, Models.HANDHELD);
-        itemModelGenerator.register(BwtItems.mattockItem, Models.HANDHELD);
-        itemModelGenerator.register(BwtItems.battleAxeItem, Models.HANDHELD);
-        itemModelGenerator.registerArmor(BwtItems.plateHelmArmorItem);
-        itemModelGenerator.registerArmor(BwtItems.chestPlateArmorItem);
-        itemModelGenerator.registerArmor(BwtItems.plateLeggingsArmorItem);
-        itemModelGenerator.registerArmor(BwtItems.plateBootsArmorItem);
+        itemModelGenerator.register(BwtItems.netheriteMattockItem, Models.HANDHELD);
+        itemModelGenerator.register(BwtItems.netheriteBattleAxeItem, Models.HANDHELD);
         itemModelGenerator.register(BwtItems.ropeItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.rottedArrowItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.sawDustItem, Models.GENERATED);
@@ -205,7 +196,6 @@ public class ModelGenerator extends FabricModelProvider {
         itemModelGenerator.register(BwtItems.screwItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.soapItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.soulDustItem, Models.GENERATED);
-        itemModelGenerator.register(BwtItems.soulforgedSteelItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.soulUrnItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.strapItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.tallowItem, Models.GENERATED);

@@ -5,15 +5,15 @@
     "S": {
       "item": "bwt:strap"
     },
+    "n": {
+      "item": "minecraft:netherite_ingot"
+    },
     "p": {
       "item": "bwt:padding"
-    },
-    "s": {
-      "item": "bwt:soulforged_steel"
     }
   },
   "pattern": [
-    "SspS"
+    "SnpS"
   ],
   "result": {
     "item": "bwt:armor_plate"

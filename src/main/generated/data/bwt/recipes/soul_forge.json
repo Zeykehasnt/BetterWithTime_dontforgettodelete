@@ -2,14 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "s": {
-      "item": "bwt:soulforged_steel"
+    "n": {
+      "item": "minecraft:netherite_ingot"
     }
   },
   "pattern": [
-    "sss",
-    " s ",
-    "sss"
+    "nnn",
+    " n ",
+    "nnn"
   ],
   "result": {
     "item": "bwt:soul_forge"

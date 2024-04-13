@@ -61,6 +61,7 @@ public class SoulForgeShapedRecipe extends ShapedRecipe {
 
         @Override
         public void offerTo(RecipeExporter exporter, Identifier recipeId) {
+            recipeId = new Identifier("bwt", recipeId.getPath());
             ShapedRecipeJsonBuilderAccessorMixin accessor = ((ShapedRecipeJsonBuilderAccessorMixin) this);
             RawShapedRecipe rawShapedRecipe = validate(recipeId);
             Advancement.Builder builder = exporter.getAdvancementBuilder().criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(AdvancementRequirements.CriterionMerger.OR);

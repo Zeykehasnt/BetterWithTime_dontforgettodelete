@@ -3,10 +3,7 @@ package com.bwt.items;
 import com.bwt.tags.BwtBlockTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.MiningToolItem;
-import net.minecraft.item.ToolMaterial;
+import net.minecraft.item.*;
 import net.minecraft.util.ActionResult;
 
 public class BattleAxeItem extends MiningToolItem {
@@ -16,7 +13,7 @@ public class BattleAxeItem extends MiningToolItem {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        return BwtItems.refinedAxeItem.useOnBlock(context);
+        return Items.NETHERITE_AXE.useOnBlock(context);
     }
 
     @Override

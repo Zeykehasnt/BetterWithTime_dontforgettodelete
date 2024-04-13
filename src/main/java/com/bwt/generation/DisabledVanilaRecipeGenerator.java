@@ -42,6 +42,9 @@ public class DisabledVanilaRecipeGenerator extends FabricRecipeProvider {
     public void disableRecipes(RecipeExporter exporter) {
         disableVanilla(Items.BONE_MEAL, exporter);
         disableVanilla(Items.BREAD, exporter);
+        disableVanilla(Items.NETHERITE_INGOT, exporter);
+        disableVanilla(Items.NETHERITE_INGOT, "_from_netherite_block", exporter);
+        disableVanilla(Items.NETHERITE_BLOCK, exporter);
         disableVanilla(Items.NETHERITE_PICKAXE, "_smithing", exporter);
         disableVanilla(Items.NETHERITE_SHOVEL, "_smithing",exporter);
         disableVanilla(Items.NETHERITE_AXE, "_smithing",exporter);
