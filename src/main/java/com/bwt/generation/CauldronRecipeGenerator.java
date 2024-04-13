@@ -104,6 +104,7 @@ public class CauldronRecipeGenerator extends FabricRecipeProvider {
         StokedCauldronRecipe.JsonBuilder.create().ingredient(BwtItems.potashItem).ingredient(BwtItems.tallowItem).result(BwtItems.soapItem).group("soap").offerTo(exporter);
         StokedCauldronRecipe.JsonBuilder.create().ingredient(Items.ROTTEN_FLESH, 4).ingredient(Items.BONE_MEAL, 4).ingredient(Items.SUGAR).result(BwtItems.kibbleItem).offerTo(exporter);
 
+        StokedCauldronRecipe.JsonBuilder.create().ingredient(BwtItems.soapItem).ingredient(Items.STICKY_PISTON, 4).result(Items.PISTON, 4).offerTo(exporter);
 
     }
 
