@@ -1,0 +1,118 @@
+package com.bwt.blocks;
+
+import com.bwt.sounds.BwtSoundEvents;
+import com.bwt.tags.BwtBlockTags;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import org.jetbrains.annotations.Nullable;
+
+
+public class BuddyBlock extends Block implements RotateWithEmptyHand {
+    public static DirectionProperty FACING = Properties.FACING;
+    public static BooleanProperty POWERED = Properties.POWERED;
+
+    private final static int tickRate = 5;
+
+    public BuddyBlock(Settings settings) {
+        super(settings);
+        setDefaultState(getDefaultState().with(FACING, Direction.NORTH).with(POWERED, false));
+    }
+
+    @Override
+    public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(FACING, POWERED);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        return getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
+    }
+
+    @Override
+    public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
+        // minimal delay same as when the buddy block is changed by a neighbor notification to handle
+        // state changes due to being pushed around by a piston
+        if (state.isOf(oldState.getBlock())) {
+            return;
+        }
+        world.scheduleBlockTick(pos, this, 1);
+    }
+
+    @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (state.isOf(newState.getBlock())) {
+            return;
+        }
+        this.updateNeighbors(world, pos, state.with(POWERED, false));
+    }
+
+    @Override
+    public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        if (!world.isClient()
+                && !state.get(POWERED)
+                && !neighborState.isIn(BwtBlockTags.DOES_NOT_TRIGGER_BUDDY)
+                && !world.getBlockTickScheduler().isQueued(pos, this)
+        ) {
+            // minimal delay when triggered to avoid notfying neighbors of change in same tick
+            // that they are notifying of the original change. Not doing so causes problems
+            // with some blocks (like ladders) that haven't finished initializing their state
+            // on placement when they send out the notification
+            world.scheduleBlockTick(pos, this, 1);
+        }
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        super.scheduledTick(state, world, pos, random);
+        boolean powered = state.get(POWERED);
+
+        world.setBlockState(pos, state.with(POWERED, !powered));
+
+        if (!powered) {
+            // schedule another update to turn the block off
+            world.scheduleBlockTick(pos, this, tickRate);
+        }
+        world.playSound(null, pos, BwtSoundEvents.BUDDY_CLICK,
+                SoundCategory.BLOCKS, 1F, world.random.nextFloat() * 0.4F + 1F);
+
+        updateNeighbors(world, pos, state);
+    }
+
+    @Override
+    public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        return state.get(FACING) == direction.getOpposite() && state.get(POWERED) ? 15 : 0;
+    }
+
+    @Override
+    public int getStrongRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
+        return getWeakRedstonePower(state, world, pos, direction);
+    }
+
+    @Override
+    public boolean emitsRedstonePower(BlockState state) {
+        return true;
+    }
+
+    public void updateNeighbors(World world, BlockPos pos, BlockState state) {
+        BlockPos outputPos = pos.offset(state.get(FACING));
+        world.updateNeighbor(outputPos, this, pos);
+        world.updateNeighborsExcept(outputPos, this, state.get(FACING).getOpposite());
+    }
+}

@@ -33,6 +33,15 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         getOrCreateTagBuilder(BlockTags.SOUL_SPEED_BLOCKS).add(BwtBlocks.soulSandPlanterBlock);
         getOrCreateTagBuilder(BwtBlockTags.CROPS_CAN_PLANT_ON).add(Blocks.FARMLAND, BwtBlocks.soilPlanterBlock);
         getOrCreateTagBuilder(BwtBlockTags.SOUL_SAND_PLANTS_CAN_PLANT_ON).add(Blocks.SOUL_SAND, BwtBlocks.soulSandPlanterBlock);
+        getOrCreateTagBuilder(BwtBlockTags.DOES_NOT_TRIGGER_BUDDY).add(
+                Blocks.REDSTONE_WIRE,
+                Blocks.REDSTONE_TORCH,
+                Blocks.REDSTONE_WALL_TORCH,
+                Blocks.REPEATER,
+                Blocks.COMPARATOR,
+                BwtBlocks.buddyBlock,
+                BwtBlocks.detectorLogicBlock
+        );
 
         getOrCreateTagBuilder(BwtBlockTags.BLOCK_DISPENSER_INHALE_VOID)
                 .add(Blocks.NETHER_PORTAL);

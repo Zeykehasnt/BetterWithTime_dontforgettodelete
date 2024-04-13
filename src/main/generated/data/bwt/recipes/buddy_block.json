@@ -1,0 +1,24 @@
+{
+  "type": "bwt:soul_forge_shaped",
+  "category": "building",
+  "key": {
+    "e": {
+      "item": "bwt:redstone_eye"
+    },
+    "s": {
+      "item": "minecraft:stone"
+    },
+    "t": {
+      "item": "minecraft:redstone_torch"
+    }
+  },
+  "pattern": [
+    "sses",
+    "etts",
+    "stte",
+    "sess"
+  ],
+  "result": {
+    "item": "bwt:buddy_block"
+  }
+}

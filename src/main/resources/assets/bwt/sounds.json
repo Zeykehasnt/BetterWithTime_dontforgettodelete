@@ -35,6 +35,12 @@
       "random/click"
     ]
   },
+  "block.buddy.click": {
+    "subtitle": "bwt.subtitles.block.buddy.click",
+    "sounds": [
+      "random/click"
+    ]
+  },
   "block.gear_box.activate": {
     "subtitle": "bwt.subtitles.block.gear_box.activate",
     "sounds": [

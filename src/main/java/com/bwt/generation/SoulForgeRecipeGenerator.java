@@ -199,6 +199,16 @@ public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
                 .input('r', Items.REDSTONE)
                 .criterion(hasItem(BwtItems.redstoneEyeItem), conditionsFromItem(BwtItems.redstoneEyeItem))
                 .offerTo(exporter);
+        SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, BwtBlocks.buddyBlock)
+                .pattern("sses")
+                .pattern("etts")
+                .pattern("stte")
+                .pattern("sess")
+                .input('s', Items.STONE)
+                .input('e', BwtItems.redstoneEyeItem)
+                .input('t', Items.REDSTONE_TORCH)
+                .criterion(hasItem(BwtItems.redstoneEyeItem), conditionsFromItem(BwtItems.redstoneEyeItem))
+                .offerTo(exporter);
 
         SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, BwtBlocks.blockDispenserBlock)
                 .pattern("mmmm")

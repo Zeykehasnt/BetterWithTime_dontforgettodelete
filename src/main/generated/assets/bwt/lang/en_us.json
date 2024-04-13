@@ -141,6 +141,7 @@
   "block.bwt.yellow_wool_slab": "Yellow Wool Slab",
   "bwt.subtitles.block.anchor.retract": "Anchor retracts rope",
   "bwt.subtitles.block.bellows.compress": "Bellows compresses",
+  "bwt.subtitles.block.buddy.click": "Buddy block toggles",
   "bwt.subtitles.block.companion_cube.death": "Companion cube dies. You monster.",
   "bwt.subtitles.block.detector.click": "Detector block toggles",
   "bwt.subtitles.block.gear_box.activate": "Gear box activates",

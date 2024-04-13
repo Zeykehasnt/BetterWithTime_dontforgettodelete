@@ -124,6 +124,15 @@ public class ModelGenerator extends FabricModelProvider {
         blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(BwtBlocks.soilPlanterBlock, ModelIds.getBlockModelId(BwtBlocks.soilPlanterBlock)));
         blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(BwtBlocks.soulSandPlanterBlock, ModelIds.getBlockModelId(BwtBlocks.soulSandPlanterBlock)));
         blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(BwtBlocks.grassPlanterBlock, ModelIds.getBlockModelId(BwtBlocks.grassPlanterBlock)));
+        Identifier buddyBlockModelId = TexturedModel.makeFactory(block -> TextureMap.sideFrontTop(block).put(TextureKey.TOP, TextureMap.getSubId(block, "_side")), Models.ORIENTABLE)
+                .upload(BwtBlocks.buddyBlock, blockStateModelGenerator.modelCollector);
+        Identifier buddyBlockPoweredModelId = TexturedModel.makeFactory(block -> new TextureMap().put(TextureKey.SIDE, TextureMap.getSubId(block, "_side_powered")).put(TextureKey.FRONT, TextureMap.getSubId(block, "_front_powered")).put(TextureKey.TOP, TextureMap.getSubId(block, "_side_powered")), Models.ORIENTABLE)
+                .upload(BwtBlocks.buddyBlock, "_powered", blockStateModelGenerator.modelCollector);
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(BwtBlocks.buddyBlock, BlockStateVariant.create().put(VariantSettings.MODEL, buddyBlockModelId))
+                        .coordinate(BlockStateModelGenerator.createBooleanModelMap(BuddyBlock.POWERED, buddyBlockPoweredModelId, buddyBlockModelId))
+                        .coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates())
+        );
 
 
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.anchorBlock, ModelIds.getBlockModelId(BwtBlocks.anchorBlock));

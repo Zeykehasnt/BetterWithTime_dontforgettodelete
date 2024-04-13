@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:redstone_wire",
+    "minecraft:redstone_torch",
+    "minecraft:redstone_wall_torch",
+    "minecraft:repeater",
+    "minecraft:comparator",
+    "bwt:buddy_block",
+    "bwt:detector_logic_block"
+  ]
+}

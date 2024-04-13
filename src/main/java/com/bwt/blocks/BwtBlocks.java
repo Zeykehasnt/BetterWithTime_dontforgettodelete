@@ -27,7 +27,6 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class BwtBlocks implements ModInitializer {
@@ -54,7 +53,12 @@ public class BwtBlocks implements ModInitializer {
     );
 //	public static final Block bloodWoodBlock = new BloodWoodBlock(FabricBlockSettings.create());
 //	Blood Wood Sapling
-//	public static final Block buddyBlockBlock = new BuddyBlockBlock(FabricBlockSettings.create());
+	public static final Block buddyBlock = new BuddyBlock(FabricBlockSettings.create()
+            .hardness(3.5f)
+            .sounds(BlockSoundGroup.STONE)
+            .mapColor(MapColor.LIGHT_GRAY)
+            .requiresTool()
+    );
 	public static final Block cauldronBlock = new CauldronBlock(FabricBlockSettings.create()
             .solidBlock(Blocks::never)
             .notSolid()
@@ -346,6 +350,9 @@ public class BwtBlocks implements ModInitializer {
             Registry.register(Registries.BLOCK, new Identifier("bwt", dyeColor.getName() + "_wool_slab"), woolSlabBlock);
             Registry.register(Registries.ITEM, new Identifier("bwt", dyeColor.getName() + "_wool_slab"), new BlockItem(woolSlabBlock, new FabricItemSettings()));
         });
+        // Buddy Block
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "buddy_block"), buddyBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "buddy_block"), new BlockItem(buddyBlock, new FabricItemSettings()));
 
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {
@@ -361,6 +368,7 @@ public class BwtBlocks implements ModInitializer {
             content.add(blockDispenserBlock);
             content.add(obsidianPressuePlateBlock);
             content.add(detectorBlock);
+            content.add(buddyBlock);
             content.add(millStoneBlock);
             content.add(handCrankBlock);
             content.add(stoneDetectorRailBlock);

@@ -18,6 +18,7 @@ public class BwtSoundEvents implements ModInitializer {
     public static SoundEvent HAND_CRANK_CLICK = register("block.hand_crank.click");
     public static SoundEvent HIBACHI_IGNITE = register("block.hibachi.ignite");
     public static SoundEvent DETECTOR_CLICK = register("block.detector.click");
+    public static SoundEvent BUDDY_CLICK = register("block.buddy.click");
     public static SoundEvent SOUL_CONVERSION = register("block.generic.soul_conversion");
     public static SoundEvent MILL_STONE_GRIND = register("block.mill_stone.grind");
     public static SoundEvent TURNTABLE_SETTING_CLICK = register("block.turntable.setting_click");
