@@ -1,17 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "group": "wicker",
   "key": {
-    "s": {
-      "item": "minecraft:sugar_cane"
+    "#": {
+      "item": "bwt:wicker"
     }
   },
   "pattern": [
-    "ss",
-    "ss"
+    "##",
+    "##"
   ],
   "result": {
-    "item": "bwt:wicker"
+    "item": "bwt:wicker_block"
   }
 }

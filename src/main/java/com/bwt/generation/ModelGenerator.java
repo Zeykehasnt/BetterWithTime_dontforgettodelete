@@ -53,7 +53,7 @@ public class ModelGenerator extends FabricModelProvider {
         blockStateModelGenerator.registerStraightRail(BwtBlocks.obsidianDetectorRailBlock);
         generatePaneBlock(blockStateModelGenerator, BwtBlocks.grateBlock);
         generatePaneBlock(blockStateModelGenerator, BwtBlocks.slatsBlock);
-        generatePaneBlock(blockStateModelGenerator, BwtBlocks.wickerBlock);
+        generatePaneBlock(blockStateModelGenerator, BwtBlocks.wickerPaneBlock);
         blockStateModelGenerator.blockStateCollector.accept(
                 VariantsBlockStateSupplier.create(
                         BwtBlocks.pulleyBlock,
@@ -133,6 +133,12 @@ public class ModelGenerator extends FabricModelProvider {
                         .coordinate(BlockStateModelGenerator.createBooleanModelMap(BuddyBlock.POWERED, buddyBlockPoweredModelId, buddyBlockModelId))
                         .coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates())
         );
+        blockStateModelGenerator.registerSingleton(BwtBlocks.soapBlock, TexturedModel.makeFactory(block -> TextureMap.sideFrontTop(block).put(TextureKey.TOP, TextureMap.getSubId(block, "_side")), Models.ORIENTABLE));
+        blockStateModelGenerator.registerSingleton(BwtBlocks.ropeCoilBlock, TexturedModel.CUBE_COLUMN);
+        blockStateModelGenerator.registerSingleton(BwtBlocks.paddingBlock, TexturedModel.CUBE_ALL);
+        blockStateModelGenerator.registerSingleton(BwtBlocks.wickerBlock, TexturedModel.CUBE_ALL);
+        blockStateModelGenerator.registerSingleton(BwtBlocks.dungBlock, TexturedModel.CUBE_ALL);
+        blockStateModelGenerator.registerSingleton(BwtBlocks.concentratedHellfireBlock, TexturedModel.CUBE_ALL);
 
 
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.anchorBlock, ModelIds.getBlockModelId(BwtBlocks.anchorBlock));

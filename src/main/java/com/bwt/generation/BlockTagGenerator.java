@@ -88,9 +88,10 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.anchorBlock)
 //                .add(BwtBlocks.anvilBlock)
                 .add(BwtBlocks.blockDispenserBlock)
-//                .add(BwtBlocks.buddyBlockBlock)
+                .add(BwtBlocks.buddyBlock)
                 .add(BwtBlocks.cauldronBlock)
 //                .add(BwtBlocks.columnBlock)
+                .add(BwtBlocks.concentratedHellfireBlock)
                 .add(BwtBlocks.crucibleBlock)
                 .add(BwtBlocks.detectorBlock)
                 .add(BwtBlocks.handCrankBlock)
@@ -104,6 +105,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.obsidianPressuePlateBlock)
 //                .add(BwtBlocks.pedestalBlock)
                 .add(BwtBlocks.planterBlock)
+                .add(BwtBlocks.ropeBlock)
+                .add(BwtBlocks.soapBlock)
                 .add(BwtBlocks.soilPlanterBlock)
                 .add(BwtBlocks.soulSandPlanterBlock)
                 .add(BwtBlocks.grassPlanterBlock)
@@ -112,6 +115,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.urnBlock);
 
         getOrCreateTagBuilder(BlockTags.SHOVEL_MINEABLE)
+                .add(BwtBlocks.dungBlock)
                 .add(BwtBlocks.unfiredCrucibleBlock)
                 .add(BwtBlocks.unfiredPlanterBlock)
                 .add(BwtBlocks.unfiredVaseBlock)
@@ -129,11 +133,17 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.platformBlock)
                 .add(BwtBlocks.pulleyBlock)
                 .add(BwtBlocks.ropeBlock)
+                .add(BwtBlocks.ropeCoilBlock)
                 .add(BwtBlocks.sawBlock)
                 .add(BwtBlocks.slatsBlock)
+                .add(BwtBlocks.soapBlock)
 //                .add(BwtBlocks.screwPumpBlock)
 //                .add(BwtBlocks.tableBlock)
-                .add(BwtBlocks.wickerBlock);
+                .add(BwtBlocks.wickerBlock)
+                .add(BwtBlocks.wickerPaneBlock);
+
+        getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
+                .add(BwtBlocks.paddingBlock);
 
         // Where do these go?
 //        .add(BwtBlocks.miningChargeBlock)
@@ -262,7 +272,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(Blocks.WHEAT)
                 .add(BwtBlocks.grateBlock)
                 .add(BwtBlocks.slatsBlock)
-                .add(BwtBlocks.wickerBlock)
+                .add(BwtBlocks.wickerPaneBlock)
                 .add(BwtBlocks.hempCropBlock)
                 .add(BwtBlocks.companionSlabBlock);
     }

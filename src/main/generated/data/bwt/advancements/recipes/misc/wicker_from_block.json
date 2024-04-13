@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:wicker_from_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wicker_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bwt:wicker_block"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_wicker_block"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:wicker_from_block"
+    ]
+  }
+}

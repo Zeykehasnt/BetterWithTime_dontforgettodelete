@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "concentrated_hellfire",
+  "ingredients": [
+    {
+      "item": "bwt:concentrated_hellfire_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "bwt:concentrated_hellfire"
+  }
+}

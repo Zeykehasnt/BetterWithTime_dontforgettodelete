@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "bwt:block/padding_block"
+    }
+  }
+}

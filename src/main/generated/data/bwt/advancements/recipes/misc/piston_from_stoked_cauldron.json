@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_soap": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bwt:soap"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_sticky_piston": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:sticky_piston"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:piston_from_stoked_cauldron"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_soap",
+      "has_sticky_piston"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:piston_from_stoked_cauldron"
+    ]
+  }
+}

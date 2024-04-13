@@ -326,7 +326,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
                         Items.SOUL_TORCH,
                         // Urn
                         Items.WHEAT,
-                        BwtBlocks.wickerBlock.asItem(),
+                        BwtBlocks.wickerPaneBlock.asItem(),
 
                         Items.HONEYCOMB,
                         Items.RABBIT_HIDE,

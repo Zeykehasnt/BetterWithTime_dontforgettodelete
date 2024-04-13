@@ -7,11 +7,7 @@ import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
-import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementCriterion;
-import net.minecraft.advancement.AdvancementEntry;
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
@@ -19,18 +15,13 @@ import net.minecraft.data.family.BlockFamilies;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.data.server.recipe.*;
 import net.minecraft.item.*;
-import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -58,6 +49,7 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
         generateVaseDyeingRecipes(exporter);
         generateWoolSlabRecipes(exporter);
         generateDungDyeingRecipes(exporter);
+        generateCompactingRecipes(exporter);
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, BwtBlocks.stoneDetectorRailBlock, 6)
                 .pattern("i i")
@@ -77,6 +69,20 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('r', Items.REDSTONE)
                 .criterion(hasItem(BwtBlocks.obsidianPressuePlateBlock), conditionsFromItem(BwtBlocks.obsidianPressuePlateBlock))
                 .offerTo(exporter);
+    }
+
+    private void generateCompactingRecipes(RecipeExporter exporter) {
+        offerReversibleCompactingRecipesWithReverseRecipeGroup(exporter, RecipeCategory.MISC, BwtItems.soapItem, RecipeCategory.DECORATIONS, BwtBlocks.soapBlock, "soap_from_block", "soap");
+        offerReversibleCompactingRecipesWithReverseRecipeGroup(exporter, RecipeCategory.MISC, BwtItems.dungItem, RecipeCategory.DECORATIONS, BwtBlocks.dungBlock, "dung_from_block", "dung");
+        offerReversibleCompactingRecipesWithReverseRecipeGroup(exporter, RecipeCategory.MISC, BwtItems.concentratedHellfireItem, RecipeCategory.DECORATIONS, BwtBlocks.concentratedHellfireBlock, "concentrated_hellfire_from_block", "concentrated_hellfire");
+        offerReversibleCompactingRecipesWithReverseRecipeGroup(exporter, RecipeCategory.MISC, BwtItems.paddingItem, RecipeCategory.DECORATIONS, BwtBlocks.paddingBlock, "padding_from_block", "padding");
+        offerReversibleCompactingRecipesWithReverseRecipeGroup(exporter, RecipeCategory.MISC, BwtItems.ropeItem, RecipeCategory.DECORATIONS, BwtBlocks.ropeCoilBlock, "rope_from_block", "rope");
+        offerReversibleCompactingRecipes2x2(exporter, RecipeCategory.MISC, BwtBlocks.wickerPaneBlock, RecipeCategory.DECORATIONS, BwtBlocks.wickerBlock, "wicker_from_block", "wicker");
+    }
+
+    public static void offerReversibleCompactingRecipes2x2(RecipeExporter exporter, RecipeCategory reverseCategory, ItemConvertible baseItem, RecipeCategory compactingCategory, ItemConvertible compactItem, String reverseId, String reverseGroup) {
+        ShapelessRecipeJsonBuilder.create(reverseCategory, baseItem, 4).input(compactItem).group(reverseGroup).criterion(RecipeProvider.hasItem(compactItem), RecipeProvider.conditionsFromItem(compactItem)).offerTo(exporter, new Identifier(reverseId));
+        ShapedRecipeJsonBuilder.create(compactingCategory, compactItem).input('#', baseItem).pattern("##").pattern("##").criterion(RecipeProvider.hasItem(baseItem), RecipeProvider.conditionsFromItem(baseItem)).offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(compactItem)));
     }
 
     private void generateDungDyeingRecipes(RecipeExporter exporter) {
@@ -229,6 +235,7 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .pattern("fff")
                 .input('f', BwtItems.hempFiberItem)
                 .criterion(hasItem(BwtItems.hempFiberItem), conditionsFromItem(BwtItems.hempFiberItem))
+                .group("rope")
                 .offerTo(exporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, BwtItems.ropeItem)
                 .pattern("ff")
@@ -236,6 +243,7 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .pattern("ff")
                 .input('f', BwtItems.hempFiberItem)
                 .criterion(hasItem(BwtItems.hempFiberItem), conditionsFromItem(BwtItems.hempFiberItem))
+                .group("rope")
                 .offerTo(exporter, "rope_vertical");
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, BwtBlocks.axleBlock)
                 .pattern("prp")
@@ -280,11 +288,12 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('s', Items.STICK)
                 .criterion(hasItem(Items.STICK), conditionsFromItem(Items.STICK))
                 .offerTo(exporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, BwtBlocks.wickerBlock)
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, BwtBlocks.wickerPaneBlock)
                 .pattern("ss")
                 .pattern("ss")
                 .input('s', Items.SUGAR_CANE)
                 .criterion(hasItem(Items.SUGAR_CANE), conditionsFromItem(Items.SUGAR_CANE))
+                .group("wicker")
                 .offerTo(exporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, BwtBlocks.slatsBlock)
                 .pattern("mm")
@@ -307,8 +316,8 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .pattern(" p ")
                 .pattern("pwp")
                 .input('p', ItemTags.PLANKS)
-                .input('w', BwtBlocks.wickerBlock)
-                .criterion(hasItem(BwtBlocks.wickerBlock), conditionsFromItem(BwtBlocks.wickerBlock))
+                .input('w', BwtBlocks.wickerPaneBlock)
+                .criterion(hasItem(BwtBlocks.wickerPaneBlock), conditionsFromItem(BwtBlocks.wickerPaneBlock))
                 .offerTo(exporter);
     }
 
@@ -445,6 +454,7 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('F', BwtItems.fabricItem)
                 .input('f', Items.FEATHER)
                 .criterion(hasItem(BwtItems.fabricItem), conditionsFromItem(BwtItems.fabricItem))
+                .group("padding")
                 .offerTo(exporter);
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, BwtItems.broadheadArrowItem, 4)
                 .pattern("b")

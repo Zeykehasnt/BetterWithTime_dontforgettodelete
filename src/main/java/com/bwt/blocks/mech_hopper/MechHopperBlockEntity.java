@@ -305,7 +305,7 @@ public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHan
         Item filterItem = blockEntity.getFilterItem();
         int count = itemStack.getCount();
 
-        if (filterItem == BwtBlocks.wickerBlock.asItem() && itemStack.isOf(Items.GRAVEL)) {
+        if (filterItem == BwtBlocks.wickerPaneBlock.asItem() && itemStack.isOf(Items.GRAVEL)) {
             ItemStack sandStack = new ItemStack(Items.SAND, count);
             try (Transaction transaction = Transaction.openOuter()) {
                 long inserted = StorageUtil.insertStacking(

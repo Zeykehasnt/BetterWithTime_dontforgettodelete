@@ -71,6 +71,7 @@ public class BwtBlocks implements ModInitializer {
     );
 //	public static final Block canvasBlock = new CanvasBlock(FabricBlockSettings.create());
 //	public static final Block columnBlock = new ColumnBlock(FabricBlockSettings.create());
+	public static final Block concentratedHellfireBlock = new Block(FabricBlockSettings.create().hardness(2f).requiresTool().mapColor(MapColor.BRIGHT_RED).sounds(BlockSoundGroup.METAL));
 	public static final Block companionCubeBlock = new CompanionCubeBlock(FabricBlockSettings.copyOf(Blocks.WHITE_WOOL)
             .hardness(0.4f)
     );
@@ -85,6 +86,7 @@ public class BwtBlocks implements ModInitializer {
             .hardness(3.5f)
     );
 	public static final Block detectorLogicBlock = new DetectorLogicBlock(FabricBlockSettings.copyOf(Blocks.AIR));
+    public static final Block dungBlock = new Block(FabricBlockSettings.create().hardness(2f).mapColor(MapColor.BROWN).sounds(BlockSoundGroup.HONEY));
     public static final Block gearBoxBlock = new GearBoxBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
             .hardness(2F)
     );
@@ -144,6 +146,7 @@ public class BwtBlocks implements ModInitializer {
 	public static final Block soilPlanterBlock = new SoilPlanterBlock(FabricBlockSettings.copyOf(planterBlock));
 	public static final Block soulSandPlanterBlock = new SoulSandPlanterBlock(FabricBlockSettings.copyOf(planterBlock));
 	public static final Block grassPlanterBlock = new GrassPlanterBlock(FabricBlockSettings.copyOf(planterBlock));
+    public static final Block paddingBlock = new PaddingBlock(FabricBlockSettings.create().hardness(2f).mapColor(MapColor.OFF_WHITE).sounds(BlockSoundGroup.WOOL));
 	public static final Block platformBlock = new PlatformBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
             .nonOpaque()
             .allowsSpawning(Blocks::never)
@@ -155,8 +158,10 @@ public class BwtBlocks implements ModInitializer {
     );
 	public static final Block pulleyBlock = new PulleyBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
             .hardness(2f)
+            .mapColor(MapColor.TERRACOTTA_BROWN)
             .pistonBehavior(PistonBehavior.IGNORE)
     );
+    public static final Block ropeCoilBlock = new RopeBlock(FabricBlockSettings.create().hardness(1f).mapColor(MapColor.BROWN).sounds(BlockSoundGroup.GRASS));
 	public static final Block ropeBlock = new RopeBlock(FabricBlockSettings.create()
             .hardness(0.5f)
             .sounds(BlockSoundGroup.GRASS)
@@ -175,6 +180,7 @@ public class BwtBlocks implements ModInitializer {
             .burnable()
             .nonOpaque()
     );
+    public static final Block soapBlock = new Block(FabricBlockSettings.create().hardness(2f).mapColor(MapColor.PINK).sounds(BlockSoundGroup.SLIME));
 //	public static final Block stakeBlock = new StakeBlock(FabricBlockSettings.create());
     public static final Block stokedFireBlock = new StokedFireBlock(FabricBlockSettings.copyOf(Blocks.SOUL_FIRE));
     public static final Block stoneDetectorRailBlock = new DetectorRailBlock(FabricBlockSettings.copyOf(Blocks.DETECTOR_RAIL));
@@ -217,12 +223,13 @@ public class BwtBlocks implements ModInitializer {
             .hardness(2f)
     );
 	public static final HashMap<DyeColor, VaseBlock> vaseBlocks = new HashMap<>();
-	public static final Block wickerBlock = new PaneBlock(FabricBlockSettings.create()
+	public static final Block wickerPaneBlock = new PaneBlock(FabricBlockSettings.create()
             .strength(0.5f)
             .sounds(BlockSoundGroup.GRASS)
             .burnable()
             .nonOpaque()
     );
+    public static final Block wickerBlock = new Block(FabricBlockSettings.create().hardness(2f).burnable().mapColor(MapColor.SPRUCE_BROWN).sounds(BlockSoundGroup.GRASS));
     public static final HashMap<DyeColor, SlabBlock> woolSlabBlocks = new HashMap<>();
 
 
@@ -289,8 +296,8 @@ public class BwtBlocks implements ModInitializer {
         Registry.register(Registries.BLOCK, new Identifier("bwt", "slats"), slatsBlock);
         Registry.register(Registries.ITEM, new Identifier("bwt", "slats"), new BlockItem(slatsBlock, new FabricItemSettings()));
         // Wicker
-        Registry.register(Registries.BLOCK, new Identifier("bwt", "wicker"), wickerBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker"), new BlockItem(wickerBlock, new FabricItemSettings()));
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "wicker"), wickerPaneBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker"), new BlockItem(wickerPaneBlock, new FabricItemSettings()));
         // Saw
         Registry.register(Registries.BLOCK, new Identifier("bwt", "saw"), sawBlock);
         Registry.register(Registries.ITEM, new Identifier("bwt", "saw"), new BlockItem(sawBlock, new FabricItemSettings()));
@@ -353,6 +360,19 @@ public class BwtBlocks implements ModInitializer {
         // Buddy Block
         Registry.register(Registries.BLOCK, new Identifier("bwt", "buddy_block"), buddyBlock);
         Registry.register(Registries.ITEM, new Identifier("bwt", "buddy_block"), new BlockItem(buddyBlock, new FabricItemSettings()));
+        // Aesthetic compacting blocks
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "soap_block"), soapBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "soap_block"), new BlockItem(soapBlock, new FabricItemSettings()));
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "wicker_block"), wickerBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker_block"), new BlockItem(wickerBlock, new FabricItemSettings()));
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "dung_block"), dungBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "dung_block"), new BlockItem(dungBlock, new FabricItemSettings()));
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "padding_block"), paddingBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "padding_block"), new BlockItem(paddingBlock, new FabricItemSettings()));
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "rope_coil_block"), ropeCoilBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "rope_coil_block"), new BlockItem(ropeCoilBlock, new FabricItemSettings()));
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "concentrated_hellfire_block"), concentratedHellfireBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "concentrated_hellfire_block"), new BlockItem(concentratedHellfireBlock, new FabricItemSettings()));
 
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {
@@ -414,8 +434,14 @@ public class BwtBlocks implements ModInitializer {
             content.add(companionSlabBlock);
             content.add(grateBlock);
             content.add(slatsBlock);
+            content.add(wickerPaneBlock);
             content.add(wickerBlock);
             content.add(platformBlock);
+            content.add(soapBlock);
+            content.add(dungBlock);
+            content.add(paddingBlock);
+            content.add(ropeCoilBlock);
+            content.add(concentratedHellfireBlock);
         });
     }
 }

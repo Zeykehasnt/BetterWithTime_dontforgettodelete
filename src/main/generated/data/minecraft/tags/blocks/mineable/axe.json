@@ -43,8 +43,11 @@
     "bwt:platform",
     "bwt:pulley",
     "bwt:rope",
+    "bwt:rope_coil_block",
     "bwt:saw",
     "bwt:slats",
+    "bwt:soap_block",
+    "bwt:wicker_block",
     "bwt:wicker"
   ]
 }

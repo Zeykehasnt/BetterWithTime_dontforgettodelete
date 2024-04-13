@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "dung",
+  "ingredients": [
+    {
+      "item": "bwt:dung_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "bwt:dung"
+  }
+}

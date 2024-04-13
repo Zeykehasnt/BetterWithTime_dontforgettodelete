@@ -47,7 +47,7 @@ public class BetterWithTimeClient implements ClientModInitializer {
 				BwtBlocks.obsidianDetectorRailBlock,
 				BwtBlocks.grateBlock,
 				BwtBlocks.slatsBlock,
-				BwtBlocks.wickerBlock,
+				BwtBlocks.wickerPaneBlock,
 				BwtBlocks.platformBlock,
 				BwtBlocks.stokedFireBlock
 		);

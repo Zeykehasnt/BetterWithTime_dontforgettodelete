@@ -87,7 +87,7 @@ public class MechHopperBlock extends BlockWithEntity implements MechPowerBlockBa
         addFilter(Items.SOUL_SAND, itemStack -> false);
         addFilter(BwtBlocks.grateBlock.asItem(), itemStack -> itemStack.isIn(BwtItemTags.PASSES_GRATE_FILTER));
         addFilter(BwtBlocks.slatsBlock.asItem(), itemStack -> itemStack.isIn(BwtItemTags.PASSES_SLATS_FILTER));
-        addFilter(BwtBlocks.wickerBlock.asItem(), itemStack -> itemStack.isIn(BwtItemTags.PASSES_WICKER_FILTER));
+        addFilter(BwtBlocks.wickerPaneBlock.asItem(), itemStack -> itemStack.isIn(BwtItemTags.PASSES_WICKER_FILTER));
     }
 
     @Override

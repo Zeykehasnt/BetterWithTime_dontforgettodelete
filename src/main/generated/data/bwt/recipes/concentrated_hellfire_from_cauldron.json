@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "misc",
+  "group": "concentrated_hellfire",
   "ingredients": [
     {
       "count": 8,

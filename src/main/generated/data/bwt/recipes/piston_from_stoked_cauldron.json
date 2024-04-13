@@ -1,22 +1,23 @@
 {
   "type": "bwt:stoked_cauldron",
-  "category": "misc",
-  "group": "soap",
+  "category": "blocks",
   "ingredients": [
     {
       "ingredient": {
-        "item": "bwt:potash"
+        "item": "bwt:soap"
       }
     },
     {
+      "count": 4,
       "ingredient": {
-        "item": "bwt:tallow"
+        "item": "minecraft:sticky_piston"
       }
     }
   ],
   "results": [
     {
-      "item": "bwt:soap"
+      "count": 4,
+      "item": "minecraft:piston"
     }
   ]
 }

@@ -162,6 +162,7 @@ public class BwtItems implements ModInitializer {
             content.add(strapItem);
             content.add(beltItem);
             content.add(soulUrnItem);
+            content.add(soapItem);
             content.add(tallowItem);
             content.add(woodBladeItem);
         });
