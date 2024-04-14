@@ -27,7 +27,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:piston_from_stoked_cauldron"
+        "recipe": "minecraft:sticky_piston_washing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -41,7 +41,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:piston_from_stoked_cauldron"
+      "minecraft:sticky_piston_washing"
     ]
   }
 }
