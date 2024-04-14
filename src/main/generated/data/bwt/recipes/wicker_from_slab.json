@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "wicker",
+  "ingredients": [
+    {
+      "item": "bwt:wicker_slab_block"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "bwt:wicker"
+  }
+}

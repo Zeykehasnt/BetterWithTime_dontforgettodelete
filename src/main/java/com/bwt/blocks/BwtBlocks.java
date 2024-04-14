@@ -230,6 +230,7 @@ public class BwtBlocks implements ModInitializer {
             .nonOpaque()
     );
     public static final Block wickerBlock = new Block(FabricBlockSettings.create().hardness(2f).burnable().mapColor(MapColor.SPRUCE_BROWN).sounds(BlockSoundGroup.GRASS));
+    public static final Block wickerSlabBlock = new SlabBlock(FabricBlockSettings.copyOf(wickerBlock));
     public static final HashMap<DyeColor, SlabBlock> woolSlabBlocks = new HashMap<>();
 
 
@@ -373,7 +374,9 @@ public class BwtBlocks implements ModInitializer {
         Registry.register(Registries.ITEM, new Identifier("bwt", "rope_coil_block"), new BlockItem(ropeCoilBlock, new FabricItemSettings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "concentrated_hellfire_block"), concentratedHellfireBlock);
         Registry.register(Registries.ITEM, new Identifier("bwt", "concentrated_hellfire_block"), new BlockItem(concentratedHellfireBlock, new FabricItemSettings()));
-
+        // Aesthetic opaque blocks
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "wicker_slab_block"), wickerSlabBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker_slab_block"), new BlockItem(wickerSlabBlock, new FabricItemSettings()));
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {
             content.addAll(DyeUtils.streamColorItemsSorted(vaseBlocks).map(vaseBlock -> vaseBlock.asItem().getDefaultStack()).toList());
@@ -436,6 +439,7 @@ public class BwtBlocks implements ModInitializer {
             content.add(slatsBlock);
             content.add(wickerPaneBlock);
             content.add(wickerBlock);
+            content.add(wickerSlabBlock);
             content.add(platformBlock);
             content.add(soapBlock);
             content.add(dungBlock);

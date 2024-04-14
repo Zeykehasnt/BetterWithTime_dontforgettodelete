@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:wicker_from_block"
+        "recipe": "bwt:wicker_from_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:wicker_from_block"
+      "bwt:wicker_from_block"
     ]
   }
 }

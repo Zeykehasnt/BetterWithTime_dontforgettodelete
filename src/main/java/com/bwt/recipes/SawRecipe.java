@@ -13,6 +13,7 @@ import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
@@ -214,12 +215,12 @@ public class SawRecipe implements Recipe<Inventory> {
             return this;
         }
 
-        public JsonBuilder result(Item item, int count) {
+        public JsonBuilder result(ItemConvertible item, int count) {
             this.results.add(new ItemStack(item, count));
             return this;
         }
 
-        public JsonBuilder result(Item item) {
+        public JsonBuilder result(ItemConvertible item) {
             return this.result(item, 1);
         }
 

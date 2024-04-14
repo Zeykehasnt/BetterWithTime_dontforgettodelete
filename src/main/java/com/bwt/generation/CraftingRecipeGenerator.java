@@ -7,7 +7,6 @@ import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
-import net.minecraft.advancement.AdvancementCriterion;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
@@ -20,6 +19,7 @@ import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -77,12 +77,35 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
         offerReversibleCompactingRecipesWithReverseRecipeGroup(exporter, RecipeCategory.MISC, BwtItems.concentratedHellfireItem, RecipeCategory.DECORATIONS, BwtBlocks.concentratedHellfireBlock, "concentrated_hellfire_from_block", "concentrated_hellfire");
         offerReversibleCompactingRecipesWithReverseRecipeGroup(exporter, RecipeCategory.MISC, BwtItems.paddingItem, RecipeCategory.DECORATIONS, BwtBlocks.paddingBlock, "padding_from_block", "padding");
         offerReversibleCompactingRecipesWithReverseRecipeGroup(exporter, RecipeCategory.MISC, BwtItems.ropeItem, RecipeCategory.DECORATIONS, BwtBlocks.ropeCoilBlock, "rope_from_block", "rope");
-        offerReversibleCompactingRecipes2x2(exporter, RecipeCategory.MISC, BwtBlocks.wickerPaneBlock, RecipeCategory.DECORATIONS, BwtBlocks.wickerBlock, "wicker_from_block", "wicker");
+        offer2x2BlockSlabFamily(exporter, BwtBlocks.wickerPaneBlock, BwtBlocks.wickerBlock, BwtBlocks.wickerSlabBlock, "wicker");
     }
 
-    public static void offerReversibleCompactingRecipes2x2(RecipeExporter exporter, RecipeCategory reverseCategory, ItemConvertible baseItem, RecipeCategory compactingCategory, ItemConvertible compactItem, String reverseId, String reverseGroup) {
-        ShapelessRecipeJsonBuilder.create(reverseCategory, baseItem, 4).input(compactItem).group(reverseGroup).criterion(RecipeProvider.hasItem(compactItem), RecipeProvider.conditionsFromItem(compactItem)).offerTo(exporter, new Identifier(reverseId));
-        ShapedRecipeJsonBuilder.create(compactingCategory, compactItem).input('#', baseItem).pattern("##").pattern("##").criterion(RecipeProvider.hasItem(baseItem), RecipeProvider.conditionsFromItem(baseItem)).offerTo(exporter, new Identifier(RecipeProvider.getRecipeName(compactItem)));
+    public static void offerCompacting2x2(RecipeExporter exporter, ItemConvertible inputItem, ItemConvertible outputBlock, RecipeCategory category, @Nullable String group, @Nullable String recipeId) {
+        ShapedRecipeJsonBuilder.create(category, outputBlock).input('#', inputItem).pattern("##").pattern("##").criterion(hasItem(inputItem), conditionsFromItem(inputItem)).group(group).offerTo(exporter, recipeId != null ? new Identifier("bwt", recipeId) : new Identifier("bwt", RecipeProvider.getRecipeName(outputBlock)));
+    }
+
+    public static void offerUncompacting2x2(RecipeExporter exporter, ItemConvertible inputBlock, ItemConvertible outputItem, RecipeCategory category, @Nullable String group, @Nullable String recipeId) {
+        ShapelessRecipeJsonBuilder.create(category, outputItem, 4).input(inputBlock).group(group).criterion(hasItem(inputBlock), conditionsFromItem(inputBlock)).offerTo(exporter, recipeId != null ? new Identifier("bwt", recipeId) : new Identifier("bwt", RecipeProvider.getRecipeName(outputItem)));
+    }
+
+    public static void offer2x1Slab(RecipeExporter exporter, ItemConvertible inputBlock, ItemConvertible outputSlab, RecipeCategory category, @Nullable String group, @Nullable String recipeId) {
+        ShapedRecipeJsonBuilder.create(category, outputSlab, 4).input('#', inputBlock).pattern("##").criterion(hasItem(inputBlock), conditionsFromItem(inputBlock)).group(group).offerTo(exporter, recipeId != null ? new Identifier("bwt", recipeId) : new Identifier("bwt", RecipeProvider.getRecipeName(outputSlab)));
+    }
+
+    public static void offer2x1SlabRecombining(RecipeExporter exporter, ItemConvertible inputSlab, ItemConvertible outputBlock, RecipeCategory category, @Nullable String group, @Nullable String recipeId) {
+        ShapedRecipeJsonBuilder.create(category, outputBlock).input('#', inputSlab).pattern("#").pattern("#").criterion(hasItem(inputSlab), conditionsFromItem(inputSlab)).group(group).offerTo(exporter, recipeId != null ? new Identifier("bwt", recipeId) : new Identifier("bwt", RecipeProvider.getRecipeName(outputBlock)));
+    }
+
+    public static void offer2x1SlabUncompacting(RecipeExporter exporter, ItemConvertible inputSlab, ItemConvertible outputItem, RecipeCategory category, @Nullable String group, @Nullable String recipeId) {
+        ShapelessRecipeJsonBuilder.create(category, outputItem, 2).input(inputSlab).group(group).criterion(hasItem(inputSlab), conditionsFromItem(inputSlab)).offerTo(exporter, recipeId != null ? new Identifier("bwt", recipeId) : new Identifier("bwt", RecipeProvider.getRecipeName(outputItem)));
+    }
+
+    public static void offer2x2BlockSlabFamily(RecipeExporter exporter, ItemConvertible baseItem, ItemConvertible block, ItemConvertible slab, String itemGroup) {
+        offerCompacting2x2(exporter, baseItem, block, RecipeCategory.DECORATIONS, itemGroup + "_block", null);
+        offerUncompacting2x2(exporter, block, baseItem, RecipeCategory.MISC, itemGroup, itemGroup + "_from_block");
+        offer2x1Slab(exporter, block, slab, RecipeCategory.DECORATIONS, itemGroup + "_slab", itemGroup + "_slab_from_block");
+        offer2x1SlabRecombining(exporter, slab, block, RecipeCategory.DECORATIONS, itemGroup + "_block", itemGroup + "_block_from_slab");
+        offer2x1SlabUncompacting(exporter, slab, baseItem, RecipeCategory.MISC, itemGroup, itemGroup + "_from_slab");
     }
 
     private void generateDungDyeingRecipes(RecipeExporter exporter) {

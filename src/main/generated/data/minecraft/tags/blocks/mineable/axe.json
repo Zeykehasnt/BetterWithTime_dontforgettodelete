@@ -48,6 +48,7 @@
     "bwt:slats",
     "bwt:soap_block",
     "bwt:wicker_block",
+    "bwt:wicker_slab_block",
     "bwt:wicker"
   ]
 }

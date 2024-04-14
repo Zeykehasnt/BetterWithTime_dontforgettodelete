@@ -3,16 +3,16 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "bwt:wicker_block"
+        "recipe": "bwt:wicker_from_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_wicker": {
+    "has_wicker_slab_block": {
       "conditions": {
         "items": [
           {
             "items": [
-              "bwt:wicker"
+              "bwt:wicker_slab_block"
             ]
           }
         ]
@@ -23,12 +23,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_wicker"
+      "has_wicker_slab_block"
     ]
   ],
   "rewards": {
     "recipes": [
-      "bwt:wicker_block"
+      "bwt:wicker_from_slab"
     ]
   }
 }

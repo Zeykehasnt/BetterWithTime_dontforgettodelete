@@ -4,12 +4,12 @@
   "group": "wicker_block",
   "key": {
     "#": {
-      "item": "bwt:wicker"
+      "item": "bwt:wicker_slab_block"
     }
   },
   "pattern": [
-    "##",
-    "##"
+    "#",
+    "#"
   ],
   "result": {
     "item": "bwt:wicker_block"

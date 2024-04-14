@@ -140,6 +140,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 //                .add(BwtBlocks.screwPumpBlock)
 //                .add(BwtBlocks.tableBlock)
                 .add(BwtBlocks.wickerBlock)
+                .add(BwtBlocks.wickerSlabBlock)
                 .add(BwtBlocks.wickerPaneBlock);
 
         getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)

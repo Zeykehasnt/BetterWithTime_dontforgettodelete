@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "group": "wicker_block",
+  "group": "wicker_slab",
   "key": {
     "#": {
-      "item": "bwt:wicker"
+      "item": "bwt:wicker_block"
     }
   },
   "pattern": [
-    "##",
     "##"
   ],
   "result": {
-    "item": "bwt:wicker_block"
+    "count": 4,
+    "item": "bwt:wicker_slab_block"
   }
 }

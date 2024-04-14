@@ -139,8 +139,12 @@ public class ModelGenerator extends FabricModelProvider {
         blockStateModelGenerator.registerSingleton(BwtBlocks.wickerBlock, TexturedModel.CUBE_ALL);
         blockStateModelGenerator.registerSingleton(BwtBlocks.dungBlock, TexturedModel.CUBE_ALL);
         blockStateModelGenerator.registerSingleton(BwtBlocks.concentratedHellfireBlock, TexturedModel.CUBE_ALL);
-
-
+        blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSlabBlockState(
+                BwtBlocks.wickerSlabBlock,
+                Models.SLAB.upload(BwtBlocks.wickerSlabBlock, TexturedModel.CUBE_ALL.get(BwtBlocks.wickerBlock).getTextures(), blockStateModelGenerator.modelCollector),
+                Models.SLAB_TOP.upload(BwtBlocks.wickerSlabBlock, TexturedModel.CUBE_ALL.get(BwtBlocks.wickerBlock).getTextures(), blockStateModelGenerator.modelCollector),
+                ModelIds.getBlockModelId(BwtBlocks.wickerBlock)
+        ));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.anchorBlock, ModelIds.getBlockModelId(BwtBlocks.anchorBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.axleBlock, ModelIds.getBlockModelId(BwtBlocks.axleBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.blockDispenserBlock, ModelIds.getBlockModelId(BwtBlocks.blockDispenserBlock));
