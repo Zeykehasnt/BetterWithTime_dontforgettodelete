@@ -87,31 +87,31 @@ public class HandCrankBlock extends Block {
 
         int clickTimer = state.get(CLICK_TIMER);
 
-        if (clickTimer == 0) {
-            if (player.getHungerManager().getFoodLevel() > 8) {
-                player.addExhaustion( 2.0F ); // every two pulls results in a half pip of hunger
-
-                if (!world.isClient) {
-                    if (!checkForOverpower(world, pos)) {
-                        world.setBlockState(pos, state.with(CLICK_TIMER, 1));
-                        playClick(world, pos);
-                        world.scheduleBlockTick(pos, this, tickRate);
-                    }
-                    else {
-                        breakWithDrop(world, pos);
-                    }
-                }
+        if (clickTimer != 0) {
+            return ActionResult.FAIL;
+        }
+        if (player.getHungerManager().getFoodLevel() <= 8) {
+            if (world.isClient) {
+                player.sendMessage(Text.of("You're too exhausted for manual labor."), true);
             }
-            else {
-                if( world.isClient) {
-                    player.sendMessage(Text.of("You're too exhausted for manual labor."), true);
-                    return ActionResult.FAIL;
-                }
-            }
+            return ActionResult.FAIL;
+        }
+        player.addExhaustion( 2.0F ); // every two pulls results in a half pip of hunger
 
+        if (world.isClient) {
             return ActionResult.SUCCESS;
         }
-        return ActionResult.FAIL;
+
+        if (!checkForOverpower(world, pos)) {
+            world.setBlockState(pos, state.with(CLICK_TIMER, 1));
+            playClick(world, pos);
+            world.scheduleBlockTick(pos, this, tickRate);
+        }
+        else {
+            breakWithDrop(world, pos);
+        }
+
+        return ActionResult.SUCCESS;
     }
 
     @Override
@@ -135,7 +135,7 @@ public class HandCrankBlock extends Block {
         }
 
         // no notify here as it's not an actual state-change, just an internal timer update
-        world.setBlockState(pos, state.with(CLICK_TIMER, clickTimer + 1), 0);
+        world.setBlockState(pos, state.with(CLICK_TIMER, clickTimer + 1), 0, 0);
     }
 
     public boolean checkForOverpower(World world, BlockPos pos) {
