@@ -1,7 +1,27 @@
 {
   "variants": {
-    "": {
+    "facing=down": {
+      "model": "bwt:block/soap_block",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "bwt:block/soap_block",
+      "y": 90
+    },
+    "facing=north": {
       "model": "bwt:block/soap_block"
+    },
+    "facing=south": {
+      "model": "bwt:block/soap_block",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "bwt:block/soap_block",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "bwt:block/soap_block",
+      "y": 270
     }
   }
 }

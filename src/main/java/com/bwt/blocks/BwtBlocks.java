@@ -11,6 +11,7 @@ import com.bwt.blocks.pulley.PulleyBlock;
 import com.bwt.blocks.soul_forge.SoulForgeBlock;
 import com.bwt.blocks.turntable.TurntableBlock;
 import com.bwt.utils.DyeUtils;
+import com.mojang.serialization.MapCodec;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -28,6 +29,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Function;
 
 public class BwtBlocks implements ModInitializer {
 
@@ -180,7 +182,7 @@ public class BwtBlocks implements ModInitializer {
             .burnable()
             .nonOpaque()
     );
-    public static final Block soapBlock = new Block(FabricBlockSettings.create().hardness(2f).mapColor(MapColor.PINK).sounds(BlockSoundGroup.SLIME));
+    public static final Block soapBlock = new SimpleFacingBlock(FabricBlockSettings.create().hardness(2f).mapColor(MapColor.PINK).sounds(BlockSoundGroup.SLIME));
 //	public static final Block stakeBlock = new StakeBlock(FabricBlockSettings.create());
     public static final Block stokedFireBlock = new StokedFireBlock(FabricBlockSettings.copyOf(Blocks.SOUL_FIRE));
     public static final Block stoneDetectorRailBlock = new DetectorRailBlock(FabricBlockSettings.copyOf(Blocks.DETECTOR_RAIL));

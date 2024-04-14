@@ -133,7 +133,10 @@ public class ModelGenerator extends FabricModelProvider {
                         .coordinate(BlockStateModelGenerator.createBooleanModelMap(BuddyBlock.POWERED, buddyBlockPoweredModelId, buddyBlockModelId))
                         .coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates())
         );
-        blockStateModelGenerator.registerSingleton(BwtBlocks.soapBlock, TexturedModel.makeFactory(block -> TextureMap.sideFrontTop(block).put(TextureKey.TOP, TextureMap.getSubId(block, "_side")), Models.ORIENTABLE));
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(BwtBlocks.soapBlock, BlockStateVariant.create().put(VariantSettings.MODEL, TexturedModel.makeFactory(block -> TextureMap.sideFrontTop(block).put(TextureKey.TOP, TextureMap.getSubId(block, "_side")), Models.ORIENTABLE).upload(BwtBlocks.soapBlock, blockStateModelGenerator.modelCollector)))
+                        .coordinate(BlockStateModelGenerator.createNorthDefaultRotationStates())
+        );
         blockStateModelGenerator.registerSingleton(BwtBlocks.ropeCoilBlock, TexturedModel.CUBE_COLUMN);
         blockStateModelGenerator.registerSingleton(BwtBlocks.paddingBlock, TexturedModel.CUBE_ALL);
         blockStateModelGenerator.registerSingleton(BwtBlocks.wickerBlock, TexturedModel.CUBE_ALL);
