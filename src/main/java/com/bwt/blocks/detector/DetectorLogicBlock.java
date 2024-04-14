@@ -58,6 +58,13 @@ public class DetectorLogicBlock extends AirBlock {
     }
 
     @Override
+    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
+        if (!newState.isOf(this)) {
+            notifyNeighborDetectors(newState, world, pos);
+        }
+    }
+
+    @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         super.onEntityCollision(state, world, pos, entity);
         boolean updated = updateIntersectStates(state, world, pos, true, null);
