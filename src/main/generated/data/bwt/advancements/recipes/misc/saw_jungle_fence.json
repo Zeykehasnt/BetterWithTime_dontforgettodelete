@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:saw_jungle_fence"
+        "recipe": "bwt:saw_jungle_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:saw_jungle_fence"
+      "bwt:saw_jungle_fence"
     ]
   }
 }

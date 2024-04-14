@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:recombine_yellow_wool_slab"
+        "recipe": "bwt:recombine_yellow_wool_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:recombine_yellow_wool_slab"
+      "bwt:recombine_yellow_wool_slab"
     ]
   }
 }

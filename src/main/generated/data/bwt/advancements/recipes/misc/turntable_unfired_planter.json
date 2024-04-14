@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:turntable_unfired_planter"
+        "recipe": "bwt:turntable_unfired_planter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:turntable_unfired_planter"
+      "bwt:turntable_unfired_planter"
     ]
   }
 }

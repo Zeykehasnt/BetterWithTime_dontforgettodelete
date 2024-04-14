@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:saw_birch_log"
+        "recipe": "bwt:saw_birch_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:saw_birch_log"
+      "bwt:saw_birch_log"
     ]
   }
 }

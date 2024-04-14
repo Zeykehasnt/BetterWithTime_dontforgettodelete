@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:recombine_warped_planks_moulding"
+        "recipe": "bwt:recombine_warped_planks_moulding"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:recombine_warped_planks_moulding"
+      "bwt:recombine_warped_planks_moulding"
     ]
   }
 }

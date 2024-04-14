@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cauldron_rendering_arrows"
+        "recipe": "bwt:cauldron_rendering_arrows"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:cauldron_rendering_arrows"
+      "bwt:cauldron_rendering_arrows"
     ]
   }
 }

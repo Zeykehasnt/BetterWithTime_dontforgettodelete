@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:turntable_clay"
+        "recipe": "bwt:turntable_clay"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:turntable_clay"
+      "bwt:turntable_clay"
     ]
   }
 }

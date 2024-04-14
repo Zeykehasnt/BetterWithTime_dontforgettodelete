@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:recombine_nether_bricks_corner"
+        "recipe": "bwt:recombine_nether_bricks_corner"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:recombine_nether_bricks_corner"
+      "bwt:recombine_nether_bricks_corner"
     ]
   }
 }

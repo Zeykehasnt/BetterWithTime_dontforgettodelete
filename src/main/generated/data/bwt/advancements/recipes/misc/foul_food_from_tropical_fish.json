@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:foul_food_from_tropical_fish"
+        "recipe": "bwt:foul_food_from_tropical_fish"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -41,7 +41,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:foul_food_from_tropical_fish"
+      "bwt:foul_food_from_tropical_fish"
     ]
   }
 }

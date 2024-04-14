@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:saw_acacia_planks_siding"
+        "recipe": "bwt:saw_acacia_planks_siding"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:saw_acacia_planks_siding"
+      "bwt:saw_acacia_planks_siding"
     ]
   }
 }

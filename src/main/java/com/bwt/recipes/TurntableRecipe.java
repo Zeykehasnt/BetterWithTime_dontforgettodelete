@@ -257,7 +257,7 @@ public class TurntableRecipe implements Recipe<Inventory> {
 
         @Override
         public void offerTo(RecipeExporter exporter) {
-            this.offerTo(exporter, "turntable_" + fromBlockName);
+            this.offerTo(exporter, "bwt:turntable_" + fromBlockName);
         }
 
         @Override

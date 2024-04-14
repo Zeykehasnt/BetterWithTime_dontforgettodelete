@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:kiln_cook_green_terracotta"
+        "recipe": "bwt:kiln_cook_green_terracotta"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:kiln_cook_green_terracotta"
+      "bwt:kiln_cook_green_terracotta"
     ]
   }
 }

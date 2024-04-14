@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:saw_jungle_log"
+        "recipe": "bwt:saw_jungle_log"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:saw_jungle_log"
+      "bwt:saw_jungle_log"
     ]
   }
 }

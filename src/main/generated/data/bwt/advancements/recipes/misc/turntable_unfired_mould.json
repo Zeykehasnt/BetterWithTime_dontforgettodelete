@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:turntable_unfired_mould"
+        "recipe": "bwt:turntable_unfired_mould"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:turntable_unfired_mould"
+      "bwt:turntable_unfired_mould"
     ]
   }
 }

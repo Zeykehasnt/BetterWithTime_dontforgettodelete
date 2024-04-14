@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:saw_cherry_fence"
+        "recipe": "bwt:saw_cherry_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:saw_cherry_fence"
+      "bwt:saw_cherry_fence"
     ]
   }
 }

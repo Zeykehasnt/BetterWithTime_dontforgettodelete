@@ -37,7 +37,7 @@ public class StokedCrucibleRecipe extends AbstractCookingPotRecipe {
 
         @Override
         public void offerTo(RecipeExporter exporter) {
-            this.offerTo(exporter, "smelt_" + RecipeProvider.getItemPath(ingredients.get(0).getMatchingStacks().get(0).getItem()) + "_in_crucible");
+            this.offerTo(exporter, "bwt:smelt_" + RecipeProvider.getItemPath(ingredients.get(0).getMatchingStacks().get(0).getItem()) + "_in_crucible");
         }
     }
 }

@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:rope_vertical"
+        "recipe": "bwt:rope_vertical"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:rope_vertical"
+      "bwt:rope_vertical"
     ]
   }
 }

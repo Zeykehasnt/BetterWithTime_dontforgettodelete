@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:recombine_sandstone_corner"
+        "recipe": "bwt:recombine_sandstone_corner"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:recombine_sandstone_corner"
+      "bwt:recombine_sandstone_corner"
     ]
   }
 }

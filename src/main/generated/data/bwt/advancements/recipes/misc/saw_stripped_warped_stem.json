@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:saw_stripped_warped_stem"
+        "recipe": "bwt:saw_stripped_warped_stem"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:saw_stripped_warped_stem"
+      "bwt:saw_stripped_warped_stem"
     ]
   }
 }

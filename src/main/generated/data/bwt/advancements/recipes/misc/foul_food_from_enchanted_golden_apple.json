@@ -27,7 +27,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:foul_food_from_enchanted_golden_apple"
+        "recipe": "bwt:foul_food_from_enchanted_golden_apple"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -41,7 +41,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:foul_food_from_enchanted_golden_apple"
+      "bwt:foul_food_from_enchanted_golden_apple"
     ]
   }
 }

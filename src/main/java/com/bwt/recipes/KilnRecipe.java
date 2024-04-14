@@ -266,7 +266,7 @@ public class KilnRecipe implements Recipe<Inventory> {
 
         @Override
         public void offerTo(RecipeExporter exporter) {
-            this.offerTo(exporter, "kiln_cook_" + fromBlockName);
+            this.offerTo(exporter, "bwt:kiln_cook_" + fromBlockName);
         }
 
         @Override

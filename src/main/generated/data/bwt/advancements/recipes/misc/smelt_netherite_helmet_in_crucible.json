@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:smelt_netherite_helmet_in_crucible"
+        "recipe": "bwt:smelt_netherite_helmet_in_crucible"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:smelt_netherite_helmet_in_crucible"
+      "bwt:smelt_netherite_helmet_in_crucible"
     ]
   }
 }

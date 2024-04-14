@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:recombine_bamboo_planks_corner"
+        "recipe": "bwt:recombine_bamboo_planks_corner"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:recombine_bamboo_planks_corner"
+      "bwt:recombine_bamboo_planks_corner"
     ]
   }
 }

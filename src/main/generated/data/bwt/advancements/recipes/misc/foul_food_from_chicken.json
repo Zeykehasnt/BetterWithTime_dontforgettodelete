@@ -27,7 +27,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:foul_food_from_chicken"
+        "recipe": "bwt:foul_food_from_chicken"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -41,7 +41,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:foul_food_from_chicken"
+      "bwt:foul_food_from_chicken"
     ]
   }
 }

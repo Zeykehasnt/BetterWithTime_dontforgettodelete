@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:kiln_cook_unfired_urn"
+        "recipe": "bwt:kiln_cook_unfired_urn"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:kiln_cook_unfired_urn"
+      "bwt:kiln_cook_unfired_urn"
     ]
   }
 }

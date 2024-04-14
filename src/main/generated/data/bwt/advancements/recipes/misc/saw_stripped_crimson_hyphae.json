@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:saw_stripped_crimson_hyphae"
+        "recipe": "bwt:saw_stripped_crimson_hyphae"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:saw_stripped_crimson_hyphae"
+      "bwt:saw_stripped_crimson_hyphae"
     ]
   }
 }

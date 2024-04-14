@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:saw_stripped_birch_wood"
+        "recipe": "bwt:saw_stripped_birch_wood"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:saw_stripped_birch_wood"
+      "bwt:saw_stripped_birch_wood"
     ]
   }
 }

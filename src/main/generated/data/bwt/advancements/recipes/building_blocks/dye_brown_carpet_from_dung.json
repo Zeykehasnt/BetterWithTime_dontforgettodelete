@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dye_brown_carpet_from_dung"
+        "recipe": "bwt:dye_brown_carpet_from_dung"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:dye_brown_carpet_from_dung"
+      "bwt:dye_brown_carpet_from_dung"
     ]
   }
 }

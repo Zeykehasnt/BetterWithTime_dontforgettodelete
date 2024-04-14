@@ -27,7 +27,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:foul_food_from_raw_egg"
+        "recipe": "bwt:foul_food_from_raw_egg"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -41,7 +41,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:foul_food_from_raw_egg"
+      "bwt:foul_food_from_raw_egg"
     ]
   }
 }

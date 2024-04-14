@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:recombine_jungle_planks_moulding"
+        "recipe": "bwt:recombine_jungle_planks_moulding"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:recombine_jungle_planks_moulding"
+      "bwt:recombine_jungle_planks_moulding"
     ]
   }
 }

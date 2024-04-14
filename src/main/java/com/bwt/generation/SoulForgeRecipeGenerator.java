@@ -51,17 +51,17 @@ public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
             SoulForgeShapelessRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, sidingBlock.fullBlock)
                     .input(sidingBlock, 2)
                     .criterion(hasItem(sidingBlock), conditionsFromItem(sidingBlock))
-                    .offerTo(exporter, "recombine_" + Registries.BLOCK.getId(sidingBlock).getPath());
+                    .offerTo(exporter, "bwt:recombine_" + Registries.BLOCK.getId(sidingBlock).getPath());
             SoulForgeShapelessRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, sidingBlock)
                     .input(mouldingBlock, 2)
                     .group("siding")
                     .criterion(hasItem(mouldingBlock), conditionsFromItem(mouldingBlock))
-                    .offerTo(exporter, "recombine_" + Registries.BLOCK.getId(mouldingBlock).getPath());
+                    .offerTo(exporter, "bwt:recombine_" + Registries.BLOCK.getId(mouldingBlock).getPath());
             SoulForgeShapelessRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, mouldingBlock)
                     .input(cornerBlock, 2)
                     .group("moulding")
                     .criterion(hasItem(cornerBlock), conditionsFromItem(cornerBlock))
-                    .offerTo(exporter, "recombine_" + Registries.BLOCK.getId(cornerBlock).getPath());
+                    .offerTo(exporter, "bwt:recombine_" + Registries.BLOCK.getId(cornerBlock).getPath());
         }
 
         SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.TOOLS, Items.NETHERITE_BLOCK)

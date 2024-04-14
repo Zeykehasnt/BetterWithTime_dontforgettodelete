@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:saw_dark_oak_wood"
+        "recipe": "bwt:saw_dark_oak_wood"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:saw_dark_oak_wood"
+      "bwt:saw_dark_oak_wood"
     ]
   }
 }

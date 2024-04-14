@@ -242,7 +242,7 @@ public class SawRecipe implements Recipe<Inventory> {
 
         @Override
         public void offerTo(RecipeExporter exporter) {
-            this.offerTo(exporter, "saw_" + fromBlockName);
+            this.offerTo(exporter, "bwt:saw_" + fromBlockName);
         }
 
         @Override

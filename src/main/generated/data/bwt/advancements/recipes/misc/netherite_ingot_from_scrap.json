@@ -27,7 +27,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:netherite_ingot_from_scrap"
+        "recipe": "bwt:netherite_ingot_from_scrap"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -41,7 +41,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:netherite_ingot_from_scrap"
+      "bwt:netherite_ingot_from_scrap"
     ]
   }
 }

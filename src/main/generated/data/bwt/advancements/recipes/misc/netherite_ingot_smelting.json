@@ -51,7 +51,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:netherite_ingot_smelting"
+        "recipe": "bwt:netherite_ingot_smelting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -67,7 +67,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:netherite_ingot_smelting"
+      "bwt:netherite_ingot_smelting"
     ]
   }
 }

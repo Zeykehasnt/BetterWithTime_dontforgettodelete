@@ -27,7 +27,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:redstone_synthesis_from_gold_ingots"
+        "recipe": "bwt:redstone_synthesis_from_gold_ingots"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -41,7 +41,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:redstone_synthesis_from_gold_ingots"
+      "bwt:redstone_synthesis_from_gold_ingots"
     ]
   }
 }

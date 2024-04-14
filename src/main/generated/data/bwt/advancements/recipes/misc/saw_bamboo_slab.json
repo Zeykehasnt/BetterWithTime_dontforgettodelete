@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:saw_bamboo_slab"
+        "recipe": "bwt:saw_bamboo_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -15,7 +15,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:saw_bamboo_slab"
+      "bwt:saw_bamboo_slab"
     ]
   }
 }

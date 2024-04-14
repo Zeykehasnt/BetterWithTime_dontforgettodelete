@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:recombine_cyan_wool_slab"
+        "recipe": "bwt:recombine_cyan_wool_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:recombine_cyan_wool_slab"
+      "bwt:recombine_cyan_wool_slab"
     ]
   }
 }
