@@ -1,6 +1,7 @@
 package com.bwt.blocks.detector;
 
 import com.bwt.blocks.BwtBlocks;
+import com.bwt.blocks.SimpleFacingBlock;
 import com.bwt.sounds.BwtSoundEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -21,10 +22,10 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DetectorBlock extends Block {
-    public static final DirectionProperty FACING = Properties.FACING;
+public class DetectorBlock extends SimpleFacingBlock {
     public static final BooleanProperty POWERED = Properties.POWERED;
     private static final int tickRate = 4;
 
@@ -36,14 +37,13 @@ public class DetectorBlock extends Block {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
-        builder.add(FACING);
         builder.add(POWERED);
     }
 
-    @Nullable
+    @NotNull
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
-        return getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite()).with(POWERED, false);
+        return super.getPlacementState(ctx).with(POWERED, false);
     }
 
     @Override
@@ -135,11 +135,6 @@ public class DetectorBlock extends Block {
     @Override
     public int getWeakRedstonePower(BlockState state, BlockView world, BlockPos pos, Direction direction) {
         return state.get(POWERED) ? 15 : 0;
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
     }
 
     /*

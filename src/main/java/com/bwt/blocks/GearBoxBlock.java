@@ -25,11 +25,11 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class GearBoxBlock extends Block implements MechPowerBlockBase, RotateWithEmptyHand {
-    public static final DirectionProperty FACING = Properties.FACING;
+public class GearBoxBlock extends SimpleFacingBlock implements MechPowerBlockBase, RotateWithEmptyHand {
     public static final BooleanProperty NORTH = ConnectingBlock.NORTH;
     public static final BooleanProperty EAST = ConnectingBlock.EAST;
     public static final BooleanProperty SOUTH = ConnectingBlock.SOUTH;
@@ -47,8 +47,9 @@ public class GearBoxBlock extends Block implements MechPowerBlockBase, RotateWit
 
     @Override
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        super.appendProperties(builder);
         MechPowerBlockBase.super.appendProperties(builder);
-        builder.add(FACING, NORTH, EAST, SOUTH, WEST, UP, DOWN, POWERED);
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, POWERED);
     }
 
     @Override
@@ -91,9 +92,8 @@ public class GearBoxBlock extends Block implements MechPowerBlockBase, RotateWit
     }
 
     @Override
-    public BlockState getPlacementState(ItemPlacementContext ctx) {
-        BlockState state = this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite());
-        return withConnectionProperties(state, ctx.getWorld(), ctx.getBlockPos());
+    public @NotNull BlockState getPlacementState(ItemPlacementContext ctx) {
+        return withConnectionProperties(super.getPlacementState(ctx), ctx.getWorld(), ctx.getBlockPos());
     }
 
     @Override
@@ -214,10 +214,5 @@ public class GearBoxBlock extends Block implements MechPowerBlockBase, RotateWit
             float smokeZ = (float)pos.getZ() + random.nextFloat();
             world.addParticle(ParticleTypes.SMOKE, smokeX, smokeY, smokeZ, 0D, 0D, 0D );
         }
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
     }
 }

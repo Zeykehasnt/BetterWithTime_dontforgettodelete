@@ -36,6 +36,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -43,10 +44,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class SawBlock extends Block implements MechPowerBlockBase {
-    public static final DirectionProperty FACING = Properties.FACING;
-
-
+public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
     private static final int m_iPowerChangeTickRate = 10;
 
     private static final int m_iSawTimeBaseTickRate = 15;
@@ -109,7 +107,7 @@ public class SawBlock extends Block implements MechPowerBlockBase {
         builder.add(FACING);
     }
 
-    @Nullable
+    @NotNull
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         return this.getDefaultState().with(FACING, ctx.getPlayerLookDirection().getOpposite()).with(MECH_POWERED, false);
@@ -318,14 +316,5 @@ public class SawBlock extends Block implements MechPowerBlockBase {
         if (isMechPowered(state)) {
             emitSawParticles(world, state, pos);
         }
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
-    }
-
-    public static boolean isHorizontal(BlockState state) {
-        return state.get(FACING).getAxis().isHorizontal();
     }
 }

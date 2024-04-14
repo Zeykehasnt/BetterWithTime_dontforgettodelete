@@ -26,14 +26,14 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AnchorBlock extends Block {
-    public static final DirectionProperty FACING = Properties.FACING;
+public class AnchorBlock extends SimpleFacingBlock {
     public static final BooleanProperty CONNECTED_ABOVE = BooleanProperty.of("connected_above");
     public static final BooleanProperty CONNECTED_BELOW = BooleanProperty.of("connected_below");
 
@@ -50,7 +50,7 @@ public class AnchorBlock extends Block {
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
-        builder.add(FACING, CONNECTED_ABOVE, CONNECTED_BELOW);
+        builder.add(CONNECTED_ABOVE, CONNECTED_BELOW);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class AnchorBlock extends Block {
         return SHAPES.get(state.get(FACING).getId());
     }
 
-    @Nullable
+    @NotNull
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         BlockState upState = ctx.getWorld().getBlockState(ctx.getBlockPos().up());
@@ -98,17 +98,5 @@ public class AnchorBlock extends Block {
         world.playSound(null, pos, BwtSoundEvents.ANCHOR_RETRACT, SoundCategory.PLAYERS, 0.2f, (world.getRandom().nextFloat() - world.getRandom().nextFloat()) * 1.4f + 2.0f);
 
         return ActionResult.SUCCESS;
-    }
-
-    @Override
-    public BlockState rotate(BlockState state, BlockRotation rotation) {
-        return state.with(FACING, rotation.rotate(state.get(FACING)));
-    }
-
-    public static void onLand(World world, BlockPos blockPos, BlockState previousState) {
-    }
-
-    public static boolean isHorizontal(BlockState state) {
-        return state.get(FACING).getAxis().isHorizontal();
     }
 }
