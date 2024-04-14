@@ -78,7 +78,8 @@ public class TurntableBlockEntity extends BlockEntity {
         pickUpAttachedBlocks(world, attachedBlocksBeingRotated, attachedBlockDestinations);
         rotateCentralColumnBlocks(world, blocksToRotate, blockEntity, rotation);
         placeRotatedAttachedBlocks(world, attachedBlocksBeingRotated, attachedBlockDestinations, rotation);
-        world.updateNeighborsExcept(pos, state.getBlock(), Direction.UP);
+        // Notify neighbors of the rotation
+        state.updateNeighbors(world, pos, Block.NOTIFY_NEIGHBORS);
     }
 
     protected static List<BlockPosAndState> getBlocksToRotate(World world, BlockPos turntablePos) {
