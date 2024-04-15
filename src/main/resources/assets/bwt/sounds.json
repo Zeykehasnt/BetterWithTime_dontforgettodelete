@@ -108,5 +108,26 @@
       "mob/wolf/growl2",
       "mob/wolf/growl3"
     ]
+  },
+  "entity.dynamite.throw": {
+    "subtitle": "bwt.subtitles.entity.dynamite.throw",
+    "sounds": [
+      "random/bow"
+    ]
+  },
+  "entity.dynamite.ignite": {
+    "subtitle": "bwt.subtitles.entity.dynamite.ignite",
+    "sounds": [
+      "random/fuse"
+    ]
+  },
+  "entity.dynamite.explode": {
+    "subtitle": "bwt.subtitles.entity.dynamite.explode",
+    "sounds": [
+      "random/explode1",
+      "random/explode2",
+      "random/explode3",
+      "random/explode4"
+    ]
   }
 }

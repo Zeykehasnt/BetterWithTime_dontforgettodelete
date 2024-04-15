@@ -10,9 +10,11 @@ import net.minecraft.world.World;
 
 public class BwtDamageTypes implements ModInitializer {
     public static RegistryKey<DamageType> SAW_DAMAGE_TYPE;
+    public static RegistryKey<DamageType> DYNAMITE_DAMAGE_TYPE;
     @Override
     public void onInitialize() {
          SAW_DAMAGE_TYPE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier("bwt", "saw"));
+         DYNAMITE_DAMAGE_TYPE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, new Identifier("bwt", "dynamite"));
     }
 
     public static DamageSource of(World world, RegistryKey<DamageType> key) {

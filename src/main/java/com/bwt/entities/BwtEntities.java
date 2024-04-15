@@ -53,6 +53,18 @@ public class BwtEntities implements ModInitializer {
             .trackedUpdateRate(20)
             .build()
     );
+    public static final EntityType<DynamiteEntity> dynamiteEntity = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier("bwt", "dynamite"),
+            FabricEntityTypeBuilder.create(
+                    SpawnGroup.MISC,
+                    (EntityType.EntityFactory<DynamiteEntity>) DynamiteEntity::new
+            )
+            .dimensions(EntityDimensions.fixed(0.25f, 0.40f))
+            .trackRangeBlocks(4)
+            .trackedUpdateRate(20)
+            .build()
+    );
 
     @Override
     public void onInitialize() {
