@@ -189,11 +189,12 @@ public class DynamiteEntity extends ProjectileEntity implements FlyingItemEntity
             for (int j = getBlockY() - 2; j <= getBlockY() + 4; j++) {
                 for (int k = getBlockZ() - 2; k <= getBlockZ() + 2; k++) {
                     BlockPos offsetPos = new BlockPos(i, j, k);
-                    if (isValidBlockForRedneckFishing(offsetPos)) {
-                        // averages one per j layer
-                        if (random.nextInt( 25 ) == 0 ) {
-                            spawnRedneckFish(offsetPos);
-                        }
+                    if (!isValidBlockForRedneckFishing(offsetPos)) {
+                        continue;
+                    }
+                    // averages one per j layer
+                    if (random.nextInt( 25 ) == 0 ) {
+                        spawnRedneckFish(offsetPos);
                     }
                 }
             }
@@ -206,7 +207,7 @@ public class DynamiteEntity extends ProjectileEntity implements FlyingItemEntity
                 .filter(direction -> direction != Direction.UP)
                 .map(pos::offset)
                 .map(offsetPos -> getWorld().getFluidState(offsetPos))
-                .anyMatch(fluidState -> !fluidState.isIn(FluidTags.WATER));
+                .allMatch(fluidState -> fluidState.isIn(FluidTags.WATER));
     }
 
     private void spawnRedneckFish(BlockPos pos) {
@@ -216,15 +217,17 @@ public class DynamiteEntity extends ProjectileEntity implements FlyingItemEntity
         LootContextParameterSet lootContextParameterSet = new LootContextParameterSet.Builder(serverWorld)
                 .add(LootContextParameters.ORIGIN, this.getPos())
                 .add(LootContextParameters.THIS_ENTITY, this)
-                .add(LootContextParameters.DAMAGE_SOURCE, BwtDamageTypes.of(serverWorld, BwtDamageTypes.SAW_DAMAGE_TYPE))
+                .add(LootContextParameters.DAMAGE_SOURCE, BwtDamageTypes.of(serverWorld, BwtDamageTypes.DYNAMITE_DAMAGE_TYPE))
                 .build(LootContextTypes.ENTITY);
         LootTable lootTable = serverWorld.getServer().getLootManager().getLootTable(LootTables.FISHING_FISH_GAMEPLAY);
         ObjectArrayList<ItemStack> list = lootTable.generateLoot(lootContextParameterSet);
-        for (ItemStack itemStack : list) {
-            if (!itemStack.isIn(ItemTags.FISHES)) continue;
-            ItemEntity itemEntity = new ItemEntity(serverWorld, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, itemStack);
-            this.getWorld().spawnEntity(itemEntity);
+        if (list.isEmpty()) {
+            return;
         }
+        ItemStack itemStack = list.get(random.nextInt(list.size()));
+        if (!itemStack.isIn(ItemTags.FISHES)) return;
+        ItemEntity itemEntity = new ItemEntity(serverWorld, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, itemStack);
+        this.getWorld().spawnEntity(itemEntity);
     }
 
     private void convertToItem() {
