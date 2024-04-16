@@ -377,9 +377,8 @@ public class BwtBlocks implements ModInitializer {
         Registry.register(Registries.ITEM, new Identifier("bwt", "rope_coil_block"), new BlockItem(ropeCoilBlock, new FabricItemSettings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "concentrated_hellfire_block"), concentratedHellfireBlock);
         Registry.register(Registries.ITEM, new Identifier("bwt", "concentrated_hellfire_block"), new BlockItem(concentratedHellfireBlock, new FabricItemSettings()));
-        // Aesthetic opaque blocks
-        Registry.register(Registries.BLOCK, new Identifier("bwt", "wicker_slab_block"), wickerSlabBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker_slab_block"), new BlockItem(wickerSlabBlock, new FabricItemSettings()));
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "wicker_slab"), wickerSlabBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker_slab"), new BlockItem(wickerSlabBlock, new FabricItemSettings()));
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {
             content.addAll(DyeUtils.streamColorItemsSorted(vaseBlocks).map(vaseBlock -> vaseBlock.asItem().getDefaultStack()).toList());

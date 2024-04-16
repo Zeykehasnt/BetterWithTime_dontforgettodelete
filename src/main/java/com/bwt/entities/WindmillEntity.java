@@ -4,7 +4,9 @@ import com.bwt.blocks.AxleBlock;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.blocks.GearBoxBlock;
 import com.bwt.items.BwtItems;
+import com.bwt.utils.rectangular_entity.EntityRectDimensions;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -50,6 +52,11 @@ public class WindmillEntity extends HorizontalMechPowerSourceEntity {
 
     public WindmillEntity(World world, Vec3d pos, Direction facing) {
         super(BwtEntities.windmillEntity, world, pos, facing);
+    }
+
+    @Override
+    public EntityRectDimensions getDimensions(EntityPose pose) {
+        return EntityRectDimensions.fixed(WindmillEntity.width, WindmillEntity.height, WindmillEntity.length);
     }
 
     @Override

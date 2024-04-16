@@ -12,7 +12,6 @@ public abstract class RectangularEntity extends Entity {
         super(type, world);
     }
 
-
     @Override
     public void calculateDimensions() {
         double d = this.getX();
@@ -22,9 +21,7 @@ public abstract class RectangularEntity extends Entity {
         this.setPosition(d, e, f);
     }
 
-    public EntityRectDimensions getDimensions(EntityPose pose) {
-        return ((EntityRectDimensions) this.getType().getDimensions());
-    }
+    abstract public EntityRectDimensions getDimensions(EntityPose pose);
 
     @Override
     public void setYaw(float yaw) {

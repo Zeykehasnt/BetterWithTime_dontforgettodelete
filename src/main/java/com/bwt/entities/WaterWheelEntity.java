@@ -1,6 +1,8 @@
 package com.bwt.entities;
 
 import com.bwt.items.BwtItems;
+import com.bwt.utils.rectangular_entity.EntityRectDimensions;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FlowableFluid;
@@ -25,6 +27,11 @@ public class WaterWheelEntity extends HorizontalMechPowerSourceEntity {
 
     public WaterWheelEntity(World world, Vec3d pos, Direction facing) {
         super(BwtEntities.waterWheelEntity, world, pos, facing);
+    }
+
+    @Override
+    public EntityRectDimensions getDimensions(EntityPose pose) {
+        return EntityRectDimensions.fixed(WaterWheelEntity.width, WaterWheelEntity.height, WaterWheelEntity.length);
     }
 
     @Override
