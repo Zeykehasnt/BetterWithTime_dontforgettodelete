@@ -20,45 +20,46 @@ public class BwtEntities implements ModInitializer {
     public static final EntityType<WaterWheelEntity> waterWheelEntity = Registry.register(
             Registries.ENTITY_TYPE,
             new Identifier("bwt", "water_wheel"),
-            FabricEntityTypeBuilder.create(
-                SpawnGroup.MISC,
-                (EntityType.EntityFactory<WaterWheelEntity>) WaterWheelEntity::new
-            )
-                .dimensions(EntityRectDimensions.fixed(WaterWheelEntity.width, WaterWheelEntity.height, WaterWheelEntity.length))
-                .build()
+            EntityType.Builder.create(
+                (EntityType.EntityFactory<WaterWheelEntity>) WaterWheelEntity::new,
+                SpawnGroup.MISC
+            ).build()
     );
     public static final EntityType<MovingRopeEntity> movingRopeEntity = Registry.register(
             Registries.ENTITY_TYPE,
             new Identifier("bwt", "moving_rope"),
-            FabricEntityTypeBuilder.create(
-                    SpawnGroup.MISC,
-                    (EntityType.EntityFactory<MovingRopeEntity>) MovingRopeEntity::new
+            EntityType.Builder.create(
+                    (EntityType.EntityFactory<MovingRopeEntity>) MovingRopeEntity::new,
+                    SpawnGroup.MISC
             )
-            .dimensions(EntityDimensions.fixed(0.98f, 0.98f))
+            .setDimensions(0.98f, 0.98f)
             .build()
     );
     public static final EntityType<BroadheadArrowEntity> broadheadArrowEntity = Registry.register(
             Registries.ENTITY_TYPE,
             new Identifier("bwt", "broadhead_arrow"),
-            FabricEntityTypeBuilder.create(
-                    SpawnGroup.MISC,
-                    (EntityType.EntityFactory<BroadheadArrowEntity>) BroadheadArrowEntity::new
+            EntityType.Builder.create(
+                    (EntityType.EntityFactory<BroadheadArrowEntity>) BroadheadArrowEntity::new,
+                    SpawnGroup.MISC
             )
-            .dimensions(EntityDimensions.fixed(0.5f, 0.5f))
-            .trackRangeBlocks(4)
-            .trackedUpdateRate(20)
+            .setDimensions(0.5f, 0.5f)
+            .maxTrackingRange(4)
+            .trackingTickInterval(20)
             .build()
     );
     public static final EntityType<DynamiteEntity> dynamiteEntity = Registry.register(
             Registries.ENTITY_TYPE,
             new Identifier("bwt", "dynamite"),
-            FabricEntityTypeBuilder.create(
-                    SpawnGroup.MISC,
-                    (EntityType.EntityFactory<DynamiteEntity>) DynamiteEntity::new
+            EntityType.Builder.create(
+                    (EntityType.EntityFactory<DynamiteEntity>) DynamiteEntity::new,
+                    SpawnGroup.MISC
             )
-            .dimensions(EntityDimensions.fixed(0.25f, 0.40f))
-            .trackRangeBlocks(4)
-            .trackedUpdateRate(20)
+            .setDimensions(0.25f, 0.40f)
+            .maxTrackingRange(4)
+            .trackingTickInterval(20)
+            .build()
+    );
+            )
             .build()
     );
 
