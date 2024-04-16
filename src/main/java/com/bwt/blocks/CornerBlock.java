@@ -4,15 +4,13 @@ import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.block.WoodType;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.registry.Registries;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
@@ -37,15 +35,11 @@ public class CornerBlock extends MiniBlock {
             Block.createCuboidShape(0, 8, 8, 8, 16, 16)
     );
 
-    public static final MapCodec<CornerBlock> CODEC = CornerBlock.createCodec(CornerBlock::new);
-
-    private CornerBlock(Settings settings) {
-        super(settings);
-        this.setDefaultState(this.getDefaultState().with(ORIENTATION, 0));
-    }
+    public static final MapCodec<CornerBlock> CODEC = CornerBlock.createCodec(s -> new CornerBlock(s, Blocks.STONE));
 
     public CornerBlock(Settings settings, Block fullBlock) {
         super(settings, fullBlock);
+        this.setDefaultState(this.getDefaultState().with(ORIENTATION, 0));
     }
 
     @Override
@@ -56,12 +50,6 @@ public class CornerBlock extends MiniBlock {
 
     public static CornerBlock ofBlock(Block fullBlock, Block slabBlock) {
         return new CornerBlock(FabricBlockSettings.copyOf(slabBlock), fullBlock);
-    }
-
-    public static CornerBlock ofWoodType(WoodType woodType) {
-        Block fullBlock = Registries.BLOCK.get(new Identifier(woodType.name() + "_planks"));
-        Block slabBlock = Registries.BLOCK.get(new Identifier(woodType.name() + "_slab"));
-        return CornerBlock.ofBlock(fullBlock, slabBlock);
     }
 
     public MapCodec<? extends CornerBlock> getCodec() {

@@ -5,17 +5,15 @@ import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.block.WoodType;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.registry.Registries;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.BlockRotation;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -34,25 +32,15 @@ public class SidingBlock extends MiniBlock {
     protected static final List<VoxelShape> COLLISION_SHAPES = Arrays.stream(Direction.values())
             .map(direction -> BlockUtils.rotateCuboidFromUp(direction, BOTTOM_SHAPE))
             .toList();
-    public static final MapCodec<SidingBlock> CODEC = SidingBlock.createCodec(SidingBlock::new);
-
-    private SidingBlock(Settings settings) {
-        super(settings);
-        this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(WATERLOGGED, false));
-    }
+    public static final MapCodec<SidingBlock> CODEC = SidingBlock.createCodec(s -> new SidingBlock(s, Blocks.STONE));
 
     public SidingBlock(Settings settings, Block fullBlock) {
         super(settings, fullBlock);
+        this.setDefaultState(this.getDefaultState().with(FACING, Direction.NORTH).with(WATERLOGGED, false));
     }
 
     public static SidingBlock ofBlock(Block fullBlock, Block slabBlock) {
         return new SidingBlock(FabricBlockSettings.copyOf(slabBlock), fullBlock);
-    }
-
-    public static SidingBlock ofWoodType(WoodType woodType) {
-        Block fullBlock = Registries.BLOCK.get(new Identifier(woodType.name() + "_planks"));
-        Block slabBlock = Registries.BLOCK.get(new Identifier(woodType.name() + "_slab"));
-        return SidingBlock.ofBlock(fullBlock, slabBlock);
     }
 
     public MapCodec<? extends SidingBlock> getCodec() {

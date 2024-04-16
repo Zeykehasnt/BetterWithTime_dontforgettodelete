@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "": {
+      "model": "bwt:block/birch_planks_column",
+      "uvlock": true
+    }
+  }
+}

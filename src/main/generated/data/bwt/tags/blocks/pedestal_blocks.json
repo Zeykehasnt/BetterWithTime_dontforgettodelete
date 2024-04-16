@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#bwt:wooden_pedestal_blocks",
+    "bwt:stone_pedestal",
+    "bwt:stone_bricks_pedestal",
+    "bwt:sandstone_pedestal",
+    "bwt:bricks_pedestal",
+    "bwt:nether_bricks_pedestal"
+  ]
+}

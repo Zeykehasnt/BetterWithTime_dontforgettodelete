@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "column",
+  "key": {
+    "#": {
+      "item": "bwt:bamboo_planks_moulding"
+    }
+  },
+  "pattern": [
+    "#",
+    "#",
+    "#"
+  ],
+  "result": {
+    "item": "bwt:bamboo_planks_column"
+  }
+}

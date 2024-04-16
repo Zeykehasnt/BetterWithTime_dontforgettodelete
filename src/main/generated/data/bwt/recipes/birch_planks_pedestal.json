@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "pedestal",
+  "key": {
+    "#": {
+      "item": "minecraft:birch_planks"
+    },
+    "s": {
+      "item": "bwt:birch_planks_siding"
+    }
+  },
+  "pattern": [
+    " s ",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "bwt:birch_planks_pedestal"
+  }
+}

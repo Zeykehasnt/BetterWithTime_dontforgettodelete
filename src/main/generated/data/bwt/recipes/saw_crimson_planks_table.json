@@ -1,0 +1,12 @@
+{
+  "type": "bwt:saw",
+  "category": "misc",
+  "ingredient": {
+    "block": "bwt:crimson_planks_table"
+  },
+  "results": [
+    {
+      "item": "bwt:crimson_planks_moulding"
+    }
+  ]
+}

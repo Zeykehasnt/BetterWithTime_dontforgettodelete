@@ -1,0 +1,12 @@
+{
+  "type": "bwt:saw",
+  "category": "misc",
+  "ingredient": {
+    "block": "bwt:bamboo_planks_table"
+  },
+  "results": [
+    {
+      "item": "bwt:bamboo_planks_moulding"
+    }
+  ]
+}

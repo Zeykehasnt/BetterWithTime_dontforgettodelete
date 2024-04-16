@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "bwt:oak_planks_column",
+    "bwt:spruce_planks_column",
+    "bwt:birch_planks_column",
+    "bwt:acacia_planks_column",
+    "bwt:cherry_planks_column",
+    "bwt:jungle_planks_column",
+    "bwt:dark_oak_planks_column",
+    "bwt:crimson_planks_column",
+    "bwt:warped_planks_column",
+    "bwt:mangrove_planks_column",
+    "bwt:bamboo_planks_column"
+  ]
+}

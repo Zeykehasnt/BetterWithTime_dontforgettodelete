@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "table",
+  "key": {
+    "m": {
+      "item": "bwt:nether_bricks_moulding"
+    },
+    "s": {
+      "item": "bwt:nether_bricks_siding"
+    }
+  },
+  "pattern": [
+    "sss",
+    " m ",
+    " m "
+  ],
+  "result": {
+    "count": 4,
+    "item": "bwt:nether_bricks_table"
+  }
+}

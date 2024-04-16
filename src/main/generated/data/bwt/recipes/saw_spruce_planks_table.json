@@ -1,0 +1,12 @@
+{
+  "type": "bwt:saw",
+  "category": "misc",
+  "ingredient": {
+    "block": "bwt:spruce_planks_table"
+  },
+  "results": [
+    {
+      "item": "bwt:spruce_planks_moulding"
+    }
+  ]
+}

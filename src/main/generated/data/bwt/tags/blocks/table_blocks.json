@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#bwt:wooden_table_blocks",
+    "bwt:stone_table",
+    "bwt:stone_bricks_table",
+    "bwt:sandstone_table",
+    "bwt:bricks_table",
+    "bwt:nether_bricks_table"
+  ]
+}

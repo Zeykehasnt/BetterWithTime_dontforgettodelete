@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "pedestal",
+  "key": {
+    "#": {
+      "item": "minecraft:nether_bricks"
+    },
+    "s": {
+      "item": "bwt:nether_bricks_siding"
+    }
+  },
+  "pattern": [
+    " s ",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "bwt:nether_bricks_pedestal"
+  }
+}

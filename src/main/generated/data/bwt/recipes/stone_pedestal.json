@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "pedestal",
+  "key": {
+    "#": {
+      "item": "minecraft:stone"
+    },
+    "s": {
+      "item": "bwt:stone_siding"
+    }
+  },
+  "pattern": [
+    " s ",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "bwt:stone_pedestal"
+  }
+}

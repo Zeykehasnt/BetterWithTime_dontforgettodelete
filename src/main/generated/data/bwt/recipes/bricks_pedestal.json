@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "pedestal",
+  "key": {
+    "#": {
+      "item": "minecraft:bricks"
+    },
+    "s": {
+      "item": "bwt:bricks_siding"
+    }
+  },
+  "pattern": [
+    " s ",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "bwt:bricks_pedestal"
+  }
+}

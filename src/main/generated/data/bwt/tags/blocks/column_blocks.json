@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#bwt:wooden_column_blocks",
+    "bwt:stone_column",
+    "bwt:stone_bricks_column",
+    "bwt:sandstone_column",
+    "bwt:bricks_column",
+    "bwt:nether_bricks_column"
+  ]
+}

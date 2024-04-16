@@ -87,6 +87,9 @@ public class BlockLootTableGenerator extends FabricBlockLootTableProvider {
         BwtBlocks.sidingBlocks.forEach(this::addDrop);
         BwtBlocks.mouldingBlocks.forEach(this::addDrop);
         BwtBlocks.cornerBlocks.forEach(this::addDrop);
+        BwtBlocks.columnBlocks.forEach(this::addDrop);
+        BwtBlocks.pedestalBlocks.forEach(this::addDrop);
+        BwtBlocks.tableBlocks.forEach(this::addDrop);
     }
 
     private void addHempDrop() {

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "table",
+  "key": {
+    "m": {
+      "item": "bwt:stone_moulding"
+    },
+    "s": {
+      "item": "bwt:stone_siding"
+    }
+  },
+  "pattern": [
+    "sss",
+    " m ",
+    " m "
+  ],
+  "result": {
+    "count": 4,
+    "item": "bwt:stone_table"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:bwt/placed_cauldron",
+  "criteria": {
+    "got_dung": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bwt:dung"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": "Feed your pet wolf, and let nature take its course",
+    "icon": {
+      "item": "bwt:dung"
+    },
+    "title": "The Stench of Progress"
+  },
+  "requirements": [
+    [
+      "got_dung"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

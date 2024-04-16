@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:bwt/root",
+  "criteria": {
+    "place_cauldron": {
+      "conditions": {
+        "location": [
+          {
+            "block": "bwt:cauldron",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": "Place a cauldron over some fire. Baby, you got a stew going!",
+    "icon": {
+      "item": "bwt:cauldron"
+    },
+    "title": "Perpetual Stew"
+  },
+  "requirements": [
+    [
+      "place_cauldron"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

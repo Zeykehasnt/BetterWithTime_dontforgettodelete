@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:bwt/got_tanned_leather",
+  "criteria": {
+    "place_saw": {
+      "conditions": {
+        "location": [
+          {
+            "block": "bwt:saw",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": "Build and power a saw in pursuit of finer wood pieces",
+    "icon": {
+      "item": "bwt:saw"
+    },
+    "title": "DIY Carpentry"
+  },
+  "requirements": [
+    [
+      "place_saw"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

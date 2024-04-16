@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "pedestal",
+  "key": {
+    "#": {
+      "item": "minecraft:mangrove_planks"
+    },
+    "s": {
+      "item": "bwt:mangrove_planks_siding"
+    }
+  },
+  "pattern": [
+    " s ",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "bwt:mangrove_planks_pedestal"
+  }
+}

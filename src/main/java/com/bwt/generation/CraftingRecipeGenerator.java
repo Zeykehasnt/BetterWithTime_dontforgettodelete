@@ -345,14 +345,17 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
     }
 
     private void generateTier3Recipes(RecipeExporter exporter) {
-        // Wooden Mini block recombining recipes
         for (int i = 0; i < BwtBlocks.sidingBlocks.size(); i++) {
             SidingBlock sidingBlock = BwtBlocks.sidingBlocks.get(i);
             MouldingBlock mouldingBlock = BwtBlocks.mouldingBlocks.get(i);
             CornerBlock cornerBlock = BwtBlocks.cornerBlocks.get(i);
+            ColumnBlock columnBlock = BwtBlocks.columnBlocks.get(i);
+            PedestalBlock pedestalBlock = BwtBlocks.pedestalBlocks.get(i);
+            TableBlock tableBlock = BwtBlocks.tableBlocks.get(i);
             if (!sidingBlock.isWood()) {
                 continue;
             }
+            // Wooden Mini block recombining recipes
             ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, sidingBlock.fullBlock)
                     .input(sidingBlock, 2)
                     .group("planks")
@@ -368,7 +371,35 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                     .group("moulding")
                     .criterion(hasItem(sidingBlock), conditionsFromItem(sidingBlock))
                     .offerTo(exporter, "bwt:recombine_" + Registries.BLOCK.getId(cornerBlock).getPath());
+            // Decorative blocks
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, columnBlock)
+                    .pattern("#")
+                    .pattern("#")
+                    .pattern("#")
+                    .input('#', mouldingBlock)
+                    .group("column")
+                    .criterion(hasItem(mouldingBlock), conditionsFromItem(mouldingBlock))
+                    .offerTo(exporter);
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, pedestalBlock, 6)
+                    .pattern(" s ")
+                    .pattern("###")
+                    .pattern("###")
+                    .input('#', sidingBlock.fullBlock)
+                    .input('s', sidingBlock)
+                    .group("pedestal")
+                    .criterion(hasItem(sidingBlock), conditionsFromItem(sidingBlock))
+                    .offerTo(exporter);
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, tableBlock, 4)
+                    .pattern("sss")
+                    .pattern(" m ")
+                    .pattern(" m ")
+                    .input('s', sidingBlock)
+                    .input('m', mouldingBlock)
+                    .group("table")
+                    .criterion(hasItem(mouldingBlock), conditionsFromItem(mouldingBlock))
+                    .offerTo(exporter);
         }
+
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, BwtBlocks.hopperBlock)
                 .pattern("s s")
                 .pattern("gpg")

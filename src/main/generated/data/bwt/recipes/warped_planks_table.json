@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "table",
+  "key": {
+    "m": {
+      "item": "bwt:warped_planks_moulding"
+    },
+    "s": {
+      "item": "bwt:warped_planks_siding"
+    }
+  },
+  "pattern": [
+    "sss",
+    " m ",
+    " m "
+  ],
+  "result": {
+    "count": 4,
+    "item": "bwt:warped_planks_table"
+  }
+}

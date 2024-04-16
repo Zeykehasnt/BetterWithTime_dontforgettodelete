@@ -1,21 +1,18 @@
 package com.bwt.blocks;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItem;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -23,22 +20,12 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public abstract class MiniBlock extends Block implements Waterloggable, RotateWithEmptyHand {
+public abstract class MiniBlock extends MaterialInheritedBlock implements Waterloggable, RotateWithEmptyHand {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
-    public Block fullBlock;
-
-    protected MiniBlock(Settings settings) {
-        super(settings);
-        this.setDefaultState(this.getDefaultState().with(WATERLOGGED, false));
-    }
-
     public MiniBlock(Settings settings, Block fullBlock) {
-        this(settings);
-        this.fullBlock = fullBlock;
+        super(settings, fullBlock);
+        this.setDefaultState(this.getDefaultState().with(WATERLOGGED, false));
     }
 
     @Override
@@ -50,45 +37,6 @@ public abstract class MiniBlock extends Block implements Waterloggable, RotateWi
     @Override
     public boolean hasSidedTransparency(BlockState state) {
         return true;
-    }
-
-    public boolean isWood() {
-        return Registries.BLOCK.getId(fullBlock).getPath().contains("planks");
-    }
-
-    public static void registerMiniBlocks(ArrayList<SidingBlock> sidingBlocks, ArrayList<MouldingBlock> mouldingBlocks, ArrayList<CornerBlock> cornerBlocks) {
-        WoodType.stream().forEach(woodType -> {
-            sidingBlocks.add(SidingBlock.ofWoodType(woodType));
-            mouldingBlocks.add(MouldingBlock.ofWoodType(woodType));
-            cornerBlocks.add(CornerBlock.ofWoodType(woodType));
-        });
-        List<Block> blockSlabPairs = List.of(
-                Blocks.STONE, Blocks.STONE_SLAB,
-                Blocks.STONE_BRICKS, Blocks.STONE_BRICK_SLAB,
-                Blocks.SANDSTONE, Blocks.SANDSTONE_SLAB,
-                Blocks.BRICKS, Blocks.BRICK_SLAB,
-                Blocks.NETHER_BRICKS, Blocks.NETHER_BRICK_SLAB
-        );
-        for (int i = 0; i < blockSlabPairs.size() - 1; i += 2) {
-            sidingBlocks.add(SidingBlock.ofBlock(blockSlabPairs.get(i), blockSlabPairs.get(i + 1)));
-            mouldingBlocks.add(MouldingBlock.ofBlock(blockSlabPairs.get(i), blockSlabPairs.get(i + 1)));
-            cornerBlocks.add(CornerBlock.ofBlock(blockSlabPairs.get(i), blockSlabPairs.get(i + 1)));
-        }
-        for (int i = 0; i < sidingBlocks.size(); i++) {
-            SidingBlock sidingBlock = sidingBlocks.get(i);
-            MouldingBlock mouldingBlock = mouldingBlocks.get(i);
-            CornerBlock cornerBlock = cornerBlocks.get(i);
-            Identifier blockId = Registries.BLOCK.getId(sidingBlock.fullBlock);
-            Identifier sidingId = new Identifier("bwt", blockId.getPath() + "_siding");
-            Identifier mouldingId = new Identifier("bwt", blockId.getPath() + "_moulding");
-            Identifier cornerId = new Identifier("bwt", blockId.getPath() + "_corner");
-            Registry.register(Registries.BLOCK, sidingId, sidingBlock);
-            Registry.register(Registries.BLOCK, mouldingId, mouldingBlock);
-            Registry.register(Registries.BLOCK, cornerId, cornerBlock);
-            Registry.register(Registries.ITEM, sidingId, new BlockItem(sidingBlock, new FabricItemSettings()));
-            Registry.register(Registries.ITEM, mouldingId, new BlockItem(mouldingBlock, new FabricItemSettings()));
-            Registry.register(Registries.ITEM, cornerId, new BlockItem(cornerBlock, new FabricItemSettings()));
-        }
     }
 
     @Override

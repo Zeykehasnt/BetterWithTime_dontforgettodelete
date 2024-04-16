@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "": {
+      "model": "bwt:block/mangrove_planks_column",
+      "uvlock": true
+    }
+  }
+}

@@ -11,7 +11,6 @@ import com.bwt.blocks.pulley.PulleyBlock;
 import com.bwt.blocks.soul_forge.SoulForgeBlock;
 import com.bwt.blocks.turntable.TurntableBlock;
 import com.bwt.utils.DyeUtils;
-import com.mojang.serialization.MapCodec;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -29,7 +28,6 @@ import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.Function;
 
 public class BwtBlocks implements ModInitializer {
 
@@ -72,7 +70,7 @@ public class BwtBlocks implements ModInitializer {
             .requiresTool()
     );
 //	public static final Block canvasBlock = new CanvasBlock(FabricBlockSettings.create());
-//	public static final Block columnBlock = new ColumnBlock(FabricBlockSettings.create());
+    public static final ArrayList<ColumnBlock> columnBlocks = new ArrayList<>();
 	public static final Block concentratedHellfireBlock = new Block(FabricBlockSettings.create().hardness(2f).requiresTool().mapColor(MapColor.BRIGHT_RED).sounds(BlockSoundGroup.METAL));
 	public static final Block companionCubeBlock = new CompanionCubeBlock(FabricBlockSettings.copyOf(Blocks.WHITE_WOOL)
             .hardness(0.4f)
@@ -140,7 +138,7 @@ public class BwtBlocks implements ModInitializer {
 	public static final Block obsidianDetectorRailBlock = new DetectorRailBlock(FabricBlockSettings.copyOf(Blocks.DETECTOR_RAIL)
             .strength(25.0f, 1200.0f)
     );
-//	public static final Block pedestalBlock = new PedestalBlock(FabricBlockSettings.create());
+    public static final ArrayList<PedestalBlock> pedestalBlocks = new ArrayList<>();
 	public static final Block planterBlock = new PlanterBlock(FabricBlockSettings.copyOf(Blocks.TERRACOTTA)
             .nonOpaque()
             .hardness(0.6f)
@@ -187,7 +185,7 @@ public class BwtBlocks implements ModInitializer {
     public static final Block stokedFireBlock = new StokedFireBlock(FabricBlockSettings.copyOf(Blocks.SOUL_FIRE));
     public static final Block stoneDetectorRailBlock = new DetectorRailBlock(FabricBlockSettings.copyOf(Blocks.DETECTOR_RAIL));
 	public static final Block soulForgeBlock = new SoulForgeBlock(FabricBlockSettings.copyOf(Blocks.ANVIL));
-//	public static final Block tableBlock = new TableBlock(FabricBlockSettings.create());
+    public static final ArrayList<TableBlock> tableBlocks = new ArrayList<>();
 	public static final Block turntableBlock = new TurntableBlock(FabricBlockSettings.create()
             .strength(2f)
             .sounds(BlockSoundGroup.STONE)
@@ -332,7 +330,10 @@ public class BwtBlocks implements ModInitializer {
         // Kiln
         Registry.register(Registries.BLOCK, new Identifier("bwt", "kiln"), kilnBlock);
         // Mini blocks
-        MiniBlock.registerMiniBlocks(sidingBlocks, mouldingBlocks, cornerBlocks);
+        MaterialInheritedBlock.registerMaterialBlocks(
+                sidingBlocks, mouldingBlocks, cornerBlocks,
+                columnBlocks, pedestalBlocks, tableBlocks
+        );
         // Crucible
         Registry.register(Registries.BLOCK, new Identifier("bwt", "crucible"), crucibleBlock);
         Registry.register(Registries.ITEM, new Identifier("bwt", "crucible"), new BlockItem(crucibleBlock, new FabricItemSettings()));
@@ -431,8 +432,11 @@ public class BwtBlocks implements ModInitializer {
                 SidingBlock sidingBlock = sidingBlocks.get(i);
                 MouldingBlock mouldingBlock = mouldingBlocks.get(i);
                 CornerBlock cornerBlock = cornerBlocks.get(i);
+                ColumnBlock columnBlock = columnBlocks.get(i);
+                PedestalBlock pedestalBlock = pedestalBlocks.get(i);
+                TableBlock tableBlock = tableBlocks.get(i);
                 if (content.getDisplayStacks().stream().anyMatch(itemStack -> itemStack.isOf(sidingBlock.fullBlock.asItem()))) {
-                    content.addAfter(sidingBlock.fullBlock, sidingBlock, mouldingBlock, cornerBlock);
+                    content.addAfter(sidingBlock.fullBlock, sidingBlock, mouldingBlock, cornerBlock, columnBlock, pedestalBlock, tableBlock);
                 }
             }
             content.add(companionCubeBlock);

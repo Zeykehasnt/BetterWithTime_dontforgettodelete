@@ -18,6 +18,12 @@ public class BwtBlockTags {
     public static final TagKey<Block> WOODEN_MOULDING_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "wooden_moulding_blocks"));
     public static final TagKey<Block> CORNER_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "corner_blocks"));
     public static final TagKey<Block> WOODEN_CORNER_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "wooden_corner_blocks"));
+    public static final TagKey<Block> COLUMN_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "column_blocks"));
+    public static final TagKey<Block> WOODEN_COLUMN_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "wooden_column_blocks"));
+    public static final TagKey<Block> PEDESTAL_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "pedestal_blocks"));
+    public static final TagKey<Block> WOODEN_PEDESTAL_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "wooden_pedestal_blocks"));
+    public static final TagKey<Block> TABLE_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "table_blocks"));
+    public static final TagKey<Block> WOODEN_TABLE_BLOCKS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "wooden_table_blocks"));
     public static final TagKey<Block> VASES = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "vases"));
     public static final TagKey<Block> WOOL_SLABS = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "wool_slabs"));
     public static final TagKey<Block> DOES_NOT_TRIGGER_BUDDY = TagKey.of(RegistryKeys.BLOCK, new Identifier("bwt", "does_not_trigger_buddy"));

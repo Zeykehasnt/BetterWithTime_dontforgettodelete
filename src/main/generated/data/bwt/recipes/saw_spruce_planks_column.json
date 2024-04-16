@@ -1,0 +1,15 @@
+{
+  "type": "bwt:saw",
+  "category": "misc",
+  "ingredient": {
+    "block": "bwt:spruce_planks_column"
+  },
+  "results": [
+    {
+      "item": "bwt:spruce_planks_siding"
+    },
+    {
+      "item": "bwt:spruce_planks_moulding"
+    }
+  ]
+}

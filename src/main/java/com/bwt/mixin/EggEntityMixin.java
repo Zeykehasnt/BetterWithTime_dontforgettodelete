@@ -5,8 +5,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.thrown.EggEntity;
+import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,9 +16,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EggEntity.class)
-public class EggEntityMixin {
+public abstract class EggEntityMixin extends ThrownItemEntity {
     @Unique
     protected boolean chickenSpawned;
+
+    public EggEntityMixin(EntityType<? extends ThrownItemEntity> entityType, World world) {
+        super(entityType, world);
+        this.chickenSpawned = false;
+    }
 
     @Inject(method = "<init>(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)V", at = @At("TAIL"))
     public void bwt$init1(World world, LivingEntity owner, CallbackInfo ci) {
@@ -42,9 +47,8 @@ public class EggEntityMixin {
 
     @Inject(method = "onCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/thrown/EggEntity;discard()V"))
     public void bwt$spawnRawEgg(HitResult hitResult, CallbackInfo ci) {
-        EggEntity eggEntity = (EggEntity)(Object)this;
         if (!this.chickenSpawned) {
-            eggEntity.getWorld().spawnEntity(new ItemEntity(eggEntity.getWorld(), eggEntity.getX(), eggEntity.getY(), eggEntity.getZ(), new ItemStack(BwtItems.rawEggItem)));
+            getWorld().spawnEntity(new ItemEntity(getWorld(), getX(), getY(), getZ(), new ItemStack(BwtItems.rawEggItem)));
         }
     }
 }

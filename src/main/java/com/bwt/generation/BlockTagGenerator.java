@@ -1,9 +1,6 @@
 package com.bwt.generation;
 
-import com.bwt.blocks.BwtBlocks;
-import com.bwt.blocks.CornerBlock;
-import com.bwt.blocks.MouldingBlock;
-import com.bwt.blocks.SidingBlock;
+import com.bwt.blocks.*;
 import com.bwt.tags.BwtBlockTags;
 import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -13,6 +10,8 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
     public BlockTagGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
@@ -71,16 +70,23 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         getOrCreateTagBuilder(BlockTags.WOOL).add(BwtBlocks.companionCubeBlock, BwtBlocks.companionSlabBlock);
 
         addTools();
-        addMiniBlockTags();
+        addMaterialInheritedBlockTags();
         addVases();
         addWoolSlabs();
         addSawTags();
     }
 
     private void addTools() {
-        BwtBlocks.sidingBlocks.forEach(sidingBlock -> getOrCreateTagBuilder(sidingBlock.isWood() ? BlockTags.AXE_MINEABLE : BlockTags.PICKAXE_MINEABLE).add(sidingBlock));
-        BwtBlocks.mouldingBlocks.forEach(mouldingBlock -> getOrCreateTagBuilder(mouldingBlock.isWood() ? BlockTags.AXE_MINEABLE : BlockTags.PICKAXE_MINEABLE).add(mouldingBlock));
-        BwtBlocks.cornerBlocks.forEach(cornerBlock -> getOrCreateTagBuilder(cornerBlock.isWood() ? BlockTags.AXE_MINEABLE : BlockTags.PICKAXE_MINEABLE).add(cornerBlock));
+        Stream.of(
+                BwtBlocks.sidingBlocks.stream(),
+                BwtBlocks.mouldingBlocks.stream(),
+                BwtBlocks.cornerBlocks.stream(),
+                BwtBlocks.columnBlocks.stream(),
+                BwtBlocks.pedestalBlocks.stream(),
+                BwtBlocks.tableBlocks.stream()
+        )
+                .reduce(Stream::concat).orElseGet(Stream::empty)
+                .forEach(materialInheritedBlock -> getOrCreateTagBuilder(materialInheritedBlock.isWood() ? BlockTags.AXE_MINEABLE : BlockTags.PICKAXE_MINEABLE).add(materialInheritedBlock));
 
         getOrCreateTagBuilder(BwtBlockTags.MATTOCK_MINEABLE).forceAddTag(BlockTags.PICKAXE_MINEABLE).forceAddTag(BlockTags.SHOVEL_MINEABLE);
         getOrCreateTagBuilder(BwtBlockTags.BATTLEAXE_MINEABLE).forceAddTag(BlockTags.AXE_MINEABLE).forceAddTag(BlockTags.SWORD_EFFICIENT);
@@ -154,22 +160,37 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         getOrCreateTagBuilder(BlockTags.SWORD_EFFICIENT).add(BwtBlocks.ropeBlock, BwtBlocks.hempCropBlock);
     }
 
-    protected void addMiniBlockTags() {
+    protected void addMaterialInheritedBlockTags() {
         FabricTagBuilder woodenSidingBuilder = getOrCreateTagBuilder(BwtBlockTags.WOODEN_SIDING_BLOCKS);
         FabricTagBuilder woodenMouldingBuilder = getOrCreateTagBuilder(BwtBlockTags.WOODEN_MOULDING_BLOCKS);
         FabricTagBuilder woodenCornerBuilder = getOrCreateTagBuilder(BwtBlockTags.WOODEN_CORNER_BLOCKS);
         FabricTagBuilder sidingBuilder = getOrCreateTagBuilder(BwtBlockTags.SIDING_BLOCKS);
         FabricTagBuilder mouldingBuilder = getOrCreateTagBuilder(BwtBlockTags.MOULDING_BLOCKS);
         FabricTagBuilder cornerBuilder = getOrCreateTagBuilder(BwtBlockTags.CORNER_BLOCKS);
-        BwtBlocks.sidingBlocks.stream().filter(SidingBlock::isWood).forEach(woodenSidingBuilder::add);
-        BwtBlocks.mouldingBlocks.stream().filter(MouldingBlock::isWood).forEach(woodenMouldingBuilder::add);
-        BwtBlocks.cornerBlocks.stream().filter(CornerBlock::isWood).forEach(woodenCornerBuilder::add);
+        FabricTagBuilder woodenColumnBuilder = getOrCreateTagBuilder(BwtBlockTags.WOODEN_COLUMN_BLOCKS);
+        FabricTagBuilder woodenPedestalBuilder = getOrCreateTagBuilder(BwtBlockTags.WOODEN_PEDESTAL_BLOCKS);
+        FabricTagBuilder woodenTableBuilder = getOrCreateTagBuilder(BwtBlockTags.WOODEN_TABLE_BLOCKS);
+        FabricTagBuilder columnBuilder = getOrCreateTagBuilder(BwtBlockTags.COLUMN_BLOCKS);
+        FabricTagBuilder pedestalBuilder = getOrCreateTagBuilder(BwtBlockTags.PEDESTAL_BLOCKS);
+        FabricTagBuilder tableBuilder = getOrCreateTagBuilder(BwtBlockTags.TABLE_BLOCKS);
+        BwtBlocks.sidingBlocks.stream().filter(MaterialInheritedBlock::isWood).forEach(woodenSidingBuilder::add);
+        BwtBlocks.mouldingBlocks.stream().filter(MaterialInheritedBlock::isWood).forEach(woodenMouldingBuilder::add);
+        BwtBlocks.cornerBlocks.stream().filter(MaterialInheritedBlock::isWood).forEach(woodenCornerBuilder::add);
+        BwtBlocks.columnBlocks.stream().filter(MaterialInheritedBlock::isWood).forEach(woodenColumnBuilder::add);
+        BwtBlocks.pedestalBlocks.stream().filter(MaterialInheritedBlock::isWood).forEach(woodenPedestalBuilder::add);
+        BwtBlocks.tableBlocks.stream().filter(MaterialInheritedBlock::isWood).forEach(woodenTableBuilder::add);
         sidingBuilder.addTag(BwtBlockTags.WOODEN_SIDING_BLOCKS);
         mouldingBuilder.addTag(BwtBlockTags.WOODEN_MOULDING_BLOCKS);
         cornerBuilder.addTag(BwtBlockTags.WOODEN_CORNER_BLOCKS);
-        BwtBlocks.sidingBlocks.stream().filter(sidingBlock -> !sidingBlock.isWood()).forEach(sidingBuilder::add);
-        BwtBlocks.mouldingBlocks.stream().filter(mouldingBlock -> !mouldingBlock.isWood()).forEach(mouldingBuilder::add);
-        BwtBlocks.cornerBlocks.stream().filter(cornerBlock -> !cornerBlock.isWood()).forEach(cornerBuilder::add);
+        columnBuilder.addTag(BwtBlockTags.WOODEN_COLUMN_BLOCKS);
+        pedestalBuilder.addTag(BwtBlockTags.WOODEN_PEDESTAL_BLOCKS);
+        tableBuilder.addTag(BwtBlockTags.WOODEN_TABLE_BLOCKS);
+        BwtBlocks.sidingBlocks.stream().filter(Predicate.not(MaterialInheritedBlock::isWood)).forEach(sidingBuilder::add);
+        BwtBlocks.mouldingBlocks.stream().filter(Predicate.not(MaterialInheritedBlock::isWood)).forEach(mouldingBuilder::add);
+        BwtBlocks.cornerBlocks.stream().filter(Predicate.not(MaterialInheritedBlock::isWood)).forEach(cornerBuilder::add);
+        BwtBlocks.columnBlocks.stream().filter(Predicate.not(MaterialInheritedBlock::isWood)).forEach(columnBuilder::add);
+        BwtBlocks.pedestalBlocks.stream().filter(Predicate.not(MaterialInheritedBlock::isWood)).forEach(pedestalBuilder::add);
+        BwtBlocks.tableBlocks.stream().filter(Predicate.not(MaterialInheritedBlock::isWood)).forEach(tableBuilder::add);
     }
 
     private void addVases() {

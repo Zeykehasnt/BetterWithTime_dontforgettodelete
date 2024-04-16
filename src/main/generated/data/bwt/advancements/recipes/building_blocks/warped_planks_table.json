@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "bwt:warped_planks_table"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_warped_planks_moulding": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bwt:warped_planks_moulding"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_warped_planks_moulding"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "bwt:warped_planks_table"
+    ]
+  }
+}

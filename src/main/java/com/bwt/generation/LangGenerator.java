@@ -1,9 +1,7 @@
 package com.bwt.generation;
 
 import com.bwt.blocks.BwtBlocks;
-import com.bwt.blocks.CornerBlock;
-import com.bwt.blocks.MouldingBlock;
-import com.bwt.blocks.SidingBlock;
+import com.bwt.blocks.MaterialInheritedBlock;
 import com.bwt.gamerules.BwtGameRules;
 import com.bwt.items.BwtItems;
 import com.bwt.sounds.BwtSoundEvents;
@@ -27,16 +25,12 @@ public class LangGenerator extends FabricLanguageProvider {
         addSubtitles(translationBuilder);
 
         translationBuilder.add(BwtGameRules.VANILLA_HOPPERS_DISABLED.getTranslationKey(), "Disable Vanilla Hopper Transfer");
-
-        for (SidingBlock sidingBlock : BwtBlocks.sidingBlocks) {
-            translationBuilder.add(sidingBlock, nameKeyToTitleCase(sidingBlock.fullBlock.getName().getString().replaceFirst("_planks", "") + "_siding"));
-        }
-        for (MouldingBlock mouldingBlock : BwtBlocks.mouldingBlocks) {
-            translationBuilder.add(mouldingBlock, nameKeyToTitleCase(mouldingBlock.fullBlock.getName().getString().replaceFirst("_planks", "") + "_moulding"));;
-        }
-        for (CornerBlock cornerBlock : BwtBlocks.cornerBlocks) {
-            translationBuilder.add(cornerBlock, nameKeyToTitleCase(cornerBlock.fullBlock.getName().getString().replaceFirst("_planks", "") + "_corner"));;
-        }
+        BwtBlocks.sidingBlocks.forEach(block -> addMaterialBlockName(translationBuilder, block, "siding"));
+        BwtBlocks.mouldingBlocks.forEach(block -> addMaterialBlockName(translationBuilder, block, "moulding"));
+        BwtBlocks.cornerBlocks.forEach(block -> addMaterialBlockName(translationBuilder, block, "corner"));
+        BwtBlocks.columnBlocks.forEach(block -> addMaterialBlockName(translationBuilder, block, "column"));
+        BwtBlocks.pedestalBlocks.forEach(block -> addMaterialBlockName(translationBuilder, block, "pedestal"));
+        BwtBlocks.tableBlocks.forEach(block -> addMaterialBlockName(translationBuilder, block, "table"));
         translationBuilder.add(BwtBlocks.unfiredCrucibleBlock, "Unfired Crucible");
         translationBuilder.add(BwtBlocks.unfiredPlanterBlock, "Unfired Planter");
         translationBuilder.add(BwtBlocks.unfiredVaseBlock, "Unfired Vase");
@@ -90,6 +84,10 @@ public class LangGenerator extends FabricLanguageProvider {
 
     protected void addSubtitle(SoundEvent soundEvent, String value, TranslationBuilder translationBuilder) {
         translationBuilder.add(soundEvent.getId().withPrefixedPath("subtitles."), value);
+    }
+
+    protected void addMaterialBlockName(TranslationBuilder translationBuilder, MaterialInheritedBlock materialInheritedBlock, String suffix) {
+        translationBuilder.add(materialInheritedBlock, nameKeyToTitleCase(materialInheritedBlock.fullBlock.getName().getString().replaceFirst("_planks", "") + "_" + suffix));
     }
 
     public static String nameKeyToTitleCase(String snakeString) {

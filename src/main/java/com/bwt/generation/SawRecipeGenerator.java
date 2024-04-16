@@ -1,9 +1,6 @@
 package com.bwt.generation;
 
-import com.bwt.blocks.BwtBlocks;
-import com.bwt.blocks.CornerBlock;
-import com.bwt.blocks.MouldingBlock;
-import com.bwt.blocks.SidingBlock;
+import com.bwt.blocks.*;
 import com.bwt.items.BwtItems;
 import com.bwt.recipes.SawRecipe;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -41,6 +38,9 @@ public class SawRecipeGenerator extends FabricRecipeProvider {
             SidingBlock sidingBlock = BwtBlocks.sidingBlocks.get(i);
             MouldingBlock mouldingBlock = BwtBlocks.mouldingBlocks.get(i);
             CornerBlock cornerBlock = BwtBlocks.cornerBlocks.get(i);
+            ColumnBlock columnBlock = BwtBlocks.columnBlocks.get(i);
+            PedestalBlock pedestalBlock = BwtBlocks.pedestalBlocks.get(i);
+            TableBlock tableBlock = BwtBlocks.tableBlocks.get(i);
             if (!sidingBlock.isWood()) {
                 continue;
             }
@@ -76,6 +76,9 @@ public class SawRecipeGenerator extends FabricRecipeProvider {
             SawRecipe.JsonBuilder.create(Registries.BLOCK.get(fenceGateId)).result(cornerBlock).result(Items.STICK).offerTo(exporter);
             SawRecipe.JsonBuilder.create(Registries.BLOCK.get(stairsId)).result(sidingBlock).result(mouldingBlock).offerTo(exporter);
             SawRecipe.JsonBuilder.create(Registries.BLOCK.get(slabId)).result(mouldingBlock, 2).offerTo(exporter);
+            SawRecipe.JsonBuilder.create(columnBlock).result(sidingBlock).result(mouldingBlock).offerTo(exporter);
+            SawRecipe.JsonBuilder.create(pedestalBlock).result(mouldingBlock, 2).offerTo(exporter);
+            SawRecipe.JsonBuilder.create(tableBlock).result(mouldingBlock).offerTo(exporter);
         }
     }
 }

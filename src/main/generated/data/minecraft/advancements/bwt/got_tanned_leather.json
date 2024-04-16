@@ -1,0 +1,31 @@
+{
+  "parent": "minecraft:bwt/got_dung",
+  "criteria": {
+    "got_tanned_leather": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "bwt:tanned_leather"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "description": "Tan leather in the cauldron using dung",
+    "icon": {
+      "item": "bwt:tanned_leather"
+    },
+    "title": "Dung-Tanned"
+  },
+  "requirements": [
+    [
+      "got_tanned_leather"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

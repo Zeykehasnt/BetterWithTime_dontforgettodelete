@@ -36,18 +36,13 @@ public class ModelGenerator extends FabricModelProvider {
                         )
                 ).coordinate(createUpDefaultRotationStates())
         );
-        for (SidingBlock sidingBlock : BwtBlocks.sidingBlocks) {
-            generateSidingBlock(blockStateModelGenerator, sidingBlock);
-        }
-        for (MouldingBlock mouldingBlock : BwtBlocks.mouldingBlocks) {
-            generateMouldingBlock(blockStateModelGenerator, mouldingBlock);
-        }
-        for (CornerBlock cornerBlock : BwtBlocks.cornerBlocks) {
-            generateCornerBlock(blockStateModelGenerator, cornerBlock);
-        }
-        for (VaseBlock vaseBlock : BwtBlocks.vaseBlocks.values()) {
-            generateVaseBlock(blockStateModelGenerator, vaseBlock);
-        }
+        BwtBlocks.sidingBlocks.forEach(sidingBlock -> generateSidingBlock(blockStateModelGenerator, sidingBlock));
+        BwtBlocks.mouldingBlocks.forEach(mouldingBlock -> generateMouldingBlock(blockStateModelGenerator, mouldingBlock));
+        BwtBlocks.cornerBlocks.forEach(cornerBlock -> generateCornerBlock(blockStateModelGenerator, cornerBlock));
+        BwtBlocks.columnBlocks.forEach(columnBlock -> generateColumnBlock(blockStateModelGenerator, columnBlock));
+        BwtBlocks.pedestalBlocks.forEach(pedestalBlock -> generatePedestalBlock(blockStateModelGenerator, pedestalBlock));
+        BwtBlocks.tableBlocks.forEach(tableBlock -> generateTableBlock(blockStateModelGenerator, tableBlock));
+        BwtBlocks.vaseBlocks.values().forEach(vaseBlock -> generateVaseBlock(blockStateModelGenerator, vaseBlock));
         BwtBlocks.woolSlabBlocks.forEach((dyeColor, woolSlab) -> generateWoolSlab(blockStateModelGenerator, dyeColor, woolSlab));
         blockStateModelGenerator.registerStraightRail(BwtBlocks.stoneDetectorRailBlock);
         blockStateModelGenerator.registerStraightRail(BwtBlocks.obsidianDetectorRailBlock);
@@ -340,6 +335,48 @@ public class ModelGenerator extends FabricModelProvider {
                 ).coordinate(createCornerOrientationMap())
         );
         blockStateModelGenerator.registerParentedItemModel(cornerBlock, ModelIds.getBlockModelId(cornerBlock));
+    }
+
+    public static void generateColumnBlock(BlockStateModelGenerator blockStateModelGenerator, ColumnBlock columnBlock) {
+        TexturedModel texturedModel = TexturedModel.CUBE_ALL.get(columnBlock.fullBlock);
+        Model model = new Model(Optional.of(new Identifier("bwt", "block/column")), Optional.empty(), TextureKey.BOTTOM, TextureKey.TOP, TextureKey.SIDE);
+        model.upload(columnBlock, texturedModel.getTextures(), blockStateModelGenerator.modelCollector);
+        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(columnBlock, BlockStateVariant.create().put(VariantSettings.MODEL, ModelIds.getBlockModelId(columnBlock)).put(VariantSettings.UVLOCK, true)));
+        blockStateModelGenerator.registerParentedItemModel(columnBlock, ModelIds.getBlockModelId(columnBlock));
+    }
+
+    public static void generatePedestalBlock(BlockStateModelGenerator blockStateModelGenerator, PedestalBlock pedestalBlock) {
+        TexturedModel texturedModel = TexturedModel.CUBE_ALL.get(pedestalBlock.fullBlock);
+        Model model = new Model(Optional.of(new Identifier("bwt", "block/pedestal")), Optional.empty(), TextureKey.BOTTOM, TextureKey.TOP, TextureKey.SIDE);
+        model.upload(pedestalBlock, texturedModel.getTextures(), blockStateModelGenerator.modelCollector);
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(
+                        pedestalBlock,
+                        BlockStateVariant.create().put(
+                                VariantSettings.MODEL,
+                                ModelIds.getBlockModelId(pedestalBlock)
+                        ).put(VariantSettings.UVLOCK, true)
+                ).coordinate(BlockStateVariantMap.create(PedestalBlock.VERTICAL_DIRECTION)
+                        .register(Direction.DOWN, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R180))
+                        .register(Direction.UP, BlockStateVariant.create())
+                )
+        );
+        blockStateModelGenerator.registerParentedItemModel(pedestalBlock, ModelIds.getBlockModelId(pedestalBlock));
+    }
+
+    public static void generateTableBlock(BlockStateModelGenerator blockStateModelGenerator, TableBlock tableBlock) {
+        TexturedModel texturedModel = TexturedModel.CUBE_ALL.get(tableBlock.fullBlock);
+        Model tableModel = new Model(Optional.of(new Identifier("bwt", "block/table")), Optional.empty(), TextureKey.BOTTOM, TextureKey.TOP, TextureKey.SIDE);
+        Model tableNoSupportModel = new Model(Optional.of(new Identifier("bwt", "block/table_no_support")), Optional.empty(), TextureKey.BOTTOM, TextureKey.TOP, TextureKey.SIDE);
+        Identifier tableModelId = tableModel.upload(ModelIds.getBlockModelId(tableBlock), texturedModel.getTextures(), blockStateModelGenerator.modelCollector);
+        Identifier noSupportModelId = tableNoSupportModel.upload(ModelIds.getBlockSubModelId(tableBlock, "_no_support"), texturedModel.getTextures(), blockStateModelGenerator.modelCollector);
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(tableBlock)
+                        .coordinate(BlockStateVariantMap.create(TableBlock.SUPPORT)
+                                .register(true, BlockStateVariant.create().put(VariantSettings.MODEL, tableModelId))
+                                .register(false, BlockStateVariant.create().put(VariantSettings.MODEL, noSupportModelId))
+                        )
+        );
     }
 
     public void generateVaseBlock(BlockStateModelGenerator blockStateModelGenerator, VaseBlock vaseBlock) {

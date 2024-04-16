@@ -1,0 +1,15 @@
+{
+  "type": "bwt:saw",
+  "category": "misc",
+  "ingredient": {
+    "block": "bwt:dark_oak_planks_column"
+  },
+  "results": [
+    {
+      "item": "bwt:dark_oak_planks_siding"
+    },
+    {
+      "item": "bwt:dark_oak_planks_moulding"
+    }
+  ]
+}

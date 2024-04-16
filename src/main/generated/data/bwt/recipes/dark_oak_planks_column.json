@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "column",
+  "key": {
+    "#": {
+      "item": "bwt:dark_oak_planks_moulding"
+    }
+  },
+  "pattern": [
+    "#",
+    "#",
+    "#"
+  ],
+  "result": {
+    "item": "bwt:dark_oak_planks_column"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "bwt:saw",
+  "category": "misc",
+  "ingredient": {
+    "block": "bwt:birch_planks_table"
+  },
+  "results": [
+    {
+      "item": "bwt:birch_planks_moulding"
+    }
+  ]
+}

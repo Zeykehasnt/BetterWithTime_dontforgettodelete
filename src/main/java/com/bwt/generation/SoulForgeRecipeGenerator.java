@@ -1,15 +1,13 @@
 package com.bwt.generation;
 
-import com.bwt.blocks.BwtBlocks;
-import com.bwt.blocks.CornerBlock;
-import com.bwt.blocks.MouldingBlock;
-import com.bwt.blocks.SidingBlock;
+import com.bwt.blocks.*;
 import com.bwt.items.BwtItems;
 import com.bwt.recipes.SoulForgeShapedRecipe;
 import com.bwt.recipes.SoulForgeShapelessRecipe;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.server.recipe.RecipeExporter;
+import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
@@ -25,6 +23,9 @@ public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
             SidingBlock sidingBlock = BwtBlocks.sidingBlocks.get(i);
             MouldingBlock mouldingBlock = BwtBlocks.mouldingBlocks.get(i);
             CornerBlock cornerBlock = BwtBlocks.cornerBlocks.get(i);
+            ColumnBlock columnBlock = BwtBlocks.columnBlocks.get(i);
+            PedestalBlock pedestalBlock = BwtBlocks.pedestalBlocks.get(i);
+            TableBlock tableBlock = BwtBlocks.tableBlocks.get(i);
             if (sidingBlock.isWood()) {
                 continue;
             }
@@ -62,6 +63,34 @@ public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
                     .group("moulding")
                     .criterion(hasItem(cornerBlock), conditionsFromItem(cornerBlock))
                     .offerTo(exporter, "bwt:recombine_" + Registries.BLOCK.getId(cornerBlock).getPath());
+
+            // Decorative blocks
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, columnBlock)
+                    .pattern("#")
+                    .pattern("#")
+                    .pattern("#")
+                    .input('#', mouldingBlock)
+                    .group("column")
+                    .criterion(hasItem(mouldingBlock), conditionsFromItem(mouldingBlock))
+                    .offerTo(exporter);
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, pedestalBlock, 6)
+                    .pattern(" s ")
+                    .pattern("###")
+                    .pattern("###")
+                    .input('#', sidingBlock.fullBlock)
+                    .input('s', sidingBlock)
+                    .group("pedestal")
+                    .criterion(hasItem(sidingBlock), conditionsFromItem(sidingBlock))
+                    .offerTo(exporter);
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, tableBlock, 4)
+                    .pattern("sss")
+                    .pattern(" m ")
+                    .pattern(" m ")
+                    .input('s', sidingBlock)
+                    .input('m', mouldingBlock)
+                    .group("table")
+                    .criterion(hasItem(mouldingBlock), conditionsFromItem(mouldingBlock))
+                    .offerTo(exporter);
         }
 
         SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.TOOLS, Items.NETHERITE_BLOCK)
