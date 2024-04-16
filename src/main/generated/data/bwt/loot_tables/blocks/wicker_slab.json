@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "bwt:wicker_slab_block"
+          "name": "bwt:wicker_slab"
         }
       ],
       "rolls": 1.0

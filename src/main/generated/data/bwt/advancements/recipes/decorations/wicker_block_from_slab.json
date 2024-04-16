@@ -7,12 +7,12 @@
       },
       "trigger": "minecraft:recipe_unlocked"
     },
-    "has_wicker_slab_block": {
+    "has_wicker_slab": {
       "conditions": {
         "items": [
           {
             "items": [
-              "bwt:wicker_slab_block"
+              "bwt:wicker_slab"
             ]
           }
         ]
@@ -23,7 +23,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_wicker_slab_block"
+      "has_wicker_slab"
     ]
   ],
   "rewards": {

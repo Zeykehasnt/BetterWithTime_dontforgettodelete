@@ -4,7 +4,7 @@
   "group": "wicker",
   "ingredients": [
     {
-      "item": "bwt:wicker_slab_block"
+      "item": "bwt:wicker_slab"
     }
   ],
   "result": {
