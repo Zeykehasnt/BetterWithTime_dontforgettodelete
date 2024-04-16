@@ -151,6 +151,10 @@ public class DynamiteEntity extends ProjectileEntity implements FlyingItemEntity
         if (fuse < 0) {
             if (this.isInLava()) {
                 ignite();
+                discard();
+                if (!getWorld().isClient) {
+                    explode();
+                }
                 return;
             }
             if (isOnGround()) {
