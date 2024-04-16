@@ -1,8 +1,13 @@
 package com.bwt.blocks.block_dispenser;
 
-import com.bwt.blocks.block_dispenser.behavior.dispense.*;
+import com.bwt.blocks.block_dispenser.behavior.dispense.BlockDispenserBehavior;
+import com.bwt.blocks.block_dispenser.behavior.dispense.DefaultItemDispenserBehavior;
+import com.bwt.blocks.block_dispenser.behavior.dispense.ItemClumpDispenserBehavior;
 import com.bwt.blocks.block_dispenser.behavior.inhale.BlockInhaleBehavior;
 import com.bwt.blocks.block_dispenser.behavior.inhale.EntityInhaleBehavior;
+import com.bwt.entities.BroadheadArrowEntity;
+import com.bwt.entities.DynamiteEntity;
+import com.bwt.items.BwtItems;
 import com.bwt.recipes.BlockDispenserClumpRecipe;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.tags.BwtBlockTags;
@@ -14,11 +19,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.dispenser.DispenserBehavior;
 import net.minecraft.block.dispenser.ItemDispenserBehavior;
+import net.minecraft.block.dispenser.ProjectileDispenserBehavior;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.*;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.recipe.RecipeEntry;
@@ -31,6 +39,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Position;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -53,8 +62,18 @@ public class BlockDispenserBlock extends DispenserBlock {
 
     protected void inheritItemBehavior(Item... items) {
         for (Item item : items) {
-            ITEM_BEHAVIORS.put(item, getBehaviorForItem(item.getDefaultStack()));
+            ITEM_BEHAVIORS.put(item, invertStackResult(getBehaviorForItem(item.getDefaultStack())));
         }
+    }
+
+    protected DispenserBehavior invertStackResult(DispenserBehavior behavior) {
+        return (pointer, stack) -> {
+            int originalCount = stack.getCount();
+            ItemStack overwriteStack = behavior.dispense(pointer, stack);
+            int newCount = overwriteStack.getCount();
+            stack.setCount(originalCount);
+            return overwriteStack.copyWithCount(originalCount - newCount);
+        };
     }
 
     public void registerItemDispenseBehaviors() {
@@ -64,11 +83,11 @@ public class BlockDispenserBlock extends DispenserBlock {
                 Items.ARROW,
                 Items.SPECTRAL_ARROW,
                 Items.TIPPED_ARROW,
-                Items.EGG
-        );
+                Items.EGG,
 
-        BoatDispenserBehavior boatDispenserBehavior = new BoatDispenserBehavior();
-        for (Item item : new Item[]{
+                Items.SPLASH_POTION,
+                Items.LINGERING_POTION,
+
                 Items.OAK_BOAT,
                 Items.SPRUCE_BOAT,
                 Items.BIRCH_BOAT,
@@ -86,14 +105,8 @@ public class BlockDispenserBlock extends DispenserBlock {
                 Items.ACACIA_CHEST_BOAT,
                 Items.CHERRY_CHEST_BOAT,
                 Items.MANGROVE_CHEST_BOAT,
-                Items.BAMBOO_CHEST_RAFT
-        }) {
-            BoatItem boat = (BoatItem) item;
-            ITEM_BEHAVIORS.put(boat, boatDispenserBehavior);
-        }
+                Items.BAMBOO_CHEST_RAFT,
 
-        MinecartDispenserBehavior minecartDispenserBehavior = new MinecartDispenserBehavior();
-        for (Item item : new Item[]{
                 Items.MINECART,
                 Items.CHEST_MINECART,
                 Items.COMMAND_BLOCK_MINECART,
@@ -101,10 +114,40 @@ public class BlockDispenserBlock extends DispenserBlock {
                 Items.FURNACE_MINECART,
                 Items.HOPPER_MINECART,
                 Items.TNT_MINECART
-        }) {
-            MinecartItem minecart = (MinecartItem) item;
-            ITEM_BEHAVIORS.put(minecart, minecartDispenserBehavior);
-        }
+        );
+
+        DispenserBehavior dynamiteBehavior = new ProjectileDispenserBehavior() {
+            @Override
+            protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
+                DynamiteEntity dynamiteEntity = new DynamiteEntity(position.getX(), position.getY(), position.getZ(), world);
+                dynamiteEntity.ignite();
+                return dynamiteEntity;
+            }
+
+            @Override
+            protected float getForce() {
+                return 1.0f;
+            }
+
+            @Override
+            protected float getVariation() {
+                return 1.0f;
+            }
+        };
+        registerItemDispenseBehavior(BwtItems.dynamiteItem, invertStackResult(dynamiteBehavior));
+        DispenserBlock.registerBehavior(BwtItems.dynamiteItem, dynamiteBehavior);
+
+        DispenserBehavior broadheadArrowBehavior = new ProjectileDispenserBehavior() {
+            @Override
+            protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
+                BroadheadArrowEntity broadheadArrowEntity = new BroadheadArrowEntity(world, position.getX(), position.getY(), position.getZ(), stack.copyWithCount(1));
+                broadheadArrowEntity.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
+                return broadheadArrowEntity;
+            }
+        };
+        registerItemDispenseBehavior(BwtItems.broadheadArrowItem, invertStackResult(broadheadArrowBehavior));
+        DispenserBlock.registerBehavior(BwtItems.broadheadArrowItem, broadheadArrowBehavior);
+
     }
 
     public static void registerEntityInhaleBehavior(EntityType<?> entityType, EntityInhaleBehavior behavior) {
@@ -113,6 +156,10 @@ public class BlockDispenserBlock extends DispenserBlock {
 
     public static void registerBlockInhaleBehavior(Class<? extends Block> blockClass, BlockInhaleBehavior behavior) {
         BLOCK_INHALE_BEHAVIORS.put(blockClass, behavior);
+    }
+
+    public static void registerItemDispenseBehavior(Item item, DispenserBehavior behavior) {
+        ITEM_BEHAVIORS.put(item, behavior);
     }
 
     public static void registerBlockDispenseBehavior(Class<? extends Block> blockClass, ItemDispenserBehavior behavior) {

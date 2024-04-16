@@ -4,20 +4,14 @@ import com.bwt.damage_types.BwtDamageTypes;
 import com.bwt.items.BwtItems;
 import com.bwt.sounds.BwtSoundEvents;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.*;
-import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.entity.projectile.thrown.ThrownEntity;
-import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
-import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContextParameterSet;
@@ -27,16 +21,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.stat.Stats;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
@@ -51,7 +40,7 @@ public class DynamiteEntity extends ProjectileEntity implements FlyingItemEntity
         super(entityType, world);
     }
 
-    protected DynamiteEntity(double x, double y, double z, World world) {
+    public DynamiteEntity(double x, double y, double z, World world) {
         this(BwtEntities.dynamiteEntity, world);
         this.setPosition(x, y, z);
     }
@@ -217,7 +206,7 @@ public class DynamiteEntity extends ProjectileEntity implements FlyingItemEntity
         LootContextParameterSet lootContextParameterSet = new LootContextParameterSet.Builder(serverWorld)
                 .add(LootContextParameters.ORIGIN, this.getPos())
                 .add(LootContextParameters.THIS_ENTITY, this)
-                .add(LootContextParameters.DAMAGE_SOURCE, BwtDamageTypes.of(serverWorld, BwtDamageTypes.DYNAMITE_DAMAGE_TYPE))
+                .add(LootContextParameters.DAMAGE_SOURCE, BwtDamageTypes.of(serverWorld, DamageTypes.EXPLOSION))
                 .build(LootContextTypes.ENTITY);
         LootTable lootTable = serverWorld.getServer().getLootManager().getLootTable(LootTables.FISHING_FISH_GAMEPLAY);
         ObjectArrayList<ItemStack> list = lootTable.generateLoot(lootContextParameterSet);
