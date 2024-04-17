@@ -8,6 +8,7 @@ import com.bwt.blocks.crucible.CrucibleScreenHandler;
 import com.bwt.blocks.mech_hopper.MechHopperBlock;
 import com.bwt.blocks.mech_hopper.MechHopperScreenHandler;
 import com.bwt.blocks.mill_stone.MillStoneScreenHandler;
+import com.bwt.blocks.mining_charge.MiningChargeExplosion;
 import com.bwt.blocks.pulley.PulleyScreenHandler;
 import com.bwt.blocks.soul_forge.SoulForgeScreenHandler;
 import com.bwt.blocks.turntable.CanRotateHelper;
@@ -16,7 +17,9 @@ import com.bwt.blocks.turntable.RotationProcessHelper;
 import com.bwt.blocks.turntable.VerticalBlockAttachmentHelper;
 import com.bwt.damage_types.BwtDamageTypes;
 import com.bwt.entities.BwtEntities;
+import com.bwt.entities.MiningChargeEntity;
 import com.bwt.gamerules.BwtGameRules;
+import com.bwt.generation.BlockLootTableGenerator;
 import com.bwt.items.BwtItems;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.sounds.BwtSoundEvents;
@@ -35,12 +38,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
-import net.minecraft.loot.condition.EntityPropertiesLootCondition;
+import net.minecraft.loot.condition.*;
 import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameter;
+import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.FurnaceSmeltLootFunction;
 import net.minecraft.loot.function.LootingEnchantLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
+import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.predicate.entity.EntityFlagsPredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
@@ -51,6 +57,8 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Set;
 
 public class BetterWithTime implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -74,8 +82,6 @@ public class BetterWithTime implements ModInitializer {
 	public static ScreenHandlerType<PulleyScreenHandler> pulleyScreenHandler = new ScreenHandlerType<>(PulleyScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
 	public static ScreenHandlerType<MechHopperScreenHandler> mechHopperScreenHandler = new ScreenHandlerType<>(MechHopperScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
 	public static ScreenHandlerType<SoulForgeScreenHandler> soulForgeScreenHandler = new ScreenHandlerType<>(SoulForgeScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
-
-	private static final Identifier WOLF_LOOT_TABLE_ID = EntityType.WOLF.getLootTableId();
 
 	static {
 		blockDispenserScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "block_dispenser"), blockDispenserScreenHandler);
@@ -103,7 +109,10 @@ public class BetterWithTime implements ModInitializer {
 		dataHandlers.onInitialize();
 
 		LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
-			if (source.isBuiltin() && id.equals(WOLF_LOOT_TABLE_ID)) {
+			if (!source.isBuiltin()) {
+				return;
+			}
+			if (id.equals(EntityType.WOLF.getLootTableId())) {
 				LootPool.Builder poolBuilder = LootPool.builder()
 						.with(ItemEntry.builder(BwtItems.wolfChopItem)
 								.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 3.0f)))
@@ -115,6 +124,10 @@ public class BetterWithTime implements ModInitializer {
 						).apply(LootingEnchantLootFunction.builder(UniformLootNumberProvider.create(0.0f, 1.0f)));
 
 				tableBuilder.pool(poolBuilder);
+			}
+			if (id.equals(Blocks.COBBLESTONE.getLootTableId())) {
+				tableBuilder.modifyPools(builder -> builder.conditionally(new InvertedLootCondition(MiningChargeExplosion.LOOT_CONDITION)))
+						.pool(LootPool.builder().conditionally(MiningChargeExplosion.LOOT_CONDITION).with(ItemEntry.builder(Items.GRAVEL)));
 			}
 		});
 

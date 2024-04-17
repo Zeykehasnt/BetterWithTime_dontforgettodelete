@@ -418,6 +418,7 @@ public class BwtBlocks implements ModInitializer {
             content.add(cauldronBlock);
             content.add(crucibleBlock);
             content.add(soulForgeBlock);
+            content.addAfter(Items.TNT, miningChargeBlock);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(content -> {

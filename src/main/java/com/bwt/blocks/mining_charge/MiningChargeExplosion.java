@@ -8,6 +8,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.loot.condition.LootCondition;
+import net.minecraft.loot.condition.LootConditionType;
+import net.minecraft.loot.condition.LootConditionTypes;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +28,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class MiningChargeExplosion extends Explosion {
+    public static final LootCondition LOOT_CONDITION = new LootCondition() {
+        @Override
+        public LootConditionType getType() {
+            return new LootConditionType(LootConditionTypes.CODEC);
+        }
+
+        @Override
+        public boolean test(LootContext lootContext) {
+            if (lootContext.hasParameter(LootContextParameters.THIS_ENTITY)) {
+                return lootContext.get(LootContextParameters.THIS_ENTITY) instanceof MiningChargeEntity;
+            }
+            return false;
+        }
+    };
+
     protected final World world;
     protected final ExplosionBehavior behavior;
     protected final MiningChargeEntity miningChargeEntity;
