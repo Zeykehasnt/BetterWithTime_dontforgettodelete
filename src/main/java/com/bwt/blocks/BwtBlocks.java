@@ -7,6 +7,7 @@ import com.bwt.blocks.detector.DetectorBlock;
 import com.bwt.blocks.detector.DetectorLogicBlock;
 import com.bwt.blocks.mech_hopper.MechHopperBlock;
 import com.bwt.blocks.mill_stone.MillStoneBlock;
+import com.bwt.blocks.mining_charge.MiningChargeBlock;
 import com.bwt.blocks.pulley.PulleyBlock;
 import com.bwt.blocks.soul_forge.SoulForgeBlock;
 import com.bwt.blocks.turntable.TurntableBlock;
@@ -128,7 +129,13 @@ public class BwtBlocks implements ModInitializer {
 	public static final Block millStoneBlock = new MillStoneBlock(FabricBlockSettings.copyOf(Blocks.DISPENSER)
             .hardness(3.5f)
     );
-//	public static final Block miningChargeBlock = new MiningChargeBlock(FabricBlockSettings.create());
+	public static final Block miningChargeBlock = new MiningChargeBlock(FabricBlockSettings.create()
+            .mapColor(MapColor.BROWN)
+            .breakInstantly()
+            .sounds(BlockSoundGroup.GRASS)
+            .burnable()
+            .solidBlock(Blocks::never)
+    );
 	public static final ArrayList<MouldingBlock> mouldingBlocks = new ArrayList<>();
 //	public static final Block netherGrothBlock = new NetherGrothBlock(FabricBlockSettings.create());
 //	public static final Block obsidianDetectorRailBlock = new ObsidianDetectorRailBlock(FabricBlockSettings.create());
@@ -379,6 +386,9 @@ public class BwtBlocks implements ModInitializer {
         Registry.register(Registries.ITEM, new Identifier("bwt", "concentrated_hellfire_block"), new BlockItem(concentratedHellfireBlock, new FabricItemSettings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "wicker_slab"), wickerSlabBlock);
         Registry.register(Registries.ITEM, new Identifier("bwt", "wicker_slab"), new BlockItem(wickerSlabBlock, new FabricItemSettings()));
+        // Mining charge
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "mining_charge"), miningChargeBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "mining_charge"), new BlockItem(miningChargeBlock, new FabricItemSettings()));
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {
             content.addAll(DyeUtils.streamColorItemsSorted(vaseBlocks).map(vaseBlock -> vaseBlock.asItem().getDefaultStack()).toList());

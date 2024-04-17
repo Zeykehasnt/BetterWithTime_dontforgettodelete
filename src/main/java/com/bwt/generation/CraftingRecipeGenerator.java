@@ -461,6 +461,34 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('g', BwtItems.gearItem)
                 .criterion("has_wooden_siding", conditionsFromTag(BwtItemTags.WOODEN_SIDING_BLOCKS))
                 .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, BwtItems.dynamiteItem)
+                .pattern("ph")
+                .pattern("pt")
+                .pattern("ps")
+                .input('p', Items.PAPER)
+                .input('h', BwtItems.hellfireDustItem)
+                .input('t', BwtItems.tallowItem)
+                .input('s', BwtItemTags.SAW_DUSTS)
+                .criterion("has_tallow", conditionsFromItem(BwtItems.tallowItem))
+                .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, BwtBlocks.miningChargeBlock)
+                .pattern("rgr")
+                .pattern("ddd")
+                .pattern("ddd")
+                .input('r', BwtItems.ropeItem)
+                .input('g', BwtItems.glueItem)
+                .input('d', BwtItems.dynamiteItem)
+                .criterion("has_dynamite", conditionsFromItem(BwtItems.dynamiteItem))
+                .offerTo(exporter, "bwt:mining_charge_with_glue");
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, BwtBlocks.miningChargeBlock)
+                .pattern("rsr")
+                .pattern("ddd")
+                .pattern("ddd")
+                .input('r', BwtItems.ropeItem)
+                .input('s', Items.SLIME_BALL)
+                .input('d', BwtItems.dynamiteItem)
+                .criterion("has_dynamite", conditionsFromItem(BwtItems.dynamiteItem))
+                .offerTo(exporter, "bwt:mining_charge_with_slime");
     }
 
     private void generateTier6Recipes(RecipeExporter exporter) {

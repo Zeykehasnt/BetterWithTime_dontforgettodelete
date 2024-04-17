@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.block.enums.BlockFace;
 import net.minecraft.data.client.*;
 import net.minecraft.item.Items;
 import net.minecraft.state.property.Properties;
@@ -143,6 +144,8 @@ public class ModelGenerator extends FabricModelProvider {
                 Models.SLAB_TOP.upload(BwtBlocks.wickerSlabBlock, TexturedModel.CUBE_ALL.get(BwtBlocks.wickerBlock).getTextures(), blockStateModelGenerator.modelCollector),
                 ModelIds.getBlockModelId(BwtBlocks.wickerBlock)
         ));
+        generateMiningChargeBlock(blockStateModelGenerator);
+
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.anchorBlock, ModelIds.getBlockModelId(BwtBlocks.anchorBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.axleBlock, ModelIds.getBlockModelId(BwtBlocks.axleBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.blockDispenserBlock, ModelIds.getBlockModelId(BwtBlocks.blockDispenserBlock));
@@ -250,6 +253,44 @@ public class ModelGenerator extends FabricModelProvider {
         ).upload(BwtBlocks.companionSlabBlock, blockStateModelGenerator.modelCollector);
         blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSlabBlockState(BwtBlocks.companionSlabBlock, companionSlabBottom, companionSlabTop, companionCubeModelId));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.companionSlabBlock, companionSlabBottom);
+    }
+
+    private void generateMiningChargeBlock(BlockStateModelGenerator blockStateModelGenerator) {
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(BwtBlocks.miningChargeBlock, BlockStateVariant.create().put(VariantSettings.MODEL, ModelIds.getBlockModelId(BwtBlocks.miningChargeBlock)))
+                        .coordinate(BlockStateVariantMap
+                                .create(Properties.BLOCK_FACE, Properties.HORIZONTAL_FACING)
+                                .register(BlockFace.CEILING, Direction.NORTH, BlockStateVariant.create()
+                                        .put(VariantSettings.X, VariantSettings.Rotation.R180)
+                                        .put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                                .register(BlockFace.CEILING, Direction.EAST, BlockStateVariant.create()
+                                        .put(VariantSettings.X, VariantSettings.Rotation.R180)
+                                        .put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                                .register(BlockFace.CEILING, Direction.SOUTH, BlockStateVariant.create()
+                                        .put(VariantSettings.X, VariantSettings.Rotation.R180))
+                                .register(BlockFace.CEILING, Direction.WEST, BlockStateVariant.create()
+                                        .put(VariantSettings.X, VariantSettings.Rotation.R180)
+                                        .put(VariantSettings.Y, VariantSettings.Rotation.R90))
+                                .register(BlockFace.FLOOR, Direction.NORTH, BlockStateVariant.create())
+                                .register(BlockFace.FLOOR, Direction.EAST, BlockStateVariant.create()
+                                        .put(VariantSettings.Y, VariantSettings.Rotation.R90))
+                                .register(BlockFace.FLOOR, Direction.SOUTH, BlockStateVariant.create()
+                                        .put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                                .register(BlockFace.FLOOR, Direction.WEST, BlockStateVariant.create()
+                                        .put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                                .register(BlockFace.WALL, Direction.NORTH, BlockStateVariant.create()
+                                        .put(VariantSettings.X, VariantSettings.Rotation.R90))
+                                .register(BlockFace.WALL, Direction.EAST, BlockStateVariant.create()
+                                        .put(VariantSettings.X, VariantSettings.Rotation.R90)
+                                        .put(VariantSettings.Y, VariantSettings.Rotation.R90))
+                                .register(BlockFace.WALL, Direction.SOUTH, BlockStateVariant.create()
+                                        .put(VariantSettings.X, VariantSettings.Rotation.R90)
+                                        .put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                                .register(BlockFace.WALL, Direction.WEST, BlockStateVariant.create()
+                                        .put(VariantSettings.X, VariantSettings.Rotation.R90)
+                                        .put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                        )
+        );
     }
 
     public static void generatePaneBlock(BlockStateModelGenerator blockStateModelGenerator, Block pane) {

@@ -129,5 +129,11 @@
       "random/explode3",
       "random/explode4"
     ]
+  },
+  "entity.mining_charge.prime": {
+    "subtitle": "bwt.subtitles.entity.mining_charge.prime",
+    "sounds": [
+      "random/fuse"
+    ]
   }
 }

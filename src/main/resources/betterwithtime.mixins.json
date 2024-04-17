@@ -7,6 +7,7 @@
     "EggEntityMixin",
     "EntityVoxelShapeCollisionMixin",
     "ExampleMixin",
+    "FireBlockMixin",
     "MovableBlockEntityMixin",
     "ShapedRecipeDimensionsMixin",
     "VanillaHopperDisableMixin",

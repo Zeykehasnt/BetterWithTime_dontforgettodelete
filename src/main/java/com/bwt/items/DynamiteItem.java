@@ -38,7 +38,7 @@ public class DynamiteItem extends Item {
                     continue;
                 }
                 if (!serverUser.getAbilities().creativeMode) {
-                    otherStack.damage(1, world.getRandom(), serverUser);
+                    otherStack.damage(1, user, playerx -> playerx.sendToolBreakStatus(hand));
                 }
                 dynamiteEntity.ignite();
                 break;

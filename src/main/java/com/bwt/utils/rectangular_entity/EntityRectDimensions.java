@@ -17,6 +17,10 @@ public class EntityRectDimensions extends EntityDimensions {
         return new EntityRectDimensions(width, height, length, false);
     }
 
+    public static EntityRectDimensions fromBox(Box box) {
+        return changing((float) box.getLengthX(), (float) box.getLengthY(), (float) box.getLengthZ());
+    }
+
     @Override
     public Box getBoxAt(double x, double y, double z) {
         double half_width = this.width / 2.0f;

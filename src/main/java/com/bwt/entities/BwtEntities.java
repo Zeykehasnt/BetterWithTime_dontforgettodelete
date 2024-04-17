@@ -59,7 +59,17 @@ public class BwtEntities implements ModInitializer {
             .trackingTickInterval(20)
             .build()
     );
+    public static final EntityType<MiningChargeEntity> miningChargeEntity = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier("bwt", "mining_charge"),
+            EntityType.Builder.create(
+                    (EntityType.EntityFactory<MiningChargeEntity>) MiningChargeEntity::new,
+                    SpawnGroup.MISC
             )
+            .makeFireImmune()
+            .setDimensions(0.98f, 0.98f)
+            .maxTrackingRange(10)
+            .trackingTickInterval(10)
             .build()
     );
 

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "d": {
+      "item": "bwt:dynamite"
+    },
+    "g": {
+      "item": "bwt:glue"
+    },
+    "r": {
+      "item": "bwt:rope"
+    }
+  },
+  "pattern": [
+    "rgr",
+    "ddd",
+    "ddd"
+  ],
+  "result": {
+    "item": "bwt:mining_charge"
+  }
+}

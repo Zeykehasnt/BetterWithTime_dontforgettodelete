@@ -1,6 +1,7 @@
 package com.bwt.blocks.turntable;
 
 import com.bwt.blocks.*;
+import com.bwt.blocks.mining_charge.MiningChargeBlock;
 import com.bwt.tags.BwtBlockTags;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
@@ -42,6 +43,7 @@ public interface VerticalBlockAttachmentHelper {
         register(MouldingBlock.class, (world, pos, state) -> MouldingBlock.isVertical(state));
         register(AnchorBlock.class, (world, pos, state) -> AnchorBlock.isHorizontal(state));
         register(SawBlock.class, (world, pos, state) -> SawBlock.isHorizontal(state));
+        register(MiningChargeBlock.class, (world, pos, state) -> MiningChargeBlock.isHorizontal(state));
         register(HandCrankBlock.class, CanPropagatePredicate.FALSE);
     }
 }

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "h": {
+      "item": "bwt:hellfire_dust"
+    },
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "s": {
+      "tag": "bwt:saw_dusts"
+    },
+    "t": {
+      "item": "bwt:tallow"
+    }
+  },
+  "pattern": [
+    "ph",
+    "pt",
+    "ps"
+  ],
+  "result": {
+    "item": "bwt:dynamite"
+  }
+}
