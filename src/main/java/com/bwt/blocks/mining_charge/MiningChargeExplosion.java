@@ -2,31 +2,47 @@ package com.bwt.blocks.mining_charge;
 
 import com.bwt.entities.MiningChargeEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.ProtectionEnchantment;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.TntEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.EntityExplosionBehavior;
 import net.minecraft.world.explosion.Explosion;
 import net.minecraft.world.explosion.ExplosionBehavior;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class MiningChargeExplosion extends Explosion {
     protected final World world;
     protected final ExplosionBehavior behavior;
     protected final MiningChargeEntity miningChargeEntity;
+    protected final DamageSource damageSource;
 
-    public MiningChargeExplosion(World world, @NotNull MiningChargeEntity entity, float power, boolean createFire, Explosion.DestructionType destructionType, ParticleEffect particle, ParticleEffect emitterParticle, SoundEvent soundEvent) {
-        super(world, entity, Explosion.createDamageSource(world, entity), null, entity.getX(), entity.getY(), entity.getZ(), power, createFire, destructionType, particle, emitterParticle, soundEvent);
+    public MiningChargeExplosion(World world, @NotNull MiningChargeEntity entity, DamageSource damageSource, float power, boolean createFire, Explosion.DestructionType destructionType, ParticleEffect particle, ParticleEffect emitterParticle, SoundEvent soundEvent) {
+        super(world, entity, damageSource, null, entity.getX(), entity.getY(), entity.getZ(), power, createFire, destructionType, particle, emitterParticle, soundEvent);
         this.world = world;
         this.behavior = new EntityExplosionBehavior(entity);
         this.miningChargeEntity = entity;
+        this.damageSource = damageSource;
     }
 
     public void collectBlocksAndDamageEntities() {
         super.collectBlocksAndDamageEntities();
         getAffectedBlocks().clear();
+        damageBlocks();
+    }
 
+    protected void damageBlocks() {
         BlockPos entityBlockPos = BlockPos.ofFloored(getPosition());
 
         if (!canDestroyBlock(entityBlockPos)) {
@@ -69,6 +85,48 @@ public class MiningChargeExplosion extends Explosion {
         if (canDestroyBlock(targetPos)) {
             // the block between the source and extra block is too tough, abort
             getAffectedBlocks().add(targetPos);
+        }
+    }
+
+    protected void damageEntities() {
+        float damagePower = this.getPower() * 2.0f;
+        int k = MathHelper.floor(getPosition().x - (double) damagePower - 1.0);
+        int l = MathHelper.floor(getPosition().x + (double) damagePower + 1.0);
+        int r = MathHelper.floor(getPosition().y - (double) damagePower - 1.0);
+        int s = MathHelper.floor(getPosition().y + (double) damagePower + 1.0);
+        int t = MathHelper.floor(getPosition().z - (double) damagePower - 1.0);
+        int u = MathHelper.floor(getPosition().z + (double) damagePower + 1.0);
+        List<Entity> list = this.world.getOtherEntities(
+                miningChargeEntity, new Box(
+                        -damagePower - 1, -damagePower - 1, -damagePower - 1,
+                         damagePower + 1, damagePower +  1, damagePower +  1
+                ).offset(getPosition())
+        );
+        for (Entity entity : list) {
+            PlayerEntity playerEntity;
+            double distX = entity.getX() - getPosition().x;
+            double distY = (entity instanceof TntEntity ? entity.getY() : entity.getEyeY()) - getPosition().y;
+            double distZ = entity.getZ() - getPosition().z;
+            double distanceToEntity = Math.sqrt(distX * distX + distY * distY + distZ * distZ);
+            double v = Math.sqrt(entity.squaredDistanceTo(getPosition())) / (double) damagePower;
+            if (
+                    entity.isImmuneToExplosion(this)
+                    || v > 1.0
+                    || distanceToEntity == 0.0
+            )
+                continue;
+            distX /= distanceToEntity;
+            distY /= distanceToEntity;
+            distZ /= distanceToEntity;
+            if (this.behavior.shouldDamage(this, entity)) {
+                entity.damage(damageSource, this.behavior.calculateDamage(this, entity));
+            }
+            double rawKnockback = (1.0 - v) * Explosion.getExposure(getPosition(), entity);
+            double knockback = entity instanceof LivingEntity livingEntity ? ProtectionEnchantment.transformExplosionKnockback(livingEntity, rawKnockback) : rawKnockback;
+            Vec3d vec3d2 = new Vec3d(distX * knockback, distY * knockback, distZ * knockback);
+            entity.setVelocity(entity.getVelocity().add(vec3d2));
+            if (!(entity instanceof PlayerEntity) || (playerEntity = (PlayerEntity)entity).isSpectator() || playerEntity.isCreative() && playerEntity.getAbilities().flying) continue;
+            this.getAffectedPlayers().put(playerEntity, vec3d2);
         }
     }
 

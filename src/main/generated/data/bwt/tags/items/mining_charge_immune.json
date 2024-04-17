@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "#c:ores",
+    "#c:raw_ores",
+    "#c:redstone_dusts",
+    "#c:emeralds",
+    "#c:lapis",
+    "#c:diamonds",
+    "#c:quartz",
+    "#c:coal",
+    "minecraft:flint",
+    "minecraft:ancient_debris"
+  ]
+}

@@ -3,10 +3,7 @@ package com.bwt.entities;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.blocks.mining_charge.MiningChargeBlock;
 import com.bwt.blocks.mining_charge.MiningChargeExplosion;
-import com.bwt.utils.rectangular_entity.EntityRectDimensions;
-import com.bwt.utils.rectangular_entity.RectangularEntity;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -141,7 +138,7 @@ public class MiningChargeEntity extends Entity implements Ownable {
 
     public void createMiningChargeExplosion(float power) {
         Explosion.DestructionType destructionType = getWorld().getGameRules().getBoolean(GameRules.TNT_EXPLOSION_DROP_DECAY) ? Explosion.DestructionType.DESTROY_WITH_DECAY : Explosion.DestructionType.DESTROY;
-        Explosion explosion = new MiningChargeExplosion(getWorld(), this, power, false, destructionType, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE);
+        Explosion explosion = new MiningChargeExplosion(getWorld(), this, Explosion.createDamageSource(getWorld(), this), power, false, destructionType, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE);
         explosion.collectBlocksAndDamageEntities();
         explosion.affectWorld(true);
         if (getWorld() instanceof ServerWorld serverWorld) {

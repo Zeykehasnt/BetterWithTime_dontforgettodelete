@@ -30,6 +30,17 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
         copy(BwtBlockTags.WOOL_SLABS, BwtItemTags.WOOL_SLABS);
 
         getOrCreateTagBuilder(BwtItemTags.SAW_DUSTS).add(BwtItems.sawDustItem, BwtItems.soulDustItem);
+        getOrCreateTagBuilder(BwtItemTags.MINING_CHARGE_IMMUNE)
+                .forceAddTag(ConventionalItemTags.ORES)
+                .forceAddTag(ConventionalItemTags.RAW_ORES)
+                .forceAddTag(ConventionalItemTags.REDSTONE_DUSTS)
+                .forceAddTag(ConventionalItemTags.EMERALDS)
+                .forceAddTag(ConventionalItemTags.LAPIS)
+                .forceAddTag(ConventionalItemTags.DIAMONDS)
+                .forceAddTag(ConventionalItemTags.QUARTZ)
+                .forceAddTag(ConventionalItemTags.COAL)
+                .add(Items.FLINT)
+                .add(Items.ANCIENT_DEBRIS);
 
         getOrCreateTagBuilder(ItemTags.ARROWS).add(BwtItems.broadheadArrowItem, BwtItems.rottedArrowItem);
         getOrCreateTagBuilder(ItemTags.RAILS).add(BwtBlocks.stoneDetectorRailBlock.asItem(), BwtBlocks.obsidianDetectorRailBlock.asItem());
