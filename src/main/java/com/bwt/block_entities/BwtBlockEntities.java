@@ -10,7 +10,6 @@ import com.bwt.blocks.pulley.PulleyBlockEntity;
 import com.bwt.blocks.soul_forge.SoulForgeBlockEntity;
 import com.bwt.blocks.turntable.TurntableBlockEntity;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -20,42 +19,42 @@ public class BwtBlockEntities implements ModInitializer {
     public static final BlockEntityType<BlockDispenserBlockEntity> blockDispenserBlockEntity = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new Identifier("bwt", "block_dispenser_block_entity"),
-            FabricBlockEntityTypeBuilder.create(BlockDispenserBlockEntity::new, BwtBlocks.blockDispenserBlock).build()
+            BlockEntityType.Builder.create(BlockDispenserBlockEntity::new, BwtBlocks.blockDispenserBlock).build()
     );
     public static final BlockEntityType<CauldronBlockEntity> cauldronBlockEntity = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new Identifier("bwt", "cauldron_block_entity"),
-            FabricBlockEntityTypeBuilder.create(CauldronBlockEntity::new, BwtBlocks.cauldronBlock).build()
+            BlockEntityType.Builder.create(CauldronBlockEntity::new, BwtBlocks.cauldronBlock).build()
     );
     public static final BlockEntityType<CrucibleBlockEntity> crucibleBlockEntity = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new Identifier("bwt", "crucible_block_entity"),
-            FabricBlockEntityTypeBuilder.create(CrucibleBlockEntity::new, BwtBlocks.crucibleBlock).build()
+            BlockEntityType.Builder.create(CrucibleBlockEntity::new, BwtBlocks.crucibleBlock).build()
     );
     public static final BlockEntityType<MillStoneBlockEntity> millStoneBlockEntity = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new Identifier("bwt", "mill_stone_block_entity"),
-            FabricBlockEntityTypeBuilder.create(MillStoneBlockEntity::new, BwtBlocks.millStoneBlock).build()
+            BlockEntityType.Builder.create(MillStoneBlockEntity::new, BwtBlocks.millStoneBlock).build()
     );
     public static final BlockEntityType<PulleyBlockEntity> pulleyBlockEntity = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new Identifier("bwt", "pulley_block_entity"),
-            FabricBlockEntityTypeBuilder.create(PulleyBlockEntity::new, BwtBlocks.pulleyBlock).build()
+            BlockEntityType.Builder.create(PulleyBlockEntity::new, BwtBlocks.pulleyBlock).build()
     );
     public static final BlockEntityType<MechHopperBlockEntity> mechHopperBlockEntity = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new Identifier("bwt", "mech_hopper_block_entity"),
-            FabricBlockEntityTypeBuilder.create(MechHopperBlockEntity::new, BwtBlocks.hopperBlock).build()
+            BlockEntityType.Builder.create(MechHopperBlockEntity::new, BwtBlocks.hopperBlock).build()
     );
     public static final BlockEntityType<SoulForgeBlockEntity> soulForgeBlockEntity = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new Identifier("bwt", "soul_forge_block_entity"),
-            FabricBlockEntityTypeBuilder.create(SoulForgeBlockEntity::new, BwtBlocks.soulForgeBlock).build()
+            BlockEntityType.Builder.create(SoulForgeBlockEntity::new, BwtBlocks.soulForgeBlock).build()
     );
     public static final BlockEntityType<TurntableBlockEntity> turntableBlockEntity = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new Identifier("bwt", "turntable_block_entity"),
-            FabricBlockEntityTypeBuilder.create(TurntableBlockEntity::new, BwtBlocks.turntableBlock).build()
+            BlockEntityType.Builder.create(TurntableBlockEntity::new, BwtBlocks.turntableBlock).build()
     );
 
     @Override
