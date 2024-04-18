@@ -6,12 +6,11 @@ import com.bwt.blocks.BwtBlocks;
 import com.bwt.blocks.RopeBlock;
 import com.bwt.entities.MovingRopeEntity;
 import com.bwt.items.BwtItems;
+import com.bwt.utils.BlockPosAndState;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
-import net.minecraft.block.AbstractRailBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.RailShape;
 import net.minecraft.entity.Entity;
@@ -25,18 +24,18 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.state.property.Property;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, Inventory {
     protected static final int INVENTORY_SIZE = 4;
@@ -46,6 +45,7 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
     protected int mechPower;
 
     private MovingRopeEntity rope;
+    private UUID ropeId;
 
 
     protected final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -101,9 +101,10 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
     }
 
     private void tryNextOperation(World world, BlockPos pos, BlockState state) {
-        if (rope != null && rope.isAlive()) {
+        if (doesRopeEntityExist(world)) {
             return;
         }
+
         if (canGoDown(world, pos, state, false)) {
             goDown(world, pos);
             return;
@@ -111,6 +112,32 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         if (canGoUp(world, pos, state)) {
             goUp(world, pos);
         }
+    }
+
+    private boolean doesRopeEntityExist(World world) {
+        // Rope is fully present and loaded
+        if (rope != null && !rope.isRemoved()) {
+            return true;
+        }
+        // Rope needs to be loaded from nbt but hasn't gotten to yet
+        if (ropeId == null) {
+            return false;
+        }
+        if (!(world instanceof ServerWorld serverWorld)) {
+            return true;
+        }
+        // Try to load the rope
+        Entity entity = serverWorld.getEntity(ropeId);
+        // Rope hasn't gotten to load yet
+        if (entity == null) {
+            return true;
+        }
+        if (entity instanceof MovingRopeEntity movingRopeEntity) {
+            this.rope = movingRopeEntity;
+            ropeId = null;
+            return true;
+        }
+        return false;
     }
 
     private boolean validRopeConnector(BlockState state) {
@@ -145,6 +172,7 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         BlockPos lowest = RopeBlock.getBottomRopePos(world, pos);
         BlockState belowState = world.getBlockState(lowest.down());
         rope = new MovingRopeEntity(world, pos, lowest, lowest.up().getY());
+        ropeId = null;
         if (validRopeConnector(belowState) && !movePlatform(world, lowest.down(), true)) {
             rope = null;
             return;
@@ -160,6 +188,7 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         BlockPos newPos = RopeBlock.getBottomRopePos(world, pos).down();
         BlockState bottomState = world.getBlockState(newPos);
         rope = new MovingRopeEntity(world, pos, newPos.up(), newPos.getY());
+        ropeId = null;
         if (validRopeConnector(bottomState) && !movePlatform(world, newPos, false)) {
             rope = null;
             return;
@@ -181,34 +210,33 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
             if (!addToList(world, below, below, platformBlocks, up)) {
                 return false;
             }
-        } else if (!(up || isIgnoreable(belowState))) {
+        }
+        else if (!(up || isIgnoreable(belowState))) {
             return false;
         }
 
-        for (BlockPos blockPos : platformBlocks) {
-            for (BlockPos p1 : new BlockPos[]{blockPos.north(), blockPos.south()}) {
-                if (!platformBlocks.contains(p1)) {
-                    fixRail(world, p1, RailShape.ASCENDING_NORTH, RailShape.ASCENDING_SOUTH);
-                }
-            }
-            for (BlockPos p : new BlockPos[]{blockPos.east(), blockPos.west()}) {
-                if (!platformBlocks.contains(p)) {
-                    fixRail(world, p, RailShape.ASCENDING_EAST, RailShape.ASCENDING_WEST);
-                }
-            }
-        }
 
         if (!world.isClient) {
             for (BlockPos blockPos : platformBlocks) {
                 Vec3i offset = blockPos.subtract(anchor.up());
-                rope.addBlock(offset, world, blockPos);
+                rope.addBlock(offset, world, blockPos, world.getBlockState(blockPos));
                 BlockState upState = world.getBlockState(blockPos.up());
                 if (isMoveableBlock(upState)) {
-                    rope.addBlock(new Vec3i(offset.getX(), offset.getY() + 1, offset.getZ()), world, blockPos.up());
-                    world.removeBlock(blockPos.up(), false);
+                    if (upState.getBlock() instanceof AbstractRailBlock) {
+                        upState = flattenRail(upState);
+                    }
+                    if (upState.getBlock() instanceof RedstoneWireBlock) {
+                        upState = upState.with(RedstoneWireBlock.POWER, 0);
+                    }
+                    rope.addBlock(new Vec3i(offset.getX(), offset.getY() + 1, offset.getZ()), world, blockPos.up(), upState);
                 }
-                world.removeBlock(blockPos, false);
             }
+            rope.getBlockMap().entrySet().stream()
+                    .sorted((a, b) -> b.getKey().getY() - a.getKey().getY())
+                    .forEach(entry -> {
+                        BlockPos blockPos = anchor.up().add(entry.getKey());
+                        world.removeBlock(blockPos, false);
+                    });
         }
 
         return true;
@@ -226,27 +254,14 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         return state.isOf(BwtBlocks.platformBlock);
     }
 
-    private void fixRail(World world, BlockPos rail, RailShape... directions) {
-        List<RailShape> list = Arrays.asList(directions);
-        BlockState state = world.getBlockState(rail);
-        if (!(state.getBlock() instanceof AbstractRailBlock)) {
-            return;
-        }
-        if (!state.contains(Properties.RAIL_SHAPE)) {
-            return;
-        }
-        RailShape currentShape = state.get(Properties.RAIL_SHAPE);
-        if (list.contains(currentShape)) {
-            world.setBlockState(rail, state.with(Properties.RAIL_SHAPE, flatten(currentShape)), 6);
-        }
-    }
-
-    private RailShape flatten(RailShape old) {
-        return switch (old) {
+    private BlockState flattenRail(BlockState state) {
+        EnumProperty<RailShape> property = state.contains(Properties.RAIL_SHAPE) ? Properties.RAIL_SHAPE : state.contains(Properties.STRAIGHT_RAIL_SHAPE) ? Properties.STRAIGHT_RAIL_SHAPE : null;
+        RailShape currentShape = state.get(property);
+        return state.with(property, switch (currentShape) {
             case ASCENDING_EAST, ASCENDING_WEST -> RailShape.EAST_WEST;
             case ASCENDING_NORTH, ASCENDING_SOUTH -> RailShape.NORTH_SOUTH;
-            default -> old;
-        };
+            default -> currentShape;
+        });
     }
 
     private boolean addToList(World world, BlockPos pos, BlockPos sourcePos, HashSet<BlockPos> set, boolean up) {
@@ -279,7 +294,7 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         return fails.isEmpty();
     }
 
-    public boolean onJobCompleted(World world, BlockPos pulleyPos, BlockState pulleyState, boolean up, int targetY, MovingRopeEntity theRope) {
+    public boolean onJobCompleted(World world, BlockPos pulleyPos, BlockState pulleyState, boolean up, int targetY) {
         BlockPos ropePos = new BlockPos(pulleyPos.getX(), targetY - (up ? 1 : 0), pulleyPos.getZ());
         BlockState state = world.getBlockState(ropePos);
         if (!up) {
@@ -289,12 +304,13 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
                 takeRope(false);
             } else {
                 tryNextOperation(world, pulleyPos, pulleyState);
-                theRope.discard();
+                rope.discard();
+                ropeId = null;
                 return false;
             }
         }
-        if ((theRope.isMovingUp() ? canGoUp(world, pulleyPos, pulleyState) : canGoDown(world, pulleyPos, pulleyState, true)) && !theRope.isPathBlocked()) {
-            theRope.setTargetY(targetY + (theRope.isMovingUp() ? 1 : -1));
+        if ((rope.isMovingUp() ? canGoUp(world, pulleyPos, pulleyState) : canGoDown(world, pulleyPos, pulleyState, true)) && !rope.isPathBlocked()) {
+            rope.setTargetY(targetY + (rope.isMovingUp() ? 1 : -1));
             if (up) {
                 if (!world.isAir(ropePos.up())) {
                     world.playSound(null, pulleyPos.down(), BwtBlocks.ropeBlock.getSoundGroup(BwtBlocks.ropeBlock.getDefaultState()).getBreakSound(), SoundCategory.BLOCKS,
@@ -306,7 +322,8 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
             return true;
         } else {
             tryNextOperation(world, pulleyPos, pulleyState);
-            theRope.discard();
+            rope.discard();
+            ropeId = null;
             return false;
         }
     }
@@ -359,16 +376,8 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         super.readNbt(nbt);
         this.inventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE));
         this.mechPower = nbt.getInt("mechPower");
-        World world = getWorld();
-        if (world == null || !nbt.contains("rope")) {
-            return;
-        }
-        Entity entity = world.getEntityById(nbt.getInt("rope"));
-        if (entity == null) {
-            return;
-        }
-        if (entity instanceof MovingRopeEntity movingRopeEntity) {
-            this.rope = movingRopeEntity;
+        if (nbt.contains("ropeId")) {
+            this.ropeId = nbt.getUuid("ropeId");
         }
     }
 
@@ -377,9 +386,14 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         super.writeNbt(nbt);
         nbt.put("Inventory", this.inventory.toNbtList());
         nbt.putInt("mechPower", this.mechPower);
-        if (this.rope != null) {
-            nbt.putInt("ropeId", this.rope.getId());
+        if (this.rope != null && !rope.isRemoved()) {
+            nbt.putUuid("ropeId", this.rope.getUuid());
         }
+    }
+
+    @Override
+    public void setWorld(World world) {
+        super.setWorld(world);
     }
 
     @Override

@@ -14,6 +14,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.decoration.AbstractDecorationEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
@@ -38,14 +39,12 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
     private static final TrackedData<Boolean> up = DataTracker.registerData(MovingRopeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Map<Vec3i, BlockState>> blockMap = DataTracker.registerData(MovingRopeEntity.class, TrackedDataHandlers.blockStateMapHandler);
     private static final TrackedData<Map<Vec3i, NbtCompound>> blockEntityNbtMap = DataTracker.registerData(MovingRopeEntity.class, TrackedDataHandlers.blockEntityMapHandler);
-//    private final HashMap<Vec3i, MovingPlatformComponentEntity> children;
     private VoxelShape voxelShape = VoxelShapes.fullCube();
     private final float speed = 1f / 20f;
 
     public MovingRopeEntity(EntityType<? extends MovingRopeEntity> entityType, World world) {
         super(entityType, world);
         this.intersectionChecked = true;
-//        this.children = Maps.newHashMap();
     }
 
 
@@ -96,16 +95,6 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
 
     public void setBlockMap(Map<Vec3i, BlockState> map) {
         this.dataTracker.set(blockMap, map);
-//        map.forEach((offset, blockState) -> {
-//            children.putIfAbsent(offset, new MovingPlatformComponentEntity(this, offset, blockState, null));
-//        });
-//        children.entrySet().removeIf(entry -> {
-//            if (!map.containsKey(entry.getKey())) {
-//                entry.getValue().discard();
-//                return true;
-//            }
-//            return false;
-//        });
     }
 
     public HashMap<Vec3i, BlockState> getBlockMap() {
@@ -122,10 +111,6 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
         return new HashMap<>(nbtMap);
     }
 
-//    public Map<Vec3i, MovingPlatformComponentEntity> getChildren() {
-//        return children;
-//    }
-
     @Override
     public boolean hasNoGravity() {
         return true;
@@ -134,9 +119,6 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
     @Override
     public void setPosition(double x, double y, double z) {
         super.setPosition(x, y, z);
-//        if (children != null && !children.isEmpty()) {
-//            children.forEach((offset, child) -> child.setPosition(x + offset.getX(), y + offset.getY(), z + offset.getZ()));
-//        }
     }
 
     @Override
@@ -177,11 +159,6 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
     @Override
     protected float getEyeHeight(EntityPose pose, EntityDimensions dimensions) {
         return -1;
-    }
-
-    @Override
-    public boolean isCollidable() {
-        return true;
     }
 
     @Override
@@ -281,6 +258,11 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
     }
 
     @Override
+    public boolean collidesWith(Entity other) {
+        return other instanceof MovingRopeEntity;
+    }
+
+    @Override
     public void tick() {
         if (getPulleyPos() == null) {
             return;
@@ -305,7 +287,7 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
                 this.getY() + getSpeed(),
                 getPulleyPos().getZ() + 0.5
         );
-        riders.putAll(getRiders());
+        riders = getRiders();
         moveRiders(riders);
     }
 
@@ -392,7 +374,7 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
         }
         BlockEntity blockEntity = getWorld().getBlockEntity(getPulleyPos());
         if (blockEntity instanceof PulleyBlockEntity pulleyBlockEntity) {
-            if (!pulleyBlockEntity.onJobCompleted(getWorld(), getPulleyPos(), getWorld().getBlockState(getPulleyPos()), isMovingUp(), getTargetY(), this)) {
+            if (!pulleyBlockEntity.onJobCompleted(getWorld(), getPulleyPos(), getWorld().getBlockState(getPulleyPos()), isMovingUp(), getTargetY())) {
                 reconstruct();
                 return true;
             }
@@ -404,8 +386,7 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
         return true;
     }
 
-    public Map<Vec3i, BlockState> addBlock(Vec3i offset, World world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
+    public Map<Vec3i, BlockState> addBlock(Vec3i offset, World world, BlockPos pos, BlockState state) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         Map<Vec3i, BlockState> blocks = getBlockMap();
         Map<Vec3i, NbtCompound> blockEntities = getBlockEntityNbtMap();
