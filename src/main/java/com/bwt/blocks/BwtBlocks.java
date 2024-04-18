@@ -168,7 +168,7 @@ public class BwtBlocks implements ModInitializer {
             .mapColor(MapColor.TERRACOTTA_BROWN)
             .pistonBehavior(PistonBehavior.IGNORE)
     );
-    public static final Block ropeCoilBlock = new RopeBlock(FabricBlockSettings.create().hardness(1f).mapColor(MapColor.BROWN).sounds(BlockSoundGroup.GRASS));
+    public static final Block ropeCoilBlock = new Block(FabricBlockSettings.create().hardness(1f).mapColor(MapColor.BROWN).sounds(BlockSoundGroup.GRASS));
 	public static final Block ropeBlock = new RopeBlock(FabricBlockSettings.create()
             .hardness(0.5f)
             .sounds(BlockSoundGroup.GRASS)
