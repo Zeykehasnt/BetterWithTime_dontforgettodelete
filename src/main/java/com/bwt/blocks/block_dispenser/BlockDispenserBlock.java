@@ -1,15 +1,17 @@
 package com.bwt.blocks.block_dispenser;
 
-import com.bwt.blocks.block_dispenser.behavior.dispense.BlockDispenserBehavior;
-import com.bwt.blocks.block_dispenser.behavior.dispense.DefaultItemDispenserBehavior;
-import com.bwt.blocks.block_dispenser.behavior.dispense.ItemClumpDispenserBehavior;
+import com.bwt.blocks.BwtBlocks;
+import com.bwt.blocks.block_dispenser.behavior.dispense.*;
 import com.bwt.blocks.block_dispenser.behavior.inhale.BlockInhaleBehavior;
 import com.bwt.blocks.block_dispenser.behavior.inhale.EntityInhaleBehavior;
+import com.bwt.blocks.mining_charge.MiningChargeBlock;
 import com.bwt.entities.BroadheadArrowEntity;
 import com.bwt.entities.DynamiteEntity;
+import com.bwt.entities.MiningChargeEntity;
 import com.bwt.items.BwtItems;
 import com.bwt.recipes.BlockDispenserClumpRecipe;
 import com.bwt.recipes.BwtRecipes;
+import com.bwt.sounds.BwtSoundEvents;
 import com.bwt.tags.BwtBlockTags;
 import com.bwt.tags.BwtEntityTags;
 import com.google.common.collect.Lists;
@@ -24,6 +26,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -33,20 +36,21 @@ import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPointer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Position;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class BlockDispenserBlock extends DispenserBlock {
     public static final int tickRate = 4;
@@ -86,8 +90,11 @@ public class BlockDispenserBlock extends DispenserBlock {
                 Items.EGG,
 
                 Items.SPLASH_POTION,
-                Items.LINGERING_POTION,
+                Items.LINGERING_POTION
+        );
 
+        BoatDispenserBehavior boatDispenserBehavior = new BoatDispenserBehavior();
+        Stream.of(
                 Items.OAK_BOAT,
                 Items.SPRUCE_BOAT,
                 Items.BIRCH_BOAT,
@@ -105,8 +112,11 @@ public class BlockDispenserBlock extends DispenserBlock {
                 Items.ACACIA_CHEST_BOAT,
                 Items.CHERRY_CHEST_BOAT,
                 Items.MANGROVE_CHEST_BOAT,
-                Items.BAMBOO_CHEST_RAFT,
+                Items.BAMBOO_CHEST_RAFT
+        ).forEach(item -> registerItemDispenseBehavior(item, boatDispenserBehavior));
 
+        MinecartDispenserBehavior minecartDispenserBehavior = new MinecartDispenserBehavior();
+        Stream.of(
                 Items.MINECART,
                 Items.CHEST_MINECART,
                 Items.COMMAND_BLOCK_MINECART,
@@ -114,7 +124,7 @@ public class BlockDispenserBlock extends DispenserBlock {
                 Items.FURNACE_MINECART,
                 Items.HOPPER_MINECART,
                 Items.TNT_MINECART
-        );
+        ).forEach(item -> registerItemDispenseBehavior(item, minecartDispenserBehavior));
 
         DispenserBehavior dynamiteBehavior = new ProjectileDispenserBehavior() {
             @Override
@@ -148,6 +158,25 @@ public class BlockDispenserBlock extends DispenserBlock {
         registerItemDispenseBehavior(BwtItems.broadheadArrowItem, invertStackResult(broadheadArrowBehavior));
         DispenserBlock.registerBehavior(BwtItems.broadheadArrowItem, broadheadArrowBehavior);
 
+        ItemDispenserBehavior miningChargeBehavior = new ItemDispenserBehavior(){
+            @Override
+            protected ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
+                ServerWorld world = pointer.world();
+                BlockPos blockPos = pointer.pos().offset(pointer.state().get(DispenserBlock.FACING));
+                Direction direction = pointer.state().get(DispenserBlock.FACING);
+                BlockState placementState = BwtBlocks.miningChargeBlock.getPlacementState(
+                        new BlockDispenserPlacementContext(pointer.world(), blockPos, direction, stack, direction)
+                );
+                MiningChargeEntity miningChargeEntity = new MiningChargeEntity(world, blockPos.toCenterPos().subtract(0, 0.5, 0), placementState, null);
+                world.spawnEntity(miningChargeEntity);
+                world.playSound(null, miningChargeEntity.getX(), miningChargeEntity.getY(), miningChargeEntity.getZ(), BwtSoundEvents.MINING_CHARGE_PRIME, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                world.emitGameEvent(null, GameEvent.ENTITY_PLACE, blockPos);
+                stack.decrement(1);
+                return stack;
+            }
+        };
+        registerBlockDispenseBehavior(MiningChargeBlock.class, invertStackResult(miningChargeBehavior));
+        DispenserBlock.registerBehavior(BwtBlocks.miningChargeBlock, miningChargeBehavior);
     }
 
     public static void registerEntityInhaleBehavior(EntityType<?> entityType, EntityInhaleBehavior behavior) {
@@ -158,11 +187,11 @@ public class BlockDispenserBlock extends DispenserBlock {
         BLOCK_INHALE_BEHAVIORS.put(blockClass, behavior);
     }
 
-    public static void registerItemDispenseBehavior(Item item, DispenserBehavior behavior) {
-        ITEM_BEHAVIORS.put(item, behavior);
+    public static void registerItemDispenseBehavior(ItemConvertible item, DispenserBehavior behavior) {
+        ITEM_BEHAVIORS.put(item.asItem(), behavior);
     }
 
-    public static void registerBlockDispenseBehavior(Class<? extends Block> blockClass, ItemDispenserBehavior behavior) {
+    public static void registerBlockDispenseBehavior(Class<? extends Block> blockClass, DispenserBehavior behavior) {
         BLOCK_BEHAVIORS.put(blockClass, behavior);
     }
 
