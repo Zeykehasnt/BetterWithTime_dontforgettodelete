@@ -1,0 +1,13 @@
+{
+  "type": "bwt:kiln",
+  "category": "misc",
+  "cookingTime": 1,
+  "drops": [
+    {
+      "item": "minecraft:netherite_scrap"
+    }
+  ],
+  "ingredient": {
+    "block": "minecraft:ancient_debris"
+  }
+}

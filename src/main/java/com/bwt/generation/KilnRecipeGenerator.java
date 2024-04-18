@@ -27,6 +27,7 @@ public class KilnRecipeGenerator extends FabricRecipeProvider {
         KilnRecipe.JsonBuilder.create(BlockTags.EMERALD_ORES).drops(Items.EMERALD).offerTo(exporter);
         KilnRecipe.JsonBuilder.create(BlockTags.LAPIS_ORES).drops(Items.LAPIS_LAZULI).offerTo(exporter);
         KilnRecipe.JsonBuilder.create(BlockTags.REDSTONE_ORES).drops(Items.REDSTONE).offerTo(exporter);
+        KilnRecipe.JsonBuilder.create(Blocks.ANCIENT_DEBRIS).drops(Items.NETHERITE_SCRAP).offerTo(exporter);
         // Charcoal
         KilnRecipe.JsonBuilder.create(BlockTags.LOGS).drops(Items.CHARCOAL).offerTo(exporter);
         // Pottery
