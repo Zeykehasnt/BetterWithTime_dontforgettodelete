@@ -3,6 +3,7 @@
   "category": "misc",
   "ingredients": [
     {
+      "count": 4,
       "ingredient": {
         "item": "minecraft:cooked_mutton"
       }

@@ -3,6 +3,7 @@
   "category": "misc",
   "ingredients": [
     {
+      "count": 8,
       "ingredient": {
         "item": "bwt:wolf_chop"
       }
