@@ -6,6 +6,7 @@ import com.bwt.sounds.BwtSoundEvents;
 import com.bwt.utils.BlockUtils;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.BlockFace;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -15,6 +16,9 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
@@ -24,6 +28,8 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -35,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 public class MiningChargeBlock extends WallMountedBlock {
     protected static final Box BOTTOM_SHAPE = new Box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
@@ -75,12 +82,8 @@ public class MiningChargeBlock extends WallMountedBlock {
 
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
-        if (oldState.isOf(state.getBlock())) {
-            return;
-        }
         if (world.isReceivingRedstonePower(pos)) {
-            prime(world, pos, state);
-            world.removeBlock(pos, false);
+            world.scheduleBlockTick(pos, this, 1);
         }
     }
 
@@ -92,20 +95,28 @@ public class MiningChargeBlock extends WallMountedBlock {
     @Override
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
         if (world.isReceivingRedstonePower(pos)) {
-            prime(world, pos, state);
-            world.removeBlock(pos, false);
+            world.scheduleBlockTick(pos, this, 1);
         }
     }
 
     @Override
-    public void onDestroyedByExplosion(World world, BlockPos pos, Explosion explosion) {
+    public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        prime(world, pos, state);
+        world.removeBlock(pos, false);
+    }
+
+    @Deprecated
+    public void onExploded(BlockState state, World world, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> stackMerger) {
+        if (state.isAir() || explosion.getDestructionType() == Explosion.DestructionType.TRIGGER_BLOCK) {
+            return;
+        }
+        world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL);
         if (world.isClient) {
             return;
         }
-        TntEntity tntEntity = new TntEntity(world, (double)pos.getX() + 0.5, pos.getY(), (double)pos.getZ() + 0.5, explosion.getCausingEntity());
-        int i = tntEntity.getFuse();
-        tntEntity.setFuse((short)(world.random.nextInt(i / 4) + i / 8));
-        world.spawnEntity(tntEntity);
+        MiningChargeEntity miningChargeEntity = new MiningChargeEntity(world, pos.toCenterPos().subtract(0, 0.5, 0), state, explosion.getCausingEntity());
+        miningChargeEntity.setFuse(1);
+        world.spawnEntity(miningChargeEntity);
     }
 
     public static void prime(World world, BlockPos pos, BlockState state) {

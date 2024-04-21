@@ -48,8 +48,8 @@ public class MiningChargeExplosion extends Explosion {
     protected final MiningChargeEntity miningChargeEntity;
     protected final DamageSource damageSource;
 
-    public MiningChargeExplosion(World world, @NotNull MiningChargeEntity entity, DamageSource damageSource, float power, boolean createFire, Explosion.DestructionType destructionType, ParticleEffect particle, ParticleEffect emitterParticle, SoundEvent soundEvent) {
-        super(world, entity, damageSource, null, entity.getX(), entity.getY(), entity.getZ(), power, createFire, destructionType, particle, emitterParticle, soundEvent);
+    public MiningChargeExplosion(World world, @NotNull MiningChargeEntity entity, Vec3d pos, DamageSource damageSource, float power, boolean createFire, Explosion.DestructionType destructionType, ParticleEffect particle, ParticleEffect emitterParticle, SoundEvent soundEvent) {
+        super(world, entity, damageSource, null, pos.x, pos.y, pos.z, power, createFire, destructionType, particle, emitterParticle, soundEvent);
         this.world = world;
         this.behavior = new EntityExplosionBehavior(entity);
         this.miningChargeEntity = entity;

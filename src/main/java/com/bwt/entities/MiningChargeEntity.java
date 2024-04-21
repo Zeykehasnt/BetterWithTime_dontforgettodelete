@@ -138,7 +138,19 @@ public class MiningChargeEntity extends Entity implements Ownable {
 
     public void createMiningChargeExplosion(float power) {
         Explosion.DestructionType destructionType = getWorld().getGameRules().getBoolean(GameRules.TNT_EXPLOSION_DROP_DECAY) ? Explosion.DestructionType.DESTROY_WITH_DECAY : Explosion.DestructionType.DESTROY;
-        Explosion explosion = new MiningChargeExplosion(getWorld(), this, Explosion.createDamageSource(getWorld(), this), power, false, destructionType, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.ENTITY_GENERIC_EXPLODE);
+        Vec3d offsetPos = this.getBlockPos().offset(getFacing().getOpposite()).toCenterPos();
+        Explosion explosion = new MiningChargeExplosion(
+                getWorld(),
+                this,
+                offsetPos,
+                Explosion.createDamageSource(getWorld(), this),
+                power,
+                false,
+                destructionType,
+                ParticleTypes.EXPLOSION,
+                ParticleTypes.EXPLOSION_EMITTER,
+                SoundEvents.ENTITY_GENERIC_EXPLODE
+        );
         explosion.collectBlocksAndDamageEntities();
         explosion.affectWorld(true);
         if (getWorld() instanceof ServerWorld serverWorld) {
