@@ -70,7 +70,7 @@ public class DetectorBlock extends SimpleFacingBlock {
                         BwtSoundEvents.DETECTOR_CLICK,
                         SoundCategory.BLOCKS,
                         1.0f,
-                        1.2f
+                        2f
                 );
             }
         }
@@ -101,7 +101,7 @@ public class DetectorBlock extends SimpleFacingBlock {
                         BwtSoundEvents.DETECTOR_CLICK,
                         SoundCategory.BLOCKS,
                         1.0f,
-                        1.2f
+                        2f
                 );
             }
         }
@@ -115,7 +115,7 @@ public class DetectorBlock extends SimpleFacingBlock {
                             BwtSoundEvents.DETECTOR_CLICK,
                             SoundCategory.BLOCKS,
                             1.0f,
-                            1.2f
+                            2f
                     );
                 }
                 else {

@@ -47,7 +47,9 @@ public class BuddyBlock extends SimpleFacingBlock implements RotateWithEmptyHand
         if (state.isOf(newState.getBlock())) {
             return;
         }
-        this.updateNeighbors(world, pos, state.with(POWERED, false));
+        if (!world.isClient && state.get(POWERED) && world.getBlockTickScheduler().isTicking(pos, this)) {
+            this.updateNeighbors(world, pos, state.with(POWERED, false));
+        }
     }
 
     @Override
@@ -55,7 +57,7 @@ public class BuddyBlock extends SimpleFacingBlock implements RotateWithEmptyHand
         if (!world.isClient()
                 && !state.get(POWERED)
                 && !neighborState.isIn(BwtBlockTags.DOES_NOT_TRIGGER_BUDDY)
-                && !world.getBlockTickScheduler().isQueued(pos, this)
+                && !world.getBlockTickScheduler().isTicking(pos, this)
         ) {
             // minimal delay when triggered to avoid notfying neighbors of change in same tick
             // that they are notifying of the original change. Not doing so causes problems
@@ -71,14 +73,14 @@ public class BuddyBlock extends SimpleFacingBlock implements RotateWithEmptyHand
         super.scheduledTick(state, world, pos, random);
         boolean powered = state.get(POWERED);
 
-        world.setBlockState(pos, state.with(POWERED, !powered));
+        world.setBlockState(pos, state.with(POWERED, !powered), Block.NOTIFY_LISTENERS);
 
         if (!powered) {
             // schedule another update to turn the block off
             world.scheduleBlockTick(pos, this, tickRate);
+            world.playSound(null, pos, BwtSoundEvents.BUDDY_CLICK,
+                    SoundCategory.BLOCKS, 0.5F, 2F);
         }
-        world.playSound(null, pos, BwtSoundEvents.BUDDY_CLICK,
-                SoundCategory.BLOCKS, 1F, world.random.nextFloat() * 0.4F + 1F);
 
         updateNeighbors(world, pos, state);
     }
