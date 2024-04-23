@@ -55,7 +55,7 @@ public abstract class WolfEntityMixin extends TameableEntity implements MobEntit
         this.getGoalSelector().add(1, new PickUpBreedingItemWhileSittingGoal(
                 this,
                 1.7,
-                wolf -> !wolf.getDataTracker().get(IS_FED),
+                wolf -> !wolf.getDataTracker().get(IS_FED) || wolf.getHealth() < wolf.getMaxHealth(),
                 this::feed
         ));
         this.getGoalSelector().add(7, new GoToAndPickUpBreedingItemGoal(
@@ -63,7 +63,7 @@ public abstract class WolfEntityMixin extends TameableEntity implements MobEntit
                 8,
                 1.8,
                 1,
-                wolf -> !wolf.getDataTracker().get(IS_FED),
+                wolf -> !wolf.getDataTracker().get(IS_FED) || wolf.getHealth() < wolf.getMaxHealth(),
                 this::feed
         ));
     }
