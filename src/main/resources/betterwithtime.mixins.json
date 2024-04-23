@@ -14,6 +14,7 @@
     "SpawnerMossyCobbleMixin",
     "VanillaHopperDisableMixin",
     "VanillaHopperInvoker",
+    "VillagersDropXpMixin",
     "WorldEntityCollisionsMixin",
     "accessors.ArmorStandAccessorMixin",
     "accessors.BoatItemAccessorMixin",
