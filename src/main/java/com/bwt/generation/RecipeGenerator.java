@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.DataWriter;
 import net.minecraft.data.server.recipe.RecipeExporter;
+import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -20,19 +21,19 @@ public class RecipeGenerator extends FabricRecipeProvider {
     protected KilnRecipeGenerator kilnRecipeGenerator;
     protected SoulForgeRecipeGenerator soulForgeRecipeGenerator;
 
-    public RecipeGenerator(FabricDataOutput output) {
-        super(output);
-        this.blockDispenserClumpRecipeGenerator = new BlockDispenserClumpRecipeGenerator(output);
-        this.cauldronRecipeGenerator = new CauldronRecipeGenerator(output);
-        this.crucibleRecipeGenerator = new CrucibleRecipeGenerator(output);
-        this.craftingRecipeGenerator = new CraftingRecipeGenerator(output);
-        this.vanillaRecipeGenerator = new VanillaRecipeGenerator(output);
-        this.disabledVanilaRecipeGenerator = new DisabledVanilaRecipeGenerator(output);
-        this.millStoneRecipeGenerator = new MillStoneRecipeGenerator(output);
-        this.sawRecipeGenerator = new SawRecipeGenerator(output);
-        this.turntableRecipeGenerator = new TurntableRecipeGenerator(output);
-        this.kilnRecipeGenerator = new KilnRecipeGenerator(output);
-        this.soulForgeRecipeGenerator = new SoulForgeRecipeGenerator(output);
+    public RecipeGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+        super(output, registriesFuture);
+        this.blockDispenserClumpRecipeGenerator = new BlockDispenserClumpRecipeGenerator(output, registriesFuture);
+        this.cauldronRecipeGenerator = new CauldronRecipeGenerator(output, registriesFuture);
+        this.crucibleRecipeGenerator = new CrucibleRecipeGenerator(output, registriesFuture);
+        this.craftingRecipeGenerator = new CraftingRecipeGenerator(output, registriesFuture);
+        this.vanillaRecipeGenerator = new VanillaRecipeGenerator(output, registriesFuture);
+        this.disabledVanilaRecipeGenerator = new DisabledVanilaRecipeGenerator(output, registriesFuture);
+        this.millStoneRecipeGenerator = new MillStoneRecipeGenerator(output, registriesFuture);
+        this.sawRecipeGenerator = new SawRecipeGenerator(output, registriesFuture);
+        this.turntableRecipeGenerator = new TurntableRecipeGenerator(output, registriesFuture);
+        this.kilnRecipeGenerator = new KilnRecipeGenerator(output, registriesFuture);
+        this.soulForgeRecipeGenerator = new SoulForgeRecipeGenerator(output, registriesFuture);
     }
 
     @Override
@@ -50,7 +51,7 @@ public class RecipeGenerator extends FabricRecipeProvider {
     }
 
     @Override
-    public CompletableFuture<?> run(DataWriter writer) {
-        return CompletableFuture.allOf(super.run(writer), disabledVanilaRecipeGenerator.run(writer));
+    public CompletableFuture<?> run(DataWriter writer, RegistryWrapper.WrapperLookup wrapperLookup) {
+        return CompletableFuture.allOf(super.run(writer, wrapperLookup), disabledVanilaRecipeGenerator.run(writer, wrapperLookup));
     }
 }

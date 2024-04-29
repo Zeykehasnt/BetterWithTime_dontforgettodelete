@@ -5,8 +5,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SingleStackInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.registry.RegistryWrapper;
 
-public class SimpleSingleStackInventory implements SingleStackInventory {
+import java.util.Optional;
+
+public class SimpleSingleStackInventory implements SingleStackInventory.SingleStackBlockEntityInventory {
     int maxStackSize;
     protected ItemStack stack = ItemStack.EMPTY;
 
@@ -53,21 +57,20 @@ public class SimpleSingleStackInventory implements SingleStackInventory {
     @Override
     public boolean canPlayerUse(PlayerEntity player) {
         if (asBlockEntity() != null) {
-            return SingleStackInventory.super.canPlayerUse(player);
+            return SingleStackInventory.SingleStackBlockEntityInventory.super.canPlayerUse(player);
         }
         return true;
     }
 
-    public void readNbt(NbtCompound nbtCompound) {
+    public void readNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup registryLookup) {
         this.clear();
-        ItemStack itemStack = ItemStack.fromNbt(nbtCompound);
-        if (itemStack.isEmpty()) return;
-        this.setStack(itemStack);
+        Optional<ItemStack> itemStack = ItemStack.fromNbt(registryLookup, nbtCompound);
+        itemStack.ifPresent(this::setStack);
     }
 
-    public NbtCompound toNbt() {
+    public NbtElement toNbt(RegistryWrapper.WrapperLookup registryLookup) {
         ItemStack itemStack = this.getStack();
         if (itemStack.isEmpty()) return new NbtCompound();
-        return itemStack.writeNbt(new NbtCompound());
+        return itemStack.encode(registryLookup);
     }
 }

@@ -7,8 +7,8 @@ import net.minecraft.item.*;
 import net.minecraft.util.ActionResult;
 
 public class BattleAxeItem extends MiningToolItem {
-    public BattleAxeItem(ToolMaterial material, float attackDamage, float attackSpeed, Settings settings) {
-        super(attackDamage, attackSpeed, material, BwtBlockTags.BATTLEAXE_MINEABLE, settings);
+    public BattleAxeItem(ToolMaterial material, Settings settings) {
+        super(material, BwtBlockTags.BATTLEAXE_MINEABLE, settings);
     }
 
     @Override
@@ -17,10 +17,10 @@ public class BattleAxeItem extends MiningToolItem {
     }
 
     @Override
-    public float getMiningSpeedMultiplier(ItemStack stack, BlockState state) {
+    public float getMiningSpeed(ItemStack stack, BlockState state) {
         if (state.isOf(Blocks.COBWEB)) {
             return 15.0f;
         }
-        return super.getMiningSpeedMultiplier(stack, state);
+        return super.getMiningSpeed(stack, state);
     }
 }

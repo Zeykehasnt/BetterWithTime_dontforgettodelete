@@ -20,18 +20,18 @@ public class BwtRecipes implements ModInitializer {
     public static final StokedCrucibleRecipeType STOKED_CRUCIBLE_RECIPE_TYPE = new StokedCrucibleRecipeType();
     public static final StokedCrucibleRecipe.Serializer STOKED_CRUCIBLE_RECIPE_SERIALIZER = new StokedCrucibleRecipe.Serializer(StokedCrucibleRecipe::new);
     public static final RecipeType<MillStoneRecipe> MILL_STONE_RECIPE_TYPE = new RecipeType<>() {};
-    public static final MillStoneRecipe.Serializer MILL_STONE_RECIPE_SERIALIZER = new MillStoneRecipe.Serializer(MillStoneRecipe::new);
+    public static final MillStoneRecipe.Serializer MILL_STONE_RECIPE_SERIALIZER = new MillStoneRecipe.Serializer();
     public static final RecipeType<SawRecipe> SAW_RECIPE_TYPE = new RecipeType<>() {};
-    public static final SawRecipe.Serializer SAW_RECIPE_SERIALIZER = new SawRecipe.Serializer(SawRecipe::new);
+    public static final SawRecipe.Serializer SAW_RECIPE_SERIALIZER = new SawRecipe.Serializer();
     public static final RecipeType<TurntableRecipe> TURNTABLE_RECIPE_TYPE = new RecipeType<>() {};
-    public static final TurntableRecipe.Serializer TURNTABLE_RECIPE_SERIALIZER = new TurntableRecipe.Serializer(TurntableRecipe::new);
+    public static final TurntableRecipe.Serializer TURNTABLE_RECIPE_SERIALIZER = new TurntableRecipe.Serializer();
     public static final RecipeType<KilnRecipe> KILN_RECIPE_TYPE = new RecipeType<>() {};
-    public static final KilnRecipe.Serializer KILN_RECIPE_SERIALIZER = new KilnRecipe.Serializer(KilnRecipe::new);
+    public static final KilnRecipe.Serializer KILN_RECIPE_SERIALIZER = new KilnRecipe.Serializer();
     public static final RecipeType<CraftingRecipe> SOUL_FORGE_RECIPE_TYPE = new RecipeType<>() {};
     public static final SoulForgeShapedRecipe.Serializer SOUL_FORGE_SHAPED_RECIPE_SERIALIZER = new SoulForgeShapedRecipe.Serializer();
     public static final SoulForgeShapelessRecipe.Serializer SOUL_FORGE_SHAPELESS_RECIPE_SERIALIZER = new SoulForgeShapelessRecipe.Serializer();
     public static final RecipeType<DisabledRecipe> DISABLED_RECIPE_TYPE = new RecipeType<>() {};
-    public static final DisabledRecipe.Serializer DISABLED_RECIPE_SERIALIZER = new DisabledRecipe.Serializer(DisabledRecipe::new);
+    public static final DisabledRecipe.Serializer DISABLED_RECIPE_SERIALIZER = new DisabledRecipe.Serializer();
     @Override
     public void onInitialize() {
         Registry.register(Registries.RECIPE_TYPE, new Identifier("bwt", "block_dispenser_clump"), BLOCK_DISPENSER_CLUMP_RECIPE_TYPE);

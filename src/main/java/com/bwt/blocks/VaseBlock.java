@@ -1,9 +1,9 @@
 package com.bwt.blocks;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
@@ -27,7 +27,7 @@ public class VaseBlock extends Block {
 
     public static void registerColors(HashMap<DyeColor, VaseBlock> vaseBlocks) {
         Arrays.stream(DyeColor.values()).forEach(dyeColor -> {
-            VaseBlock vaseBlock = new VaseBlock(dyeColor, FabricBlockSettings.create()
+            VaseBlock vaseBlock = new VaseBlock(dyeColor, AbstractBlock.Settings.create()
                     .nonOpaque()
                     .solidBlock(Blocks::never)
                     .sounds(BlockSoundGroup.GLASS)
@@ -35,7 +35,7 @@ public class VaseBlock extends Block {
             );
             vaseBlocks.put(dyeColor, vaseBlock);
             Registry.register(Registries.BLOCK, new Identifier("bwt", "vase_" + dyeColor.getName()), vaseBlock);
-            Registry.register(Registries.ITEM, new Identifier("bwt", "vase_" + dyeColor.getName()), new BlockItem(vaseBlock, new FabricItemSettings()));
+            Registry.register(Registries.ITEM, new Identifier("bwt", "vase_" + dyeColor.getName()), new BlockItem(vaseBlock, new Item.Settings()));
         });
     }
 

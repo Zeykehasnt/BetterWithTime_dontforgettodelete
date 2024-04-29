@@ -25,6 +25,7 @@
 			"com.bwt.BetterWithTimeDataGenerator"
 		]
 	},
+	"accessWidener" : "bwt.accesswidener",
 	"mixins": [
 		"betterwithtime.mixins.json",
 		{

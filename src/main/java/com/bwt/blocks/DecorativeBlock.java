@@ -43,8 +43,8 @@ public abstract class DecorativeBlock extends MaterialInheritedBlock implements 
     }
 
     @Override
-    public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
-        return type.equals(NavigationType.WATER) && world.getFluidState(pos).isIn(FluidTags.WATER);
+    protected boolean canPathfindThrough(BlockState state, NavigationType type) {
+        return type.equals(NavigationType.WATER) && state.getFluidState().isIn(FluidTags.WATER);
     }
 
     @Override

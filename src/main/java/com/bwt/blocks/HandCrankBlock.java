@@ -80,7 +80,7 @@ public class HandCrankBlock extends Block {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if ((hit.getPos().y - pos.getY()) * 16 <= baseHeight) {
             return ActionResult.FAIL;
         }

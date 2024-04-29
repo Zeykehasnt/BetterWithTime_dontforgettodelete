@@ -1,19 +1,30 @@
 package com.bwt.blocks.mining_charge;
 
+import com.bwt.entities.BwtEntities;
 import com.bwt.entities.MiningChargeEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
 import net.minecraft.loot.condition.LootCondition;
 import net.minecraft.loot.condition.LootConditionType;
 import net.minecraft.loot.condition.LootConditionTypes;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.predicate.TagPredicate;
+import net.minecraft.predicate.entity.DamageSourcePredicate;
+import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.EntitySubPredicateTypes;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -28,27 +39,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class MiningChargeExplosion extends Explosion {
-    public static final LootCondition LOOT_CONDITION = new LootCondition() {
-        @Override
-        public LootConditionType getType() {
-            return new LootConditionType(LootConditionTypes.CODEC);
-        }
-
-        @Override
-        public boolean test(LootContext lootContext) {
-            if (lootContext.hasParameter(LootContextParameters.THIS_ENTITY)) {
-                return lootContext.get(LootContextParameters.THIS_ENTITY) instanceof MiningChargeEntity;
-            }
-            return false;
-        }
-    };
+    public static final LootCondition LOOT_CONDITION = DamageSourcePropertiesLootCondition.builder(
+            DamageSourcePredicate.Builder.create().sourceEntity(
+                    EntityPredicate.Builder.create().type(BwtEntities.miningChargeEntity)
+            )
+    ).build();
 
     protected final World world;
     protected final ExplosionBehavior behavior;
     protected final MiningChargeEntity miningChargeEntity;
     protected final DamageSource damageSource;
 
-    public MiningChargeExplosion(World world, @NotNull MiningChargeEntity entity, Vec3d pos, DamageSource damageSource, float power, boolean createFire, Explosion.DestructionType destructionType, ParticleEffect particle, ParticleEffect emitterParticle, SoundEvent soundEvent) {
+    public MiningChargeExplosion(World world, @NotNull MiningChargeEntity entity, Vec3d pos, DamageSource damageSource, float power, boolean createFire, Explosion.DestructionType destructionType, ParticleEffect particle, ParticleEffect emitterParticle, RegistryEntry<SoundEvent> soundEvent) {
         super(world, entity, damageSource, null, pos.x, pos.y, pos.z, power, createFire, destructionType, particle, emitterParticle, soundEvent);
         this.world = world;
         this.behavior = new EntityExplosionBehavior(entity);

@@ -13,6 +13,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeManager;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.ItemScatterer;
@@ -39,15 +40,15 @@ public class TurntableBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
         this.rotationTickCounter = nbt.getInt("rotationTickCounter");
         this.craftingTurnCounter = nbt.getInt("craftingTurnCounter");
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.writeNbt(nbt, registryLookup);
         nbt.putInt("rotationTickCounter", rotationTickCounter);
         nbt.putInt("craftingTurnCounter", craftingTurnCounter);
     }
@@ -180,7 +181,7 @@ public class TurntableBlockEntity extends BlockEntity {
             BlockState blockToRotateState = blockToRotate.state();
             BlockEntity blockToRotateEntity = blockToRotate.blockEntity();
 
-            BlockState rotatedState = blockToRotateState.getBlock().rotate(blockToRotateState, rotation);
+            BlockState rotatedState = blockToRotateState.rotate(rotation);
             RotationProcessHelper.processRotation(world, blockToRotatePos, blockToRotateState, rotatedState, blockToRotateEntity);
 
             // Crafting

@@ -53,9 +53,9 @@ public class MiningChargeEntity extends Entity implements Ownable {
     }
 
     @Override
-    protected void initDataTracker() {
-        this.dataTracker.startTracking(FUSE, 80);
-        this.dataTracker.startTracking(BLOCK_STATE, BwtBlocks.miningChargeBlock.getDefaultState());
+    protected void initDataTracker(DataTracker.Builder builder) {
+        builder.add(FUSE, 80);
+        builder.add(BLOCK_STATE, BwtBlocks.miningChargeBlock.getDefaultState());
     }
 
     protected void setFacing(Direction direction) {
@@ -195,7 +195,7 @@ public class MiningChargeEntity extends Entity implements Ownable {
     }
 
     @Override
-    protected float getEyeHeight(EntityPose pose, EntityDimensions dimensions) {
+    public double getEyeY() {
         return 0.15f;
     }
 }

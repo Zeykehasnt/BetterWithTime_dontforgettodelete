@@ -8,12 +8,15 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.item.Items;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.DyeColor;
 
+import java.util.concurrent.CompletableFuture;
+
 public class KilnRecipeGenerator extends FabricRecipeProvider {
-    public KilnRecipeGenerator(FabricDataOutput output) {
-        super(output);
+    public KilnRecipeGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        super(output, registryLookup);
     }
 
     @Override

@@ -5,8 +5,8 @@ import net.minecraft.item.*;
 import net.minecraft.util.ActionResult;
 
 public class MattockItem extends MiningToolItem {
-    public MattockItem(ToolMaterial material, float attackDamage, float attackSpeed, Item.Settings settings) {
-        super(attackDamage, attackSpeed, material, BwtBlockTags.MATTOCK_MINEABLE, settings);
+    public MattockItem(ToolMaterial material, Item.Settings settings) {
+        super(material, BwtBlockTags.MATTOCK_MINEABLE, settings);
     }
 
     @Override

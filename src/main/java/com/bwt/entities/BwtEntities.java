@@ -32,7 +32,7 @@ public class BwtEntities implements ModInitializer {
                     (EntityType.EntityFactory<MovingRopeEntity>) MovingRopeEntity::new,
                     SpawnGroup.MISC
             )
-            .setDimensions(0.98f, 0.98f)
+            .dimensions(0.98f, 0.98f)
             .build()
     );
     public static final EntityType<BroadheadArrowEntity> broadheadArrowEntity = Registry.register(
@@ -42,7 +42,7 @@ public class BwtEntities implements ModInitializer {
                     (EntityType.EntityFactory<BroadheadArrowEntity>) BroadheadArrowEntity::new,
                     SpawnGroup.MISC
             )
-            .setDimensions(0.5f, 0.5f)
+            .dimensions(0.5f, 0.5f)
             .maxTrackingRange(4)
             .trackingTickInterval(20)
             .build()
@@ -54,7 +54,7 @@ public class BwtEntities implements ModInitializer {
                     (EntityType.EntityFactory<DynamiteEntity>) DynamiteEntity::new,
                     SpawnGroup.MISC
             )
-            .setDimensions(0.25f, 0.40f)
+            .dimensions(0.25f, 0.40f)
             .maxTrackingRange(4)
             .trackingTickInterval(20)
             .build()
@@ -67,7 +67,7 @@ public class BwtEntities implements ModInitializer {
                     SpawnGroup.MISC
             )
             .makeFireImmune()
-            .setDimensions(0.98f, 0.98f)
+            .dimensions(0.98f, 0.98f)
             .maxTrackingRange(10)
             .trackingTickInterval(10)
             .build()

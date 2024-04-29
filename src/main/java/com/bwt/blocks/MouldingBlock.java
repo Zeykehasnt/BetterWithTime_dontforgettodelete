@@ -1,11 +1,7 @@
 package com.bwt.blocks;
 
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
@@ -55,7 +51,7 @@ public class MouldingBlock extends MiniBlock {
     }
 
     public static MouldingBlock ofBlock(Block fullBlock, Block slabBlock) {
-        return new MouldingBlock(FabricBlockSettings.copyOf(slabBlock), fullBlock);
+        return new MouldingBlock(AbstractBlock.Settings.copy(slabBlock), fullBlock);
     }
 
     public MapCodec<? extends MouldingBlock> getCodec() {

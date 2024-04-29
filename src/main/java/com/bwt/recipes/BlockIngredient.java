@@ -1,6 +1,7 @@
 package com.bwt.recipes;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredient;
 import net.fabricmc.fabric.api.recipe.v1.ingredient.CustomIngredientSerializer;
@@ -9,6 +10,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
@@ -60,10 +63,13 @@ public record BlockIngredient(Optional<TagKey<Block>> optionalBlockTagKey, Optio
 
     public static class Serializer implements CustomIngredientSerializer<BlockIngredient> {
         private static final Identifier ID = new Identifier("bwt", "block_ingredient");
-        public static final Codec<BlockIngredient> CODEC = createCodec();
+        public static final MapCodec<BlockIngredient> CODEC = createCodec();
+        public static final PacketCodec<RegistryByteBuf, BlockIngredient> PACKET_CODEC = PacketCodec.ofStatic(
+                Serializer::write, Serializer::read
+        );
 
-        public static Codec<BlockIngredient> createCodec() {
-            return RecordCodecBuilder.create(instance ->
+        public static MapCodec<BlockIngredient> createCodec() {
+            return RecordCodecBuilder.mapCodec(instance ->
                     instance.group(
                             TagKey.codec(RegistryKeys.BLOCK).optionalFieldOf("blockTag").forGetter(blockIngredient -> blockIngredient.optionalBlockTagKey),
                             Registries.BLOCK.getCodec().optionalFieldOf("block").forGetter(blockIngredient -> blockIngredient.optionalBlock)
@@ -76,13 +82,18 @@ public record BlockIngredient(Optional<TagKey<Block>> optionalBlockTagKey, Optio
             return ID;
         }
 
+
         @Override
-        public Codec<BlockIngredient> getCodec(boolean allowEmpty) {
-            return CODEC;
+        public PacketCodec<RegistryByteBuf, BlockIngredient> getPacketCodec() {
+            return PACKET_CODEC;
         }
 
         @Override
-        public BlockIngredient read(PacketByteBuf buf) {
+        public MapCodec<BlockIngredient> getCodec(boolean allowEmpty) {
+            return CODEC;
+        }
+
+        public static BlockIngredient read(RegistryByteBuf buf) {
             Identifier blockTagKeyId = buf.readIdentifier();
             Optional<TagKey<Block>> blockTagKey = blockTagKeyId.getNamespace().isBlank() ? Optional.empty() : Optional.of(TagKey.of(RegistryKeys.BLOCK, blockTagKeyId));
             Identifier blockId = buf.readIdentifier();
@@ -90,8 +101,7 @@ public record BlockIngredient(Optional<TagKey<Block>> optionalBlockTagKey, Optio
             return new BlockIngredient(blockTagKey, block.equals(Blocks.AIR) ? Optional.empty() : Optional.of(block));
         }
 
-        @Override
-        public void write(PacketByteBuf buf, BlockIngredient ingredient) {
+        public static void write(RegistryByteBuf buf, BlockIngredient ingredient) {
             buf.writeIdentifier(ingredient.optionalBlockTagKey.map(TagKey::id).orElse(new Identifier("", "")));
             buf.writeIdentifier(ingredient.optionalBlock.map(Registries.BLOCK::getId).orElse(new Identifier("", "")));
         }

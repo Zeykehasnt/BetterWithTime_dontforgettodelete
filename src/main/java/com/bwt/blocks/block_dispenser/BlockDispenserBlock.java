@@ -5,8 +5,6 @@ import com.bwt.blocks.block_dispenser.behavior.dispense.*;
 import com.bwt.blocks.block_dispenser.behavior.inhale.BlockInhaleBehavior;
 import com.bwt.blocks.block_dispenser.behavior.inhale.EntityInhaleBehavior;
 import com.bwt.blocks.mining_charge.MiningChargeBlock;
-import com.bwt.entities.BroadheadArrowEntity;
-import com.bwt.entities.DynamiteEntity;
 import com.bwt.entities.MiningChargeEntity;
 import com.bwt.items.BwtItems;
 import com.bwt.recipes.BlockDispenserClumpRecipe;
@@ -26,10 +24,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.*;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.recipe.RecipeEntry;
@@ -37,7 +32,6 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
@@ -66,7 +60,7 @@ public class BlockDispenserBlock extends DispenserBlock {
 
     protected void inheritItemBehavior(Item... items) {
         for (Item item : items) {
-            ITEM_BEHAVIORS.put(item, invertStackResult(getBehaviorForItem(item.getDefaultStack())));
+            ITEM_BEHAVIORS.put(item, invertStackResult(DispenserBlock.BEHAVIORS.get(item)));
         }
     }
 
@@ -126,35 +120,11 @@ public class BlockDispenserBlock extends DispenserBlock {
                 Items.TNT_MINECART
         ).forEach(item -> registerItemDispenseBehavior(item, minecartDispenserBehavior));
 
-        DispenserBehavior dynamiteBehavior = new ProjectileDispenserBehavior() {
-            @Override
-            protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                DynamiteEntity dynamiteEntity = new DynamiteEntity(position.getX(), position.getY(), position.getZ(), world);
-                dynamiteEntity.ignite();
-                return dynamiteEntity;
-            }
-
-            @Override
-            protected float getForce() {
-                return 1.0f;
-            }
-
-            @Override
-            protected float getVariation() {
-                return 1.0f;
-            }
-        };
+        DispenserBehavior dynamiteBehavior = new ProjectileDispenserBehavior(BwtItems.dynamiteItem);
         registerItemDispenseBehavior(BwtItems.dynamiteItem, invertStackResult(dynamiteBehavior));
         DispenserBlock.registerBehavior(BwtItems.dynamiteItem, dynamiteBehavior);
 
-        DispenserBehavior broadheadArrowBehavior = new ProjectileDispenserBehavior() {
-            @Override
-            protected ProjectileEntity createProjectile(World world, Position position, ItemStack stack) {
-                BroadheadArrowEntity broadheadArrowEntity = new BroadheadArrowEntity(world, position.getX(), position.getY(), position.getZ(), stack.copyWithCount(1));
-                broadheadArrowEntity.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
-                return broadheadArrowEntity;
-            }
-        };
+        DispenserBehavior broadheadArrowBehavior = new ProjectileDispenserBehavior(BwtItems.broadheadArrowItem);
         registerItemDispenseBehavior(BwtItems.broadheadArrowItem, invertStackResult(broadheadArrowBehavior));
         DispenserBlock.registerBehavior(BwtItems.broadheadArrowItem, broadheadArrowBehavior);
 
@@ -241,7 +211,7 @@ public class BlockDispenserBlock extends DispenserBlock {
     }
 
     @Override
-    public ActionResult onUse(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, Hand hand, BlockHitResult blockHitResult) {
+    protected ActionResult onUse(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, BlockHitResult hit) {
         if (world.isClient) return ActionResult.SUCCESS;
         //This will call the createScreenHandlerFactory method from BlockWithEntity, which will return our blockEntity casted to
         //a namedScreenHandlerFactory. If your block class does not extend BlockWithEntity, it needs to implement createScreenHandlerFactory.

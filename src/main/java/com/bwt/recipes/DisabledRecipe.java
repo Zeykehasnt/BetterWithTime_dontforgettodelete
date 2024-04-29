@@ -1,15 +1,18 @@
 package com.bwt.recipes;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.Blocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.recipe.*;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -60,42 +63,44 @@ public record DisabledRecipe(String group) implements Recipe<Inventory> {
     }
 
     @Override
-    public ItemStack craft(@Nullable Inventory inventory, DynamicRegistryManager registryManager) {
+    public ItemStack craft(Inventory inventory, RegistryWrapper.WrapperLookup lookup) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public ItemStack getResult(DynamicRegistryManager registryManager) {
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
         return ItemStack.EMPTY;
     }
 
     public static class Serializer implements RecipeSerializer<DisabledRecipe> {
-        private final DisabledRecipe.RecipeFactory<DisabledRecipe> recipeFactory;
-        private final Codec<DisabledRecipe> codec;
+        public static final MapCodec<DisabledRecipe> CODEC = RecordCodecBuilder.mapCodec(
+                instance -> instance
+                        .group(Codec.STRING.optionalFieldOf("group", "").forGetter(recipe -> recipe.group))
+                        .apply(instance, DisabledRecipe::new)
+        );
+        public static final PacketCodec<RegistryByteBuf, DisabledRecipe> PACKET_CODEC = PacketCodec.ofStatic(
+                DisabledRecipe.Serializer::write, DisabledRecipe.Serializer::read
+        );
 
-        public Serializer(DisabledRecipe.RecipeFactory<DisabledRecipe> recipeFactory) {
-            this.recipeFactory = recipeFactory;
-            this.codec = RecordCodecBuilder.create(
-                    instance->instance.group(
-                            Codecs.createStrictOptionalFieldCodec(Codec.STRING, "group", "")
-                                    .forGetter(recipe -> recipe.group)
-                    ).apply(instance, recipeFactory::create)
-            );
+        public Serializer() {
         }
 
         @Override
-        public Codec<DisabledRecipe> codec() {
-            return codec;
+        public MapCodec<DisabledRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public DisabledRecipe read(PacketByteBuf buf) {
+        public PacketCodec<RegistryByteBuf, DisabledRecipe> packetCodec() {
+            return PACKET_CODEC;
+        }
+
+        private static DisabledRecipe read(RegistryByteBuf buf) {
             String group = buf.readString();
-            return this.recipeFactory.create(group);
+            return new DisabledRecipe(group);
         }
 
-        @Override
-        public void write(PacketByteBuf buf, DisabledRecipe recipe) {
+        private static void write(RegistryByteBuf buf, DisabledRecipe recipe) {
             buf.writeString(recipe.group);
         }
     }

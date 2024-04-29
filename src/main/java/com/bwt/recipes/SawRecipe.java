@@ -2,6 +2,7 @@ package com.bwt.recipes;
 
 import com.bwt.blocks.BwtBlocks;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementCriterion;
@@ -16,12 +17,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -105,64 +109,62 @@ public class SawRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public ItemStack craft(@Nullable Inventory inventory, DynamicRegistryManager registryManager) {
-        return getResult(registryManager);
+    public ItemStack craft(Inventory inventory, RegistryWrapper.WrapperLookup lookup) {
+        return getResult(lookup);
     }
 
     @Override
-    public ItemStack getResult(DynamicRegistryManager registryManager) {
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
         return results.get(0);
     }
 
     public static class Serializer implements RecipeSerializer<SawRecipe> {
-        private final SawRecipe.RecipeFactory<SawRecipe> recipeFactory;
-        private final Codec<SawRecipe> codec;
+        protected static final MapCodec<SawRecipe> CODEC = RecordCodecBuilder.mapCodec(
+                instance->instance.group(
+                        Codec.STRING.optionalFieldOf("group", "")
+                                .forGetter(recipe -> recipe.group),
+                        CraftingRecipeCategory.CODEC.fieldOf("category")
+                                .orElse(CraftingRecipeCategory.MISC)
+                                .forGetter(recipe -> recipe.category),
+                        BlockIngredient.Serializer.CODEC
+                                .fieldOf("ingredient")
+                                .forGetter(recipe -> recipe.ingredient),
+                        ItemStack.VALIDATED_CODEC
+                                .listOf()
+                                .fieldOf("drops")
+                                .forGetter(SawRecipe::getResults)
+                ).apply(instance, SawRecipe::new)
+        );
+        public static final PacketCodec<RegistryByteBuf, SawRecipe> PACKET_CODEC = PacketCodec.ofStatic(
+                Serializer::write, Serializer::read
+        );
 
-        public Serializer(SawRecipe.RecipeFactory<SawRecipe> recipeFactory) {
-            this.recipeFactory = recipeFactory;
-            this.codec = RecordCodecBuilder.create(
-                    instance->instance.group(
-                            Codecs.createStrictOptionalFieldCodec(Codec.STRING, "group", "")
-                                    .forGetter(recipe -> recipe.group),
-                            CraftingRecipeCategory.CODEC.fieldOf("category")
-                                    .orElse(CraftingRecipeCategory.MISC)
-                                    .forGetter(recipe -> recipe.category),
-                            BlockIngredient.Serializer.CODEC
-                                    .fieldOf("ingredient")
-                                    .forGetter(recipe -> recipe.ingredient),
-                            ItemStack.RECIPE_RESULT_CODEC
-                                    .listOf()
-                                    .fieldOf("results")
-                                    .forGetter(SawRecipe::getResults)
-                    ).apply(instance, recipeFactory::create)
-            );
+
+        public Serializer() {}
+
+        @Override
+        public MapCodec<SawRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public Codec<SawRecipe> codec() {
-            return codec;
+        public PacketCodec<RegistryByteBuf, SawRecipe> packetCodec() {
+            return PACKET_CODEC;
         }
 
-        @Override
-        public SawRecipe read(PacketByteBuf buf) {
+        public static SawRecipe read(RegistryByteBuf buf) {
             String group = buf.readString();
             CraftingRecipeCategory category = buf.readEnumConstant(CraftingRecipeCategory.class);
-            BlockIngredient ingredient = BlockIngredient.SERIALIZER.read(buf);
-            int resultsSize = buf.readVarInt();
-            DefaultedList<ItemStack> results = DefaultedList.ofSize(resultsSize, ItemStack.EMPTY);
-            results.replaceAll(ignored -> buf.readItemStack());
-            return this.recipeFactory.create(group, category, ingredient, results);
+            BlockIngredient ingredient = BlockIngredient.Serializer.read(buf);
+            List<ItemStack> drops = ItemStack.LIST_PACKET_CODEC.decode(buf);
+            return new SawRecipe(group, category, ingredient, drops);
         }
 
-        @Override
-        public void write(PacketByteBuf buf, SawRecipe recipe) {
+        public static void write(RegistryByteBuf buf, SawRecipe recipe) {
             buf.writeString(recipe.group);
             buf.writeEnumConstant(recipe.category);
-            BlockIngredient.SERIALIZER.write(buf, recipe.ingredient);
-            buf.writeVarInt(recipe.results.size());
-            for (ItemStack stack : recipe.getResults()) {
-                buf.writeItemStack(stack);
-            }
+            BlockIngredient.Serializer.write(buf, recipe.ingredient);
+            ItemStack.LIST_PACKET_CODEC.encode(buf, recipe.getResults());
         }
     }
 

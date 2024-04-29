@@ -11,7 +11,6 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -59,8 +58,8 @@ public abstract class HorizontalMechPowerSourceEntity extends RectangularEntity 
     abstract float getSpeedToPowerThreshold();
 
     @Override
-    protected float getEyeHeight(EntityPose pose, EntityDimensions dimensions) {
-        return (dimensions.height / 2) - 1;
+    public double getEyeY() {
+        return this.getHeight() / 2;
     }
 
     @Override
@@ -69,11 +68,11 @@ public abstract class HorizontalMechPowerSourceEntity extends RectangularEntity 
     }
 
     @Override
-    protected void initDataTracker() {
-        this.dataTracker.startTracking(rotationSpeed, 0f);
-        this.dataTracker.startTracking(DAMAGE_WOBBLE_TICKS, 0);
-        this.dataTracker.startTracking(DAMAGE_WOBBLE_SIDE, 1);
-        this.dataTracker.startTracking(DAMAGE_WOBBLE_STRENGTH, 0.0f);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        builder.add(rotationSpeed, 0f);
+        builder.add(DAMAGE_WOBBLE_TICKS, 0);
+        builder.add(DAMAGE_WOBBLE_SIDE, 1);
+        builder.add(DAMAGE_WOBBLE_STRENGTH, 0.0f);
     }
 
     public float getRotation() {
@@ -107,11 +106,11 @@ public abstract class HorizontalMechPowerSourceEntity extends RectangularEntity 
     }
 
     public void setDamageWobbleStrength(float damageWobbleStrength) {
-        this.dataTracker.set(DAMAGE_WOBBLE_STRENGTH, Float.valueOf(damageWobbleStrength));
+        this.dataTracker.set(DAMAGE_WOBBLE_STRENGTH, damageWobbleStrength);
     }
 
     public float getDamageWobbleStrength() {
-        return this.dataTracker.get(DAMAGE_WOBBLE_STRENGTH).floatValue();
+        return this.dataTracker.get(DAMAGE_WOBBLE_STRENGTH);
     }
 
     public int getDamageWobbleTicks() {

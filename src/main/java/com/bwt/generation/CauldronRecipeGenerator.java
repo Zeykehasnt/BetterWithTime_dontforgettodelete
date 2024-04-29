@@ -9,6 +9,8 @@ import com.bwt.utils.DyeUtils;
 import com.google.common.collect.Maps;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.component.DataComponentType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.data.server.recipe.CookingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
@@ -22,15 +24,17 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SmokingRecipe;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Util;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class CauldronRecipeGenerator extends FabricRecipeProvider {
-    public CauldronRecipeGenerator(FabricDataOutput output) {
-        super(output);
+    public CauldronRecipeGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        super(output, registryLookup);
     }
 
     @Override
@@ -42,9 +46,15 @@ public class CauldronRecipeGenerator extends FabricRecipeProvider {
     private void generateUnstoked(RecipeExporter exporter) {
         generateFoods(exporter);
         // Foul foods
-        Registries.ITEM.stream().filter(Item::isFood).filter(item -> !item.equals(BwtItems.foulFoodItem)).forEach(item -> {
-            CauldronRecipe.JsonBuilder.create().ingredient(BwtItems.dungItem).ingredient(item).result(BwtItems.foulFoodItem).offerTo(exporter, "bwt:foul_food_from_" + Registries.ITEM.getId(item).getPath());
-        });
+        Registries.ITEM.stream()
+                .filter(item -> item.getDefaultStack().get(DataComponentTypes.FOOD) != null)
+                .filter(item -> !item.equals(BwtItems.foulFoodItem))
+                .forEach(item -> CauldronRecipe.JsonBuilder.create()
+                        .ingredient(BwtItems.dungItem)
+                        .ingredient(item)
+                        .result(BwtItems.foulFoodItem)
+                        .offerTo(exporter, "bwt:foul_food_from_" + Registries.ITEM.getId(item).getPath())
+                );
         CauldronRecipe.JsonBuilder.create().ingredient(BwtItems.dungItem).ingredient(BwtItems.scouredLeatherItem).result(BwtItems.tannedLeatherItem).offerTo(exporter);
         CauldronRecipe.JsonBuilder.create().ingredient(Items.GLOWSTONE_DUST).ingredient(Items.REDSTONE).ingredient(BwtItems.hempFiberItem).result(BwtItems.filamentItem).offerTo(exporter);
         CauldronRecipe.JsonBuilder.create().ingredient(BwtItems.hellfireDustItem, 8).result(BwtItems.concentratedHellfireItem).group("concentrated_hellfire").offerTo(exporter);

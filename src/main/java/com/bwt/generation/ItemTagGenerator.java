@@ -6,7 +6,7 @@ import com.bwt.tags.BwtBlockTags;
 import com.bwt.tags.BwtItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
@@ -32,12 +32,12 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
         getOrCreateTagBuilder(BwtItemTags.SAW_DUSTS).add(BwtItems.sawDustItem, BwtItems.soulDustItem);
         getOrCreateTagBuilder(BwtItemTags.MINING_CHARGE_IMMUNE)
                 .forceAddTag(ConventionalItemTags.ORES)
-                .forceAddTag(ConventionalItemTags.RAW_ORES)
+                .forceAddTag(ConventionalItemTags.RAW_MATERIALS)
                 .forceAddTag(ConventionalItemTags.REDSTONE_DUSTS)
-                .forceAddTag(ConventionalItemTags.EMERALDS)
-                .forceAddTag(ConventionalItemTags.LAPIS)
-                .forceAddTag(ConventionalItemTags.DIAMONDS)
-                .forceAddTag(ConventionalItemTags.QUARTZ)
+                .forceAddTag(ConventionalItemTags.EMERALD_GEMS)
+                .forceAddTag(ConventionalItemTags.LAPIS_GEMS)
+                .forceAddTag(ConventionalItemTags.DIAMOND_GEMS)
+                .forceAddTag(ConventionalItemTags.QUARTZ_GEMS)
                 .forceAddTag(ConventionalItemTags.COAL)
                 .add(Items.FLINT)
                 .add(Items.ANCIENT_DEBRIS);
@@ -208,7 +208,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
                         Items.BEETROOT,
 
                         Items.NETHERITE_SCRAP,
-                        Items.SCUTE,
+                        Items.TURTLE_SCUTE,
+                        Items.ARMADILLO_SCUTE,
                         Items.PRISMARINE_SHARD,
                         Items.PRISMARINE_CRYSTALS,
                         Items.NAUTILUS_SHELL,
@@ -364,9 +365,10 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
                 .forceAddTag(ConventionalItemTags.ENTITY_WATER_BUCKETS)
                 .forceAddTag(ItemTags.MUSIC_DISCS)
                 .forceAddTag(ItemTags.SAPLINGS)
-                .forceAddTag(ItemTags.TOOLS)
-                .forceAddTag(ConventionalItemTags.BOWS)
-                .forceAddTag(ConventionalItemTags.SHIELDS)
+                .forceAddTag(ConventionalItemTags.TOOLS)
+                .forceAddTag(ConventionalItemTags.BOWS_TOOLS)
+                .forceAddTag(ConventionalItemTags.CROSSBOWS_TOOLS)
+                .forceAddTag(ConventionalItemTags.SHIELDS_TOOLS)
                 .add(
                         Items.WRITABLE_BOOK,
                         Items.LAVA_BUCKET,

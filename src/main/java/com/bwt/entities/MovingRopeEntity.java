@@ -6,6 +6,7 @@ import com.bwt.mixin.MovableBlockEntityMixin;
 import com.bwt.utils.TrackedDataHandlers;
 import com.bwt.utils.VoxelShapedEntity;
 import com.bwt.utils.rectangular_entity.EntityRectDimensions;
+import com.bwt.utils.rectangular_entity.RectangularEntity;
 import com.google.common.collect.Maps;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -33,7 +34,7 @@ import net.minecraft.world.World;
 
 import java.util.*;
 
-public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
+public class MovingRopeEntity extends RectangularEntity implements VoxelShapedEntity {
     protected static final TrackedData<BlockPos> pulleyPos = DataTracker.registerData(MovingRopeEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
     private static final TrackedData<Integer> targetY = DataTracker.registerData(MovingRopeEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> up = DataTracker.registerData(MovingRopeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -61,12 +62,12 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
 
 
     @Override
-    protected void initDataTracker() {
-        this.dataTracker.startTracking(pulleyPos, BlockPos.ORIGIN);
-        this.dataTracker.startTracking(up, false);
-        this.dataTracker.startTracking(targetY, 0);
-        this.dataTracker.startTracking(blockMap, Maps.newHashMap());
-        this.dataTracker.startTracking(blockEntityNbtMap, Maps.newHashMap());
+    protected void initDataTracker(DataTracker.Builder builder) {
+        builder.add(pulleyPos, BlockPos.ORIGIN);
+        builder.add(up, false);
+        builder.add(targetY, 0);
+        builder.add(blockMap, Maps.newHashMap());
+        builder.add(blockEntityNbtMap, Maps.newHashMap());
     }
 
     public void setPulleyPos(BlockPos pos) {
@@ -134,9 +135,9 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
     }
 
     @Override
-    public EntityDimensions getDimensions(EntityPose pose) {
+    public EntityRectDimensions getRectDimensions() {
         Box boundingBox = getBoundingBox();
-        return EntityRectDimensions.changing((float) boundingBox.getLengthX(), (float) boundingBox.getLengthY(), (float) boundingBox.getLengthZ());
+        return EntityRectDimensions.fixed((float) boundingBox.getLengthX(), (float) boundingBox.getLengthY(), (float) boundingBox.getLengthZ());
     }
 
     @Override
@@ -157,7 +158,7 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
 
 
     @Override
-    protected float getEyeHeight(EntityPose pose, EntityDimensions dimensions) {
+    public double getEyeY() {
         return -1;
     }
 
@@ -346,7 +347,7 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
                         BlockEntity blockEntity = getWorld().getBlockEntity(blockPos);
                         if (blockEntity != null) {
                             NbtCompound tag = blockEntities.get(entry.getKey());
-                            blockEntity.readNbt(tag);
+                            blockEntity.read(tag, getRegistryManager());
                             ((MovableBlockEntityMixin) blockEntity).setPos(blockPos);
                         }
                     }
@@ -392,7 +393,7 @@ public class MovingRopeEntity extends Entity implements VoxelShapedEntity {
         Map<Vec3i, NbtCompound> blockEntities = getBlockEntityNbtMap();
         blocks.put(offset, state);
         if (blockEntity != null) {
-            NbtCompound tag = blockEntity.createNbtWithIdentifyingData();
+            NbtCompound tag = blockEntity.createNbtWithIdentifyingData(getRegistryManager());
             blockEntities.put(offset, tag);
             world.removeBlockEntity(pos);
             setBlockEntityNbtMap(blockEntities);

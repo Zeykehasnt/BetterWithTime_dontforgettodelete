@@ -134,17 +134,17 @@ public class MiningChargeBlock extends WallMountedBlock {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemStack itemStack = player.getStackInHand(hand);
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        ItemStack itemStack = player.getStackInHand(player.getActiveHand());
         if (!itemStack.isOf(Items.FLINT_AND_STEEL) && !itemStack.isOf(Items.FIRE_CHARGE)) {
-            return super.onUse(state, world, pos, player, hand, hit);
+            return super.onUse(state, world, pos, player, hit);
         }
         prime(world, pos, state, player);
         world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_ALL_AND_REDRAW);
         Item item = itemStack.getItem();
         if (!player.isCreative()) {
             if (itemStack.isOf(Items.FLINT_AND_STEEL)) {
-                itemStack.damage(1, player, playerx -> playerx.sendToolBreakStatus(hand));
+                itemStack.damage(1, player, PlayerEntity.getSlotForHand(player.getActiveHand()));
             } else {
                 itemStack.decrement(1);
             }

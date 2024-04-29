@@ -3,22 +3,23 @@ package com.bwt.items;
 import com.bwt.entities.DynamiteEntity;
 import com.bwt.sounds.BwtSoundEvents;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.thrown.EnderPearlEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.thrown.SnowballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.RangedWeaponItem;
-import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.item.ProjectileItem;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Position;
 import net.minecraft.world.World;
 
-public class DynamiteItem extends Item {
-    public DynamiteItem(Settings settings) {
+public class DynamiteItem extends Item implements ProjectileItem {
+    public DynamiteItem(Item.Settings settings) {
         super(settings);
     }
 
@@ -38,7 +39,7 @@ public class DynamiteItem extends Item {
                     continue;
                 }
                 if (!serverUser.getAbilities().creativeMode) {
-                    otherStack.damage(1, user, playerx -> playerx.sendToolBreakStatus(hand));
+                    otherStack.damage(1, user, PlayerEntity.getSlotForHand(user.getActiveHand()));
                 }
                 dynamiteEntity.ignite();
                 break;
@@ -51,5 +52,21 @@ public class DynamiteItem extends Item {
             itemStack.decrement(1);
         }
         return TypedActionResult.success(itemStack, world.isClient());
+    }
+
+    @Override
+    public ProjectileEntity createEntity(World world, Position pos, ItemStack stack, Direction direction) {
+        DynamiteEntity dynamiteEntity = new DynamiteEntity(pos.getX(), pos.getY(), pos.getZ(), world);
+        dynamiteEntity.setItem(stack);
+        dynamiteEntity.ignite();
+        return dynamiteEntity;
+    }
+
+    @Override
+    public ProjectileItem.Settings getProjectileSettings() {
+        return ProjectileItem.Settings.builder()
+                .power(1.0f)
+                .uncertainty(1.0f)
+                .build();
     }
 }

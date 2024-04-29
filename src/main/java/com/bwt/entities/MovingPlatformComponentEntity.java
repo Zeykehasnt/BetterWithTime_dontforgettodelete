@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.data.DataTracker;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -43,7 +44,8 @@ public class MovingPlatformComponentEntity extends RectangularEntity {
     }
 
     @Override
-    protected void initDataTracker() {
+    protected void initDataTracker(DataTracker.Builder builder) {
+
     }
 
     @Override
@@ -64,8 +66,7 @@ public class MovingPlatformComponentEntity extends RectangularEntity {
         return this == entity || this.owner == entity;
     }
 
-    @Override
-    public EntityRectDimensions getDimensions(EntityPose pose) {
+    public EntityRectDimensions getRectDimensions() {
         return this.stateDimensions;
     }
 

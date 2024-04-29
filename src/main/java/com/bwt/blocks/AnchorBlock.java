@@ -82,9 +82,9 @@ public class AnchorBlock extends SimpleFacingBlock {
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (player.getMainHandStack().isOf(BwtItems.ropeItem)) {
-            return super.onUse(state, world, pos, player, hand, hit);
+            return super.onUse(state, world, pos, player, hit);
         }
         BlockPos.Mutable mutablePos = pos.mutableCopy().move(Direction.DOWN);
         while (world.getBlockState(mutablePos.down()).isOf(BwtBlocks.ropeBlock)) {

@@ -16,20 +16,22 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class AdvancementsGenerator extends FabricAdvancementProvider {
     public static final Identifier background = new Identifier("textures/gui/advancements/backgrounds/adventure.png");
 
-    public AdvancementsGenerator(FabricDataOutput output) {
-        super(output);
+    public AdvancementsGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+        super(output, registryLookup);
     }
 
     @Override
-    public void generateAdvancement(Consumer<AdvancementEntry> consumer) {
+    public void generateAdvancement(RegistryWrapper.WrapperLookup registryLookup, Consumer<AdvancementEntry> consumer) {
         AdvancementEntry rootAdvancement = Advancement.Builder.create()
                 .display(
                         BwtBlocks.companionCubeBlock,

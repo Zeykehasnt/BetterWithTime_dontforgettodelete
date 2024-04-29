@@ -19,14 +19,14 @@ public class VanillaHopperDisableMixin {
     @Inject(
             at = @At(
                     value = "INVOKE_ASSIGN",
-                    target = "Lnet/minecraft/block/entity/HopperBlockEntity;getOutputInventory(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Lnet/minecraft/inventory/Inventory;"
+                    target = "Lnet/minecraft/block/entity/HopperBlockEntity;getOutputInventory(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/entity/HopperBlockEntity;)Lnet/minecraft/inventory/Inventory;"
             ),
             method = "insert",
             locals = LocalCapture.CAPTURE_FAILHARD,
             cancellable = true
     )
-    private static void hookInsert(World world, BlockPos pos, BlockState state, Inventory inventory, CallbackInfoReturnable<Boolean> cir) {
-        if (world.getGameRules().getBoolean(BwtGameRules.VANILLA_HOPPERS_DISABLED) && state.isOf(Blocks.HOPPER)) {
+    private static void hookInsert(World world, BlockPos pos, HopperBlockEntity blockEntity, CallbackInfoReturnable<Boolean> cir) {
+        if (world.getGameRules().getBoolean(BwtGameRules.VANILLA_HOPPERS_DISABLED) && blockEntity.getCachedState().isOf(Blocks.HOPPER)) {
             cir.setReturnValue(null);
         }
     }
@@ -34,7 +34,7 @@ public class VanillaHopperDisableMixin {
     @Inject(
             at = @At(
                     value = "INVOKE_ASSIGN",
-                    target = "Lnet/minecraft/block/entity/HopperBlockEntity;getInputInventory(Lnet/minecraft/world/World;Lnet/minecraft/block/entity/Hopper;)Lnet/minecraft/inventory/Inventory;"
+                    target = "Lnet/minecraft/block/entity/HopperBlockEntity;getInputInventory(Lnet/minecraft/world/World;Lnet/minecraft/block/entity/Hopper;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;)Lnet/minecraft/inventory/Inventory;"
             ),
             method = "extract(Lnet/minecraft/world/World;Lnet/minecraft/block/entity/Hopper;)Z",
             locals = LocalCapture.CAPTURE_FAILHARD,

@@ -4,6 +4,7 @@ import com.bwt.blocks.BwtBlocks;
 import com.bwt.blocks.block_dispenser.BlockDispenserBlock;
 import com.bwt.mixin.accessors.ArmorStandAccessorMixin;
 import com.bwt.utils.DyeUtils;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.decoration.ArmorStandEntity;
@@ -18,6 +19,7 @@ import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 
 import java.util.stream.Stream;
@@ -59,7 +61,7 @@ public interface EntityInhaleBehavior {
             @Override
             public ItemStack getInhaledItems(Entity entity) {
                 ItemStack itemStack = new ItemStack(BwtBlocks.companionCubeBlock);
-                itemStack.setCustomName(entity.getCustomName());
+                itemStack.set(DataComponentTypes.CUSTOM_NAME, entity.getCustomName());
                 return itemStack;
             }
 
@@ -86,7 +88,7 @@ public interface EntityInhaleBehavior {
             @Override
             public ItemStack getInhaledItems(Entity entity) {
                 ItemStack itemStack = new ItemStack(Items.EGG);
-                itemStack.setCustomName(entity.getCustomName());
+                itemStack.set(DataComponentTypes.CUSTOM_NAME, entity.getCustomName());
                 return itemStack;
             }
 
@@ -137,7 +139,7 @@ public interface EntityInhaleBehavior {
             @Override
             public ItemStack getInhaledItems(Entity entity) {
                 ItemStack itemStack = (itemStack = entity.getPickBlockStack()) == null ? ItemStack.EMPTY : itemStack;
-                itemStack.setCustomName(entity.getCustomName());
+                itemStack.set(DataComponentTypes.CUSTOM_NAME, entity.getCustomName());
                 return itemStack;
             }
         };
@@ -169,7 +171,7 @@ public interface EntityInhaleBehavior {
             @Override
             public ItemStack getInhaledItems(Entity entity) {
                 ItemStack itemStack = (itemStack = entity.getPickBlockStack()) == null ? ItemStack.EMPTY : itemStack;
-                itemStack.setCustomName(entity.getCustomName());
+                itemStack.set(DataComponentTypes.CUSTOM_NAME, entity.getCustomName());
                 return itemStack;
             }
         };
@@ -187,7 +189,7 @@ public interface EntityInhaleBehavior {
             @Override
             public ItemStack getInhaledItems(Entity entity) {
                 ItemStack itemStack = (itemStack = entity.getPickBlockStack()) == null ? ItemStack.EMPTY : itemStack;
-                itemStack.setCustomName(entity.getCustomName());
+                itemStack.set(DataComponentTypes.CUSTOM_NAME, entity.getCustomName());
                 return itemStack;
             }
 
@@ -217,7 +219,7 @@ public interface EntityInhaleBehavior {
             @Override
             public ItemStack getInhaledItems(Entity entity) {
                 ItemStack itemStack = (itemStack = entity.getPickBlockStack()) == null ? ItemStack.EMPTY : itemStack;
-                itemStack.setCustomName(entity.getCustomName());
+                itemStack.set(DataComponentTypes.CUSTOM_NAME, entity.getCustomName());
                 return itemStack;
             }
 
@@ -244,7 +246,7 @@ public interface EntityInhaleBehavior {
             @Override
             public ItemStack getInhaledItems(Entity entity) {
                 ItemStack itemStack = (itemStack = entity.getPickBlockStack()) == null ? ItemStack.EMPTY : itemStack;
-                itemStack.setCustomName(entity.getCustomName());
+                itemStack.set(DataComponentTypes.CUSTOM_NAME, entity.getCustomName());
                 return itemStack;
             }
 
@@ -271,7 +273,7 @@ public interface EntityInhaleBehavior {
             @Override
             public ItemStack getInhaledItems(Entity entity) {
                 ItemStack itemStack = (itemStack = entity.getPickBlockStack()) == null ? ItemStack.EMPTY : itemStack;
-                itemStack.setCustomName(entity.getCustomName());
+                itemStack.set(DataComponentTypes.CUSTOM_NAME, entity.getCustomName());
                 return itemStack;
             }
         });

@@ -32,6 +32,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -105,10 +106,10 @@ public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHan
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        this.filterInventory.readNbt(nbt.getCompound("Filter"));
-        this.hopperInventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE));
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
+        this.filterInventory.readNbt(nbt.getCompound("Filter"), registryLookup);
+        this.hopperInventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE), registryLookup);
         this.mechPower = nbt.getInt("mechPower");
         this.soulCount = nbt.getInt("soulCount");
         this.xpCount = nbt.getInt("xpCount");
@@ -121,10 +122,10 @@ public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHan
     }
 
     @Override
-    public void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
-        nbt.put("Filter", this.filterInventory.toNbt());
-        nbt.put("Inventory", this.hopperInventory.toNbtList());
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.writeNbt(nbt, registryLookup);
+        nbt.put("Filter", this.filterInventory.toNbt(registryLookup));
+        nbt.put("Inventory", this.hopperInventory.toNbtList(registryLookup));
         nbt.putInt("mechPower", this.mechPower);
         nbt.putInt("soulCount", this.soulCount);
         nbt.putInt("xpCount", this.xpCount);
@@ -219,7 +220,7 @@ public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHan
     protected static void soulOverloadExplode(World world, MechHopperBlockEntity blockEntity) {
         world.breakBlock(blockEntity.getPos(), false);
         ItemScatterer.spawn(world, blockEntity.getPos(), blockEntity.hopperInventory);
-        world.playSound(null, blockEntity.getPos(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS);
+        world.playSound(null, blockEntity.getPos(), SoundEvents.ENTITY_GENERIC_EXPLODE.value(), SoundCategory.BLOCKS);
         if (!world.getDifficulty().equals(Difficulty.PEACEFUL)) {
             GhastEntity ghastEntity = new GhastEntity(EntityType.GHAST, world);
             ghastEntity.setPosition(blockEntity.getPos().toCenterPos());
@@ -368,10 +369,10 @@ public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHan
     }
 
     @Override
-    public NbtCompound toInitialChunkDataNbt() {
-        NbtCompound nbtCompound = createNbt();
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
+        NbtCompound nbtCompound = createNbt(registryLookup);
         nbtCompound.putInt("slotsOccupied", slotsOccupied);
-        nbtCompound.put("Filter", this.filterInventory.toNbt());
+        nbtCompound.put("Filter", this.filterInventory.toNbt(registryLookup));
         return nbtCompound;
     }
 

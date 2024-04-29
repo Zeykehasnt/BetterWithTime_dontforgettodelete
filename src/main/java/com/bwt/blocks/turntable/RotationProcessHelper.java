@@ -39,11 +39,11 @@ public interface RotationProcessHelper {
             rotatedState = Block.postProcessState(rotatedState, world, pos);
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), Block.NOTIFY_LISTENERS);
             world.setBlockState(pos, rotatedState);
-            rotatedState.getBlock().neighborUpdate(rotatedState, world, pos, BwtBlocks.turntableBlock, pos.down(), true);
+            rotatedState.neighborUpdate(world, pos, BwtBlocks.turntableBlock, pos.down(), true);
         });
         register(DoorBlock.class, (world, pos, originalState, rotatedState, rotatingBlockEntity) -> {
             world.setBlockState(pos, rotatedState);
-            rotatedState.getBlock().neighborUpdate(rotatedState, world, pos, BwtBlocks.turntableBlock, pos.down(), true);
+            rotatedState.neighborUpdate(world, pos, BwtBlocks.turntableBlock, pos.down(), true);
         });
     }
 
@@ -58,6 +58,6 @@ public interface RotationProcessHelper {
         if (rotatingBlockEntity != null) {
             world.addBlockEntity(rotatingBlockEntity);
         }
-        rotatedState.getBlock().neighborUpdate(rotatedState, world, pos, BwtBlocks.turntableBlock, pos.down(), true);
+        rotatedState.neighborUpdate(world, pos, BwtBlocks.turntableBlock, pos.down(), true);
     }
 }

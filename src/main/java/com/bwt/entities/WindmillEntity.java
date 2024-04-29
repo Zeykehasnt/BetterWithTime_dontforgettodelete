@@ -55,15 +55,15 @@ public class WindmillEntity extends HorizontalMechPowerSourceEntity {
     }
 
     @Override
-    public EntityRectDimensions getDimensions(EntityPose pose) {
+    public EntityRectDimensions getRectDimensions() {
         return EntityRectDimensions.fixed(WindmillEntity.width, WindmillEntity.height, WindmillEntity.length);
     }
 
     @Override
-    protected void initDataTracker() {
-        super.initDataTracker();
-        dataTracker.startTracking(dyeIndex, 0);
-        sailColors.forEach(bladeColor -> dataTracker.startTracking(bladeColor, DyeColor.WHITE.getId()));
+    protected void initDataTracker(DataTracker.Builder builder) {
+        super.initDataTracker(builder);
+        builder.add(dyeIndex, 0);
+        sailColors.forEach(bladeColor -> builder.add(bladeColor, DyeColor.WHITE.getId()));
     }
 
     public DyeColor getSailColor(int index) {

@@ -6,6 +6,8 @@ import com.bwt.items.BwtItems;
 import com.bwt.mixin.accessors.MobEntityAccessorMixin;
 import com.bwt.sounds.BwtSoundEvents;
 import net.minecraft.block.BlockState;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.data.DataTracker;
@@ -15,7 +17,6 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.item.FoodComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
@@ -33,8 +34,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Optional;
-
 @Mixin(WolfEntity.class)
 public abstract class WolfEntityMixin extends TameableEntity implements MobEntityAccessorMixin {
     protected WolfEntityMixin(EntityType<? extends TameableEntity> entityType, World world) {
@@ -46,8 +45,8 @@ public abstract class WolfEntityMixin extends TameableEntity implements MobEntit
 
 
     @Inject(method = "initDataTracker", at = @At("TAIL"))
-    public void initDataTracker(CallbackInfo ci) {
-        this.getDataTracker().startTracking(IS_FED, false);
+    public void initDataTracker(DataTracker.Builder builder, CallbackInfo ci) {
+        builder.add(IS_FED, false);
     }
 
     @Inject(method = "initGoals", at = @At("TAIL"))
@@ -204,9 +203,9 @@ public abstract class WolfEntityMixin extends TameableEntity implements MobEntit
 
     @Unique
     public void feed(ItemStack itemStack) {
-        int hunger = itemStack.isOf(BwtItems.kibbleItem) ? 2 : Optional.ofNullable(itemStack.getFoodComponent()).orElse(new FoodComponent.Builder().build()).getHunger();
-        heal(hunger);
-        feed(hunger);
+        int nutrition = itemStack.isOf(BwtItems.kibbleItem) ? 2 : itemStack.getOrDefault(DataComponentTypes.FOOD, new FoodComponent.Builder().build()).nutrition();
+        heal(nutrition);
+        feed(nutrition);
     }
 
     @Unique

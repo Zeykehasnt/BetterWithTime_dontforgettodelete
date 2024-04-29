@@ -48,8 +48,8 @@ public abstract class MiniBlock extends MaterialInheritedBlock implements Waterl
     }
 
     @Override
-    public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
-        return type.equals(NavigationType.WATER) && world.getFluidState(pos).isIn(FluidTags.WATER);
+    protected boolean canPathfindThrough(BlockState state, NavigationType type) {
+        return type.equals(NavigationType.WATER) && state.getFluidState().isIn(FluidTags.WATER);
     }
 
     @Override
@@ -61,7 +61,7 @@ public abstract class MiniBlock extends MaterialInheritedBlock implements Waterl
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         BlockState updatedState = onUseRotate(state, world, pos, player);
         if (updatedState == state) {
             return ActionResult.PASS;

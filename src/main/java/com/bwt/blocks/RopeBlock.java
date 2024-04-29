@@ -8,6 +8,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.SwordItem;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.util.math.BlockPos;
@@ -110,5 +111,9 @@ public class RopeBlock extends Block {
             mutablePos.move(Direction.DOWN);
         }
         return mutablePos.toImmutable();
+    }
+
+    public BlockSoundGroup getSoundGroup() {
+        return super.getSoundGroup(getDefaultState());
     }
 }

@@ -1,10 +1,10 @@
 package com.bwt.blocks;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.WoodType;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -77,12 +77,12 @@ public abstract class MaterialInheritedBlock extends Block {
             Registry.register(Registries.BLOCK, columnId, columnBlock);
             Registry.register(Registries.BLOCK, pedestalId, pedestalBlock);
             Registry.register(Registries.BLOCK, tableId, tableBlock);
-            Registry.register(Registries.ITEM, sidingId, new BlockItem(sidingBlock, new FabricItemSettings()));
-            Registry.register(Registries.ITEM, mouldingId, new BlockItem(mouldingBlock, new FabricItemSettings()));
-            Registry.register(Registries.ITEM, cornerId, new BlockItem(cornerBlock, new FabricItemSettings()));
-            Registry.register(Registries.ITEM, columnId, new BlockItem(columnBlock, new FabricItemSettings()));
-            Registry.register(Registries.ITEM, pedestalId, new BlockItem(pedestalBlock, new FabricItemSettings()));
-            Registry.register(Registries.ITEM, tableId, new BlockItem(tableBlock, new FabricItemSettings()));
+            Registry.register(Registries.ITEM, sidingId, new BlockItem(sidingBlock, new Item.Settings()));
+            Registry.register(Registries.ITEM, mouldingId, new BlockItem(mouldingBlock, new Item.Settings()));
+            Registry.register(Registries.ITEM, cornerId, new BlockItem(cornerBlock, new Item.Settings()));
+            Registry.register(Registries.ITEM, columnId, new BlockItem(columnBlock, new Item.Settings()));
+            Registry.register(Registries.ITEM, pedestalId, new BlockItem(pedestalBlock, new Item.Settings()));
+            Registry.register(Registries.ITEM, tableId, new BlockItem(tableBlock, new Item.Settings()));
         }
     }
 }

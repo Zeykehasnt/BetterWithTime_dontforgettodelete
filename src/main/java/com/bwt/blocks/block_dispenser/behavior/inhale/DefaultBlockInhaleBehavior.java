@@ -35,7 +35,7 @@ public class DefaultBlockInhaleBehavior implements BlockInhaleBehavior {
                     .add(LootContextParameters.TOOL, itemStack)
                     .addOptional(LootContextParameters.BLOCK_ENTITY, facingBlockEntity)
                     .add(LootContextParameters.THIS_ENTITY, new ItemEntity(world, centerPos.getX(), centerPos.getY(), centerPos.getZ(), itemStack));
-            List<ItemStack> drops = facingState.getBlock().getDroppedStacks(facingState, builder);
+            List<ItemStack> drops = facingState.getDroppedStacks(builder);
             Optional<ItemStack> drop = drops.stream().filter(dropStack -> dropStack.isOf(facingState.getBlock().asItem())).findFirst();
             if (drop.isPresent()) {
                 return drop.get();

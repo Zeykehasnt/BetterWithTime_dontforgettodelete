@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -107,7 +108,7 @@ public class BlockDispenserBlockEntity extends DispenserBlockEntity implements N
             if (invStack.isEmpty()) {
                 return true;
             }
-            if (!ItemStack.canCombine(invStack, stack)) {
+            if (!ItemStack.areItemsAndComponentsEqual(invStack, stack)) {
                 continue;
             }
             count -= (invStack.getMaxCount() - invStack.getCount());
@@ -127,7 +128,7 @@ public class BlockDispenserBlockEntity extends DispenserBlockEntity implements N
         for (int currentSlot = 0; currentSlot < invSize; currentSlot++ )
         {
             ItemStack invStack = inventory.get(currentSlot);
-            if (ItemStack.canCombine(invStack, stack)) {
+            if (ItemStack.areItemsAndComponentsEqual(invStack, stack)) {
                 int space = invStack.getMaxCount() - invStack.getCount();
                 int inserted = Math.min(space, stack.getCount());
                 invStack.increment(inserted);
@@ -192,7 +193,7 @@ public class BlockDispenserBlockEntity extends DispenserBlockEntity implements N
     }
 
     @Override
-    protected DefaultedList<ItemStack> method_11282() {
+    protected DefaultedList<ItemStack> getHeldStacks() {
         return inventory;
     }
 
@@ -202,16 +203,16 @@ public class BlockDispenserBlockEntity extends DispenserBlockEntity implements N
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        Inventories.readNbt(nbt, this.inventory);
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
+        super.readNbt(nbt, lookup);
+        Inventories.readNbt(nbt, this.inventory, lookup);
         this.selectedSlot = nbt.getInt("nextSlotToDispense");
     }
 
     @Override
-    public void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
-        Inventories.writeNbt(nbt, this.inventory);
+    public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup lookup) {
+        super.writeNbt(nbt, lookup);
+        Inventories.writeNbt(nbt, this.inventory, lookup);
         nbt.putInt("nextSlotToDispense", selectedSlot);
     }
 

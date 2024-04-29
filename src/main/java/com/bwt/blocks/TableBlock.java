@@ -1,6 +1,6 @@
 package com.bwt.blocks;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -29,7 +29,7 @@ public class TableBlock extends DecorativeBlock {
     }
 
     public static TableBlock ofBlock(Block fullBlock, Block slabBlock) {
-        return new TableBlock(FabricBlockSettings.copyOf(slabBlock), fullBlock);
+        return new TableBlock(AbstractBlock.Settings.copy(slabBlock), fullBlock);
     }
 
     @Override

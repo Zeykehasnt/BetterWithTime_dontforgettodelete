@@ -13,12 +13,11 @@ import com.bwt.blocks.soul_forge.SoulForgeBlock;
 import com.bwt.blocks.turntable.TurntableBlock;
 import com.bwt.utils.DyeUtils;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
@@ -32,37 +31,36 @@ import java.util.HashMap;
 
 public class BwtBlocks implements ModInitializer {
 
-	public static final Block anchorBlock = new AnchorBlock(FabricBlockSettings.create()
+	public static final Block anchorBlock = new AnchorBlock(AbstractBlock.Settings.create()
             .hardness(2f)
             .sounds(BlockSoundGroup.STONE)
             .nonOpaque()
             .solid()
             .requiresTool()
     );
-	public static final Block axleBlock = new AxleBlock(FabricBlockSettings.create()
+	public static final Block axleBlock = new AxleBlock(AbstractBlock.Settings.create()
             .hardness(2F)
             .sounds(BlockSoundGroup.WOOD)
             .burnable()
             .solid()
             .nonOpaque()
     );
-    public static final Block axlePowerSourceBlock = new AxlePowerSourceBlock(FabricBlockSettings.copyOf(axleBlock.getSettings()));
-//	public static final Block barrelBlock = new BarrelBlock(FabricBlockSettings.create());
-	public static final Block bellowsBlock = new BellowsBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS));
-	public static final BlockDispenserBlock blockDispenserBlock = new BlockDispenserBlock(FabricBlockSettings.copyOf(Blocks.DISPENSER)
+    public static final Block axlePowerSourceBlock = new AxlePowerSourceBlock(AbstractBlock.Settings.copy(axleBlock));
+//	public static final Block barrelBlock = new BarrelBlock(AbstractBlock.Settings.create());
+	public static final Block bellowsBlock = new BellowsBlock(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS));
+	public static final BlockDispenserBlock blockDispenserBlock = new BlockDispenserBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER)
             .hardness(3.5f)
     );
-//	public static final Block bloodWoodBlock = new BloodWoodBlock(FabricBlockSettings.create());
+//	public static final Block bloodWoodBlock = new BloodWoodBlock(AbstractBlock.Settings.create());
 //	Blood Wood Sapling
-	public static final Block buddyBlock = new BuddyBlock(FabricBlockSettings.create()
+	public static final Block buddyBlock = new BuddyBlock(AbstractBlock.Settings.create()
             .hardness(3.5f)
             .sounds(BlockSoundGroup.STONE)
             .mapColor(MapColor.LIGHT_GRAY)
             .requiresTool()
     );
-	public static final Block cauldronBlock = new CauldronBlock(FabricBlockSettings.create()
+	public static final Block cauldronBlock = new CauldronBlock(AbstractBlock.Settings.create()
             .solidBlock(Blocks::never)
-            .notSolid()
             .nonOpaque()
             .hardness(3.5f)
             .resistance(10f)
@@ -70,33 +68,33 @@ public class BwtBlocks implements ModInitializer {
             .mapColor(MapColor.BLACK)
             .requiresTool()
     );
-//	public static final Block canvasBlock = new CanvasBlock(FabricBlockSettings.create());
+//	public static final Block canvasBlock = new CanvasBlock(AbstractBlock.Settings.create());
     public static final ArrayList<ColumnBlock> columnBlocks = new ArrayList<>();
-	public static final Block concentratedHellfireBlock = new Block(FabricBlockSettings.create().hardness(2f).requiresTool().mapColor(MapColor.BRIGHT_RED).sounds(BlockSoundGroup.METAL));
-	public static final Block companionCubeBlock = new CompanionCubeBlock(FabricBlockSettings.copyOf(Blocks.WHITE_WOOL)
+	public static final Block concentratedHellfireBlock = new Block(AbstractBlock.Settings.create().hardness(2f).requiresTool().mapColor(MapColor.BRIGHT_RED).sounds(BlockSoundGroup.METAL));
+	public static final Block companionCubeBlock = new CompanionCubeBlock(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL)
             .hardness(0.4f)
     );
-	public static final Block companionSlabBlock = new CompanionSlabBlock(FabricBlockSettings.copyOf(companionCubeBlock));
+	public static final Block companionSlabBlock = new CompanionSlabBlock(AbstractBlock.Settings.copy(companionCubeBlock));
 	public static final ArrayList<CornerBlock> cornerBlocks = new ArrayList<>();
-	public static final Block crucibleBlock = new CrucibleBlock(FabricBlockSettings.create()
+	public static final Block crucibleBlock = new CrucibleBlock(AbstractBlock.Settings.create()
             .sounds(BlockSoundGroup.GLASS)
             .hardness(0.6f)
             .resistance(3f)
     );
-	public static final Block detectorBlock = new DetectorBlock(FabricBlockSettings.copyOf(Blocks.DISPENSER)
+	public static final Block detectorBlock = new DetectorBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER)
             .hardness(3.5f)
     );
-	public static final Block detectorLogicBlock = new DetectorLogicBlock(FabricBlockSettings.copyOf(Blocks.AIR));
-    public static final Block dungBlock = new Block(FabricBlockSettings.create().hardness(2f).mapColor(MapColor.BROWN).sounds(BlockSoundGroup.HONEY));
-    public static final Block gearBoxBlock = new GearBoxBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
+	public static final Block detectorLogicBlock = new DetectorLogicBlock(AbstractBlock.Settings.copy(Blocks.AIR));
+    public static final Block dungBlock = new Block(AbstractBlock.Settings.create().hardness(2f).mapColor(MapColor.BROWN).sounds(BlockSoundGroup.HONEY));
+    public static final Block gearBoxBlock = new GearBoxBlock(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
             .hardness(2F)
     );
-	public static final Block grateBlock = new PaneBlock(FabricBlockSettings.create()
+	public static final Block grateBlock = new PaneBlock(AbstractBlock.Settings.create()
             .hardness(0.5f)
             .sounds(BlockSoundGroup.WOOD)
             .nonOpaque()
     );
-	public static final Block handCrankBlock = new HandCrankBlock(FabricBlockSettings.create()
+	public static final Block handCrankBlock = new HandCrankBlock(AbstractBlock.Settings.create()
             .hardness(0.5f)
             .sounds(BlockSoundGroup.WOOD)
             .solid()
@@ -106,30 +104,30 @@ public class BwtBlocks implements ModInitializer {
             .blockVision(Blocks::never)
             .requiresTool()
     );
-	public static final Block hempCropBlock = new HempCropBlock(FabricBlockSettings.copyOf(Blocks.SUGAR_CANE));
-	public static final Block hibachiBlock = new HibachiBlock(FabricBlockSettings.create()
+	public static final Block hempCropBlock = new HempCropBlock(AbstractBlock.Settings.copy(Blocks.SUGAR_CANE));
+	public static final Block hibachiBlock = new HibachiBlock(AbstractBlock.Settings.create()
             .hardness(3.5f)
             .sounds(BlockSoundGroup.STONE)
             .solidBlock(Blocks::never)
             .requiresTool()
     );
-	public static final Block hopperBlock = new MechHopperBlock(FabricBlockSettings.create()
+	public static final Block hopperBlock = new MechHopperBlock(AbstractBlock.Settings.create()
             .hardness(2f)
             .sounds(BlockSoundGroup.WOOD)
             .solid()
             .nonOpaque()
     );
-//	public static final Block infernalEnchanterBlock = new InfernalEnchanterBlock(FabricBlockSettings.create());
-	public static final Block kilnBlock = new KilnBlock(FabricBlockSettings.copyOf(Blocks.BRICKS));
-//	public static final Block lensBlock = new LensBlock(FabricBlockSettings.create());
-	public static final Block lightBlockBlock = new LightBlock(FabricBlockSettings.copyOf(Blocks.GLASS)
+//	public static final Block infernalEnchanterBlock = new InfernalEnchanterBlock(AbstractBlock.Settings.create());
+	public static final Block kilnBlock = new KilnBlock(AbstractBlock.Settings.copy(Blocks.BRICKS));
+//	public static final Block lensBlock = new LensBlock(AbstractBlock.Settings.create());
+	public static final Block lightBlockBlock = new LightBlock(AbstractBlock.Settings.copy(Blocks.GLASS)
             .strength(0.4f)
             .luminance(Blocks.createLightLevelFromLitBlockState(15))
     );
-	public static final Block millStoneBlock = new MillStoneBlock(FabricBlockSettings.copyOf(Blocks.DISPENSER)
+	public static final Block millStoneBlock = new MillStoneBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER)
             .hardness(3.5f)
     );
-	public static final Block miningChargeBlock = new MiningChargeBlock(FabricBlockSettings.create()
+	public static final Block miningChargeBlock = new MiningChargeBlock(AbstractBlock.Settings.create()
             .mapColor(MapColor.BROWN)
             .breakInstantly()
             .sounds(BlockSoundGroup.GRASS)
@@ -137,24 +135,24 @@ public class BwtBlocks implements ModInitializer {
             .solidBlock(Blocks::never)
     );
 	public static final ArrayList<MouldingBlock> mouldingBlocks = new ArrayList<>();
-//	public static final Block netherGrothBlock = new NetherGrothBlock(FabricBlockSettings.create());
-//	public static final Block obsidianDetectorRailBlock = new ObsidianDetectorRailBlock(FabricBlockSettings.create());
-	public static final Block obsidianPressuePlateBlock = new ObsidianPressurePlateBlock(FabricBlockSettings.copyOf(Blocks.STONE_PRESSURE_PLATE)
+//	public static final Block netherGrothBlock = new NetherGrothBlock(AbstractBlock.Settings.create());
+//	public static final Block obsidianDetectorRailBlock = new ObsidianDetectorRailBlock(AbstractBlock.Settings.create());
+	public static final Block obsidianPressuePlateBlock = new ObsidianPressurePlateBlock(AbstractBlock.Settings.copy(Blocks.STONE_PRESSURE_PLATE)
             .strength(50.0f, 1200.0f)
     );
-	public static final Block obsidianDetectorRailBlock = new DetectorRailBlock(FabricBlockSettings.copyOf(Blocks.DETECTOR_RAIL)
+	public static final Block obsidianDetectorRailBlock = new DetectorRailBlock(AbstractBlock.Settings.copy(Blocks.DETECTOR_RAIL)
             .strength(25.0f, 1200.0f)
     );
     public static final ArrayList<PedestalBlock> pedestalBlocks = new ArrayList<>();
-	public static final Block planterBlock = new PlanterBlock(FabricBlockSettings.copyOf(Blocks.TERRACOTTA)
+	public static final Block planterBlock = new PlanterBlock(AbstractBlock.Settings.copy(Blocks.TERRACOTTA)
             .nonOpaque()
             .hardness(0.6f)
     );
-	public static final Block soilPlanterBlock = new SoilPlanterBlock(FabricBlockSettings.copyOf(planterBlock));
-	public static final Block soulSandPlanterBlock = new SoulSandPlanterBlock(FabricBlockSettings.copyOf(planterBlock));
-	public static final Block grassPlanterBlock = new GrassPlanterBlock(FabricBlockSettings.copyOf(planterBlock));
-    public static final Block paddingBlock = new PaddingBlock(FabricBlockSettings.create().hardness(2f).mapColor(MapColor.OFF_WHITE).sounds(BlockSoundGroup.WOOL));
-	public static final Block platformBlock = new PlatformBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
+	public static final Block soilPlanterBlock = new SoilPlanterBlock(AbstractBlock.Settings.copy(planterBlock));
+	public static final Block soulSandPlanterBlock = new SoulSandPlanterBlock(AbstractBlock.Settings.copy(planterBlock));
+	public static final Block grassPlanterBlock = new GrassPlanterBlock(AbstractBlock.Settings.copy(planterBlock));
+    public static final Block paddingBlock = new PaddingBlock(AbstractBlock.Settings.create().hardness(2f).mapColor(MapColor.OFF_WHITE).sounds(BlockSoundGroup.WOOL));
+	public static final Block platformBlock = new PlatformBlock(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
             .nonOpaque()
             .allowsSpawning(Blocks::never)
             .solidBlock(Blocks::never)
@@ -163,81 +161,76 @@ public class BwtBlocks implements ModInitializer {
             .hardness(2f)
             .burnable()
     );
-	public static final Block pulleyBlock = new PulleyBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS)
+	public static final Block pulleyBlock = new PulleyBlock(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
             .hardness(2f)
             .mapColor(MapColor.TERRACOTTA_BROWN)
             .pistonBehavior(PistonBehavior.IGNORE)
     );
-    public static final Block ropeCoilBlock = new Block(FabricBlockSettings.create().hardness(1f).mapColor(MapColor.BROWN).sounds(BlockSoundGroup.GRASS));
-	public static final Block ropeBlock = new RopeBlock(FabricBlockSettings.create()
+    public static final Block ropeCoilBlock = new Block(AbstractBlock.Settings.create().hardness(1f).mapColor(MapColor.BROWN).sounds(BlockSoundGroup.GRASS));
+	public static final RopeBlock ropeBlock = new RopeBlock(AbstractBlock.Settings.create()
             .hardness(0.5f)
             .sounds(BlockSoundGroup.GRASS)
     );
-	public static final Block sawBlock = new SawBlock(FabricBlockSettings.create()
+	public static final Block sawBlock = new SawBlock(AbstractBlock.Settings.create()
             .hardness(2f)
             .burnable()
             .sounds(BlockSoundGroup.WOOD)
             .nonOpaque()
     );
-//	public static final Block screwPumpBlock = new ScrewPumpBlock(FabricBlockSettings.create());
+//	public static final Block screwPumpBlock = new ScrewPumpBlock(AbstractBlock.Settings.create());
     public static final ArrayList<SidingBlock> sidingBlocks = new ArrayList<>();
-	public static final Block slatsBlock = new PaneBlock(FabricBlockSettings.create()
+	public static final Block slatsBlock = new PaneBlock(AbstractBlock.Settings.create()
             .strength(0.5f)
             .sounds(BlockSoundGroup.WOOD)
             .burnable()
             .nonOpaque()
     );
-    public static final Block soapBlock = new SimpleFacingBlock(FabricBlockSettings.create().hardness(2f).mapColor(MapColor.PINK).sounds(BlockSoundGroup.SLIME));
-//	public static final Block stakeBlock = new StakeBlock(FabricBlockSettings.create());
-    public static final Block stokedFireBlock = new StokedFireBlock(FabricBlockSettings.copyOf(Blocks.SOUL_FIRE));
-    public static final Block stoneDetectorRailBlock = new DetectorRailBlock(FabricBlockSettings.copyOf(Blocks.DETECTOR_RAIL));
-	public static final Block soulForgeBlock = new SoulForgeBlock(FabricBlockSettings.copyOf(Blocks.ANVIL));
+    public static final Block soapBlock = new SimpleFacingBlock(AbstractBlock.Settings.create().hardness(2f).mapColor(MapColor.PINK).sounds(BlockSoundGroup.SLIME));
+//	public static final Block stakeBlock = new StakeBlock(AbstractBlock.Settings.create());
+    public static final Block stokedFireBlock = new StokedFireBlock(AbstractBlock.Settings.copy(Blocks.SOUL_FIRE));
+    public static final Block stoneDetectorRailBlock = new DetectorRailBlock(AbstractBlock.Settings.copy(Blocks.DETECTOR_RAIL));
+	public static final Block soulForgeBlock = new SoulForgeBlock(AbstractBlock.Settings.copy(Blocks.ANVIL));
     public static final ArrayList<TableBlock> tableBlocks = new ArrayList<>();
-	public static final Block turntableBlock = new TurntableBlock(FabricBlockSettings.create()
+	public static final Block turntableBlock = new TurntableBlock(AbstractBlock.Settings.create()
             .strength(2f)
             .sounds(BlockSoundGroup.STONE)
             .mapColor(Blocks.PISTON_HEAD.getDefaultMapColor())
     );
-	public static final UnfiredPotteryBlock unfiredCrucibleBlock = new UnfiredCrucibleBlock(FabricBlockSettings.copyOf(Blocks.CLAY)
+	public static final UnfiredPotteryBlock unfiredCrucibleBlock = new UnfiredCrucibleBlock(AbstractBlock.Settings.copy(Blocks.CLAY)
             .nonOpaque()
-            .notSolid()
             .solidBlock(Blocks::never)
     );
-	public static final UnfiredPotteryBlock unfiredPlanterBlock = new UnfiredPlanterBlock(FabricBlockSettings.copyOf(Blocks.CLAY)
+	public static final UnfiredPotteryBlock unfiredPlanterBlock = new UnfiredPlanterBlock(AbstractBlock.Settings.copy(Blocks.CLAY)
             .nonOpaque()
-            .notSolid()
             .solidBlock(Blocks::never)
     );
-	public static final UnfiredPotteryBlock unfiredVaseBlock = new UnfiredVaseBlock(FabricBlockSettings.copyOf(Blocks.CLAY)
+	public static final UnfiredPotteryBlock unfiredVaseBlock = new UnfiredVaseBlock(AbstractBlock.Settings.copy(Blocks.CLAY)
             .nonOpaque()
-            .notSolid()
             .solidBlock(Blocks::never)
     );
-	public static final UnfiredPotteryBlock unfiredUrnBlock = new UnfiredUrnBlock(FabricBlockSettings.copyOf(Blocks.CLAY)
+	public static final UnfiredPotteryBlock unfiredUrnBlock = new UnfiredUrnBlock(AbstractBlock.Settings.copy(Blocks.CLAY)
             .nonOpaque()
-            .notSolid()
             .solidBlock(Blocks::never)
     );
-	public static final UnfiredPotteryBlock unfiredMouldBlock = new UnfiredMouldBlock(FabricBlockSettings.copyOf(Blocks.CLAY)
+	public static final UnfiredPotteryBlock unfiredMouldBlock = new UnfiredMouldBlock(AbstractBlock.Settings.copy(Blocks.CLAY)
             .nonOpaque()
-            .notSolid()
             .solidBlock(Blocks::never)
     );
-	public static final Block urnBlock = new UrnBlock(FabricBlockSettings.copyOf(Blocks.TERRACOTTA)
+	public static final Block urnBlock = new UrnBlock(AbstractBlock.Settings.copy(Blocks.TERRACOTTA)
             .nonOpaque()
             .solidBlock(Blocks::never)
             .allowsSpawning(Blocks::never)
             .hardness(2f)
     );
 	public static final HashMap<DyeColor, VaseBlock> vaseBlocks = new HashMap<>();
-	public static final Block wickerPaneBlock = new PaneBlock(FabricBlockSettings.create()
+	public static final Block wickerPaneBlock = new PaneBlock(AbstractBlock.Settings.create()
             .strength(0.5f)
             .sounds(BlockSoundGroup.GRASS)
             .burnable()
             .nonOpaque()
     );
-    public static final Block wickerBlock = new Block(FabricBlockSettings.create().hardness(2f).burnable().mapColor(MapColor.SPRUCE_BROWN).sounds(BlockSoundGroup.GRASS));
-    public static final Block wickerSlabBlock = new SlabBlock(FabricBlockSettings.copyOf(wickerBlock));
+    public static final Block wickerBlock = new Block(AbstractBlock.Settings.create().hardness(2f).burnable().mapColor(MapColor.SPRUCE_BROWN).sounds(BlockSoundGroup.GRASS));
+    public static final Block wickerSlabBlock = new SlabBlock(AbstractBlock.Settings.copy(wickerBlock));
     public static final HashMap<DyeColor, SlabBlock> woolSlabBlocks = new HashMap<>();
 
 
@@ -245,95 +238,95 @@ public class BwtBlocks implements ModInitializer {
     public void onInitialize() {
         // Axle
         Registry.register(Registries.BLOCK, new Identifier("bwt", "axle"), axleBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "axle"), new BlockItem(axleBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "axle"), new BlockItem(axleBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "axle_power_source"), axlePowerSourceBlock);
         // Gearbox
         Registry.register(Registries.BLOCK, new Identifier("bwt", "gear_box"), gearBoxBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "gear_box"), new BlockItem(gearBoxBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "gear_box"), new BlockItem(gearBoxBlock, new Item.Settings()));
         // Hibachi
         Registry.register(Registries.BLOCK, new Identifier("bwt", "hibachi"), hibachiBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "hibachi"), new BlockItem(hibachiBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "hibachi"), new BlockItem(hibachiBlock, new Item.Settings()));
         // Light Block
         Registry.register(Registries.BLOCK, new Identifier("bwt", "light_block"), lightBlockBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "light_block"), new BlockItem(lightBlockBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "light_block"), new BlockItem(lightBlockBlock, new Item.Settings()));
         // Block Dispenser
         Registry.register(Registries.BLOCK, new Identifier("bwt", "block_dispenser"), blockDispenserBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "block_dispenser"), new BlockItem(blockDispenserBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "block_dispenser"), new BlockItem(blockDispenserBlock, new Item.Settings()));
         // Cauldron / Stewing Pot
         Registry.register(Registries.BLOCK, new Identifier("bwt", "cauldron"), cauldronBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "cauldron"), new BlockItem(cauldronBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "cauldron"), new BlockItem(cauldronBlock, new Item.Settings()));
         // Obsidian pressure plate
         Registry.register(Registries.BLOCK, new Identifier("bwt", "obsidian_pressure_plate"), obsidianPressuePlateBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "obsidian_pressure_plate"), new BlockItem(obsidianPressuePlateBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "obsidian_pressure_plate"), new BlockItem(obsidianPressuePlateBlock, new Item.Settings()));
         // Hemp crop
         Registry.register(Registries.BLOCK, new Identifier("bwt", "hemp_crop_block"), hempCropBlock);
         // Detector Block
         Registry.register(Registries.BLOCK, new Identifier("bwt", "detector_block"), detectorBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "detector_block"), new BlockItem(detectorBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "detector_block"), new BlockItem(detectorBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "detector_logic_block"), detectorLogicBlock);
         // Mill Stone
         Registry.register(Registries.BLOCK, new Identifier("bwt", "mill_stone"), millStoneBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "mill_stone"), new BlockItem(millStoneBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "mill_stone"), new BlockItem(millStoneBlock, new Item.Settings()));
         // Companion Cube
         Registry.register(Registries.BLOCK, new Identifier("bwt", "companion_cube"), companionCubeBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "companion_cube"), new BlockItem(companionCubeBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "companion_cube"), new BlockItem(companionCubeBlock, new Item.Settings()));
         // Companion Slab
         Registry.register(Registries.BLOCK, new Identifier("bwt", "companion_slab"), companionSlabBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "companion_slab"), new BlockItem(companionSlabBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "companion_slab"), new BlockItem(companionSlabBlock, new Item.Settings()));
         // Hand Crank
         Registry.register(Registries.BLOCK, new Identifier("bwt", "hand_crank"), handCrankBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "hand_crank"), new BlockItem(handCrankBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "hand_crank"), new BlockItem(handCrankBlock, new Item.Settings()));
         // Anchor
         Registry.register(Registries.BLOCK, new Identifier("bwt", "anchor"), anchorBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "anchor"), new BlockItem(anchorBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "anchor"), new BlockItem(anchorBlock, new Item.Settings()));
         // Rope
         Registry.register(Registries.BLOCK, new Identifier("bwt", "rope"), ropeBlock);
         // Stone Detector Rail
         Registry.register(Registries.BLOCK, new Identifier("bwt", "stone_detector_rail"), stoneDetectorRailBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "stone_detector_rail"), new BlockItem(stoneDetectorRailBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "stone_detector_rail"), new BlockItem(stoneDetectorRailBlock, new Item.Settings()));
         // Obsidian Detector Rail
         Registry.register(Registries.BLOCK, new Identifier("bwt", "obsidian_detector_rail"), obsidianDetectorRailBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "obsidian_detector_rail"), new BlockItem(obsidianDetectorRailBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "obsidian_detector_rail"), new BlockItem(obsidianDetectorRailBlock, new Item.Settings()));
         // Bwt Hopper
         Registry.register(Registries.BLOCK, new Identifier("bwt", "hopper"), hopperBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "hopper"), new BlockItem(hopperBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "hopper"), new BlockItem(hopperBlock, new Item.Settings()));
         // Grate
         Registry.register(Registries.BLOCK, new Identifier("bwt", "grate"), grateBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "grate"), new BlockItem(grateBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "grate"), new BlockItem(grateBlock, new Item.Settings()));
         // Slats
         Registry.register(Registries.BLOCK, new Identifier("bwt", "slats"), slatsBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "slats"), new BlockItem(slatsBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "slats"), new BlockItem(slatsBlock, new Item.Settings()));
         // Wicker
         Registry.register(Registries.BLOCK, new Identifier("bwt", "wicker"), wickerPaneBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker"), new BlockItem(wickerPaneBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker"), new BlockItem(wickerPaneBlock, new Item.Settings()));
         // Saw
         Registry.register(Registries.BLOCK, new Identifier("bwt", "saw"), sawBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "saw"), new BlockItem(sawBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "saw"), new BlockItem(sawBlock, new Item.Settings()));
         // Pulley
         Registry.register(Registries.BLOCK, new Identifier("bwt", "pulley"), pulleyBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "pulley"), new BlockItem(pulleyBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "pulley"), new BlockItem(pulleyBlock, new Item.Settings()));
         // Platform
         Registry.register(Registries.BLOCK, new Identifier("bwt", "platform"), platformBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "platform"), new BlockItem(platformBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "platform"), new BlockItem(platformBlock, new Item.Settings()));
         // Turntable
         Registry.register(Registries.BLOCK, new Identifier("bwt", "turntable"), turntableBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "turntable"), new BlockItem(turntableBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "turntable"), new BlockItem(turntableBlock, new Item.Settings()));
         // Stoked Fire
         Registry.register(Registries.BLOCK, new Identifier("bwt", "stoked_fire"), stokedFireBlock);
         // Bellows
         Registry.register(Registries.BLOCK, new Identifier("bwt", "bellows"), bellowsBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "bellows"), new BlockItem(bellowsBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "bellows"), new BlockItem(bellowsBlock, new Item.Settings()));
         // Unfired Pottery
         Registry.register(Registries.BLOCK, new Identifier("bwt", "unfired_crucible"), unfiredCrucibleBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "unfired_crucible"), new BlockItem(unfiredCrucibleBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "unfired_crucible"), new BlockItem(unfiredCrucibleBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "unfired_planter"), unfiredPlanterBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "unfired_planter"), new BlockItem(unfiredPlanterBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "unfired_planter"), new BlockItem(unfiredPlanterBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "unfired_vase"), unfiredVaseBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "unfired_vase"), new BlockItem(unfiredVaseBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "unfired_vase"), new BlockItem(unfiredVaseBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "unfired_urn"), unfiredUrnBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "unfired_urn"), new BlockItem(unfiredUrnBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "unfired_urn"), new BlockItem(unfiredUrnBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "unfired_mould"), unfiredMouldBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "unfired_mould"), new BlockItem(unfiredMouldBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "unfired_mould"), new BlockItem(unfiredMouldBlock, new Item.Settings()));
         // Kiln
         Registry.register(Registries.BLOCK, new Identifier("bwt", "kiln"), kilnBlock);
         // Mini blocks
@@ -343,52 +336,52 @@ public class BwtBlocks implements ModInitializer {
         );
         // Crucible
         Registry.register(Registries.BLOCK, new Identifier("bwt", "crucible"), crucibleBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "crucible"), new BlockItem(crucibleBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "crucible"), new BlockItem(crucibleBlock, new Item.Settings()));
         // Planters
         Registry.register(Registries.BLOCK, new Identifier("bwt", "planter"), planterBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "planter"), new BlockItem(planterBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "planter"), new BlockItem(planterBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "soil_planter"), soilPlanterBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "soil_planter"), new BlockItem(soilPlanterBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "soil_planter"), new BlockItem(soilPlanterBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "soul_sand_planter"), soulSandPlanterBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "soul_sand_planter"), new BlockItem(soulSandPlanterBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "soul_sand_planter"), new BlockItem(soulSandPlanterBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "grass_planter"), grassPlanterBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "grass_planter"), new BlockItem(grassPlanterBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "grass_planter"), new BlockItem(grassPlanterBlock, new Item.Settings()));
         // Vases
         VaseBlock.registerColors(vaseBlocks);
         // Urn
         Registry.register(Registries.BLOCK, new Identifier("bwt", "urn"), urnBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "urn"), new BlockItem(urnBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "urn"), new BlockItem(urnBlock, new Item.Settings()));
         // SoulForge
         Registry.register(Registries.BLOCK, new Identifier("bwt", "soul_forge"), soulForgeBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "soul_forge"), new BlockItem(soulForgeBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "soul_forge"), new BlockItem(soulForgeBlock, new Item.Settings()));
         // Wool slabs
         DyeUtils.WOOL_COLORS.forEach((dyeColor, woolBlock) -> {
-            SlabBlock woolSlabBlock = new SlabBlock(FabricBlockSettings.copyOf(woolBlock));
+            SlabBlock woolSlabBlock = new SlabBlock(AbstractBlock.Settings.copy(woolBlock));
             woolSlabBlocks.put(dyeColor, woolSlabBlock);
             Registry.register(Registries.BLOCK, new Identifier("bwt", dyeColor.getName() + "_wool_slab"), woolSlabBlock);
-            Registry.register(Registries.ITEM, new Identifier("bwt", dyeColor.getName() + "_wool_slab"), new BlockItem(woolSlabBlock, new FabricItemSettings()));
+            Registry.register(Registries.ITEM, new Identifier("bwt", dyeColor.getName() + "_wool_slab"), new BlockItem(woolSlabBlock, new Item.Settings()));
         });
         // Buddy Block
         Registry.register(Registries.BLOCK, new Identifier("bwt", "buddy_block"), buddyBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "buddy_block"), new BlockItem(buddyBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "buddy_block"), new BlockItem(buddyBlock, new Item.Settings()));
         // Aesthetic compacting blocks
         Registry.register(Registries.BLOCK, new Identifier("bwt", "soap_block"), soapBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "soap_block"), new BlockItem(soapBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "soap_block"), new BlockItem(soapBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "wicker_block"), wickerBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker_block"), new BlockItem(wickerBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker_block"), new BlockItem(wickerBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "dung_block"), dungBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "dung_block"), new BlockItem(dungBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "dung_block"), new BlockItem(dungBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "padding_block"), paddingBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "padding_block"), new BlockItem(paddingBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "padding_block"), new BlockItem(paddingBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "rope_coil_block"), ropeCoilBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "rope_coil_block"), new BlockItem(ropeCoilBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "rope_coil_block"), new BlockItem(ropeCoilBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "concentrated_hellfire_block"), concentratedHellfireBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "concentrated_hellfire_block"), new BlockItem(concentratedHellfireBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "concentrated_hellfire_block"), new BlockItem(concentratedHellfireBlock, new Item.Settings()));
         Registry.register(Registries.BLOCK, new Identifier("bwt", "wicker_slab"), wickerSlabBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker_slab"), new BlockItem(wickerSlabBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "wicker_slab"), new BlockItem(wickerSlabBlock, new Item.Settings()));
         // Mining charge
         Registry.register(Registries.BLOCK, new Identifier("bwt", "mining_charge"), miningChargeBlock);
-        Registry.register(Registries.ITEM, new Identifier("bwt", "mining_charge"), new BlockItem(miningChargeBlock, new FabricItemSettings()));
+        Registry.register(Registries.ITEM, new Identifier("bwt", "mining_charge"), new BlockItem(miningChargeBlock, new Item.Settings()));
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {
             content.addAll(DyeUtils.streamColorItemsSorted(vaseBlocks).map(vaseBlock -> vaseBlock.asItem().getDefaultStack()).toList());

@@ -2,11 +2,7 @@ package com.bwt.blocks;
 
 import com.bwt.utils.BlockUtils;
 import com.mojang.serialization.MapCodec;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ShapeContext;
+import net.minecraft.block.*;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
@@ -38,7 +34,7 @@ public class SidingBlock extends MiniBlock {
     }
 
     public static SidingBlock ofBlock(Block fullBlock, Block slabBlock) {
-        return new SidingBlock(FabricBlockSettings.copyOf(slabBlock), fullBlock);
+        return new SidingBlock(AbstractBlock.Settings.copy(slabBlock), fullBlock);
     }
 
     public MapCodec<? extends SidingBlock> getCodec() {

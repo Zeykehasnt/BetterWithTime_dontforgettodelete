@@ -2,6 +2,7 @@ package com.bwt.recipes;
 
 import com.bwt.blocks.abstract_cooking_pot.AbstractCookingPotBlockEntity;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementCriterion;
@@ -15,17 +16,15 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.recipe.*;
 import net.minecraft.recipe.book.CookingRecipeCategory;
 import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -105,72 +104,74 @@ public abstract class AbstractCookingPotRecipe implements Recipe<AbstractCooking
         return false;
     }
 
+
     @Override
-    public ItemStack craft(AbstractCookingPotBlockEntity.Inventory inventory, DynamicRegistryManager registryManager) {
-        return getResult(registryManager);
+    public ItemStack craft(AbstractCookingPotBlockEntity.Inventory inventory, RegistryWrapper.WrapperLookup lookup) {
+        return getResult(lookup);
     }
 
     @Override
-    public ItemStack getResult(DynamicRegistryManager registryManager) {
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
         return results.get(0);
     }
 
-
     public static class Serializer implements RecipeSerializer<AbstractCookingPotRecipe> {
         private final AbstractCookingPotRecipe.RecipeFactory<AbstractCookingPotRecipe> recipeFactory;
-        private final Codec<AbstractCookingPotRecipe> codec;
+        public final MapCodec<AbstractCookingPotRecipe> CODEC;
+        public final PacketCodec<RegistryByteBuf, AbstractCookingPotRecipe> PACKET_CODEC;
 
         public Serializer(AbstractCookingPotRecipe.RecipeFactory<AbstractCookingPotRecipe> recipeFactory) {
             this.recipeFactory = recipeFactory;
-            this.codec = RecordCodecBuilder.create(
+            this.CODEC = RecordCodecBuilder.mapCodec(
                     instance->instance.group(
-                            Codecs.createStrictOptionalFieldCodec(Codec.STRING, "group", "")
+                            Codec.STRING.fieldOf("group")
                                     .forGetter(recipe -> recipe.group),
                             CookingRecipeCategory.CODEC.fieldOf("category")
                                     .orElse(CookingRecipeCategory.MISC)
                                     .forGetter(recipe -> recipe.category),
-                            IngredientWithCount.Serializer.DISALLOW_EMPTY_CODEC
+                            IngredientWithCount.Serializer.DISALLOW_EMPTY_CODEC.codec()
                                     .listOf()
                                     .fieldOf("ingredients")
                                     .forGetter(recipe -> recipe.ingredients),
-                            ItemStack.RECIPE_RESULT_CODEC
+                            ItemStack.CODEC
                                     .listOf()
                                     .fieldOf("results")
                                     .forGetter(AbstractCookingPotRecipe::getResults)
                     ).apply(instance, recipeFactory::create)
             );
+            this.PACKET_CODEC = PacketCodec.ofStatic(
+                    this::write, this::read
+            );
         }
 
         @Override
-        public Codec<AbstractCookingPotRecipe> codec() {
-            return codec;
+        public MapCodec<AbstractCookingPotRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public AbstractCookingPotRecipe read(PacketByteBuf buf) {
+        public PacketCodec<RegistryByteBuf, AbstractCookingPotRecipe> packetCodec() {
+            return PACKET_CODEC;
+        }
+
+        protected AbstractCookingPotRecipe read(RegistryByteBuf buf) {
             String group = buf.readString();
             CookingRecipeCategory category = buf.readEnumConstant(CookingRecipeCategory.class);
             int ingredientsSize = buf.readVarInt();
             DefaultedList<IngredientWithCount> ingredients = DefaultedList.ofSize(ingredientsSize, IngredientWithCount.EMPTY);
-            ingredients.replaceAll(ignored -> IngredientWithCount.SERIALIZER.read(buf));
-            int resultsSize = buf.readVarInt();
-            DefaultedList<ItemStack> results = DefaultedList.ofSize(resultsSize, ItemStack.EMPTY);
-            results.replaceAll(ignored -> buf.readItemStack());
+            ingredients.replaceAll(ignored -> IngredientWithCount.Serializer.read(buf));
+            List<ItemStack> results = ItemStack.LIST_PACKET_CODEC.decode(buf);
             return this.recipeFactory.create(group, category, ingredients, results);
         }
 
-        @Override
-        public void write(PacketByteBuf buf, AbstractCookingPotRecipe recipe) {
+        protected void write(RegistryByteBuf buf, AbstractCookingPotRecipe recipe) {
             buf.writeString(recipe.group);
             buf.writeEnumConstant(recipe.category);
             buf.writeVarInt(recipe.ingredients.size());
             for (IngredientWithCount ingredient : recipe.ingredients) {
-                IngredientWithCount.SERIALIZER.write(buf, ingredient);
+                IngredientWithCount.Serializer.write(buf, ingredient);
             }
-            buf.writeVarInt(recipe.results.size());
-            for (ItemStack stack : recipe.getResults()) {
-                buf.writeItemStack(stack);
-            }
+            ItemStack.LIST_PACKET_CODEC.encode(buf, recipe.getResults());
         }
     }
 

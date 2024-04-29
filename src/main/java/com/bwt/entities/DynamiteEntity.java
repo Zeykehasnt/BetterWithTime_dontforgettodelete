@@ -18,6 +18,7 @@ import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.registry.tag.ItemTags;
@@ -51,18 +52,18 @@ public class DynamiteEntity extends ProjectileEntity implements FlyingItemEntity
     }
 
     @Override
-    protected void initDataTracker() {
-        dataTracker.startTracking(ITEM, ItemStack.EMPTY);
-        getDataTracker().startTracking(FUSE, -1);
+    protected void initDataTracker(DataTracker.Builder builder) {
+        builder.add(ITEM, ItemStack.EMPTY);
+        builder.add(FUSE, -1);
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putInt("fuse", getFuse());
-        ItemStack itemStack = this.getItem();
+        ItemStack itemStack = getItem();
         if (!itemStack.isEmpty()) {
-            nbt.put("Item", itemStack.writeNbt(new NbtCompound()));
+            nbt.put("Item", itemStack.encode(getRegistryManager()));
         }
     }
 
@@ -70,8 +71,11 @@ public class DynamiteEntity extends ProjectileEntity implements FlyingItemEntity
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         setFuse(nbt.getInt("fuse"));
-        ItemStack itemStack = ItemStack.fromNbt(nbt.getCompound("Item"));
-        this.setItem(itemStack);
+        if (nbt.contains("Item", NbtElement.COMPOUND_TYPE)) {
+            setItem(ItemStack.fromNbt(getRegistryManager(), nbt.getCompound("Item")).orElseGet(() -> new ItemStack(getDefaultItem())));
+        } else {
+            setItem(new ItemStack(getDefaultItem()));
+        }
     }
 
     @Override
@@ -97,9 +101,7 @@ public class DynamiteEntity extends ProjectileEntity implements FlyingItemEntity
     }
 
     public void setItem(ItemStack item) {
-        if (!item.isOf(this.getDefaultItem()) || item.hasNbt()) {
-            this.getDataTracker().set(ITEM, item.copyWithCount(1));
-        }
+        this.getDataTracker().set(ITEM, item.copyWithCount(1));
     }
 
     public void ignite() {
@@ -212,7 +214,7 @@ public class DynamiteEntity extends ProjectileEntity implements FlyingItemEntity
                 .add(LootContextParameters.THIS_ENTITY, this)
                 .add(LootContextParameters.DAMAGE_SOURCE, BwtDamageTypes.of(serverWorld, DamageTypes.EXPLOSION))
                 .build(LootContextTypes.ENTITY);
-        LootTable lootTable = serverWorld.getServer().getLootManager().getLootTable(LootTables.FISHING_FISH_GAMEPLAY);
+        LootTable lootTable = serverWorld.getServer().getReloadableRegistries().getLootTable(LootTables.FISHING_FISH_GAMEPLAY);
         ObjectArrayList<ItemStack> list = lootTable.generateLoot(lootContextParameterSet);
         if (list.isEmpty()) {
             return;

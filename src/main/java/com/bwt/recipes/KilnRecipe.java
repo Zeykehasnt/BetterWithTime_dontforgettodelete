@@ -2,6 +2,7 @@ package com.bwt.recipes;
 
 import com.bwt.blocks.BwtBlocks;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementCriterion;
@@ -16,16 +17,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -112,74 +114,67 @@ public class KilnRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public ItemStack craft(@Nullable Inventory inventory, DynamicRegistryManager registryManager) {
-        return getResult(registryManager);
+    public ItemStack craft(Inventory inventory, RegistryWrapper.WrapperLookup lookup) {
+        return getResult(lookup);
     }
 
     @Override
-    public ItemStack getResult(DynamicRegistryManager registryManager) {
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
         return drops.get(0);
     }
 
     public static class Serializer implements RecipeSerializer<KilnRecipe> {
-        private final KilnRecipe.RecipeFactory<KilnRecipe> recipeFactory;
-        private final Codec<KilnRecipe> codec;
+        protected static final MapCodec<KilnRecipe> CODEC = RecordCodecBuilder.mapCodec(
+                instance->instance.group(
+                        Codec.STRING.optionalFieldOf("group", "")
+                                .forGetter(recipe -> recipe.group),
+                        CraftingRecipeCategory.CODEC.fieldOf("category")
+                                .orElse(CraftingRecipeCategory.MISC)
+                                .forGetter(recipe -> recipe.category),
+                        BlockIngredient.Serializer.CODEC
+                                .fieldOf("ingredient")
+                                .forGetter(recipe -> recipe.ingredient),
+                        Codec.INT.fieldOf("cookingTime")
+                                .orElse(KilnRecipe.DEFAULT_COOKING_TIME)
+                                .forGetter(recipe -> recipe.cookingTime),
+                        ItemStack.VALIDATED_CODEC
+                                .listOf()
+                                .fieldOf("drops")
+                                .forGetter(KilnRecipe::getDrops)
+                ).apply(instance, KilnRecipe::new)
+        );
+        public static final PacketCodec<RegistryByteBuf, KilnRecipe> PACKET_CODEC = PacketCodec.ofStatic(
+                Serializer::write, Serializer::read
+        );
 
-        public Serializer(KilnRecipe.RecipeFactory<KilnRecipe> recipeFactory) {
-            this.recipeFactory = recipeFactory;
-            this.codec = RecordCodecBuilder.create(
-                    instance->instance.group(
-                            Codecs.createStrictOptionalFieldCodec(Codec.STRING, "group", "")
-                                    .forGetter(recipe -> recipe.group),
-                            CraftingRecipeCategory.CODEC.fieldOf("category")
-                                    .orElse(CraftingRecipeCategory.MISC)
-                                    .forGetter(recipe -> recipe.category),
-                            BlockIngredient.Serializer.CODEC
-                                    .fieldOf("ingredient")
-                                    .forGetter(recipe -> recipe.ingredient),
-                            Codec.INT.fieldOf("cookingTime")
-                                    .orElse(KilnRecipe.DEFAULT_COOKING_TIME)
-                                    .forGetter(recipe -> recipe.cookingTime),
-                            ItemStack.RECIPE_RESULT_CODEC
-                                    .listOf()
-                                    .fieldOf("drops")
-                                    .forGetter(KilnRecipe::getDrops)
-                    ).apply(instance, recipeFactory::create)
-            );
+        public Serializer() {}
+
+        @Override
+        public MapCodec<KilnRecipe> codec() {
+            return CODEC;
         }
 
         @Override
-        public Codec<KilnRecipe> codec() {
-            return codec;
+        public PacketCodec<RegistryByteBuf, KilnRecipe> packetCodec() {
+            return PACKET_CODEC;
         }
 
-        @Override
-        public KilnRecipe read(PacketByteBuf buf) {
+        protected static KilnRecipe read(RegistryByteBuf buf) {
             String group = buf.readString();
             CraftingRecipeCategory category = buf.readEnumConstant(CraftingRecipeCategory.class);
-            BlockIngredient ingredient = BlockIngredient.SERIALIZER.read(buf);
+            BlockIngredient ingredient = BlockIngredient.Serializer.read(buf);
             int cookingTime = buf.readVarInt();
-            int dropsSize = buf.readVarInt();
-            DefaultedList<ItemStack> drops = DefaultedList.ofSize(dropsSize, ItemStack.EMPTY);
-            drops.replaceAll(ignored -> buf.readItemStack());
-            return this.recipeFactory.create(group, category, ingredient, cookingTime, drops);
+            List<ItemStack> drops = ItemStack.LIST_PACKET_CODEC.decode(buf);
+            return new KilnRecipe(group, category, ingredient, cookingTime, drops);
         }
 
-        @Override
-        public void write(PacketByteBuf buf, KilnRecipe recipe) {
+        protected static void write(RegistryByteBuf buf, KilnRecipe recipe) {
             buf.writeString(recipe.group);
             buf.writeEnumConstant(recipe.category);
-            BlockIngredient.SERIALIZER.write(buf, recipe.ingredient);
+            BlockIngredient.Serializer.write(buf, recipe.ingredient);
             buf.writeVarInt(recipe.cookingTime);
-            buf.writeVarInt(recipe.drops.size());
-            for (ItemStack stack : recipe.getDrops()) {
-                buf.writeItemStack(stack);
-            }
+            ItemStack.LIST_PACKET_CODEC.encode(buf, recipe.getDrops());
         }
-    }
-
-    public interface RecipeFactory<T extends KilnRecipe> {
-        T create(String group, CraftingRecipeCategory category, BlockIngredient ingredient, int cookingTime, List<ItemStack> drops);
     }
 
     public static class JsonBuilder implements CraftingRecipeJsonBuilder {
@@ -205,10 +200,6 @@ public class KilnRecipe implements Recipe<Inventory> {
             obj.fromBlockName = inputTag.id().getPath();
             obj.cookingTime = KilnRecipe.DEFAULT_COOKING_TIME;
             return obj;
-        }
-
-        KilnRecipe.RecipeFactory<KilnRecipe> getRecipeFactory() {
-            return KilnRecipe::new;
         }
 
         public JsonBuilder category(CraftingRecipeCategory category) {
@@ -272,7 +263,7 @@ public class KilnRecipe implements Recipe<Inventory> {
         @Override
         public void offerTo(RecipeExporter exporter, Identifier recipeId) {
             Advancement.Builder advancementBuilder = exporter.getAdvancementBuilder().criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(AdvancementRequirements.CriterionMerger.OR);
-            KilnRecipe kilnRecipe = this.getRecipeFactory().create(
+            KilnRecipe kilnRecipe = new KilnRecipe(
                     Objects.requireNonNullElse(this.group, ""),
                     this.category,
                     this.ingredient,

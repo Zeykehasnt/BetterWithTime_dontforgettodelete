@@ -30,7 +30,7 @@ public class WaterWheelEntity extends HorizontalMechPowerSourceEntity {
     }
 
     @Override
-    public EntityRectDimensions getDimensions(EntityPose pose) {
+    public EntityRectDimensions getRectDimensions() {
         return EntityRectDimensions.fixed(WaterWheelEntity.width, WaterWheelEntity.height, WaterWheelEntity.length);
     }
 

@@ -2,11 +2,12 @@ package com.bwt.generation;
 
 import com.bwt.recipes.DisabledRecipe;
 import com.google.common.collect.Sets;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.fabricmc.fabric.api.resource.conditions.v1.ConditionJsonProvider;
+import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementEntry;
@@ -17,6 +18,8 @@ import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryOps;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
@@ -30,8 +33,8 @@ public class DisabledVanilaRecipeGenerator extends FabricRecipeProvider {
     final FabricDataOutput.PathResolver recipesPathResolver;
     final FabricDataOutput.PathResolver advancementsPathResolver;
 
-    public DisabledVanilaRecipeGenerator(FabricDataOutput output) {
-        super(output);
+    public DisabledVanilaRecipeGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+        super(output, registriesFuture);
         this.recipesPathResolver = output.getResolver(FabricDataOutput.OutputType.DATA_PACK, "recipes");
         this.advancementsPathResolver = output.getResolver(FabricDataOutput.OutputType.DATA_PACK, "advancements");
     }
@@ -73,7 +76,7 @@ public class DisabledVanilaRecipeGenerator extends FabricRecipeProvider {
     }
 
     @Override
-    public CompletableFuture<?> run(DataWriter writer) {
+    public CompletableFuture<?> run(DataWriter writer, RegistryWrapper.WrapperLookup wrapperLookup) {
         Set<Identifier> generatedRecipes = Sets.newHashSet();
         List<CompletableFuture<?>> list = new ArrayList<>();
         disableRecipes(new RecipeExporter() {
@@ -85,15 +88,16 @@ public class DisabledVanilaRecipeGenerator extends FabricRecipeProvider {
                     throw new IllegalStateException("Duplicate recipe " + identifier);
                 }
 
-                JsonObject recipeJson = Util.getResult(Recipe.CODEC.encodeStart(JsonOps.INSTANCE, recipe), IllegalStateException::new).getAsJsonObject();
-                ConditionJsonProvider[] conditions = FabricDataGenHelper.consumeConditions(recipe);
-                ConditionJsonProvider.write(recipeJson, conditions);
+                RegistryOps<JsonElement> registryOps = wrapperLookup.getOps(JsonOps.INSTANCE);
+                JsonObject recipeJson = Recipe.CODEC.encodeStart(registryOps, recipe).getOrThrow(IllegalStateException::new).getAsJsonObject();
+                ResourceCondition[] conditions = FabricDataGenHelper.consumeConditions(recipe);
+                FabricDataGenHelper.addConditions(recipeJson, conditions);
 
                 list.add(DataProvider.writeToPath(writer, recipeJson, recipesPathResolver.resolveJson(identifier)));
 
                 if (advancement != null) {
-                    JsonObject advancementJson = Util.getResult(Advancement.CODEC.encodeStart(JsonOps.INSTANCE, advancement.value()), IllegalStateException::new).getAsJsonObject();
-                    ConditionJsonProvider.write(advancementJson, conditions);
+                    JsonObject advancementJson = Advancement.CODEC.encodeStart(registryOps, advancement.value()).getOrThrow(IllegalStateException::new).getAsJsonObject();
+                    FabricDataGenHelper.addConditions(advancementJson, conditions);
                     list.add(DataProvider.writeToPath(writer, advancementJson, advancementsPathResolver.resolveJson(getRecipeIdentifier(advancement.id()))));
                 }
             }

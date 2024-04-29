@@ -21,6 +21,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -299,7 +300,7 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         BlockState state = world.getBlockState(ropePos);
         if (!up) {
             if ((world.isAir(ropePos) || state.isReplaceable()) && BwtBlocks.ropeBlock.getDefaultState().canPlaceAt(world, ropePos) && hasRope()) {
-                world.playSound(null, pulleyPos.down(), BwtBlocks.ropeBlock.getSoundGroup(BwtBlocks.ropeBlock.getDefaultState()).getPlaceSound(), SoundCategory.BLOCKS, 0.4F, 1.0F);
+                world.playSound(null, pulleyPos.down(), BwtBlocks.ropeBlock.getSoundGroup().getPlaceSound(), SoundCategory.BLOCKS, 0.4F, 1.0F);
                 world.setBlockState(ropePos, BwtBlocks.ropeBlock.getDefaultState());
                 takeRope(false);
             } else {
@@ -313,7 +314,7 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
             rope.setTargetY(targetY + (rope.isMovingUp() ? 1 : -1));
             if (up) {
                 if (!world.isAir(ropePos.up())) {
-                    world.playSound(null, pulleyPos.down(), BwtBlocks.ropeBlock.getSoundGroup(BwtBlocks.ropeBlock.getDefaultState()).getBreakSound(), SoundCategory.BLOCKS,
+                    world.playSound(null, pulleyPos.down(), BwtBlocks.ropeBlock.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS,
                             0.4F + (world.random.nextFloat() * 0.1F), 1.0F);
                     world.removeBlock(ropePos.up(), false);
                     putRope(false);
@@ -372,9 +373,9 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
 
 
     @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        this.inventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE));
+    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.readNbt(nbt, registryLookup);
+        this.inventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE), registryLookup);
         this.mechPower = nbt.getInt("mechPower");
         if (nbt.contains("ropeId")) {
             this.ropeId = nbt.getUuid("ropeId");
@@ -382,9 +383,9 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
     }
 
     @Override
-    public void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
-        nbt.put("Inventory", this.inventory.toNbtList());
+    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+        super.writeNbt(nbt, registryLookup);
+        nbt.put("Inventory", this.inventory.toNbtList(registryLookup));
         nbt.putInt("mechPower", this.mechPower);
         if (this.rope != null && !rope.isRemoved()) {
             nbt.putUuid("ropeId", this.rope.getUuid());

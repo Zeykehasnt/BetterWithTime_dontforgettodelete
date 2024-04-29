@@ -108,11 +108,11 @@ public class BetterWithTime implements ModInitializer {
 		soundEvents.onInitialize();
 		dataHandlers.onInitialize();
 
-		LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
+		LootTableEvents.MODIFY.register((key, tableBuilder, source) -> {
 			if (!source.isBuiltin()) {
 				return;
 			}
-			if (id.equals(EntityType.WOLF.getLootTableId())) {
+			if (key.equals(EntityType.WOLF.getLootTableId())) {
 				LootPool.Builder poolBuilder = LootPool.builder()
 						.with(ItemEntry.builder(BwtItems.wolfChopItem)
 								.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 3.0f)))
@@ -125,7 +125,7 @@ public class BetterWithTime implements ModInitializer {
 
 				tableBuilder.pool(poolBuilder);
 			}
-			if (id.equals(Blocks.COBBLESTONE.getLootTableId())) {
+			if (key.equals(Blocks.COBBLESTONE.getLootTableKey())) {
 				tableBuilder.modifyPools(builder -> builder.conditionally(new InvertedLootCondition(MiningChargeExplosion.LOOT_CONDITION)))
 						.pool(LootPool.builder().conditionally(MiningChargeExplosion.LOOT_CONDITION).with(ItemEntry.builder(Items.GRAVEL)));
 			}
@@ -141,7 +141,7 @@ public class BetterWithTime implements ModInitializer {
 				Item tool = context.getStack().getItem();
 				int randBound = 30;
 				if (tool instanceof HoeItem hoeItem) {
-					randBound -= hoeItem.getMaterial().getMiningLevel() * 2;
+					randBound -= Math.round(hoeItem.getMaterial().getMiningSpeedMultiplier());
 				}
 				if (context.getWorld().getRandom().nextInt(randBound) == 0) {
 					Block.dropStack(context.getWorld(), context.getBlockPos(), context.getSide(), new ItemStack(BwtItems.hempSeedsItem));
