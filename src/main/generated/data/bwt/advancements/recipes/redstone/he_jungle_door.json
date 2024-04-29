@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:jungle_planks_siding"
-            ]
+            "items": "bwt:jungle_planks_siding"
           }
         ]
       },

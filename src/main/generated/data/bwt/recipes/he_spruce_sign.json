@@ -15,6 +15,7 @@
     "m"
   ],
   "result": {
-    "item": "minecraft:spruce_sign"
+    "count": 1,
+    "id": "minecraft:spruce_sign"
   }
 }

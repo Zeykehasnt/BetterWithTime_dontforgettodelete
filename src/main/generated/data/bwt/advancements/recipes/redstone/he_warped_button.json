@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:warped_planks_corner"
-            ]
+            "items": "bwt:warped_planks_corner"
           }
         ]
       },

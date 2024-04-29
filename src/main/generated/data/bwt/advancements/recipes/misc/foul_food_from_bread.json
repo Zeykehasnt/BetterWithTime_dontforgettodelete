@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:bread"
-            ]
+            "items": "minecraft:bread"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:dung"
-            ]
+            "items": "bwt:dung"
           }
         ]
       },

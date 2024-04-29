@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:redstone_eye"
-            ]
+            "items": "bwt:redstone_eye"
           }
         ]
       },

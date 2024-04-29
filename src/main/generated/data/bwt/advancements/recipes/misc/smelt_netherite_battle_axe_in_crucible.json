@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:netherite_battle_axe"
-            ]
+            "items": "bwt:netherite_battle_axe"
           }
         ]
       },

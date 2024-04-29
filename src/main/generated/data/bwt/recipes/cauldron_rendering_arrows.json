@@ -1,6 +1,7 @@
 {
   "type": "bwt:stoked_cauldron",
   "category": "misc",
+  "group": "",
   "ingredients": [
     {
       "count": 8,
@@ -12,13 +13,15 @@
   "results": [
     {
       "count": 2,
-      "item": "minecraft:flint"
+      "id": "minecraft:flint"
     },
     {
-      "item": "minecraft:stick"
+      "count": 1,
+      "id": "minecraft:stick"
     },
     {
-      "item": "minecraft:feather"
+      "count": 1,
+      "id": "minecraft:feather"
     }
   ]
 }

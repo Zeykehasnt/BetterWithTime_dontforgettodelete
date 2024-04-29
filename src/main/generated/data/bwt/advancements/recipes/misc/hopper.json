@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "bwt:wooden_corner_blocks"
+            "items": "#bwt:wooden_corner_blocks"
           }
         ]
       },

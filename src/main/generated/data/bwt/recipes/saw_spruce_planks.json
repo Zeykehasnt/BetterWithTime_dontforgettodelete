@@ -1,13 +1,13 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "minecraft:spruce_planks"
-  },
-  "results": [
+  "drops": [
     {
       "count": 2,
-      "item": "bwt:spruce_planks_siding"
+      "id": "bwt:spruce_planks_siding"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "minecraft:spruce_planks"
+  }
 }

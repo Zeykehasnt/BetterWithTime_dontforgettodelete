@@ -4,7 +4,8 @@
   "cookingTime": 1,
   "drops": [
     {
-      "item": "minecraft:redstone"
+      "count": 1,
+      "id": "minecraft:redstone"
     }
   ],
   "ingredient": {

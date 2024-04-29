@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "bwt:wooden_siding_blocks"
+            "items": "#bwt:wooden_siding_blocks"
           }
         ]
       },

@@ -1,13 +1,13 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "bwt:oak_planks_siding"
-  },
-  "results": [
+  "drops": [
     {
       "count": 2,
-      "item": "bwt:oak_planks_moulding"
+      "id": "bwt:oak_planks_moulding"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "bwt:oak_planks_siding"
+  }
 }

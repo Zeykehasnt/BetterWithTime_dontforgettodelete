@@ -4,7 +4,8 @@
   "cookingTime": 1,
   "drops": [
     {
-      "item": "minecraft:black_glazed_terracotta"
+      "count": 1,
+      "id": "minecraft:black_glazed_terracotta"
     }
   ],
   "ingredient": {

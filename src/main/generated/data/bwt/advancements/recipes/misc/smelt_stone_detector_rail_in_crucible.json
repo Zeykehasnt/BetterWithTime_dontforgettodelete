@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:stone_detector_rail"
-            ]
+            "items": "bwt:stone_detector_rail"
           }
         ]
       },

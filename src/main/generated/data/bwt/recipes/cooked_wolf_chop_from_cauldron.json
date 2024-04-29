@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "food",
+  "group": "",
   "ingredients": [
     {
       "ingredient": {
@@ -10,7 +11,8 @@
   ],
   "results": [
     {
-      "item": "bwt:cooked_wolf_chop"
+      "count": 1,
+      "id": "bwt:cooked_wolf_chop"
     }
   ]
 }

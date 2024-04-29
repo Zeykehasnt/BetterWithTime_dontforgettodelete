@@ -17,7 +17,8 @@
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": "Place a cauldron over some fire. Baby, you got a stew going!",
     "icon": {
-      "item": "bwt:cauldron"
+      "count": 1,
+      "id": "bwt:cauldron"
     },
     "title": "Perpetual Stew"
   },

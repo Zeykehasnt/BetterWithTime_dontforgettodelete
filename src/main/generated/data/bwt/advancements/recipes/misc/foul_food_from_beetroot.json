@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:beetroot"
-            ]
+            "items": "minecraft:beetroot"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:dung"
-            ]
+            "items": "bwt:dung"
           }
         ]
       },

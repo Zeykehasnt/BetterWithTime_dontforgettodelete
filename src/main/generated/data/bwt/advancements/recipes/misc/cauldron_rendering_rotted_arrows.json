@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:rotted_arrow"
-            ]
+            "items": "bwt:rotted_arrow"
           }
         ]
       },

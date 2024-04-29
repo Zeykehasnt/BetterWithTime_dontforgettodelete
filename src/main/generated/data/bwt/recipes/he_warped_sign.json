@@ -15,6 +15,7 @@
     "m"
   ],
   "result": {
-    "item": "minecraft:warped_sign"
+    "count": 1,
+    "id": "minecraft:warped_sign"
   }
 }

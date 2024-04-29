@@ -10,15 +10,16 @@
   ],
   "results": [
     {
-      "item": "bwt:wolf_chop"
+      "count": 1,
+      "id": "bwt:wolf_chop"
     },
     {
       "count": 3,
-      "item": "minecraft:red_dye"
+      "id": "minecraft:red_dye"
     },
     {
       "count": 10,
-      "item": "minecraft:string"
+      "id": "minecraft:string"
     }
   ]
 }

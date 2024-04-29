@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:stone_siding"
-            ]
+            "items": "bwt:stone_siding"
           }
         ]
       },

@@ -1,15 +1,17 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "minecraft:bamboo_stairs"
-  },
-  "results": [
+  "drops": [
     {
-      "item": "bwt:bamboo_planks_siding"
+      "count": 1,
+      "id": "bwt:bamboo_planks_siding"
     },
     {
-      "item": "bwt:bamboo_planks_moulding"
+      "count": 1,
+      "id": "bwt:bamboo_planks_moulding"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "minecraft:bamboo_stairs"
+  }
 }

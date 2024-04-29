@@ -13,6 +13,7 @@
     "#"
   ],
   "result": {
-    "item": "bwt:stone_bricks_column"
+    "count": 1,
+    "id": "bwt:stone_bricks_column"
   }
 }

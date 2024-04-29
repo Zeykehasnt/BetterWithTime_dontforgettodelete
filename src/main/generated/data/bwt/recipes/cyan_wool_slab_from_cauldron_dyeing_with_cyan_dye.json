@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "blocks",
+  "group": "",
   "ingredients": [
     {
       "ingredient": {
@@ -15,7 +16,8 @@
   ],
   "results": [
     {
-      "item": "bwt:cyan_wool_slab"
+      "count": 1,
+      "id": "bwt:cyan_wool_slab"
     }
   ]
 }

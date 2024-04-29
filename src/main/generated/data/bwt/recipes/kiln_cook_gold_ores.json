@@ -4,7 +4,8 @@
   "cookingTime": 1,
   "drops": [
     {
-      "item": "minecraft:gold_ingot"
+      "count": 1,
+      "id": "minecraft:gold_ingot"
     }
   ],
   "ingredient": {

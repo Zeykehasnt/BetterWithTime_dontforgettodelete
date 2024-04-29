@@ -20,7 +20,8 @@
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": "Make space for your first windmill and place it on an axle",
     "icon": {
-      "item": "bwt:windmill"
+      "count": 1,
+      "id": "bwt:windmill"
     },
     "title": "Mechanical Age"
   },

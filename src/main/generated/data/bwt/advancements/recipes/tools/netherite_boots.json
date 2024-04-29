@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:armor_plate"
-            ]
+            "items": "bwt:armor_plate"
           }
         ]
       },

@@ -1,13 +1,13 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "minecraft:oak_fence"
-  },
-  "results": [
+  "drops": [
     {
       "count": 2,
-      "item": "bwt:oak_planks_corner"
+      "id": "bwt:oak_planks_corner"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "minecraft:oak_fence"
+  }
 }

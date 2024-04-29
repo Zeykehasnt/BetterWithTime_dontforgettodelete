@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:dung"
-            ]
+            "items": "bwt:dung"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:melon_slice"
-            ]
+            "items": "minecraft:melon_slice"
           }
         ]
       },

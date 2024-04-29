@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:light_block"
-            ]
+            "items": "bwt:light_block"
           }
         ]
       },
@@ -18,7 +16,8 @@
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": "Create a light block. To hemp, it might as well be the sun",
     "icon": {
-      "item": "bwt:light_block"
+      "count": 1,
+      "id": "bwt:light_block"
     },
     "title": "Underground Grow Operation"
   },

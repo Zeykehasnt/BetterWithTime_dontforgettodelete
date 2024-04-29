@@ -2,7 +2,9 @@
   "type": "bwt:block_dispenser_clump",
   "block": "minecraft:snow_block",
   "ingredient": {
-    "item": "minecraft:snowball"
-  },
-  "itemCount": 4
+    "count": 4,
+    "ingredient": {
+      "item": "minecraft:snowball"
+    }
+  }
 }

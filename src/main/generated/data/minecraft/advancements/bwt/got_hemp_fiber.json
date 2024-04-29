@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:hemp_fiber"
-            ]
+            "items": "bwt:hemp_fiber"
           }
         ]
       },
@@ -18,7 +16,8 @@
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": "Grind your first hemp by hand in a mill stone",
     "icon": {
-      "item": "bwt:hemp_fiber"
+      "count": 1,
+      "id": "bwt:hemp_fiber"
     },
     "title": "Manual Labor"
   },

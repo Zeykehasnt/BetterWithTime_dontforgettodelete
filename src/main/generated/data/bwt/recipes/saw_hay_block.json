@@ -1,13 +1,13 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "minecraft:hay_block"
-  },
-  "results": [
+  "drops": [
     {
       "count": 6,
-      "item": "minecraft:wheat"
+      "id": "minecraft:wheat"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "minecraft:hay_block"
+  }
 }

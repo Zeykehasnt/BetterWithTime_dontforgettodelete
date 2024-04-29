@@ -1,13 +1,13 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "minecraft:warped_fence"
-  },
-  "results": [
+  "drops": [
     {
       "count": 2,
-      "item": "bwt:warped_planks_corner"
+      "id": "bwt:warped_planks_corner"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "minecraft:warped_fence"
+  }
 }

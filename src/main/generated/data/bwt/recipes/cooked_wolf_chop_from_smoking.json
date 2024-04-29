@@ -6,5 +6,7 @@
   "ingredient": {
     "item": "bwt:wolf_chop"
   },
-  "result": "bwt:cooked_wolf_chop"
+  "result": {
+    "id": "bwt:cooked_wolf_chop"
+  }
 }

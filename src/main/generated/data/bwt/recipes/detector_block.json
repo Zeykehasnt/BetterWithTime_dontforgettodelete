@@ -25,6 +25,7 @@
     "srrs"
   ],
   "result": {
-    "item": "bwt:detector_block"
+    "count": 1,
+    "id": "bwt:detector_block"
   }
 }

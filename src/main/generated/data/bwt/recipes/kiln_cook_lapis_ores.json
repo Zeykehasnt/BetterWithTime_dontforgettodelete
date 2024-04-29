@@ -4,7 +4,8 @@
   "cookingTime": 1,
   "drops": [
     {
-      "item": "minecraft:lapis_lazuli"
+      "count": 1,
+      "id": "minecraft:lapis_lazuli"
     }
   ],
   "ingredient": {

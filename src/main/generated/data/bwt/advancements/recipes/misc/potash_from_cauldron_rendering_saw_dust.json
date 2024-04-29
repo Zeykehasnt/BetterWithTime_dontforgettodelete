@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:saw_dust"
-            ]
+            "items": "bwt:saw_dust"
           }
         ]
       },

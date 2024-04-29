@@ -1,13 +1,13 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "bwt:acacia_planks_pedestal"
-  },
-  "results": [
+  "drops": [
     {
       "count": 2,
-      "item": "bwt:acacia_planks_moulding"
+      "id": "bwt:acacia_planks_moulding"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "bwt:acacia_planks_pedestal"
+  }
 }

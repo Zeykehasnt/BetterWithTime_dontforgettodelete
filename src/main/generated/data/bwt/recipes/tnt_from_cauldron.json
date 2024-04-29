@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "blocks",
+  "group": "",
   "ingredients": [
     {
       "count": 5,
@@ -17,7 +18,8 @@
   ],
   "results": [
     {
-      "item": "minecraft:tnt"
+      "count": 1,
+      "id": "minecraft:tnt"
     }
   ]
 }

@@ -6,5 +6,7 @@
   "ingredient": {
     "item": "bwt:raw_egg"
   },
-  "result": "bwt:fried_egg"
+  "result": {
+    "id": "bwt:fried_egg"
+  }
 }

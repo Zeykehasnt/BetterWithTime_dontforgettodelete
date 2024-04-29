@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:chicken"
-            ]
+            "items": "minecraft:chicken"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:dung"
-            ]
+            "items": "bwt:dung"
           }
         ]
       },

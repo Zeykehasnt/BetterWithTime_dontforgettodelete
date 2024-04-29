@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:cooked_wolf_chop"
-            ]
+            "items": "bwt:cooked_wolf_chop"
           }
         ]
       },

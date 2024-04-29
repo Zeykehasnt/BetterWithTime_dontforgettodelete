@@ -1,6 +1,7 @@
 {
   "type": "bwt:stoked_crucible",
   "category": "misc",
+  "group": "",
   "ingredients": [
     {
       "count": 9,
@@ -11,7 +12,8 @@
   ],
   "results": [
     {
-      "item": "minecraft:gold_ingot"
+      "count": 1,
+      "id": "minecraft:gold_ingot"
     }
   ]
 }

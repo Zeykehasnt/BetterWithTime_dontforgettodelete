@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:light_blue_wool"
-            ]
+            "items": "minecraft:light_blue_wool"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:potash"
-            ]
+            "items": "bwt:potash"
           }
         ]
       },

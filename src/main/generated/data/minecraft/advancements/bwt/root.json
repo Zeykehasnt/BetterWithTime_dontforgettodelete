@@ -9,7 +9,8 @@
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": "Made with love, and souls",
     "icon": {
-      "item": "bwt:companion_cube"
+      "count": 1,
+      "id": "bwt:companion_cube"
     },
     "show_toast": false,
     "title": "Better With Time"

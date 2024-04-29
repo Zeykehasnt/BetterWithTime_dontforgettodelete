@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "blocks",
+  "group": "",
   "ingredients": [
     {
       "ingredient": {
@@ -15,7 +16,8 @@
   ],
   "results": [
     {
-      "item": "minecraft:green_wool"
+      "count": 1,
+      "id": "minecraft:green_wool"
     }
   ]
 }

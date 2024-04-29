@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:dark_oak_planks_corner"
-            ]
+            "items": "bwt:dark_oak_planks_corner"
           }
         ]
       },

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:apple"
-            ]
+            "items": "minecraft:apple"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:dung"
-            ]
+            "items": "bwt:dung"
           }
         ]
       },

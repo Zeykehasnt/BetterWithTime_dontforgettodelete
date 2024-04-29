@@ -12,6 +12,7 @@
     "mm"
   ],
   "result": {
-    "item": "minecraft:birch_stairs"
+    "count": 1,
+    "id": "minecraft:birch_stairs"
   }
 }

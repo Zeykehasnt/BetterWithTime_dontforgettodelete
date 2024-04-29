@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     "#minecraft:flowers",
     "minecraft:apple",
@@ -80,7 +79,8 @@
     "minecraft:carrot",
     "minecraft:beetroot",
     "minecraft:netherite_scrap",
-    "minecraft:scute",
+    "minecraft:turtle_scute",
+    "minecraft:armadillo_scute",
     "minecraft:prismarine_shard",
     "minecraft:prismarine_crystals",
     "minecraft:nautilus_shell",

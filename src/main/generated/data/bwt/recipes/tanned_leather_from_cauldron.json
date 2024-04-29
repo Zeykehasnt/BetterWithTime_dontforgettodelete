@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "misc",
+  "group": "",
   "ingredients": [
     {
       "ingredient": {
@@ -15,7 +16,8 @@
   ],
   "results": [
     {
-      "item": "bwt:tanned_leather"
+      "count": 1,
+      "id": "bwt:tanned_leather"
     }
   ]
 }

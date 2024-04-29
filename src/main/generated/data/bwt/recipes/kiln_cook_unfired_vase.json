@@ -4,7 +4,8 @@
   "cookingTime": 1,
   "drops": [
     {
-      "item": "bwt:vase_white"
+      "count": 1,
+      "id": "bwt:vase_white"
     }
   ],
   "ingredient": {

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:nether_bricks_moulding"
-            ]
+            "items": "bwt:nether_bricks_moulding"
           }
         ]
       },

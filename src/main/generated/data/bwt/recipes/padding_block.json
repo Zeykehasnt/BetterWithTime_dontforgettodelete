@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "bwt:padding_block"
+    "count": 1,
+    "id": "bwt:padding_block"
   }
 }

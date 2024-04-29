@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "misc",
+  "group": "",
   "ingredients": [
     {
       "ingredient": {
@@ -16,7 +17,7 @@
   "results": [
     {
       "count": 2,
-      "item": "bwt:nethercoal"
+      "id": "bwt:nethercoal"
     }
   ]
 }

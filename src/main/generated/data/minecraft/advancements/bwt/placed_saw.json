@@ -17,7 +17,8 @@
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": "Build and power a saw in pursuit of finer wood pieces",
     "icon": {
-      "item": "bwt:saw"
+      "count": 1,
+      "id": "bwt:saw"
     },
     "title": "DIY Carpentry"
   },

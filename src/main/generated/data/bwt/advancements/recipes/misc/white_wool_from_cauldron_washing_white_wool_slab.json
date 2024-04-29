@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:potash"
-            ]
+            "items": "bwt:potash"
           }
         ]
       },
@@ -23,9 +21,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:white_wool_slab"
-            ]
+            "items": "bwt:white_wool_slab"
           }
         ]
       },

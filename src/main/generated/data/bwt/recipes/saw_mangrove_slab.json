@@ -1,13 +1,13 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "minecraft:mangrove_slab"
-  },
-  "results": [
+  "drops": [
     {
       "count": 2,
-      "item": "bwt:mangrove_planks_moulding"
+      "id": "bwt:mangrove_planks_moulding"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "minecraft:mangrove_slab"
+  }
 }

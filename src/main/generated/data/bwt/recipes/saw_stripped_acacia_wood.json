@@ -1,17 +1,17 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "minecraft:stripped_acacia_wood"
-  },
-  "results": [
+  "drops": [
     {
       "count": 4,
-      "item": "minecraft:acacia_planks"
+      "id": "minecraft:acacia_planks"
     },
     {
       "count": 2,
-      "item": "bwt:saw_dust"
+      "id": "bwt:saw_dust"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "minecraft:stripped_acacia_wood"
+  }
 }

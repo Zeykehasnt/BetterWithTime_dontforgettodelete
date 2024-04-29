@@ -1,15 +1,17 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "minecraft:dark_oak_fence_gate"
-  },
-  "results": [
+  "drops": [
     {
-      "item": "bwt:dark_oak_planks_corner"
+      "count": 1,
+      "id": "bwt:dark_oak_planks_corner"
     },
     {
-      "item": "minecraft:stick"
+      "count": 1,
+      "id": "minecraft:stick"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "minecraft:dark_oak_fence_gate"
+  }
 }

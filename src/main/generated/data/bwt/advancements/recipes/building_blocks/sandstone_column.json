@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:sandstone_moulding"
-            ]
+            "items": "bwt:sandstone_moulding"
           }
         ]
       },

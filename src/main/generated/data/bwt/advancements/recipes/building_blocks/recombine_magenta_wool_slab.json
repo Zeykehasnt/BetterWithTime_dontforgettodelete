@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:magenta_wool_slab"
-            ]
+            "items": "bwt:magenta_wool_slab"
           }
         ]
       },

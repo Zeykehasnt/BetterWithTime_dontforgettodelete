@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:cyan_wool_slab"
-            ]
+            "items": "bwt:cyan_wool_slab"
           }
         ]
       },

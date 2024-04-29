@@ -1,6 +1,7 @@
 {
   "type": "bwt:stoked_cauldron",
   "category": "misc",
+  "group": "",
   "ingredients": [
     {
       "count": 4,
@@ -22,7 +23,8 @@
   ],
   "results": [
     {
-      "item": "bwt:kibble"
+      "count": 1,
+      "id": "bwt:kibble"
     }
   ]
 }

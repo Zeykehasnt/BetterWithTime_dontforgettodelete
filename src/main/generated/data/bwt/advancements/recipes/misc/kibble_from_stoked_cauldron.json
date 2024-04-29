@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:bone_meal"
-            ]
+            "items": "minecraft:bone_meal"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:rotten_flesh"
-            ]
+            "items": "minecraft:rotten_flesh"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:sugar"
-            ]
+            "items": "minecraft:sugar"
           }
         ]
       },

@@ -1,6 +1,7 @@
 {
   "type": "bwt:stoked_crucible",
   "category": "misc",
+  "group": "",
   "ingredients": [
     {
       "ingredient": {
@@ -25,7 +26,8 @@
   ],
   "results": [
     {
-      "item": "minecraft:netherite_ingot"
+      "count": 1,
+      "id": "minecraft:netherite_ingot"
     }
   ]
 }

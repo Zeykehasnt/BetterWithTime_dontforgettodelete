@@ -1,15 +1,17 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "bwt:warped_planks_column"
-  },
-  "results": [
+  "drops": [
     {
-      "item": "bwt:warped_planks_siding"
+      "count": 1,
+      "id": "bwt:warped_planks_siding"
     },
     {
-      "item": "bwt:warped_planks_moulding"
+      "count": 1,
+      "id": "bwt:warped_planks_moulding"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "bwt:warped_planks_column"
+  }
 }

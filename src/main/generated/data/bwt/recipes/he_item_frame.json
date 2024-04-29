@@ -16,6 +16,6 @@
   ],
   "result": {
     "count": 2,
-    "item": "minecraft:item_frame"
+    "id": "minecraft:item_frame"
   }
 }

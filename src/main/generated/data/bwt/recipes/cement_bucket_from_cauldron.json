@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "misc",
+  "group": "",
   "ingredients": [
     {
       "ingredient": {
@@ -25,7 +26,8 @@
   ],
   "results": [
     {
-      "item": "bwt:cement_bucket"
+      "count": 1,
+      "id": "bwt:cement_bucket"
     }
   ]
 }

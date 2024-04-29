@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:obsidian_detector_rail"
-            ]
+            "items": "bwt:obsidian_detector_rail"
           }
         ]
       },

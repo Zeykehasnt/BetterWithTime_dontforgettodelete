@@ -18,6 +18,7 @@
     "ddd"
   ],
   "result": {
-    "item": "bwt:mining_charge"
+    "count": 1,
+    "id": "bwt:mining_charge"
   }
 }

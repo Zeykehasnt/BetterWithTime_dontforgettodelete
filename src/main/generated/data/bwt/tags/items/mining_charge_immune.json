@@ -1,13 +1,12 @@
 {
-  "replace": false,
   "values": [
     "#c:ores",
-    "#c:raw_ores",
-    "#c:redstone_dusts",
-    "#c:emeralds",
-    "#c:lapis",
-    "#c:diamonds",
-    "#c:quartz",
+    "#c:raw_materials",
+    "#c:dusts/redstone",
+    "#c:gems/emerald",
+    "#c:gems/lapis",
+    "#c:gems/diamond",
+    "#c:gems/quartz",
     "#c:coal",
     "minecraft:flint",
     "minecraft:ancient_debris"

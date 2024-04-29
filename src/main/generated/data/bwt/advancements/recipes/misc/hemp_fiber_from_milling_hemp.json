@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:hemp"
-            ]
+            "items": "bwt:hemp"
           }
         ]
       },

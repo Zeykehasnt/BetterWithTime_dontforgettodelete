@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "food",
+  "group": "",
   "ingredients": [
     {
       "ingredient": {
@@ -10,7 +11,8 @@
   ],
   "results": [
     {
-      "item": "minecraft:cooked_chicken"
+      "count": 1,
+      "id": "minecraft:cooked_chicken"
     }
   ]
 }

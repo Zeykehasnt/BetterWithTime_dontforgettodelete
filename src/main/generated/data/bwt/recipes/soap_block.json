@@ -12,6 +12,7 @@
     "###"
   ],
   "result": {
-    "item": "bwt:soap_block"
+    "count": 1,
+    "id": "bwt:soap_block"
   }
 }

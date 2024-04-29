@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:concentrated_hellfire_block"
-            ]
+            "items": "bwt:concentrated_hellfire_block"
           }
         ]
       },

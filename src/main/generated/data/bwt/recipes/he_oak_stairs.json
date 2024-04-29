@@ -12,6 +12,7 @@
     "mm"
   ],
   "result": {
-    "item": "minecraft:oak_stairs"
+    "count": 1,
+    "id": "minecraft:oak_stairs"
   }
 }

@@ -15,6 +15,7 @@
     "m"
   ],
   "result": {
-    "item": "minecraft:jungle_sign"
+    "count": 1,
+    "id": "minecraft:jungle_sign"
   }
 }

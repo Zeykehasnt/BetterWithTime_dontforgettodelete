@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:glowstone_dust"
-            ]
+            "items": "minecraft:glowstone_dust"
           }
         ]
       },
@@ -17,9 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:hemp_fiber"
-            ]
+            "items": "bwt:hemp_fiber"
           }
         ]
       },
@@ -29,9 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:redstone"
-            ]
+            "items": "minecraft:redstone"
           }
         ]
       },

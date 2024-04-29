@@ -1,6 +1,7 @@
 {
   "type": "bwt:stoked_crucible",
   "category": "blocks",
+  "group": "",
   "ingredients": [
     {
       "ingredient": {
@@ -16,7 +17,7 @@
   "results": [
     {
       "count": 7,
-      "item": "minecraft:redstone"
+      "id": "minecraft:redstone"
     }
   ]
 }

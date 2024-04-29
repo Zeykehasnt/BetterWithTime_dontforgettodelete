@@ -1,0 +1,23 @@
+{
+  "type": "bwt:cauldron",
+  "category": "misc",
+  "group": "",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "bwt:dung"
+      }
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:ominous_bottle"
+      }
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "bwt:foul_food"
+    }
+  ]
+}

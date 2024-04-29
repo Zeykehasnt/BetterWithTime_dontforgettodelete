@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:wicker_block"
-            ]
+            "items": "bwt:wicker_block"
           }
         ]
       },

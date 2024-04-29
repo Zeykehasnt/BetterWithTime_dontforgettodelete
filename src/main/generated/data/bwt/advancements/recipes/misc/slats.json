@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "bwt:wooden_moulding_blocks"
+            "items": "#bwt:wooden_moulding_blocks"
           }
         ]
       },

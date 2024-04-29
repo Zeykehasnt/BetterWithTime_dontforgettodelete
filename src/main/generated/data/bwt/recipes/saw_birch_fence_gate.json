@@ -1,15 +1,17 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "minecraft:birch_fence_gate"
-  },
-  "results": [
+  "drops": [
     {
-      "item": "bwt:birch_planks_corner"
+      "count": 1,
+      "id": "bwt:birch_planks_corner"
     },
     {
-      "item": "minecraft:stick"
+      "count": 1,
+      "id": "minecraft:stick"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "minecraft:birch_fence_gate"
+  }
 }

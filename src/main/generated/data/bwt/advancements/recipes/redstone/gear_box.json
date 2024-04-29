@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:gear"
-            ]
+            "items": "bwt:gear"
           }
         ]
       },

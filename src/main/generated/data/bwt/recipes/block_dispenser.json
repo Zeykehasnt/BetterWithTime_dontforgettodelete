@@ -25,6 +25,7 @@
     "srrs"
   ],
   "result": {
-    "item": "bwt:block_dispenser"
+    "count": 1,
+    "id": "bwt:block_dispenser"
   }
 }

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:tanned_leather"
-            ]
+            "items": "bwt:tanned_leather"
           }
         ]
       },
@@ -18,7 +16,8 @@
     "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
     "description": "Tan leather in the cauldron using dung",
     "icon": {
-      "item": "bwt:tanned_leather"
+      "count": 1,
+      "id": "bwt:tanned_leather"
     },
     "title": "Dung-Tanned"
   },

@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:tallow"
-            ]
+            "items": "bwt:tallow"
           }
         ]
       },

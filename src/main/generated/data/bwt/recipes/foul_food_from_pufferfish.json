@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "misc",
+  "group": "",
   "ingredients": [
     {
       "ingredient": {
@@ -15,7 +16,8 @@
   ],
   "results": [
     {
-      "item": "bwt:foul_food"
+      "count": 1,
+      "id": "bwt:foul_food"
     }
   ]
 }

@@ -12,6 +12,7 @@
     "mm"
   ],
   "result": {
-    "item": "minecraft:warped_stairs"
+    "count": 1,
+    "id": "minecraft:warped_stairs"
   }
 }

@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "misc",
+  "group": "",
   "ingredients": [
     {
       "ingredient": {
@@ -20,7 +21,8 @@
   ],
   "results": [
     {
-      "item": "bwt:filament"
+      "count": 1,
+      "id": "bwt:filament"
     }
   ]
 }

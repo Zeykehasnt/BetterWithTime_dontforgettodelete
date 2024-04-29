@@ -1,6 +1,7 @@
 {
   "type": "bwt:stoked_cauldron",
   "category": "misc",
+  "group": "",
   "ingredients": [
     {
       "count": 16,
@@ -11,7 +12,8 @@
   ],
   "results": [
     {
-      "item": "bwt:potash"
+      "count": 1,
+      "id": "bwt:potash"
     }
   ]
 }

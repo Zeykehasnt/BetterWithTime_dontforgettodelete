@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:yellow_wool_slab"
-            ]
+            "items": "bwt:yellow_wool_slab"
           }
         ]
       },

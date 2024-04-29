@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:oak_planks_siding"
-            ]
+            "items": "bwt:oak_planks_siding"
           }
         ]
       },

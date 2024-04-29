@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:hellfire_dust"
-            ]
+            "items": "bwt:hellfire_dust"
           }
         ]
       },

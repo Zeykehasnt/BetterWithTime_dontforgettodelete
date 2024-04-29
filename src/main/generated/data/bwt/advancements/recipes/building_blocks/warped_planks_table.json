@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:warped_planks_moulding"
-            ]
+            "items": "bwt:warped_planks_moulding"
           }
         ]
       },

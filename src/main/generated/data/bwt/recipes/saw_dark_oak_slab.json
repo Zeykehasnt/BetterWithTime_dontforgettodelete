@@ -1,13 +1,13 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "minecraft:dark_oak_slab"
-  },
-  "results": [
+  "drops": [
     {
       "count": 2,
-      "item": "bwt:dark_oak_planks_moulding"
+      "id": "bwt:dark_oak_planks_moulding"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "minecraft:dark_oak_slab"
+  }
 }

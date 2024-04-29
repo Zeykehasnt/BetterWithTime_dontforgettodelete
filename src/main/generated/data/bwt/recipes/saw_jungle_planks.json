@@ -1,13 +1,13 @@
 {
   "type": "bwt:saw",
   "category": "misc",
-  "ingredient": {
-    "block": "minecraft:jungle_planks"
-  },
-  "results": [
+  "drops": [
     {
       "count": 2,
-      "item": "bwt:jungle_planks_siding"
+      "id": "bwt:jungle_planks_siding"
     }
-  ]
+  ],
+  "ingredient": {
+    "block": "minecraft:jungle_planks"
+  }
 }

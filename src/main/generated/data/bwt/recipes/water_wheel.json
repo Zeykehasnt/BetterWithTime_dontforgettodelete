@@ -12,6 +12,7 @@
     "bbb"
   ],
   "result": {
-    "item": "bwt:water_wheel"
+    "count": 1,
+    "id": "bwt:water_wheel"
   }
 }

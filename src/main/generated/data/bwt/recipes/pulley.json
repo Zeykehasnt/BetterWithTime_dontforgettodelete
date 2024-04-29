@@ -21,6 +21,7 @@
     "pip"
   ],
   "result": {
-    "item": "bwt:pulley"
+    "count": 1,
+    "id": "bwt:pulley"
   }
 }

@@ -4,7 +4,8 @@
   "cookingTime": 1,
   "drops": [
     {
-      "item": "minecraft:netherite_scrap"
+      "count": 1,
+      "id": "minecraft:netherite_scrap"
     }
   ],
   "ingredient": {

@@ -4,7 +4,8 @@
   "cookingTime": 1,
   "drops": [
     {
-      "item": "bwt:crucible"
+      "count": 1,
+      "id": "bwt:crucible"
     }
   ],
   "ingredient": {

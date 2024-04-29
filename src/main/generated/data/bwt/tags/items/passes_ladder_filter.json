@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     "#bwt:passes_iron_bars_filter",
     "#minecraft:trimmable_armor",
@@ -7,12 +6,13 @@
     "#minecraft:boats",
     "#minecraft:chest_boats",
     "#minecraft:doors",
-    "#c:entity_water_buckets",
+    "#c:buckets/entity_water",
     "#minecraft:music_discs",
     "#minecraft:saplings",
-    "#minecraft:tools",
-    "#c:bows",
-    "#c:shields",
+    "#c:tools",
+    "#c:tools/bows",
+    "#c:tools/crossbows",
+    "#c:tools/shields",
     "minecraft:writable_book",
     "minecraft:lava_bucket",
     "minecraft:milk_bucket",

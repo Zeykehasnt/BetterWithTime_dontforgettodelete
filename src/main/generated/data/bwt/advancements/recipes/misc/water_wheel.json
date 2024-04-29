@@ -11,9 +11,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "bwt:wood_blade"
-            ]
+            "items": "bwt:wood_blade"
           }
         ]
       },

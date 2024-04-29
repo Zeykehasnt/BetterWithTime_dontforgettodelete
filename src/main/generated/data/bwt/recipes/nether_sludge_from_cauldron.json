@@ -1,6 +1,7 @@
 {
   "type": "bwt:cauldron",
   "category": "misc",
+  "group": "",
   "ingredients": [
     {
       "count": 8,
@@ -17,7 +18,7 @@
   "results": [
     {
       "count": 8,
-      "item": "bwt:nether_sludge"
+      "id": "bwt:nether_sludge"
     }
   ]
 }
