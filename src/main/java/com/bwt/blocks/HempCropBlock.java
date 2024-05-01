@@ -42,11 +42,6 @@ public class HempCropBlock extends CropBlock {
     }
 
     @Override
-    public int getMaxAge() {
-        return MAX_AGE;
-    }
-
-    @Override
     public ItemConvertible getSeedsItem() {
         return BwtItems.hempSeedsItem;
     }
@@ -62,12 +57,6 @@ public class HempCropBlock extends CropBlock {
                 0.5D - halfWidth, 0D, 0.5D - halfWidth,
                 0.5D + halfWidth, height, 0.5D + halfWidth
         );
-    }
-
-    @Override
-    protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
-        // This does not account for planting on itself, so we can't place seeds on top directly
-        return super.canPlantOnTop(floor, world, pos);
     }
 
     @Override

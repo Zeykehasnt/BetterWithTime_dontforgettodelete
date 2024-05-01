@@ -298,10 +298,11 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
     public boolean onJobCompleted(World world, BlockPos pulleyPos, BlockState pulleyState, boolean up, int targetY) {
         BlockPos ropePos = new BlockPos(pulleyPos.getX(), targetY - (up ? 1 : 0), pulleyPos.getZ());
         BlockState state = world.getBlockState(ropePos);
+        BlockState defaultRopeState = BwtBlocks.ropeBlock.getDefaultState();
         if (!up) {
-            if ((world.isAir(ropePos) || state.isReplaceable()) && BwtBlocks.ropeBlock.getDefaultState().canPlaceAt(world, ropePos) && hasRope()) {
-                world.playSound(null, pulleyPos.down(), BwtBlocks.ropeBlock.getSoundGroup().getPlaceSound(), SoundCategory.BLOCKS, 0.4F, 1.0F);
-                world.setBlockState(ropePos, BwtBlocks.ropeBlock.getDefaultState());
+            if ((world.isAir(ropePos) || state.isReplaceable()) && defaultRopeState.canPlaceAt(world, ropePos) && hasRope()) {
+                world.playSound(null, pulleyPos.down(), defaultRopeState.getSoundGroup().getPlaceSound(), SoundCategory.BLOCKS, 0.4F, 1.0F);
+                world.setBlockState(ropePos, defaultRopeState);
                 takeRope(false);
             } else {
                 tryNextOperation(world, pulleyPos, pulleyState);
@@ -314,7 +315,7 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
             rope.setTargetY(targetY + (rope.isMovingUp() ? 1 : -1));
             if (up) {
                 if (!world.isAir(ropePos.up())) {
-                    world.playSound(null, pulleyPos.down(), BwtBlocks.ropeBlock.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS,
+                    world.playSound(null, pulleyPos.down(), defaultRopeState.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS,
                             0.4F + (world.random.nextFloat() * 0.1F), 1.0F);
                     world.removeBlock(ropePos.up(), false);
                     putRope(false);

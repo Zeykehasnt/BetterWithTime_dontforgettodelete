@@ -112,8 +112,4 @@ public class RopeBlock extends Block {
         }
         return mutablePos.toImmutable();
     }
-
-    public BlockSoundGroup getSoundGroup() {
-        return super.getSoundGroup(getDefaultState());
-    }
 }
