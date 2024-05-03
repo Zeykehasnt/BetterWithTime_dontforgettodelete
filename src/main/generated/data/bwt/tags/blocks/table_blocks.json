@@ -19,6 +19,7 @@
     "bwt:mud_bricks_table",
     "bwt:prismarine_table",
     "bwt:end_stone_bricks_table",
-    "bwt:purpur_block_table"
+    "bwt:purpur_block_table",
+    "bwt:quartz_block_table"
   ]
 }

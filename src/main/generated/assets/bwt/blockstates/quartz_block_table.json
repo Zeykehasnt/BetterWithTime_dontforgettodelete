@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "support=false": {
+      "model": "bwt:block/quartz_block_table_no_support"
+    },
+    "support=true": {
+      "model": "bwt:block/quartz_block_table"
+    }
+  }
+}

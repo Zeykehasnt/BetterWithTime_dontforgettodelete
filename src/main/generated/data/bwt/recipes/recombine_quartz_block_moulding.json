@@ -1,0 +1,17 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "group": "siding",
+  "ingredients": [
+    {
+      "item": "bwt:quartz_block_moulding"
+    },
+    {
+      "item": "bwt:quartz_block_moulding"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:quartz_block_siding"
+  }
+}

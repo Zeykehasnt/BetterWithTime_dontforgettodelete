@@ -66,8 +66,7 @@ public abstract class MaterialInheritedBlock extends Block {
                 BlockFamilies.PURPUR,
                 BlockFamilies.QUARTZ_BLOCK
         );
-        for (int i = 0; i < blockFamilies.size() - 1; i ++) {
-            BlockFamily blockFamily = blockFamilies.get(i);
+        blockFamilies.forEach(blockFamily -> {
             Block block = blockFamily.getBaseBlock();
             Block slabBlock = blockFamily.getVariant(BlockFamily.Variant.SLAB);
             sidingBlocks.add(SidingBlock.ofBlock(block, slabBlock));
@@ -76,7 +75,7 @@ public abstract class MaterialInheritedBlock extends Block {
             columnBlocks.add(ColumnBlock.ofBlock(block, slabBlock));
             pedestalBlocks.add(PedestalBlock.ofBlock(block, slabBlock));
             tableBlocks.add(TableBlock.ofBlock(block, slabBlock));
-        }
+        });
         for (int i = 0; i < sidingBlocks.size(); i++) {
             SidingBlock sidingBlock = sidingBlocks.get(i);
             MouldingBlock mouldingBlock = mouldingBlocks.get(i);

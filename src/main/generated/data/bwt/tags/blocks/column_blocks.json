@@ -19,6 +19,7 @@
     "bwt:mud_bricks_column",
     "bwt:prismarine_column",
     "bwt:end_stone_bricks_column",
-    "bwt:purpur_block_column"
+    "bwt:purpur_block_column",
+    "bwt:quartz_block_column"
   ]
 }
