@@ -24,7 +24,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         getOrCreateTagBuilder(BlockTags.CLIMBABLE).add(BwtBlocks.ropeBlock);
         getOrCreateTagBuilder(BlockTags.RAILS).add(BwtBlocks.stoneDetectorRailBlock, BwtBlocks.obsidianDetectorRailBlock);
         getOrCreateTagBuilder(BlockTags.PRESSURE_PLATES).add(BwtBlocks.obsidianPressuePlateBlock);
-        getOrCreateTagBuilder(BlockTags.SLABS).add(BwtBlocks.companionSlabBlock);
+        getOrCreateTagBuilder(BlockTags.SLABS).add(BwtBlocks.companionSlabBlock).add(BwtBlocks.wickerSlabBlock);
 
         // Make planters behave like their corresponding blocks
         getOrCreateTagBuilder(BlockTags.DIRT).add(BwtBlocks.soilPlanterBlock, BwtBlocks.grassPlanterBlock);
@@ -67,7 +67,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         getOrCreateTagBuilder(BlockTags.INFINIBURN_NETHER).add(BwtBlocks.hibachiBlock);
         getOrCreateTagBuilder(BlockTags.INFINIBURN_END).add(BwtBlocks.hibachiBlock);
         getOrCreateTagBuilder(BlockTags.FIRE).add(BwtBlocks.stokedFireBlock);
-        getOrCreateTagBuilder(BlockTags.WOOL).add(BwtBlocks.companionCubeBlock, BwtBlocks.companionSlabBlock);
+        getOrCreateTagBuilder(BlockTags.WOOL).add(BwtBlocks.companionCubeBlock);
+        getOrCreateTagBuilder(BwtBlockTags.WOOL_SLABS).add(BwtBlocks.companionSlabBlock);
 
         addTools();
         addMaterialInheritedBlockTags();
@@ -201,7 +202,6 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
     private void addWoolSlabs() {
         FabricTagBuilder woolSlabsBuilder = getOrCreateTagBuilder(BwtBlockTags.WOOL_SLABS);
         DyeUtils.streamColorItemsSorted(BwtBlocks.woolSlabBlocks).forEach(woolSlabsBuilder::add);
-        getOrCreateTagBuilder(BlockTags.WOOL).forceAddTag(BwtBlockTags.WOOL_SLABS);
         getOrCreateTagBuilder(BlockTags.SLABS).forceAddTag(BwtBlockTags.WOOL_SLABS);
     }
 

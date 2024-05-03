@@ -1,7 +1,5 @@
 {
   "values": [
-    "bwt:companion_cube",
-    "bwt:companion_slab",
-    "#bwt:wool_slabs"
+    "bwt:companion_cube"
   ]
 }
