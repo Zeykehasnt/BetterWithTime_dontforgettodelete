@@ -1,0 +1,16 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "bwt:mud_bricks_siding"
+    },
+    {
+      "item": "bwt:mud_bricks_siding"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:mud_bricks"
+  }
+}

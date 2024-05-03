@@ -3,8 +3,22 @@
     "#bwt:wooden_siding_blocks",
     "bwt:stone_siding",
     "bwt:stone_bricks_siding",
+    "bwt:mossy_stone_bricks_siding",
     "bwt:sandstone_siding",
+    "bwt:red_sandstone_siding",
     "bwt:bricks_siding",
-    "bwt:nether_bricks_siding"
+    "bwt:nether_bricks_siding",
+    "bwt:diorite_siding",
+    "bwt:polished_diorite_siding",
+    "bwt:andesite_siding",
+    "bwt:polished_andesite_siding",
+    "bwt:granite_siding",
+    "bwt:polished_granite_siding",
+    "bwt:cobbled_deepslate_siding",
+    "bwt:tuff_siding",
+    "bwt:mud_bricks_siding",
+    "bwt:prismarine_siding",
+    "bwt:end_stone_bricks_siding",
+    "bwt:purpur_block_siding"
   ]
 }

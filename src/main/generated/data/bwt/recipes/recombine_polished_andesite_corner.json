@@ -1,0 +1,17 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "group": "moulding",
+  "ingredients": [
+    {
+      "item": "bwt:polished_andesite_corner"
+    },
+    {
+      "item": "bwt:polished_andesite_corner"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:polished_andesite_moulding"
+  }
+}

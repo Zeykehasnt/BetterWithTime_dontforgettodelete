@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "table",
+  "key": {
+    "m": {
+      "item": "bwt:andesite_moulding"
+    },
+    "s": {
+      "item": "bwt:andesite_siding"
+    }
+  },
+  "pattern": [
+    "sss",
+    " m ",
+    " m "
+  ],
+  "result": {
+    "count": 4,
+    "id": "bwt:andesite_table"
+  }
+}

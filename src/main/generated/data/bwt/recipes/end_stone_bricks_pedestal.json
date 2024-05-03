@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "pedestal",
+  "key": {
+    "#": {
+      "item": "minecraft:end_stone_bricks"
+    },
+    "s": {
+      "item": "bwt:end_stone_bricks_siding"
+    }
+  },
+  "pattern": [
+    " s ",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "bwt:end_stone_bricks_pedestal"
+  }
+}

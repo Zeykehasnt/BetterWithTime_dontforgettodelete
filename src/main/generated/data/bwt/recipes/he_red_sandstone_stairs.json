@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "m": {
+      "item": "bwt:red_sandstone_moulding"
+    }
+  },
+  "pattern": [
+    "m ",
+    "mm"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:red_sandstone_stairs"
+  }
+}

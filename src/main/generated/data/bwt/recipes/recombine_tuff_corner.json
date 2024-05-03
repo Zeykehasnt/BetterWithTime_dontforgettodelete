@@ -1,0 +1,17 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "group": "moulding",
+  "ingredients": [
+    {
+      "item": "bwt:tuff_corner"
+    },
+    {
+      "item": "bwt:tuff_corner"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:tuff_moulding"
+  }
+}

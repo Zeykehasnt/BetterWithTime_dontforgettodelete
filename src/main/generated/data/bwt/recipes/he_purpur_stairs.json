@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "m": {
+      "item": "bwt:purpur_block_moulding"
+    }
+  },
+  "pattern": [
+    "m ",
+    "mm"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:purpur_stairs"
+  }
+}

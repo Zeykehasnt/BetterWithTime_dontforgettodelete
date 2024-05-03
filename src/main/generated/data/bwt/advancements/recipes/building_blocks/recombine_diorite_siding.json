@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_diorite_siding": {
+      "conditions": {
+        "items": [
+          {
+            "items": "bwt:diorite_siding"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "bwt:recombine_diorite_siding"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_diorite_siding"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "bwt:recombine_diorite_siding"
+    ]
+  }
+}

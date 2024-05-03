@@ -1,0 +1,17 @@
+{
+  "type": "bwt:soul_forge_shaped",
+  "category": "building",
+  "group": "siding",
+  "key": {
+    "X": {
+      "item": "minecraft:mossy_stone_bricks"
+    }
+  },
+  "pattern": [
+    "XXXX"
+  ],
+  "result": {
+    "count": 8,
+    "id": "bwt:mossy_stone_bricks_siding"
+  }
+}

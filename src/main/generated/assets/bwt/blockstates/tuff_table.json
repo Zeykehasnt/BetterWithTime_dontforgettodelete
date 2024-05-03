@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "support=false": {
+      "model": "bwt:block/tuff_table_no_support"
+    },
+    "support=true": {
+      "model": "bwt:block/tuff_table"
+    }
+  }
+}

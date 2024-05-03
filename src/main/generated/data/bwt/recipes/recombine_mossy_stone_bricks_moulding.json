@@ -1,0 +1,17 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "group": "siding",
+  "ingredients": [
+    {
+      "item": "bwt:mossy_stone_bricks_moulding"
+    },
+    {
+      "item": "bwt:mossy_stone_bricks_moulding"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:mossy_stone_bricks_siding"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "group": "moulding",
+  "ingredients": [
+    {
+      "item": "bwt:prismarine_corner"
+    },
+    {
+      "item": "bwt:prismarine_corner"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:prismarine_moulding"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_cobbled_deepslate_siding": {
+      "conditions": {
+        "items": [
+          {
+            "items": "bwt:cobbled_deepslate_siding"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "bwt:cobbled_deepslate_pedestal"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_cobbled_deepslate_siding"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "bwt:cobbled_deepslate_pedestal"
+    ]
+  }
+}

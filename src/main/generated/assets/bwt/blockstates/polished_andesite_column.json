@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "": {
+      "model": "bwt:block/polished_andesite_column",
+      "uvlock": true
+    }
+  }
+}

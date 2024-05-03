@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "support=false": {
+      "model": "bwt:block/mossy_stone_bricks_table_no_support"
+    },
+    "support=true": {
+      "model": "bwt:block/mossy_stone_bricks_table"
+    }
+  }
+}

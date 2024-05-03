@@ -1,0 +1,17 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "group": "moulding",
+  "ingredients": [
+    {
+      "item": "bwt:purpur_block_corner"
+    },
+    {
+      "item": "bwt:purpur_block_corner"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:purpur_block_moulding"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_polished_diorite_siding": {
+      "conditions": {
+        "items": [
+          {
+            "items": "bwt:polished_diorite_siding"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "bwt:polished_diorite_moulding"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_polished_diorite_siding"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "bwt:polished_diorite_moulding"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "bwt:cobbled_deepslate_siding"
+    },
+    {
+      "item": "bwt:cobbled_deepslate_siding"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:cobbled_deepslate"
+  }
+}

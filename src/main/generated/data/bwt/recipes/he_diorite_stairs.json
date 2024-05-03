@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "m": {
+      "item": "bwt:diorite_moulding"
+    }
+  },
+  "pattern": [
+    "m ",
+    "mm"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:diorite_stairs"
+  }
+}

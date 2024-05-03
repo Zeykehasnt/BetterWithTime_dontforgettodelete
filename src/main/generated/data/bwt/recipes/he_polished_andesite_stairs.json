@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "m": {
+      "item": "bwt:polished_andesite_moulding"
+    }
+  },
+  "pattern": [
+    "m ",
+    "mm"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:polished_andesite_stairs"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "": {
+      "model": "bwt:block/red_sandstone_column",
+      "uvlock": true
+    }
+  }
+}

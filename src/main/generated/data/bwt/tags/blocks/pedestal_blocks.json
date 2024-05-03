@@ -3,8 +3,22 @@
     "#bwt:wooden_pedestal_blocks",
     "bwt:stone_pedestal",
     "bwt:stone_bricks_pedestal",
+    "bwt:mossy_stone_bricks_pedestal",
     "bwt:sandstone_pedestal",
+    "bwt:red_sandstone_pedestal",
     "bwt:bricks_pedestal",
-    "bwt:nether_bricks_pedestal"
+    "bwt:nether_bricks_pedestal",
+    "bwt:diorite_pedestal",
+    "bwt:polished_diorite_pedestal",
+    "bwt:andesite_pedestal",
+    "bwt:polished_andesite_pedestal",
+    "bwt:granite_pedestal",
+    "bwt:polished_granite_pedestal",
+    "bwt:cobbled_deepslate_pedestal",
+    "bwt:tuff_pedestal",
+    "bwt:mud_bricks_pedestal",
+    "bwt:prismarine_pedestal",
+    "bwt:end_stone_bricks_pedestal",
+    "bwt:purpur_block_pedestal"
   ]
 }

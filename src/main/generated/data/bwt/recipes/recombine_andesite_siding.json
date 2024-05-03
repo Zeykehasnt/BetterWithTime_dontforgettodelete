@@ -1,0 +1,16 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "bwt:andesite_siding"
+    },
+    {
+      "item": "bwt:andesite_siding"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:andesite"
+  }
+}

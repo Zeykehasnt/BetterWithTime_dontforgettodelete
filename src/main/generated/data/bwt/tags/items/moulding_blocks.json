@@ -3,8 +3,22 @@
     "#bwt:wooden_moulding_blocks",
     "bwt:stone_moulding",
     "bwt:stone_bricks_moulding",
+    "bwt:mossy_stone_bricks_moulding",
     "bwt:sandstone_moulding",
+    "bwt:red_sandstone_moulding",
     "bwt:bricks_moulding",
-    "bwt:nether_bricks_moulding"
+    "bwt:nether_bricks_moulding",
+    "bwt:diorite_moulding",
+    "bwt:polished_diorite_moulding",
+    "bwt:andesite_moulding",
+    "bwt:polished_andesite_moulding",
+    "bwt:granite_moulding",
+    "bwt:polished_granite_moulding",
+    "bwt:cobbled_deepslate_moulding",
+    "bwt:tuff_moulding",
+    "bwt:mud_bricks_moulding",
+    "bwt:prismarine_moulding",
+    "bwt:end_stone_bricks_moulding",
+    "bwt:purpur_block_moulding"
   ]
 }

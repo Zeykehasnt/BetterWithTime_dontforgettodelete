@@ -3,8 +3,22 @@
     "#bwt:wooden_table_blocks",
     "bwt:stone_table",
     "bwt:stone_bricks_table",
+    "bwt:mossy_stone_bricks_table",
     "bwt:sandstone_table",
+    "bwt:red_sandstone_table",
     "bwt:bricks_table",
-    "bwt:nether_bricks_table"
+    "bwt:nether_bricks_table",
+    "bwt:diorite_table",
+    "bwt:polished_diorite_table",
+    "bwt:andesite_table",
+    "bwt:polished_andesite_table",
+    "bwt:granite_table",
+    "bwt:polished_granite_table",
+    "bwt:cobbled_deepslate_table",
+    "bwt:tuff_table",
+    "bwt:mud_bricks_table",
+    "bwt:prismarine_table",
+    "bwt:end_stone_bricks_table",
+    "bwt:purpur_block_table"
   ]
 }

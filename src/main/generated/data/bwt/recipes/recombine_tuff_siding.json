@@ -1,0 +1,16 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "bwt:tuff_siding"
+    },
+    {
+      "item": "bwt:tuff_siding"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:tuff"
+  }
+}

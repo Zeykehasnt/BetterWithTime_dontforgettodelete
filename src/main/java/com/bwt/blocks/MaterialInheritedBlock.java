@@ -3,6 +3,8 @@ package com.bwt.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.WoodType;
+import net.minecraft.data.family.BlockFamilies;
+import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -42,20 +44,38 @@ public abstract class MaterialInheritedBlock extends Block {
             pedestalBlocks.add(PedestalBlock.ofBlock(fullBlock, slabBlock));
             tableBlocks.add(TableBlock.ofBlock(fullBlock, slabBlock));
         });
-        List<Block> blockSlabPairs = List.of(
-                Blocks.STONE, Blocks.STONE_SLAB,
-                Blocks.STONE_BRICKS, Blocks.STONE_BRICK_SLAB,
-                Blocks.SANDSTONE, Blocks.SANDSTONE_SLAB,
-                Blocks.BRICKS, Blocks.BRICK_SLAB,
-                Blocks.NETHER_BRICKS, Blocks.NETHER_BRICK_SLAB
+        List<BlockFamily> blockFamilies = List.of(
+                BlockFamilies.STONE,
+                BlockFamilies.STONE_BRICK,
+                BlockFamilies.MOSSY_STONE_BRICK,
+                BlockFamilies.SANDSTONE,
+                BlockFamilies.RED_SANDSTONE,
+                BlockFamilies.BRICK,
+                BlockFamilies.NETHER_BRICK,
+                BlockFamilies.DIORITE,
+                BlockFamilies.POLISHED_DIORITE,
+                BlockFamilies.ANDESITE,
+                BlockFamilies.POLISHED_ANDESITE,
+                BlockFamilies.GRANITE,
+                BlockFamilies.POLISHED_GRANITE,
+                BlockFamilies.COBBLED_DEEPSLATE,
+                BlockFamilies.TUFF,
+                BlockFamilies.MUD_BRICK,
+                BlockFamilies.PRISMARINE,
+                BlockFamilies.END_STONE_BRICK,
+                BlockFamilies.PURPUR,
+                BlockFamilies.QUARTZ_BLOCK
         );
-        for (int i = 0; i < blockSlabPairs.size() - 1; i += 2) {
-            sidingBlocks.add(SidingBlock.ofBlock(blockSlabPairs.get(i), blockSlabPairs.get(i + 1)));
-            mouldingBlocks.add(MouldingBlock.ofBlock(blockSlabPairs.get(i), blockSlabPairs.get(i + 1)));
-            cornerBlocks.add(CornerBlock.ofBlock(blockSlabPairs.get(i), blockSlabPairs.get(i + 1)));
-            columnBlocks.add(ColumnBlock.ofBlock(blockSlabPairs.get(i), blockSlabPairs.get(i + 1)));
-            pedestalBlocks.add(PedestalBlock.ofBlock(blockSlabPairs.get(i), blockSlabPairs.get(i + 1)));
-            tableBlocks.add(TableBlock.ofBlock(blockSlabPairs.get(i), blockSlabPairs.get(i + 1)));
+        for (int i = 0; i < blockFamilies.size() - 1; i ++) {
+            BlockFamily blockFamily = blockFamilies.get(i);
+            Block block = blockFamily.getBaseBlock();
+            Block slabBlock = blockFamily.getVariant(BlockFamily.Variant.SLAB);
+            sidingBlocks.add(SidingBlock.ofBlock(block, slabBlock));
+            mouldingBlocks.add(MouldingBlock.ofBlock(block, slabBlock));
+            cornerBlocks.add(CornerBlock.ofBlock(block, slabBlock));
+            columnBlocks.add(ColumnBlock.ofBlock(block, slabBlock));
+            pedestalBlocks.add(PedestalBlock.ofBlock(block, slabBlock));
+            tableBlocks.add(TableBlock.ofBlock(block, slabBlock));
         }
         for (int i = 0; i < sidingBlocks.size(); i++) {
             SidingBlock sidingBlock = sidingBlocks.get(i);

@@ -1,0 +1,17 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "group": "siding",
+  "ingredients": [
+    {
+      "item": "bwt:cobbled_deepslate_moulding"
+    },
+    {
+      "item": "bwt:cobbled_deepslate_moulding"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:cobbled_deepslate_siding"
+  }
+}

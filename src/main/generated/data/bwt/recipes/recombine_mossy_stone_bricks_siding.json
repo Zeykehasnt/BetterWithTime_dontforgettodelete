@@ -1,0 +1,16 @@
+{
+  "type": "bwt:soul_forge_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "bwt:mossy_stone_bricks_siding"
+    },
+    {
+      "item": "bwt:mossy_stone_bricks_siding"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:mossy_stone_bricks"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_purpur_block_moulding": {
+      "conditions": {
+        "items": [
+          {
+            "items": "bwt:purpur_block_moulding"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "bwt:purpur_block_corner"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_purpur_block_moulding"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "bwt:purpur_block_corner"
+    ]
+  }
+}
