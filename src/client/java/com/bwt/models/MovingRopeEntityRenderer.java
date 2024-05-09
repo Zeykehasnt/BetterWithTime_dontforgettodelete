@@ -48,6 +48,7 @@ public class MovingRopeEntityRenderer extends EntityRenderer<MovingRopeEntity> {
         for (int i = 0; pulleyPos.getY() - entity.getY() > i && i < 2; i++) {
             matrices.push();
             matrices.translate(0, i, 0);
+            matrices.scale(1.001f, 1.001f, 1.001f);
             this.blockRenderManager.getModelRenderer().render(
                     world,
                     this.blockRenderManager.getModel(ropeState),
