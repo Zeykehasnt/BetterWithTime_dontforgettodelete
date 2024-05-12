@@ -63,8 +63,7 @@ public abstract class MaterialInheritedBlock extends Block {
                 BlockFamilies.MUD_BRICK,
                 BlockFamilies.PRISMARINE,
                 BlockFamilies.END_STONE_BRICK,
-                BlockFamilies.PURPUR,
-                BlockFamilies.QUARTZ_BLOCK
+                BlockFamilies.PURPUR
         );
         blockFamilies.forEach(blockFamily -> {
             Block block = blockFamily.getBaseBlock();

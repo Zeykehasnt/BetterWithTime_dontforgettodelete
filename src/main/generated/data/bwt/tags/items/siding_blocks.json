@@ -20,7 +20,6 @@
     "bwt:prismarine_siding",
     "bwt:end_stone_bricks_siding",
     "bwt:purpur_block_siding",
-    "bwt:quartz_block_siding",
     "#bwt:wooden_corner_blocks",
     "bwt:stone_corner",
     "bwt:stone_bricks_corner",
@@ -40,7 +39,6 @@
     "bwt:mud_bricks_corner",
     "bwt:prismarine_corner",
     "bwt:end_stone_bricks_corner",
-    "bwt:purpur_block_corner",
-    "bwt:quartz_block_corner"
+    "bwt:purpur_block_corner"
   ]
 }

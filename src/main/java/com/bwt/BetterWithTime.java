@@ -90,6 +90,7 @@ public class BetterWithTime implements ModInitializer {
 		millStoneScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "mill_stone"), millStoneScreenHandler);
 		pulleyScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "pulley"), pulleyScreenHandler);
 		mechHopperScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "hopper"), mechHopperScreenHandler);
+		soulForgeScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "soul_forge"), soulForgeScreenHandler);
 	}
 
 	@Override

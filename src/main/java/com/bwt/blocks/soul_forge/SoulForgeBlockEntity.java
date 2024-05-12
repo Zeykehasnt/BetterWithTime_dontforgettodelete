@@ -61,14 +61,18 @@ public class SoulForgeBlockEntity extends LockableContainerBlockEntity implement
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         Inventories.writeNbt(nbt, inventory, registryLookup);
-        nbt.put("Output", output.encode(registryLookup));
+        if (!output.isEmpty()) {
+            nbt.put("Output", output.encode(registryLookup));
+        }
     }
 
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
         Inventories.readNbt(nbt, inventory, registryLookup);
-        ItemStack.fromNbt(registryLookup, nbt.getCompound("Output")).ifPresent(itemStack -> this.output = itemStack);
+        if (nbt.contains("Output")) {
+            ItemStack.fromNbt(registryLookup, nbt.getCompound("Output")).ifPresent(itemStack -> this.output = itemStack);
+        }
     }
 
     @Override

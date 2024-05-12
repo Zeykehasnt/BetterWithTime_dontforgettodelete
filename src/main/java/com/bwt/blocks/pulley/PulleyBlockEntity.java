@@ -37,6 +37,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, Inventory {
     protected static final int INVENTORY_SIZE = 4;
@@ -266,8 +267,10 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
     }
 
     private boolean addToList(World world, BlockPos pos, BlockPos sourcePos, HashSet<BlockPos> set, boolean up) {
-        if (set.size() > 26)
+        Vec3i distance = pos.subtract(sourcePos);
+        if (Math.abs(distance.getX()) > 2 || Math.abs(distance.getZ()) > 2 || Math.abs(distance.getY()) > 5) {
             return false;
+        }
         if (!isPlatform(world.getBlockState(pos))) {
             return true;
         }
@@ -279,20 +282,11 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
 
         set.add(pos);
 
-        List<BlockPos> fails = new ArrayList<>();
-
-        Arrays.stream(Direction.values()).map(pos::offset).forEach(offsetPos -> {
-            Vec3i distance = offsetPos.subtract(sourcePos);
-            if (Math.abs(distance.getX()) > 2 || Math.abs(distance.getZ()) > 2 || Math.abs(distance.getY()) > 5) {
-                return;
-            }
-            if (fails.isEmpty() && !set.contains(offsetPos)) {
-                if (!addToList(world, offsetPos, sourcePos, set, up))
-                    fails.add(offsetPos);
-            }
-        });
-
-        return fails.isEmpty();
+        return Arrays.stream(Direction.values())
+                .map(pos::offset)
+                .filter(Predicate.not(set::contains))
+                .map(offsetPos -> addToList(world, offsetPos, sourcePos, set, up))
+                .reduce(false, Boolean::logicalOr);
     }
 
     public boolean onJobCompleted(World world, BlockPos pulleyPos, BlockState pulleyState, boolean up, int targetY) {

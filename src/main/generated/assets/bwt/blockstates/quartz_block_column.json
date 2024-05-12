@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "": {
-      "model": "bwt:block/quartz_block_column",
-      "uvlock": true
-    }
-  }
-}
