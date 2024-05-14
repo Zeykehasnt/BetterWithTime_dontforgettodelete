@@ -109,6 +109,41 @@ public class BetterWithTime implements ModInitializer {
 		soundEvents.onInitialize();
 		dataHandlers.onInitialize();
 
+		// Fuel maps
+		// Vanilla change to account for the moulding -> stick recipe
+		// If uncorrected, you would gain free fuel time by converting your moulding to sticks
+		FuelRegistry.INSTANCE.add(Items.STICK, 75);
+		FuelRegistry.INSTANCE.add(BwtItemTags.WOODEN_SIDING_BLOCKS, 150);
+		FuelRegistry.INSTANCE.add(BwtItemTags.WOODEN_MOULDING_BLOCKS, 75);
+		FuelRegistry.INSTANCE.add(BwtItemTags.WOODEN_CORNER_BLOCKS, 38);
+		FuelRegistry.INSTANCE.add(BwtBlocks.axleBlock, 150);
+		FuelRegistry.INSTANCE.add(BwtBlocks.axlePowerSourceBlock, 150);
+		FuelRegistry.INSTANCE.add(BwtBlocks.bellowsBlock, 450);
+//      FuelRegistry.INSTANCE.add(BwtBlocks.bloodWoodBlock)
+		FuelRegistry.INSTANCE.add(BwtBlocks.gearBoxBlock, 600);
+		FuelRegistry.INSTANCE.add(BwtBlocks.grateBlock, 300);
+		FuelRegistry.INSTANCE.add(BwtBlocks.hopperBlock, 300);
+		FuelRegistry.INSTANCE.add(BwtBlocks.platformBlock, 375);
+		FuelRegistry.INSTANCE.add(BwtBlocks.pulleyBlock, 600);
+		FuelRegistry.INSTANCE.add(BwtBlocks.sawBlock, 300);
+		FuelRegistry.INSTANCE.add(BwtBlocks.slatsBlock, 300);
+//      FuelRegistry.INSTANCE.add(BwtBlocks.screwPumpBlock)
+//      FuelRegistry.INSTANCE.add(BwtBlocks.tableBlock)
+		FuelRegistry.INSTANCE.add(BwtItems.gearItem, 18);
+		FuelRegistry.INSTANCE.add(BwtItems.sawDustItem, 150);
+		FuelRegistry.INSTANCE.add(BwtItems.soulDustItem, 150);
+
+		// Block Dispenser Behaviors
+		BwtBlocks.blockDispenserBlock.registerItemDispenseBehaviors();
+		BwtBlocks.blockDispenserBlock.registerBehaviors();
+		// Hopper filters
+		MechHopperBlock.addDefaultFilters();
+		// Turntable attached block handlers
+		CanRotateHelper.registerDefaults();
+		RotationProcessHelper.registerDefaults();
+		HorizontalBlockAttachmentHelper.registerDefaults();
+		VerticalBlockAttachmentHelper.registerDefaults();
+
 		LootTableEvents.MODIFY.register((key, tableBuilder, source) -> {
 			if (!source.isBuiltin()) {
 				return;
@@ -149,40 +184,5 @@ public class BetterWithTime implements ModInitializer {
 				}
 			}
 		);
-
-		// Fuel maps
-		// Vanilla change to account for the moulding -> stick recipe
-		// If uncorrected, you would gain free fuel time by converting your moulding to sticks
-		FuelRegistry.INSTANCE.add(Items.STICK, 75);
-		FuelRegistry.INSTANCE.add(BwtItemTags.WOODEN_SIDING_BLOCKS, 150);
-		FuelRegistry.INSTANCE.add(BwtItemTags.WOODEN_MOULDING_BLOCKS, 75);
-		FuelRegistry.INSTANCE.add(BwtItemTags.WOODEN_CORNER_BLOCKS, 38);
-		FuelRegistry.INSTANCE.add(BwtBlocks.axleBlock, 150);
-		FuelRegistry.INSTANCE.add(BwtBlocks.axlePowerSourceBlock, 150);
-		FuelRegistry.INSTANCE.add(BwtBlocks.bellowsBlock, 450);
-//      FuelRegistry.INSTANCE.add(BwtBlocks.bloodWoodBlock)
-		FuelRegistry.INSTANCE.add(BwtBlocks.gearBoxBlock, 600);
-		FuelRegistry.INSTANCE.add(BwtBlocks.grateBlock, 300);
-		FuelRegistry.INSTANCE.add(BwtBlocks.hopperBlock, 300);
-		FuelRegistry.INSTANCE.add(BwtBlocks.platformBlock, 375);
-		FuelRegistry.INSTANCE.add(BwtBlocks.pulleyBlock, 600);
-		FuelRegistry.INSTANCE.add(BwtBlocks.sawBlock, 300);
-		FuelRegistry.INSTANCE.add(BwtBlocks.slatsBlock, 300);
-//      FuelRegistry.INSTANCE.add(BwtBlocks.screwPumpBlock)
-//      FuelRegistry.INSTANCE.add(BwtBlocks.tableBlock)
-		FuelRegistry.INSTANCE.add(BwtItems.gearItem, 18);
-		FuelRegistry.INSTANCE.add(BwtItems.sawDustItem, 150);
-		FuelRegistry.INSTANCE.add(BwtItems.soulDustItem, 150);
-
-		// Block Dispenser Behaviors
-		BwtBlocks.blockDispenserBlock.registerItemDispenseBehaviors();
-		BwtBlocks.blockDispenserBlock.registerBehaviors();
-		// Hopper filters
-		MechHopperBlock.addDefaultFilters();
-		// Turntable attached block handlers
-		CanRotateHelper.registerDefaults();
-		RotationProcessHelper.registerDefaults();
-		HorizontalBlockAttachmentHelper.registerDefaults();
-		VerticalBlockAttachmentHelper.registerDefaults();
 	}
 }
