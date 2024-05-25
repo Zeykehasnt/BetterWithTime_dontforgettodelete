@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "half=bottom": {
+      "model": "bwt:block/vine_trap"
+    },
+    "half=top": {
+      "model": "bwt:block/vine_trap",
+      "x": 180
+    }
+  }
+}

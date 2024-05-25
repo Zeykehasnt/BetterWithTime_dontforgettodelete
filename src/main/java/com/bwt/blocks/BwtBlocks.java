@@ -232,6 +232,10 @@ public class BwtBlocks implements ModInitializer {
     public static final Block wickerBlock = new Block(AbstractBlock.Settings.create().hardness(2f).burnable().mapColor(MapColor.SPRUCE_BROWN).sounds(BlockSoundGroup.GRASS));
     public static final Block wickerSlabBlock = new SlabBlock(AbstractBlock.Settings.copy(wickerBlock));
     public static final HashMap<DyeColor, SlabBlock> woolSlabBlocks = new HashMap<>();
+    public static final Block vineTrapBlock = new VineTrapBlock(AbstractBlock.Settings.copy(Blocks.OAK_LEAVES)
+            .allowsSpawning(Blocks::never)
+            .noCollision()
+    );
 
 
     @Override
@@ -382,6 +386,9 @@ public class BwtBlocks implements ModInitializer {
         // Mining charge
         Registry.register(Registries.BLOCK, new Identifier("bwt", "mining_charge"), miningChargeBlock);
         Registry.register(Registries.ITEM, new Identifier("bwt", "mining_charge"), new BlockItem(miningChargeBlock, new Item.Settings()));
+        // Vine trap
+        Registry.register(Registries.BLOCK, new Identifier("bwt", "vine_trap"), vineTrapBlock);
+        Registry.register(Registries.ITEM, new Identifier("bwt", "vine_trap"), new BlockItem(vineTrapBlock, new Item.Settings()));
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {
             content.addAll(DyeUtils.streamColorItemsSorted(vaseBlocks).map(vaseBlock -> vaseBlock.asItem().getDefaultStack()).toList());

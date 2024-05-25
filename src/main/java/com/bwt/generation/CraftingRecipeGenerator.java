@@ -71,6 +71,11 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('r', Items.REDSTONE)
                 .criterion(hasItem(BwtBlocks.obsidianPressuePlateBlock), conditionsFromItem(BwtBlocks.obsidianPressuePlateBlock))
                 .offerTo(exporter);
+        ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, BwtBlocks.vineTrapBlock)
+                .pattern("vvv")
+                .input('v', Items.VINE)
+                .criterion(hasItem(Items.VINE), conditionsFromItem(Items.VINE))
+                .offerTo(exporter);
     }
 
     private void generateCompactingRecipes(RecipeExporter exporter) {
