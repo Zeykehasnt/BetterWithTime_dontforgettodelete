@@ -12,6 +12,7 @@ import com.bwt.utils.CustomItemScatterer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -22,6 +23,7 @@ import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeManager;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
@@ -259,6 +261,9 @@ public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
         }
 
         List<ItemStack> results = recipe.get().getResults();
+        if (targetState.getBlock() instanceof SlabBlock && targetState.get(SlabBlock.TYPE) == SlabType.DOUBLE) {
+            results.forEach(result -> result.setCount(result.getCount() * 2));
+        }
         BlockIngredient blockIngredient = recipe.get().getIngredient();
 
         // The companion slab is the only partial block that doesn't just get cut regardless of collision
