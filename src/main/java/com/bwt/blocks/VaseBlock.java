@@ -20,14 +20,14 @@ public class VaseBlock extends Block {
     public static VoxelShape outlineShape = Block.createCuboidShape(3, 0, 3, 13, 16, 13);
 
     protected DyeColor dyeColor;
-    public VaseBlock(DyeColor color, AbstractBlock.Settings settings) {
+    public VaseBlock(DyeColor color, Settings settings) {
         super(settings);
         this.dyeColor = color;
     }
 
     public static void registerColors(HashMap<DyeColor, VaseBlock> vaseBlocks) {
         Arrays.stream(DyeColor.values()).forEach(dyeColor -> {
-            VaseBlock vaseBlock = new VaseBlock(dyeColor, AbstractBlock.Settings.create()
+            VaseBlock vaseBlock = new VaseBlock(dyeColor, Settings.create()
                     .nonOpaque()
                     .solidBlock(Blocks::never)
                     .sounds(BlockSoundGroup.GLASS)

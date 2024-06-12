@@ -51,7 +51,7 @@ public class MouldingBlock extends MiniBlock {
     }
 
     public static MouldingBlock ofBlock(Block fullBlock, Block slabBlock) {
-        return new MouldingBlock(AbstractBlock.Settings.copy(slabBlock), fullBlock);
+        return new MouldingBlock(Settings.copy(slabBlock), fullBlock);
     }
 
     public MapCodec<? extends MouldingBlock> getCodec() {

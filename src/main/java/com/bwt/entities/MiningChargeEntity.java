@@ -83,8 +83,8 @@ public class MiningChargeEntity extends Entity implements Ownable {
     }
 
     @Override
-    protected Entity.MoveEffect getMoveEffect() {
-        return Entity.MoveEffect.NONE;
+    protected MoveEffect getMoveEffect() {
+        return MoveEffect.NONE;
     }
 
     @Override

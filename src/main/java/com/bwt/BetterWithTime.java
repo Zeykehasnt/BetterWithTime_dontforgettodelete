@@ -17,10 +17,7 @@ import com.bwt.blocks.turntable.RotationProcessHelper;
 import com.bwt.blocks.turntable.VerticalBlockAttachmentHelper;
 import com.bwt.damage_types.BwtDamageTypes;
 import com.bwt.entities.BwtEntities;
-import com.bwt.entities.MiningChargeEntity;
-import com.bwt.features.BwtConfiguredFeatures;
 import com.bwt.gamerules.BwtGameRules;
-import com.bwt.generation.BlockLootTableGenerator;
 import com.bwt.items.BwtItems;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.sounds.BwtSoundEvents;
@@ -42,13 +39,10 @@ import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.condition.*;
 import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.context.LootContextParameter;
-import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.FurnaceSmeltLootFunction;
 import net.minecraft.loot.function.LootingEnchantLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
-import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.predicate.entity.EntityFlagsPredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
@@ -57,11 +51,8 @@ import net.minecraft.registry.Registry;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Set;
 
 public class BetterWithTime implements ModInitializer {
 	// This logger is used to write text to the console and the log file.

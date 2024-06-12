@@ -45,7 +45,7 @@ public class CornerBlock extends MiniBlock {
     }
 
     public static CornerBlock ofBlock(Block fullBlock, Block slabBlock) {
-        return new CornerBlock(AbstractBlock.Settings.copy(slabBlock), fullBlock);
+        return new CornerBlock(Settings.copy(slabBlock), fullBlock);
     }
 
     public MapCodec<? extends CornerBlock> getCodec() {

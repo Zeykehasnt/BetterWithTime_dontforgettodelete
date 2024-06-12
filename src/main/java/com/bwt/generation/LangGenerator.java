@@ -5,11 +5,14 @@ import com.bwt.blocks.MaterialInheritedBlock;
 import com.bwt.gamerules.BwtGameRules;
 import com.bwt.items.BwtItems;
 import com.bwt.sounds.BwtSoundEvents;
+import com.bwt.tags.BwtItemTags;
 import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.SoundEvent;
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,6 +29,7 @@ public class LangGenerator extends FabricLanguageProvider {
     @Override
     public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
         addSubtitles(translationBuilder);
+        addTagNames(translationBuilder);
 
         translationBuilder.add(BwtGameRules.VANILLA_HOPPERS_DISABLED.getTranslationKey(), "Disable Vanilla Hopper Transfer");
         BwtBlocks.sidingBlocks.forEach(block -> addMaterialBlockName(translationBuilder, block, "siding"));
@@ -87,6 +91,27 @@ public class LangGenerator extends FabricLanguageProvider {
         }
     }
 
+    protected void addTagNames(TranslationBuilder translationBuilder) {
+        addTagName(BwtItemTags.SIDING_BLOCKS, "Siding Blocks", translationBuilder);
+        addTagName(BwtItemTags.WOODEN_SIDING_BLOCKS, "Wooden Siding Blocks", translationBuilder);
+        addTagName(BwtItemTags.MOULDING_BLOCKS, "Moulding Blocks", translationBuilder);
+        addTagName(BwtItemTags.WOODEN_MOULDING_BLOCKS, "Wooden Moulding Blocks", translationBuilder);
+        addTagName(BwtItemTags.CORNER_BLOCKS, "Corner Blocks", translationBuilder);
+        addTagName(BwtItemTags.VASES, "Vases", translationBuilder);
+        addTagName(BwtItemTags.WOOL_SLABS, "Wool Slabs", translationBuilder);
+        addTagName(BwtItemTags.WOODEN_CORNER_BLOCKS, "Wooden Corner Blocks", translationBuilder);
+        addTagName(BwtItemTags.PASSES_WICKER_FILTER, "Passes Wicker Filter", translationBuilder);
+        addTagName(BwtItemTags.PASSES_GRATE_FILTER, "Passes Grate Filter", translationBuilder);
+        addTagName(BwtItemTags.PASSES_SLATS_FILTER, "Passes Slats Filter", translationBuilder);
+        addTagName(BwtItemTags.PASSES_TRAPDOOR_FILTER, "Passes Trapdoor Filter", translationBuilder);
+        addTagName(BwtItemTags.PASSES_IRON_BARS_FILTER, "Passes Iron Bars Filter", translationBuilder);
+        addTagName(BwtItemTags.PASSES_LADDER_FILTER, "Passes Ladder Filter", translationBuilder);
+        addTagName(BwtItemTags.STOKED_EXPLOSIVES, "Stoked Explosives", translationBuilder);
+        addTagName(BwtItemTags.SAW_DUSTS, "Saw Dusts", translationBuilder);
+        addTagName(BwtItemTags.MINING_CHARGE_IMMUNE, "Mining Charge Immune", translationBuilder);
+        addTagName(BwtItemTags.BLOOD_WOOD_LOGS, "Blood Wood Logs", translationBuilder);
+    }
+
     protected void addSubtitles(TranslationBuilder translationBuilder) {
         addSubtitle(BwtSoundEvents.MECH_BANG, "Mechanical device operates", translationBuilder);
         addSubtitle(BwtSoundEvents.MECH_EXPLODE, "Mechanical device explodes", translationBuilder);
@@ -113,6 +138,10 @@ public class LangGenerator extends FabricLanguageProvider {
 
     protected void addSubtitle(SoundEvent soundEvent, String value, TranslationBuilder translationBuilder) {
         translationBuilder.add(soundEvent.getId().withPrefixedPath("subtitles."), value);
+    }
+
+    protected void addTagName(TagKey<Item> tagKey, String value, TranslationBuilder translationBuilder) {
+        translationBuilder.add(tagKey, value);
     }
 
     protected void addMaterialBlockName(TranslationBuilder translationBuilder, MaterialInheritedBlock materialInheritedBlock, String suffix) {

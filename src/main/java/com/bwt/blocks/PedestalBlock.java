@@ -35,7 +35,7 @@ public class PedestalBlock extends DecorativeBlock {
     }
 
     public static PedestalBlock ofBlock(Block fullBlock, Block slabBlock) {
-        return new PedestalBlock(AbstractBlock.Settings.copy(slabBlock), fullBlock);
+        return new PedestalBlock(Settings.copy(slabBlock), fullBlock);
     }
 
     @Override

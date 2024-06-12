@@ -42,7 +42,7 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
     protected int cookProgressTime;
 
 
-    public final AbstractCookingPotBlockEntity.Inventory inventory = new AbstractCookingPotBlockEntity.Inventory(INVENTORY_SIZE);
+    public final Inventory inventory = new Inventory(INVENTORY_SIZE);
     public final InventoryStorage inventoryWrapper = InventoryStorage.of(inventory, null);
 
 

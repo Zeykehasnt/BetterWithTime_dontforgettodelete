@@ -32,7 +32,7 @@ public class GoToAndPickUpBreedingItemGoal extends Goal {
         this.speed = speed;
         this.wantsFoodCondition = wantsFoodCondition;
         this.foodConsumer = foodConsumer;
-        this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+        this.setControls(EnumSet.of(Control.MOVE, Control.LOOK));
     }
 
     public GoToAndPickUpBreedingItemGoal(AnimalEntity animal, double searchRadius, double pickupRadius, double speed) {

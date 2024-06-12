@@ -9,7 +9,7 @@ import net.minecraft.util.DyeColor;
 import java.util.Map;
 
 public class DungItem extends DyeItem {
-    public DungItem(Item.Settings settings) {
+    public DungItem(Settings settings) {
         super(DyeColor.BROWN, settings);
         Map<DyeColor, DyeItem> dyes = DyeItemAccessorMixin.getDYES();
         if (dyes != null) {

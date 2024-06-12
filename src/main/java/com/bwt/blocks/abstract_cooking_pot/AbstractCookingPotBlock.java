@@ -26,7 +26,7 @@ public abstract class AbstractCookingPotBlock extends BlockWithEntity {
             VoxelShapes.cuboid(0, 0.125, 0, 1, 0.875, 1)
     ).simplify();
 
-    public AbstractCookingPotBlock(AbstractBlock.Settings settings) {
+    public AbstractCookingPotBlock(Settings settings) {
         super(settings);
     }
 

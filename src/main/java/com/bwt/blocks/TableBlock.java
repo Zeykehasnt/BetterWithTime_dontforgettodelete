@@ -29,7 +29,7 @@ public class TableBlock extends DecorativeBlock {
     }
 
     public static TableBlock ofBlock(Block fullBlock, Block slabBlock) {
-        return new TableBlock(AbstractBlock.Settings.copy(slabBlock), fullBlock);
+        return new TableBlock(Settings.copy(slabBlock), fullBlock);
     }
 
     @Override

@@ -38,7 +38,7 @@ public class MillStoneBlockEntity extends BlockEntity implements NamedScreenHand
     public static final int timeToGrind = 200;
     protected static final int INVENTORY_SIZE = 3;
 
-    public final MillStoneBlockEntity.Inventory inventory = new MillStoneBlockEntity.Inventory(INVENTORY_SIZE);
+    public final Inventory inventory = new Inventory(INVENTORY_SIZE);
     public final InventoryStorage inventoryWrapper = InventoryStorage.of(inventory, null);
 
     protected final PropertyDelegate propertyDelegate = new PropertyDelegate() {

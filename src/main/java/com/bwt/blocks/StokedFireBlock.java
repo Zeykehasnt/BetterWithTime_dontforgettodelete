@@ -24,7 +24,7 @@ public class StokedFireBlock extends AbstractFireBlock {
         return CODEC;
     }
 
-    public StokedFireBlock(AbstractBlock.Settings settings) {
+    public StokedFireBlock(Settings settings) {
         super(settings, 4.0f);
         setDefaultState(getDefaultState().with(AGE, 0));
     }

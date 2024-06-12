@@ -69,7 +69,7 @@ public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHan
     protected boolean outputBlocked;
 
 
-    public final MechHopperBlockEntity.FilterInventory filterInventory = new MechHopperBlockEntity.FilterInventory();
+    public final FilterInventory filterInventory = new FilterInventory();
     public final HopperInventory hopperInventory = new HopperInventory(INVENTORY_SIZE - 1);
     public final CombinedStorage<ItemVariant, InventoryStorage> inventoryWrapper = new CombinedStorage<>(
             List.of(

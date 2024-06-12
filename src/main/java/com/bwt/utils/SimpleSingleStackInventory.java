@@ -57,7 +57,7 @@ public class SimpleSingleStackInventory implements SingleStackInventory.SingleSt
     @Override
     public boolean canPlayerUse(PlayerEntity player) {
         if (asBlockEntity() != null) {
-            return SingleStackInventory.SingleStackBlockEntityInventory.super.canPlayerUse(player);
+            return SingleStackBlockEntityInventory.super.canPlayerUse(player);
         }
         return true;
     }

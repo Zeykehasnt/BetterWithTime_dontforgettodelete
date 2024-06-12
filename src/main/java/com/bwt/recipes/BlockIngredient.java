@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 public record BlockIngredient(Optional<TagKey<Block>> optionalBlockTagKey, Optional<Block> optionalBlock) implements CustomIngredient {
-    public static final BlockIngredient.Serializer SERIALIZER = new BlockIngredient.Serializer();
+    public static final Serializer SERIALIZER = new Serializer();
 
     public static BlockIngredient fromBlock(Block block) {
         return new BlockIngredient(Optional.empty(), Optional.of(block));

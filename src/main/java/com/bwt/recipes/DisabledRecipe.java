@@ -79,7 +79,7 @@ public record DisabledRecipe(String group) implements Recipe<Inventory> {
                         .apply(instance, DisabledRecipe::new)
         );
         public static final PacketCodec<RegistryByteBuf, DisabledRecipe> PACKET_CODEC = PacketCodec.ofStatic(
-                DisabledRecipe.Serializer::write, DisabledRecipe.Serializer::read
+                Serializer::write, Serializer::read
         );
 
         public Serializer() {

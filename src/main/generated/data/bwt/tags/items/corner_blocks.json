@@ -1,0 +1,24 @@
+{
+  "values": [
+    "#bwt:wooden_corner_blocks",
+    "bwt:stone_corner",
+    "bwt:stone_bricks_corner",
+    "bwt:mossy_stone_bricks_corner",
+    "bwt:sandstone_corner",
+    "bwt:red_sandstone_corner",
+    "bwt:bricks_corner",
+    "bwt:nether_bricks_corner",
+    "bwt:diorite_corner",
+    "bwt:polished_diorite_corner",
+    "bwt:andesite_corner",
+    "bwt:polished_andesite_corner",
+    "bwt:granite_corner",
+    "bwt:polished_granite_corner",
+    "bwt:cobbled_deepslate_corner",
+    "bwt:tuff_corner",
+    "bwt:mud_bricks_corner",
+    "bwt:prismarine_corner",
+    "bwt:end_stone_bricks_corner",
+    "bwt:purpur_block_corner"
+  ]
+}

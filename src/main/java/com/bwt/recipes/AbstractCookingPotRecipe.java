@@ -116,11 +116,11 @@ public abstract class AbstractCookingPotRecipe implements Recipe<AbstractCooking
     }
 
     public static class Serializer implements RecipeSerializer<AbstractCookingPotRecipe> {
-        private final AbstractCookingPotRecipe.RecipeFactory<AbstractCookingPotRecipe> recipeFactory;
+        private final RecipeFactory<AbstractCookingPotRecipe> recipeFactory;
         public final MapCodec<AbstractCookingPotRecipe> CODEC;
         public final PacketCodec<RegistryByteBuf, AbstractCookingPotRecipe> PACKET_CODEC;
 
-        public Serializer(AbstractCookingPotRecipe.RecipeFactory<AbstractCookingPotRecipe> recipeFactory) {
+        public Serializer(RecipeFactory<AbstractCookingPotRecipe> recipeFactory) {
             this.recipeFactory = recipeFactory;
             this.CODEC = RecordCodecBuilder.mapCodec(
                     instance->instance.group(
@@ -188,7 +188,7 @@ public abstract class AbstractCookingPotRecipe implements Recipe<AbstractCooking
         protected final Map<String, AdvancementCriterion<?>> criteria = new LinkedHashMap<>();
         @Nullable
         protected String group;
-        abstract AbstractCookingPotRecipe.RecipeFactory<T> getRecipeFactory();
+        abstract RecipeFactory<T> getRecipeFactory();
 
         public JsonBuilder<T> category(RecipeCategory category) {
             this.category = category;

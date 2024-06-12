@@ -198,7 +198,7 @@ public class SawRecipe implements Recipe<Inventory> {
             create(block).result(block.asItem()).offerTo(exporter);
         }
 
-        SawRecipe.RecipeFactory<SawRecipe> getRecipeFactory() {
+        RecipeFactory<SawRecipe> getRecipeFactory() {
             return SawRecipe::new;
         }
 

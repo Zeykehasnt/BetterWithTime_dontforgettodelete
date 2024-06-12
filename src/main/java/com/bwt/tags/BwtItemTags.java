@@ -10,7 +10,7 @@ public class BwtItemTags {
     public static final TagKey<Item> WOODEN_SIDING_BLOCKS = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "wooden_siding_blocks"));
     public static final TagKey<Item> MOULDING_BLOCKS = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "moulding_blocks"));
     public static final TagKey<Item> WOODEN_MOULDING_BLOCKS = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "wooden_moulding_blocks"));
-    public static final TagKey<Item> CORNER_BLOCKS = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "siding_blocks"));
+    public static final TagKey<Item> CORNER_BLOCKS = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "corner_blocks"));
     public static final TagKey<Item> VASES = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "vases"));
     public static final TagKey<Item> WOOL_SLABS = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "wool_slabs"));
     public static final TagKey<Item> WOODEN_CORNER_BLOCKS = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "wooden_corner_blocks"));

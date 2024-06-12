@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record IngredientWithCount(Ingredient ingredient, int count) implements CustomIngredient {
-    public static final IngredientWithCount.Serializer SERIALIZER = new IngredientWithCount.Serializer();
+    public static final Serializer SERIALIZER = new Serializer();
     public static final IngredientWithCount EMPTY = new IngredientWithCount(Ingredient.EMPTY, 0);
 
     public static IngredientWithCount fromStack(ItemStack stack) {

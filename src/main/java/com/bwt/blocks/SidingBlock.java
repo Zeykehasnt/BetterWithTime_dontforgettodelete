@@ -34,7 +34,7 @@ public class SidingBlock extends MiniBlock {
     }
 
     public static SidingBlock ofBlock(Block fullBlock, Block slabBlock) {
-        return new SidingBlock(AbstractBlock.Settings.copy(slabBlock), fullBlock);
+        return new SidingBlock(Settings.copy(slabBlock), fullBlock);
     }
 
     public MapCodec<? extends SidingBlock> getCodec() {
