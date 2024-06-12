@@ -8,7 +8,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
 public class BwtSoundEvents implements ModInitializer {
-    public static SoundEvent MECH_BANG = register("block.mech.band");
+    public static SoundEvent MECH_BANG = register("block.mech.bang");
     public static SoundEvent MECH_EXPLODE = register("block.mech.explode");
     public static SoundEvent MECH_CREAK = register("block.mech.creak");
     public static SoundEvent ANCHOR_RETRACT = register("block.anchor.retract");
