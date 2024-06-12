@@ -10,16 +10,14 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.TntEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.loot.condition.DamageSourcePropertiesLootCondition;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.condition.LootConditionType;
-import net.minecraft.loot.condition.LootConditionTypes;
+import net.minecraft.loot.condition.*;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.predicate.TagPredicate;
 import net.minecraft.predicate.entity.DamageSourcePredicate;
+import net.minecraft.predicate.entity.EntityFlagsPredicate;
 import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.entity.EntitySubPredicateTypes;
 import net.minecraft.registry.Registries;
@@ -39,10 +37,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class MiningChargeExplosion extends Explosion {
-    public static final LootCondition LOOT_CONDITION = DamageSourcePropertiesLootCondition.builder(
-            DamageSourcePredicate.Builder.create().sourceEntity(
-                    EntityPredicate.Builder.create().type(BwtEntities.miningChargeEntity)
-            )
+    public static final LootCondition LOOT_CONDITION = EntityPropertiesLootCondition.builder(
+            LootContext.EntityTarget.THIS,
+            EntityPredicate.Builder.create().type(BwtEntities.miningChargeEntity)
     ).build();
 
     protected final World world;
