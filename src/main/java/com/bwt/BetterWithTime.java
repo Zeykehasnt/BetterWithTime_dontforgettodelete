@@ -18,6 +18,7 @@ import com.bwt.blocks.turntable.VerticalBlockAttachmentHelper;
 import com.bwt.damage_types.BwtDamageTypes;
 import com.bwt.entities.BwtEntities;
 import com.bwt.entities.MiningChargeEntity;
+import com.bwt.features.BwtConfiguredFeatures;
 import com.bwt.gamerules.BwtGameRules;
 import com.bwt.generation.BlockLootTableGenerator;
 import com.bwt.items.BwtItems;
@@ -28,6 +29,7 @@ import com.bwt.utils.TrackedDataHandlers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.fabricmc.fabric.api.registry.TillableBlockRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -55,6 +57,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -166,6 +169,9 @@ public class BetterWithTime implements ModInitializer {
 						.pool(LootPool.builder().conditionally(MiningChargeExplosion.LOOT_CONDITION).with(ItemEntry.builder(Items.GRAVEL)));
 			}
 		});
+
+		StrippableBlockRegistry.register(BwtBlocks.bloodWoodBlocks.logBlock, BwtBlocks.bloodWoodBlocks.strippedLogBlock);
+		StrippableBlockRegistry.register(BwtBlocks.bloodWoodBlocks.woodBlock, BwtBlocks.bloodWoodBlocks.strippedWoodBlock);
 
 		// Drop hemp seeds from tilled grass 1/25th of the time
 		TillableBlockRegistry.register(

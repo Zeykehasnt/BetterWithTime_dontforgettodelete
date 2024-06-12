@@ -3,11 +3,13 @@ package com.bwt.generation;
 import com.bwt.blocks.*;
 import com.bwt.items.BwtItems;
 import com.bwt.recipes.SawRecipe;
+import com.bwt.tags.BwtItemTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
@@ -54,15 +56,16 @@ public class SawRecipeGenerator extends FabricRecipeProvider {
             Identifier hyphaeId = new Identifier(planksId.getNamespace(), planksId.getPath().replace("_planks", "_hyphae"));
             Identifier stemId = new Identifier(planksId.getNamespace(), planksId.getPath().replace("_planks", "_stem"));
 
+            Item dustItem = planksBlock == BwtBlocks.bloodWoodBlocks.planksBlock ? BwtItems.soulDustItem : BwtItems.sawDustItem;
             // Logs/Stems/Hyphae -> planks
             for (Identifier logIshId : new Identifier[]{logId, woodId, hyphaeId, stemId}) {
                 Block logBlock = Registries.BLOCK.get(logIshId);
                 if (!logBlock.equals(Blocks.AIR)) {
-                    SawRecipe.JsonBuilder.create(logBlock).result(planksBlock, 4).result(BwtItems.sawDustItem, 2).offerTo(exporter);
+                    SawRecipe.JsonBuilder.create(logBlock).result(planksBlock, 4).result(dustItem, 2).offerTo(exporter);
                 }
                 Block strippedBlock = Registries.BLOCK.get(new Identifier(logIshId.getNamespace(), "stripped_" + logIshId.getPath()));
                 if (!strippedBlock.equals(Blocks.AIR)) {
-                    SawRecipe.JsonBuilder.create(strippedBlock).result(planksBlock, 4).result(BwtItems.sawDustItem, 2).offerTo(exporter);
+                    SawRecipe.JsonBuilder.create(strippedBlock).result(planksBlock, 4).result(dustItem, 2).offerTo(exporter);
                 }
             }
             // Planks -> siding -> moulding -> corner -> gear

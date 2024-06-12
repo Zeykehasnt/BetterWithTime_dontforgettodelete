@@ -1,0 +1,17 @@
+{
+  "type": "bwt:saw",
+  "category": "misc",
+  "drops": [
+    {
+      "count": 1,
+      "id": "bwt:blood_wood_planks_siding"
+    },
+    {
+      "count": 1,
+      "id": "bwt:blood_wood_planks_moulding"
+    }
+  ],
+  "ingredient": {
+    "block": "bwt:blood_wood_stairs"
+  }
+}

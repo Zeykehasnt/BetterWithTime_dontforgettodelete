@@ -13,6 +13,8 @@ import net.minecraft.block.enums.BlockFace;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.data.client.*;
+import net.minecraft.data.family.BlockFamilies;
+import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.Items;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
@@ -30,6 +32,7 @@ public class ModelGenerator extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         generateCompanionBlocks(blockStateModelGenerator);
+        generateBloodWoodBlocks(blockStateModelGenerator);
         blockStateModelGenerator.blockStateCollector.accept(
                 VariantsBlockStateSupplier.create(
                         BwtBlocks.sawBlock,
@@ -235,6 +238,15 @@ public class ModelGenerator extends FabricModelProvider {
         itemModelGenerator.register(BwtItems.windmillItem, Models.GENERATED);
         itemModelGenerator.register(BwtItems.wolfChopItem, Items.PORKCHOP, Models.GENERATED);
         itemModelGenerator.register(BwtItems.woodBladeItem, Models.GENERATED);
+    }
+
+    private void generateBloodWoodBlocks(BlockStateModelGenerator blockStateModelGenerator) {
+        blockStateModelGenerator.registerLog(BwtBlocks.bloodWoodBlocks.logBlock).log(BwtBlocks.bloodWoodBlocks.logBlock).wood(BwtBlocks.bloodWoodBlocks.woodBlock);
+        blockStateModelGenerator.registerLog(BwtBlocks.bloodWoodBlocks.strippedLogBlock).log(BwtBlocks.bloodWoodBlocks.strippedLogBlock).wood(BwtBlocks.bloodWoodBlocks.strippedWoodBlock);
+        blockStateModelGenerator.registerSingleton(BwtBlocks.bloodWoodBlocks.leavesBlock, TexturedModel.LEAVES);
+        blockStateModelGenerator.registerFlowerPotPlant(BwtBlocks.bloodWoodBlocks.saplingBlock, BwtBlocks.bloodWoodBlocks.pottedSaplingBlock, BlockStateModelGenerator.TintType.NOT_TINTED);
+        blockStateModelGenerator.registerCubeAllModelTexturePool(BwtBlocks.bloodWoodBlocks.blockFamily.getBaseBlock()).family(BwtBlocks.bloodWoodBlocks.blockFamily);
+        blockStateModelGenerator.registerHangingSign(BwtBlocks.bloodWoodBlocks.strippedLogBlock, BwtBlocks.bloodWoodBlocks.hangingSignBlock, BwtBlocks.bloodWoodBlocks.wallHangingSignBlock);
     }
 
     private void generateCompanionBlocks(BlockStateModelGenerator blockStateModelGenerator) {

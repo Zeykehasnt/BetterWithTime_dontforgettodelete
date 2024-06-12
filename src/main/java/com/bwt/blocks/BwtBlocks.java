@@ -51,8 +51,8 @@ public class BwtBlocks implements ModInitializer {
 	public static final BlockDispenserBlock blockDispenserBlock = new BlockDispenserBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER)
             .hardness(3.5f)
     );
-//	public static final Block bloodWoodBlock = new BloodWoodBlock(AbstractBlock.Settings.create());
-//	Blood Wood Sapling
+    public static final BloodWoodBlocks bloodWoodBlocks = new BloodWoodBlocks().initialize();
+
 	public static final Block buddyBlock = new BuddyBlock(AbstractBlock.Settings.create()
             .hardness(3.5f)
             .sounds(BlockSoundGroup.STONE)
@@ -333,6 +333,8 @@ public class BwtBlocks implements ModInitializer {
         Registry.register(Registries.ITEM, new Identifier("bwt", "unfired_mould"), new BlockItem(unfiredMouldBlock, new Item.Settings()));
         // Kiln
         Registry.register(Registries.BLOCK, new Identifier("bwt", "kiln"), kilnBlock);
+        // Blood Wood
+        bloodWoodBlocks.register();
         // Mini blocks
         MaterialInheritedBlock.registerMaterialBlocks(
                 sidingBlocks, mouldingBlocks, cornerBlocks,
@@ -390,6 +392,12 @@ public class BwtBlocks implements ModInitializer {
         Registry.register(Registries.BLOCK, new Identifier("bwt", "vine_trap"), vineTrapBlock);
         Registry.register(Registries.ITEM, new Identifier("bwt", "vine_trap"), new BlockItem(vineTrapBlock, new Item.Settings()));
 
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(content -> {
+            content.addAfter(Items.CHERRY_LOG, BwtBlocks.bloodWoodBlocks.logBlock);
+            content.addAfter(Items.CHERRY_LEAVES, BwtBlocks.bloodWoodBlocks.leavesBlock);
+            content.addAfter(Items.CHERRY_SAPLING, BwtBlocks.bloodWoodBlocks.saplingBlock);
+        });
+
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {
             content.addAll(DyeUtils.streamColorItemsSorted(vaseBlocks).map(vaseBlock -> vaseBlock.asItem().getDefaultStack()).toList());
             content.addAll(DyeUtils.streamColorItemsSorted(woolSlabBlocks).map(woolSlabBlock -> woolSlabBlock.asItem().getDefaultStack()).toList());
@@ -435,9 +443,28 @@ public class BwtBlocks implements ModInitializer {
             content.add(unfiredUrnBlock);
             content.add(unfiredMouldBlock);
             content.addAfter(Items.CRAFTING_TABLE, soulForgeBlock);
+            content.addAfter(Items.CHERRY_HANGING_SIGN,
+                    BwtBlocks.bloodWoodBlocks.signBlock,
+                    BwtBlocks.bloodWoodBlocks.hangingSignBlock
+            );
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(content -> {
+            content.addAfter(Items.CHERRY_BUTTON,
+                    BwtBlocks.bloodWoodBlocks.logBlock,
+                    BwtBlocks.bloodWoodBlocks.woodBlock,
+                    BwtBlocks.bloodWoodBlocks.strippedLogBlock,
+                    BwtBlocks.bloodWoodBlocks.strippedWoodBlock,
+                    BwtBlocks.bloodWoodBlocks.planksBlock,
+                    BwtBlocks.bloodWoodBlocks.stairsBlock,
+                    BwtBlocks.bloodWoodBlocks.slabBlock,
+                    BwtBlocks.bloodWoodBlocks.fenceBlock,
+                    BwtBlocks.bloodWoodBlocks.fenceGateBlock,
+                    BwtBlocks.bloodWoodBlocks.doorBlock,
+                    BwtBlocks.bloodWoodBlocks.trapdoorBlock,
+                    BwtBlocks.bloodWoodBlocks.pressurePlateBlock,
+                    BwtBlocks.bloodWoodBlocks.buttonBlock
+            );
             for (int i = 0; i < sidingBlocks.size(); i++) {
                 SidingBlock sidingBlock = sidingBlocks.get(i);
                 MouldingBlock mouldingBlock = mouldingBlocks.get(i);

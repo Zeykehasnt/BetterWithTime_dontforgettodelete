@@ -20,6 +20,7 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
+        copy(BwtBlockTags.BLOOD_WOOD_LOGS, BwtItemTags.BLOOD_WOOD_LOGS);
         copy(BwtBlockTags.WOODEN_SIDING_BLOCKS, BwtItemTags.WOODEN_SIDING_BLOCKS);
         copy(BwtBlockTags.WOODEN_MOULDING_BLOCKS, BwtItemTags.WOODEN_MOULDING_BLOCKS);
         copy(BwtBlockTags.WOODEN_CORNER_BLOCKS, BwtItemTags.WOODEN_CORNER_BLOCKS);

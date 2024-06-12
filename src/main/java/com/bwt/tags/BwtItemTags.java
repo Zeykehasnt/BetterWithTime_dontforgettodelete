@@ -23,4 +23,5 @@ public class BwtItemTags {
     public static final TagKey<Item> STOKED_EXPLOSIVES = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "stoked_explosives"));
     public static final TagKey<Item> SAW_DUSTS = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "saw_dusts"));
     public static final TagKey<Item> MINING_CHARGE_IMMUNE = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "mining_charge_immune"));
+    public static final TagKey<Item> BLOOD_WOOD_LOGS = TagKey.of(RegistryKeys.ITEM, new Identifier("bwt", "blood_wood_logs"));
 }

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "bwt:block/blood_wood_log",
+    "side": "bwt:block/blood_wood_log"
+  }
+}

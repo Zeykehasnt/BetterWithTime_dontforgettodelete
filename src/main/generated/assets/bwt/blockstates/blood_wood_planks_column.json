@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "": {
+      "model": "bwt:block/blood_wood_planks_column",
+      "uvlock": true
+    }
+  }
+}

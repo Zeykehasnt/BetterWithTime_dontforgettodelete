@@ -6,6 +6,7 @@ import com.bwt.items.BwtItems;
 import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.loot.LootPool;
@@ -33,7 +34,29 @@ public class BlockLootTableGenerator extends FabricBlockLootTableProvider {
 //        addDrop(BwtBlocks.barrelBlock);
         addDrop(BwtBlocks.bellowsBlock);
         addDrop(BwtBlocks.blockDispenserBlock);
-//        addDrop(BwtBlocks.bloodWoodBlock);
+
+        addDrop(BwtBlocks.bloodWoodBlocks.logBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.strippedLogBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.woodBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.strippedWoodBlock);
+
+        addDrop(BwtBlocks.bloodWoodBlocks.leavesBlock, block -> leavesDrops(block, BwtBlocks.bloodWoodBlocks.saplingBlock, SAPLING_DROP_CHANCE));
+        addDrop(BwtBlocks.bloodWoodBlocks.saplingBlock);
+        addPottedPlantDrops(BwtBlocks.bloodWoodBlocks.pottedSaplingBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.planksBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.buttonBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.fenceBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.fenceGateBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.pressurePlateBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.signBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.wallSignBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.hangingSignBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.wallHangingSignBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.slabBlock, this::slabDrops);
+        addDrop(BwtBlocks.bloodWoodBlocks.stairsBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.doorBlock);
+        addDrop(BwtBlocks.bloodWoodBlocks.trapdoorBlock);
+
         addDrop(BwtBlocks.buddyBlock);
         addDrop(BwtBlocks.cauldronBlock);
 //        addDrop(BwtBlocks.canvasBlock);
@@ -84,7 +107,7 @@ public class BlockLootTableGenerator extends FabricBlockLootTableProvider {
         addDrop(BwtBlocks.urnBlock);
         addDrop(BwtBlocks.wickerPaneBlock);
         addDrop(BwtBlocks.wickerBlock);
-        addDrop(BwtBlocks.wickerSlabBlock);
+        addDrop(BwtBlocks.wickerSlabBlock, this::slabDrops);
         addDrop(BwtBlocks.vineTrapBlock);
         DyeUtils.streamColorItemsSorted(BwtBlocks.woolSlabBlocks).forEach(block -> addDrop(block, this::slabDrops));
         DyeUtils.streamColorItemsSorted(BwtBlocks.vaseBlocks).forEach(this::addDropWithSilkTouch);

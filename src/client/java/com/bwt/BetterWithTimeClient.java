@@ -18,10 +18,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.client.render.entity.EntityRenderers;
-import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.entity.EntityType;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
@@ -55,7 +52,14 @@ public class BetterWithTimeClient implements ClientModInitializer {
 				BwtBlocks.wickerPaneBlock,
 				BwtBlocks.platformBlock,
 				BwtBlocks.stokedFireBlock,
-				BwtBlocks.vineTrapBlock
+				BwtBlocks.vineTrapBlock,
+				BwtBlocks.bloodWoodBlocks.saplingBlock,
+				BwtBlocks.bloodWoodBlocks.pottedSaplingBlock,
+				BwtBlocks.bloodWoodBlocks.doorBlock,
+				BwtBlocks.bloodWoodBlocks.trapdoorBlock
+		);
+		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutoutMipped(),
+				BwtBlocks.bloodWoodBlocks.leavesBlock
 		);
 		HandledScreens.register(BetterWithTime.blockDispenserScreenHandler, BlockDispenserScreen::new);
 		HandledScreens.register(BetterWithTime.cauldronScreenHandler, CauldronScreen::new);

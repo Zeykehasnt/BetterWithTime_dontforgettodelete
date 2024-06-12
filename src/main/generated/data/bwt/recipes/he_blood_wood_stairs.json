@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "wooden_stairs",
+  "key": {
+    "m": {
+      "item": "bwt:blood_wood_planks_moulding"
+    }
+  },
+  "pattern": [
+    "m ",
+    "mm"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:blood_wood_stairs"
+  }
+}

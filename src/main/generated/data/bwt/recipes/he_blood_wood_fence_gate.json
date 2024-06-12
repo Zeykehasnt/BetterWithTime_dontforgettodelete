@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "wooden_fence_gate",
+  "key": {
+    "m": {
+      "item": "bwt:blood_wood_planks_moulding"
+    },
+    "s": {
+      "item": "bwt:blood_wood_planks_siding"
+    }
+  },
+  "pattern": [
+    "msm",
+    "msm"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:blood_wood_fence_gate"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    {
+      "item": "bwt:blood_wood_planks_siding"
+    },
+    {
+      "item": "bwt:blood_wood_planks_siding"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:blood_wood_planks"
+  }
+}

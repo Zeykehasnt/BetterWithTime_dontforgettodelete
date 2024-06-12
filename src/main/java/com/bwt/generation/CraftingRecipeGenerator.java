@@ -19,6 +19,8 @@ import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,6 +54,7 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
         generateWoolSlabRecipes(exporter);
         generateDungDyeingRecipes(exporter);
         generateCompactingRecipes(exporter);
+        generateBloodWoodRecipes(exporter);
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, BwtBlocks.stoneDetectorRailBlock, 6)
                 .pattern("i i")
@@ -76,6 +79,14 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('v', Items.VINE)
                 .criterion(hasItem(Items.VINE), conditionsFromItem(Items.VINE))
                 .offerTo(exporter);
+    }
+
+    private void generateBloodWoodRecipes(RecipeExporter exporter) {
+        generateFamily(exporter, BwtBlocks.bloodWoodBlocks.blockFamily, FeatureSet.of(FeatureFlags.VANILLA));
+        offerPlanksRecipe2(exporter, BwtBlocks.bloodWoodBlocks.planksBlock, BwtItemTags.BLOOD_WOOD_LOGS, 4);
+        offerBarkBlockRecipe(exporter, BwtBlocks.bloodWoodBlocks.woodBlock, BwtBlocks.bloodWoodBlocks.logBlock);
+        offerBarkBlockRecipe(exporter, BwtBlocks.bloodWoodBlocks.strippedWoodBlock, BwtBlocks.bloodWoodBlocks.strippedLogBlock);
+        offerHangingSignRecipe(exporter, BwtBlocks.bloodWoodBlocks.hangingSignBlock, BwtBlocks.bloodWoodBlocks.strippedLogBlock);
     }
 
     private void generateCompactingRecipes(RecipeExporter exporter) {

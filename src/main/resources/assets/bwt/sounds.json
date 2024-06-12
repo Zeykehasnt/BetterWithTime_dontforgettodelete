@@ -41,6 +41,18 @@
       "random/click"
     ]
   },
+  "block.blood_wood_log.moan": {
+    "subtitle": "bwt.subtitles.block.blood_wood_log.moan",
+    "sounds": [
+      "mob/ghast/moan1",
+      "mob/ghast/moan2",
+      "mob/ghast/moan3",
+      "mob/ghast/moan4",
+      "mob/ghast/moan5",
+      "mob/ghast/moan6",
+      "mob/ghast/moan7"
+    ]
+  },
   "block.gear_box.activate": {
     "subtitle": "bwt.subtitles.block.gear_box.activate",
     "sounds": [

@@ -61,7 +61,15 @@ public class CauldronRecipeGenerator extends FabricRecipeProvider {
         CauldronRecipe.JsonBuilder.create().ingredient(BwtItems.hellfireDustItem).ingredient(BwtItems.coalDustItem).result(BwtItems.nethercoalItem, 2).offerTo(exporter);
         CauldronRecipe.JsonBuilder.create().ingredient(BwtItems.hellfireDustItem, 8).ingredient(BwtItems.potashItem).result(BwtItems.netherSludgeItem, 8).offerTo(exporter);
         CauldronRecipe.JsonBuilder.create().ingredient(Items.SAND).ingredient(Items.GRAVEL).ingredient(BwtItems.soulUrnItem).ingredient(Items.BUCKET).result(BwtItems.cementBucketItem).offerTo(exporter);
-        // TODO blood wood sapling
+        CauldronRecipe.JsonBuilder.create()
+                .ingredient(Items.OAK_SAPLING)
+                .ingredient(Items.NETHER_WART)
+                .ingredient(Items.RED_MUSHROOM)
+                .ingredient(Items.BROWN_MUSHROOM)
+                .ingredient(Items.CRIMSON_FUNGUS)
+                .ingredient(Items.WARPED_FUNGUS)
+                .ingredient(BwtItems.soulUrnItem, 8)
+                .result(BwtBlocks.bloodWoodBlocks.saplingItem).offerTo(exporter);
         // TODO nether groth spores
         CauldronRecipe.JsonBuilder.create().ingredient(Items.GUNPOWDER, 5).ingredient(Items.SAND, 4).result(Items.TNT).offerTo(exporter);
         CauldronRecipe.JsonBuilder.create().ingredient(Items.CACTUS).result(Items.GREEN_DYE).offerTo(exporter);

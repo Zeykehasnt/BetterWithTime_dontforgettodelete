@@ -5,6 +5,7 @@ import com.bwt.tags.BwtBlockTags;
 import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
@@ -75,6 +76,37 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         addVases();
         addWoolSlabs();
         addSawTags();
+        addBloodWoodTags();
+    }
+
+    private void addBloodWoodTags() {
+        getOrCreateTagBuilder(BwtBlockTags.BLOOD_WOOD_LOGS).add(
+                BwtBlocks.bloodWoodBlocks.logBlock,
+                BwtBlocks.bloodWoodBlocks.woodBlock,
+                BwtBlocks.bloodWoodBlocks.strippedLogBlock,
+                BwtBlocks.bloodWoodBlocks.strippedWoodBlock
+        );
+        getOrCreateTagBuilder(BwtBlockTags.BLOOD_WOOD_PLANTABLE_ON).add(
+                Blocks.SOUL_SAND,
+                Blocks.SOUL_SOIL,
+                BwtBlocks.soulSandPlanterBlock
+        );
+        getOrCreateTagBuilder(BlockTags.LOGS).forceAddTag(BwtBlockTags.BLOOD_WOOD_LOGS);
+        getOrCreateTagBuilder(BlockTags.LEAVES).add(BwtBlocks.bloodWoodBlocks.leavesBlock);
+        getOrCreateTagBuilder(BlockTags.SAPLINGS).add(BwtBlocks.bloodWoodBlocks.saplingBlock);
+        getOrCreateTagBuilder(BlockTags.PLANKS).add(BwtBlocks.bloodWoodBlocks.planksBlock);
+        getOrCreateTagBuilder(BlockTags.WOODEN_BUTTONS).add(BwtBlocks.bloodWoodBlocks.buttonBlock);
+        getOrCreateTagBuilder(BlockTags.WOODEN_FENCES).add(BwtBlocks.bloodWoodBlocks.fenceBlock);
+        getOrCreateTagBuilder(BlockTags.FENCE_GATES).add(BwtBlocks.bloodWoodBlocks.fenceGateBlock);
+        getOrCreateTagBuilder(BlockTags.WOODEN_PRESSURE_PLATES).add(BwtBlocks.bloodWoodBlocks.pressurePlateBlock);
+        getOrCreateTagBuilder(BlockTags.STANDING_SIGNS).add(BwtBlocks.bloodWoodBlocks.signBlock);
+        getOrCreateTagBuilder(BlockTags.WALL_SIGNS).add(BwtBlocks.bloodWoodBlocks.wallSignBlock);
+        getOrCreateTagBuilder(BlockTags.CEILING_HANGING_SIGNS).add(BwtBlocks.bloodWoodBlocks.hangingSignBlock);
+        getOrCreateTagBuilder(BlockTags.WALL_HANGING_SIGNS).add(BwtBlocks.bloodWoodBlocks.wallHangingSignBlock);
+        getOrCreateTagBuilder(BlockTags.WOODEN_SLABS).add(BwtBlocks.bloodWoodBlocks.slabBlock);
+        getOrCreateTagBuilder(BlockTags.WOODEN_STAIRS).add(BwtBlocks.bloodWoodBlocks.stairsBlock);
+        getOrCreateTagBuilder(BlockTags.WOODEN_DOORS).add(BwtBlocks.bloodWoodBlocks.doorBlock);
+        getOrCreateTagBuilder(BlockTags.WOODEN_TRAPDOORS).add(BwtBlocks.bloodWoodBlocks.trapdoorBlock);
     }
 
     private void addTools() {
@@ -133,7 +165,23 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.axleBlock)
                 .add(BwtBlocks.axlePowerSourceBlock)
                 .add(BwtBlocks.bellowsBlock)
-//                .add(BwtBlocks.bloodWoodBlock)
+                .add(BwtBlocks.bloodWoodBlocks.logBlock)
+                .add(BwtBlocks.bloodWoodBlocks.strippedLogBlock)
+                .add(BwtBlocks.bloodWoodBlocks.woodBlock)
+                .add(BwtBlocks.bloodWoodBlocks.strippedWoodBlock)
+                .add(BwtBlocks.bloodWoodBlocks.planksBlock)
+                .add(BwtBlocks.bloodWoodBlocks.buttonBlock)
+                .add(BwtBlocks.bloodWoodBlocks.fenceBlock)
+                .add(BwtBlocks.bloodWoodBlocks.fenceGateBlock)
+                .add(BwtBlocks.bloodWoodBlocks.pressurePlateBlock)
+                .add(BwtBlocks.bloodWoodBlocks.signBlock)
+                .add(BwtBlocks.bloodWoodBlocks.wallSignBlock)
+                .add(BwtBlocks.bloodWoodBlocks.hangingSignBlock)
+                .add(BwtBlocks.bloodWoodBlocks.wallHangingSignBlock)
+                .add(BwtBlocks.bloodWoodBlocks.slabBlock)
+                .add(BwtBlocks.bloodWoodBlocks.stairsBlock)
+                .add(BwtBlocks.bloodWoodBlocks.doorBlock)
+                .add(BwtBlocks.bloodWoodBlocks.trapdoorBlock)
                 .add(BwtBlocks.gearBoxBlock)
                 .add(BwtBlocks.grateBlock)
                 .add(BwtBlocks.hopperBlock)
@@ -151,6 +199,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.wickerPaneBlock);
 
         getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
+                .add(BwtBlocks.bloodWoodBlocks.leavesBlock)
                 .add(BwtBlocks.paddingBlock);
 
         // Where do these go?

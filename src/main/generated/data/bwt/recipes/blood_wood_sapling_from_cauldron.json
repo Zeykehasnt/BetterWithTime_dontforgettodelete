@@ -1,0 +1,49 @@
+{
+  "type": "bwt:cauldron",
+  "category": "blocks",
+  "group": "",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:oak_sapling"
+      }
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:nether_wart"
+      }
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:red_mushroom"
+      }
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:brown_mushroom"
+      }
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:crimson_fungus"
+      }
+    },
+    {
+      "ingredient": {
+        "item": "minecraft:warped_fungus"
+      }
+    },
+    {
+      "count": 8,
+      "ingredient": {
+        "item": "bwt:soul_urn"
+      }
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "bwt:blood_wood_sapling"
+    }
+  ]
+}

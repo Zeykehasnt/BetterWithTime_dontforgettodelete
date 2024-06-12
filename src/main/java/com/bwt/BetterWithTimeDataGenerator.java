@@ -1,5 +1,6 @@
 package com.bwt;
 
+import com.bwt.features.BwtConfiguredFeatures;
 import com.bwt.generation.AdvancementsGenerator;
 import com.bwt.generation.BlockTagGenerator;
 import com.bwt.generation.EntityTypeTagGenerator;
@@ -24,5 +25,6 @@ public class BetterWithTimeDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(LangGenerator::new);
 		pack.addProvider(BlockLootTableGenerator::new);
 		pack.addProvider(AdvancementsGenerator::new);
+		pack.addProvider(BwtConfiguredFeatures::new);
 	}
 }

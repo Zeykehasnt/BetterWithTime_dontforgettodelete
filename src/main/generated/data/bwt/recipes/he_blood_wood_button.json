@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "wooden_button",
+  "ingredients": [
+    {
+      "item": "bwt:blood_wood_planks_corner"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:blood_wood_button"
+  }
+}

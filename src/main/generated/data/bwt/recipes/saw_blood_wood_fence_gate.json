@@ -1,0 +1,17 @@
+{
+  "type": "bwt:saw",
+  "category": "misc",
+  "drops": [
+    {
+      "count": 1,
+      "id": "bwt:blood_wood_planks_corner"
+    },
+    {
+      "count": 1,
+      "id": "minecraft:stick"
+    }
+  ],
+  "ingredient": {
+    "block": "bwt:blood_wood_fence_gate"
+  }
+}
