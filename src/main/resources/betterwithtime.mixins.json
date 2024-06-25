@@ -12,6 +12,7 @@
     "MiningChargeExplosionImmunityMixin",
     "MovableBlockEntityMixin",
     "ShapedRecipeDimensionsMixin",
+    "SkeletonRottenArrowMixin",
     "SpawnerMossyCobbleMixin",
     "VanillaHopperDisableMixin",
     "VanillaHopperInvoker",

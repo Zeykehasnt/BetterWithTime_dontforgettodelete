@@ -47,6 +47,18 @@ public class BwtEntities implements ModInitializer {
             .trackingTickInterval(20)
             .build()
     );
+    public static final EntityType<RottedArrowEntity> rottedArrowEntity = Registry.register(
+            Registries.ENTITY_TYPE,
+            new Identifier("bwt", "rotted_arrow"),
+            EntityType.Builder.create(
+                    (EntityType.EntityFactory<RottedArrowEntity>) RottedArrowEntity::new,
+                    SpawnGroup.MISC
+            )
+            .dimensions(0.5f, 0.5f)
+            .maxTrackingRange(4)
+            .trackingTickInterval(20)
+            .build()
+    );
     public static final EntityType<DynamiteEntity> dynamiteEntity = Registry.register(
             Registries.ENTITY_TYPE,
             new Identifier("bwt", "dynamite"),

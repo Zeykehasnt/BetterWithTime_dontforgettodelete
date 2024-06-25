@@ -1,14 +1,7 @@
 package com.bwt;
 
 import com.bwt.features.BwtConfiguredFeatures;
-import com.bwt.generation.AdvancementsGenerator;
-import com.bwt.generation.BlockTagGenerator;
-import com.bwt.generation.EntityTypeTagGenerator;
-import com.bwt.generation.ItemTagGenerator;
-import com.bwt.generation.LangGenerator;
-import com.bwt.generation.BlockLootTableGenerator;
-import com.bwt.generation.ModelGenerator;
-import com.bwt.generation.RecipeGenerator;
+import com.bwt.generation.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
@@ -24,6 +17,7 @@ public class BetterWithTimeDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(ModelGenerator::new);
 		pack.addProvider(LangGenerator::new);
 		pack.addProvider(BlockLootTableGenerator::new);
+		pack.addProvider(EntityLootTableGenerator::new);
 		pack.addProvider(AdvancementsGenerator::new);
 		pack.addProvider(BwtConfiguredFeatures::new);
 	}

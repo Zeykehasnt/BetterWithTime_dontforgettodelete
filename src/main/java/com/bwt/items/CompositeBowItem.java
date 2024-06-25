@@ -2,6 +2,7 @@ package com.bwt.items;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -9,6 +10,7 @@ import net.minecraft.item.ArrowItem;
 import net.minecraft.item.BowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
@@ -38,10 +40,14 @@ public class CompositeBowItem extends BowItem {
             return;
         }
         bl2 = infiniteArrows && itemStack.isOf(Items.ARROW);
+        ArrowItem arrowItem = (ArrowItem)(itemStack.getItem() instanceof ArrowItem ? itemStack.getItem() : Items.ARROW);
+        if (arrowItem instanceof RottedArrowItem) {
+            fireRottedArrow(world, stack, itemStack, playerEntity);
+            return;
+        }
         if (!world.isClient) {
             int punchLevel = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
             int powerLevel = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
-            ArrowItem arrowItem = (ArrowItem)(itemStack.getItem() instanceof ArrowItem ? itemStack.getItem() : Items.ARROW);
             PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, itemStack, playerEntity);
             persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0f, pullProgress * 6.0f, 1.0f);
             if (pullProgress == 1.0f) {
@@ -68,6 +74,21 @@ public class CompositeBowItem extends BowItem {
             if (itemStack.isEmpty()) {
                 playerEntity.getInventory().removeOne(itemStack);
             }
+        }
+        playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
+    }
+
+    private void fireRottedArrow(World world, ItemStack bowStack, ItemStack arrowStack, PlayerEntity playerEntity) {
+        if (!world.isClient) {
+            EquipmentSlot slot = LivingEntity.getSlotForHand(playerEntity.getActiveHand());
+            bowStack.damage(1, playerEntity, slot);
+            if (playerEntity instanceof ServerPlayerEntity serverPlayerEntity) {
+                serverPlayerEntity.sendEquipmentBreakStatus(slot);
+            }
+        }
+        arrowStack.decrement(1);
+        if (arrowStack.isEmpty()) {
+            playerEntity.getInventory().removeOne(arrowStack);
         }
         playerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
     }

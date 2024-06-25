@@ -77,7 +77,7 @@ public class BwtItems implements ModInitializer {
     public static final Item netheriteMattockItem = Registry.register(Registries.ITEM, new Identifier("bwt", "netherite_mattock"), new MattockItem(ToolMaterials.NETHERITE, new Item.Settings().fireproof().attributeModifiers(PickaxeItem.createAttributeModifiers(ToolMaterials.NETHERITE, 1, -3.0f))));
     public static final Item netheriteBattleAxeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "netherite_battle_axe"), new BattleAxeItem(ToolMaterials.NETHERITE, new Item.Settings().fireproof().attributeModifiers(AxeItem.createAttributeModifiers(ToolMaterials.NETHERITE, 3, -2.4f))));
 	public static final Item ropeItem = Registry.register(Registries.ITEM, new Identifier("bwt", "rope"), new RopeItem(new Item.Settings()));
-	public static final Item rottedArrowItem = Registry.register(Registries.ITEM, new Identifier("bwt", "rotted_arrow"), new Item(new Item.Settings()));
+	public static final Item rottedArrowItem = Registry.register(Registries.ITEM, new Identifier("bwt", "rotted_arrow"), new RottedArrowItem(new Item.Settings()));
 	public static final Item sailItem = Registry.register(Registries.ITEM, new Identifier("bwt", "sail"), new Item(new Item.Settings().maxCount(1)));
 	public static final Item sawDustItem = Registry.register(Registries.ITEM, new Identifier("bwt", "saw_dust"), new Item(new Item.Settings()));
 	public static final Item scouredLeatherItem = Registry.register(Registries.ITEM, new Identifier("bwt", "scoured_leather"), new Item(new Item.Settings()));
