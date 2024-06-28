@@ -64,6 +64,9 @@ public class SimpleSingleStackInventory implements SingleStackInventory.SingleSt
 
     public void readNbt(NbtCompound nbtCompound, RegistryWrapper.WrapperLookup registryLookup) {
         this.clear();
+        if (nbtCompound.isEmpty()) {
+            return;
+        }
         Optional<ItemStack> itemStack = ItemStack.fromNbt(registryLookup, nbtCompound);
         itemStack.ifPresent(this::setStack);
     }

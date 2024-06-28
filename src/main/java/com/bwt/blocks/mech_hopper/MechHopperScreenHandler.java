@@ -74,8 +74,12 @@ public class MechHopperScreenHandler extends ScreenHandler {
             }
             else {
                 Slot slot0 = this.slots.get(0);
-                if (!slot0.canInsert(itemStack2) || slot0.insertStack(itemStack2).isEmpty()) {
-                    return ItemStack.EMPTY;
+                if (slot0.canInsert(itemStack2)) {
+                    ItemStack result = slot0.insertStack(itemStack2);
+                    if (!result.isEmpty()) {
+                        return itemStack2;
+                    }
+
                 }
                 if (!this.insertItem(itemStack2, 1, SIZE, false)) {
                     return ItemStack.EMPTY;
@@ -105,7 +109,7 @@ public class MechHopperScreenHandler extends ScreenHandler {
 
         @Override
         public boolean canInsert(ItemStack stack) {
-            return MechHopperBlock.filterMap.containsKey(stack.getItem());
+            return this.getStack().isEmpty() && MechHopperBlock.filterMap.containsKey(stack.getItem());
         }
 
         @Override
