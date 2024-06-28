@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class MechHopperBlock extends BlockWithEntity implements MechPowerBlockBase {
     public static final MapCodec<MechHopperBlock> CODEC = MechHopperBlock.createCodec(MechHopperBlock::new);
@@ -208,11 +209,8 @@ public class MechHopperBlock extends BlockWithEntity implements MechPowerBlockBa
     }
 
     @Override
-    public List<BlockPos> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
-        return Arrays.stream(Direction.values())
-                .filter(direction -> !direction.getAxis().isVertical())
-                .map(pos::offset)
-                .toList();
+    public Predicate<Direction> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
+        return direction -> !direction.getAxis().isVertical();
     }
 
     @Nullable
@@ -224,11 +222,6 @@ public class MechHopperBlock extends BlockWithEntity implements MechPowerBlockBa
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return MechHopperBlock.validateTicker(world, type);
-    }
-
-    @Override
-    public List<BlockPos> getValidHandCrankFaces(BlockState blockState, BlockPos pos) {
-        return MechPowerBlockBase.super.getValidHandCrankFaces(blockState, pos);
     }
 
     @Override

@@ -150,7 +150,7 @@ public class HandCrankBlock extends Block {
             BlockState neighborState = world.getBlockState(neighborPos);
             Block neighborBlock = neighborState.getBlock();
             if (neighborBlock instanceof MechPowerBlockBase mechNeighborBlock) {
-                if (mechNeighborBlock.getValidHandCrankFaces(neighborState, neighborPos).contains(pos)) {
+                if (mechNeighborBlock.getValidHandCrankFaces(neighborState, neighborPos).test(direction.getOpposite())) {
                     numPotentialDevicesToPower++;
                 }
             }

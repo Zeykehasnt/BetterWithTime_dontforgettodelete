@@ -22,11 +22,13 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class MillStoneBlock extends BlockWithEntity implements MechPowerBlockBase {
     public MillStoneBlock(Settings settings) {
@@ -40,8 +42,8 @@ public class MillStoneBlock extends BlockWithEntity implements MechPowerBlockBas
     }
 
     @Override
-    public List<BlockPos> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
-        return List.of(pos.up(), pos.down());
+    public Predicate<Direction> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
+        return direction -> direction.getAxis().isVertical();
     }
 
     @Override

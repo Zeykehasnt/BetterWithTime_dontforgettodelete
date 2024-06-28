@@ -1,8 +1,10 @@
 package com.bwt.blocks;
 
 import com.bwt.sounds.BwtSoundEvents;
+import com.bwt.utils.BlockPosAndState;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -13,6 +15,8 @@ import net.minecraft.world.World;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public interface MechPowerBlockBase {
     int turnOnTickRate = 10;
@@ -31,42 +35,31 @@ public interface MechPowerBlockBase {
         return blockState.get(MECH_POWERED);
     }
 
-    default List<BlockPos> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
-        return Arrays.stream(Direction.values()).map(pos::offset).toList();
+    default Predicate<Direction> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
+        return direction -> true;
     }
 
-    default List<BlockPos> getValidHandCrankFaces(BlockState blockState, BlockPos pos) {
+    default Predicate<Direction> getValidHandCrankFaces(BlockState blockState, BlockPos pos) {
+        return direction -> !direction.equals(Direction.DOWN);
+    }
+
+    default Stream<Direction> getPowerInputFaces(World world, BlockPos pos, BlockState blockState) {
+        Predicate<Direction> axlePredicate = getValidAxleInputFaces(blockState, pos);
+        Predicate<Direction> handCrankPredicate = getValidHandCrankFaces(blockState, pos);
         return Arrays.stream(Direction.values())
-                .filter(direction -> !direction.equals(Direction.DOWN))
-                .map(pos::offset)
-                .toList();
+                .filter(direction -> {
+                    BlockState inputBlockState = world.getBlockState(pos.offset(direction));
+                    return (axlePredicate.test(direction) && inputBlockState.getBlock() instanceof AxleBlock && AxleBlock.isPowered(inputBlockState))
+                            || (handCrankPredicate.test(direction) && inputBlockState.getBlock() instanceof HandCrankBlock && HandCrankBlock.isPowered(inputBlockState));
+                });
     }
 
     default boolean isReceivingMechPower(World world, BlockState blockState, BlockPos pos) {
-        for (BlockPos inputBlockPos : getValidAxleInputFaces(blockState, pos)) {
-            BlockState inputBlockState = world.getBlockState(inputBlockPos);
-            if (!(inputBlockState.isOf(BwtBlocks.axleBlock) || inputBlockState.isOf(BwtBlocks.axlePowerSourceBlock))) {
-                continue;
-            }
+        return getPowerInputFaces(world, pos, blockState).findAny().isPresent();
+    }
 
-            Vec3i directionVector = pos.subtract(inputBlockPos);
-            Direction direction = Direction.fromVector(directionVector.getX(), directionVector.getY(), directionVector.getZ());
-            if (direction == null) {
-                continue;
-            }
-
-            Direction.Axis axis = direction.getAxis();
-            if (inputBlockState.get(AxleBlock.AXIS).equals(axis) && AxleBlock.isPowered(inputBlockState)) {
-                return true;
-            }
-        }
-        for (BlockPos handCrankPos : getValidHandCrankFaces(blockState, pos)) {
-            BlockState handCrankBlockState = world.getBlockState(handCrankPos);
-            if (handCrankBlockState.isOf(BwtBlocks.handCrankBlock) && HandCrankBlock.isPowered(handCrankBlockState)) {
-               return true;
-            }
-        }
-        return false;
+    default boolean isOverPowered(World world, BlockState blockState, BlockPos pos) {
+        return getPowerInputFaces(world, pos, blockState).limit(2).count() > 1;
     }
 
     default void playBangSound(World world, BlockPos pos, float volume, float pitch) {

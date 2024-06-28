@@ -44,6 +44,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
@@ -296,16 +297,13 @@ public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
     }
 
     @Override
-    public List<BlockPos> getValidAxleInputFaces(BlockState state, BlockPos pos) {
-        return Arrays.stream(Direction.values())
-                .filter(direction -> !direction.equals(state.get(FACING)))
-                .map(pos::offset)
-                .toList();
+    public Predicate<Direction> getValidAxleInputFaces(BlockState state, BlockPos pos) {
+        return direction -> !direction.equals(state.get(FACING));
     }
 
     @Override
-    public List<BlockPos> getValidHandCrankFaces(BlockState blockState, BlockPos pos) {
-        return List.of();
+    public Predicate<Direction> getValidHandCrankFaces(BlockState blockState, BlockPos pos) {
+        return direction -> false;
     }
 
 //    @Override

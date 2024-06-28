@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class PulleyBlock extends BlockWithEntity implements MechPowerBlockBase {
     public static final BooleanProperty POWERED = Properties.POWERED;
@@ -49,8 +50,8 @@ public class PulleyBlock extends BlockWithEntity implements MechPowerBlockBase {
     }
 
     @Override
-    public List<BlockPos> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
-        return Arrays.stream(Direction.values()).filter(direction -> !direction.equals(Direction.DOWN)).map(pos::offset).toList();
+    public Predicate<Direction> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
+        return direction -> !direction.equals(Direction.DOWN);
     }
 
     @Override

@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class BellowsBlock extends Block implements MechPowerBlockBase {
     public static DirectionProperty FACING = HorizontalFacingBlock.FACING;
@@ -53,16 +54,13 @@ public class BellowsBlock extends Block implements MechPowerBlockBase {
     }
 
     @Override
-    public List<BlockPos> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
-        return Arrays.stream(Direction.values())
-                .filter(direction -> direction != blockState.get(FACING) && direction != Direction.UP)
-                .map(pos::offset)
-                .toList();
+    public Predicate<Direction> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
+        return direction -> direction != blockState.get(FACING) && direction != Direction.UP;
     }
 
     @Override
-    public List<BlockPos> getValidHandCrankFaces(BlockState blockState, BlockPos pos) {
-        return Arrays.stream(Direction.values()).filter(direction -> direction.getAxis().isHorizontal()).map(pos::offset).toList();
+    public Predicate<Direction> getValidHandCrankFaces(BlockState blockState, BlockPos pos) {
+        return direction -> direction.getAxis().isHorizontal();
     }
 
     @Override

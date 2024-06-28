@@ -28,6 +28,7 @@ import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class GearBoxBlock extends SimpleFacingBlock implements MechPowerBlockBase, RotateWithEmptyHand {
     public static final BooleanProperty NORTH = ConnectingBlock.NORTH;
@@ -53,14 +54,13 @@ public class GearBoxBlock extends SimpleFacingBlock implements MechPowerBlockBas
     }
 
     @Override
-    public List<BlockPos> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
-        Direction direction = blockState.get(FACING);
-        return List.of(pos.offset(direction));
+    public Predicate<Direction> getValidAxleInputFaces(BlockState blockState, BlockPos pos) {
+        return direction -> direction == blockState.get(FACING);
     }
 
     @Override
-    public List<BlockPos> getValidHandCrankFaces(BlockState blockState, BlockPos pos) {
-        return List.of();
+    public Predicate<Direction> getValidHandCrankFaces(BlockState blockState, BlockPos pos) {
+        return direction -> false;
     }
 
     @Override
