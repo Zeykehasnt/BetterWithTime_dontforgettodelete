@@ -28,11 +28,15 @@ public class BetterWithTimeClient implements ClientModInitializer {
 	public static final EntityModelLayer MODEL_WINDMILL_LAYER = new EntityModelLayer(new Identifier("bwt", "windmill"), "main");
 	public static final EntityModelLayer MODEL_WATER_WHEEL_LAYER = new EntityModelLayer(new Identifier("bwt", "water_wheel"), "main");
 	public static final EntityModelLayer MECH_HOPPER_FILL_LAYER = new EntityModelLayer(new Identifier("bwt", "mech_hopper_fill"), "main");
+	public static final EntityModelLayer CAULDRON_FILL_LAYER = new EntityModelLayer(new Identifier("bwt", "cauldron_fill"), "main");
+	public static final EntityModelLayer CRUCIBLE_FILL_LAYER = new EntityModelLayer(new Identifier("bwt", "crucible_fill"), "main");
 
 	@Override
 	public void onInitializeClient() {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 		BlockEntityRendererFactories.register(BwtBlockEntities.mechHopperBlockEntity, MechHopperBlockEntityRenderer::new);
+		BlockEntityRendererFactories.register(BwtBlockEntities.cauldronBlockEntity, ctx -> new CookingPotEntityRenderer(ctx, new Identifier("bwt", "textures/block/cauldron_stew.png")));
+		BlockEntityRendererFactories.register(BwtBlockEntities.crucibleBlockEntity, ctx -> new CookingPotEntityRenderer(ctx, new Identifier("bwt", "textures/block/crucible_fill.png")));
 		EntityRendererRegistry.register(BwtEntities.windmillEntity, WindmillEntityRenderer::new);
 		EntityRendererRegistry.register(BwtEntities.waterWheelEntity, WaterWheelEntityRenderer::new);
 		EntityRendererRegistry.register(BwtEntities.movingRopeEntity, MovingRopeEntityRenderer::new);
@@ -43,6 +47,8 @@ public class BetterWithTimeClient implements ClientModInitializer {
 		EntityModelLayerRegistry.registerModelLayer(MODEL_WINDMILL_LAYER, WindmillEntityModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(MODEL_WATER_WHEEL_LAYER, WaterWheelEntityModel::getTexturedModelData);
 		EntityModelLayerRegistry.registerModelLayer(MECH_HOPPER_FILL_LAYER, MechHopperFillModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(CAULDRON_FILL_LAYER, CookingPotFillModel::getTexturedModelData);
+		EntityModelLayerRegistry.registerModelLayer(CRUCIBLE_FILL_LAYER, CookingPotFillModel::getTexturedModelData);
 		BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
 				BwtBlocks.lightBlockBlock,
 				BwtBlocks.hempCropBlock,

@@ -79,7 +79,6 @@ public class MechHopperScreenHandler extends ScreenHandler {
                     if (!result.isEmpty()) {
                         return itemStack2;
                     }
-
                 }
                 if (!this.insertItem(itemStack2, 1, SIZE, false)) {
                     return ItemStack.EMPTY;

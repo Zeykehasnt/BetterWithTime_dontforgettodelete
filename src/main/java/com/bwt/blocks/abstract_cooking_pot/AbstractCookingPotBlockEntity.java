@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -22,6 +23,9 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.RegistryWrapper;
@@ -31,6 +35,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -40,6 +45,7 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
     // "Time" is used loosely here, since the rate of change is affected by the amount of fire surrounding the pot
     public static final int timeToCompleteCook = 150 * ( FireData.primaryFireFactor + ( FireData.secondaryFireFactor * 8 ) );
     protected int cookProgressTime;
+    public int slotsOccupied;
 
 
     public final Inventory inventory = new Inventory(INVENTORY_SIZE);
@@ -89,6 +95,7 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
         super.readNbt(nbt, registryLookup);
         this.inventory.readNbtList(nbt.getList("Inventory", NbtElement.COMPOUND_TYPE), registryLookup);
         this.cookProgressTime = nbt.getInt("cookProgressTicks");
+        this.slotsOccupied = nbt.getInt("slotsOccupied");
     }
 
     @Override
@@ -96,6 +103,14 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
         super.writeNbt(nbt, registryLookup);
         nbt.put("Inventory", this.inventory.toNbtList(registryLookup));
         nbt.putInt("cookProgressTicks", this.cookProgressTime);
+        nbt.putInt("slotsOccupied", this.slotsOccupied);
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
+        NbtCompound nbtCompound = createNbt(registryLookup);
+        nbtCompound.putInt("slotsOccupied", slotsOccupied);
+        return nbtCompound;
     }
 
     @Override
@@ -254,25 +269,16 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
     // Update fill level texture
     @Override
     public void markDirty() {
-        super.markDirty();
-        if (this.world == null) {
-            return;
+        slotsOccupied = ((int) inventory.heldStacks.stream().filter(stack -> !stack.isEmpty()).count());
+        if (world != null) {
+            world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_ALL);
         }
-        BlockState blockState = this.world.getBlockState(this.pos);
-        this.world.setBlockState(this.pos, blockState.with(AbstractCookingPotBlock.LEVEL, getFillLevel()), AbstractCookingPotBlock.NOTIFY_LISTENERS);
+        super.markDirty();
     }
 
-    public int getFillLevel() {
-        if (inventory == null) {
-            return 0;
-        }
-        float f = 0.0f;
-        for (int i = 0; i < inventory.size(); ++i) {
-            ItemStack itemStack = inventory.getStack(i);
-            if (itemStack.isEmpty()) continue;
-            f += (float)itemStack.getCount() / (float)Math.min(inventory.getMaxCountPerStack(), itemStack.getMaxCount());
-        }
-        // TODO we use a LEVEL_8 property but we'd like a LEVEL_7 probably
-        return MathHelper.lerpPositive(f / (float) inventory.size(), 0, 7);
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
     }
 }

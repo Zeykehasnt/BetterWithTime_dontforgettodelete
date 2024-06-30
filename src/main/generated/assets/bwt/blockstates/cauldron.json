@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "tip_direction=east": {
+      "model": "bwt:block/cauldron",
+      "y": 90
+    },
+    "tip_direction=north": {
+      "model": "bwt:block/cauldron"
+    },
+    "tip_direction=south": {
+      "model": "bwt:block/cauldron",
+      "y": 180
+    },
+    "tip_direction=up": {
+      "model": "bwt:block/cauldron",
+      "x": 270
+    },
+    "tip_direction=west": {
+      "model": "bwt:block/cauldron",
+      "y": 270
+    }
+  }
+}

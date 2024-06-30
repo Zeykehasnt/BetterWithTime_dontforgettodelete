@@ -1,6 +1,7 @@
 package com.bwt.generation;
 
 import com.bwt.blocks.*;
+import com.bwt.blocks.abstract_cooking_pot.AbstractCookingPotBlock;
 import com.bwt.blocks.turntable.TurntableBlock;
 import com.bwt.items.BwtItems;
 import com.bwt.utils.DyeUtils;
@@ -55,6 +56,30 @@ public class ModelGenerator extends FabricModelProvider {
         generatePaneBlock(blockStateModelGenerator, BwtBlocks.grateBlock);
         generatePaneBlock(blockStateModelGenerator, BwtBlocks.slatsBlock);
         generatePaneBlock(blockStateModelGenerator, BwtBlocks.wickerPaneBlock);
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(
+                        BwtBlocks.cauldronBlock,
+                        BlockStateVariant.create().put(VariantSettings.MODEL, ModelIds.getBlockModelId(BwtBlocks.cauldronBlock))
+                ).coordinate(BlockStateVariantMap.create(AbstractCookingPotBlock.TIP_DIRECTION)
+                        .register(Direction.UP, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R270))
+                        .register(Direction.NORTH, BlockStateVariant.create())
+                        .register(Direction.SOUTH, BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                        .register(Direction.WEST, BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                        .register(Direction.EAST, BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R90))
+                )
+        );
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(
+                        BwtBlocks.crucibleBlock,
+                        BlockStateVariant.create().put(VariantSettings.MODEL, ModelIds.getBlockModelId(BwtBlocks.crucibleBlock))
+                ).coordinate(BlockStateVariantMap.create(AbstractCookingPotBlock.TIP_DIRECTION)
+                        .register(Direction.UP, BlockStateVariant.create().put(VariantSettings.X, VariantSettings.Rotation.R270))
+                        .register(Direction.NORTH, BlockStateVariant.create())
+                        .register(Direction.SOUTH, BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R180))
+                        .register(Direction.WEST, BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R270))
+                        .register(Direction.EAST, BlockStateVariant.create().put(VariantSettings.Y, VariantSettings.Rotation.R90))
+                )
+        );
         blockStateModelGenerator.blockStateCollector.accept(
                 VariantsBlockStateSupplier.create(
                         BwtBlocks.pulleyBlock,

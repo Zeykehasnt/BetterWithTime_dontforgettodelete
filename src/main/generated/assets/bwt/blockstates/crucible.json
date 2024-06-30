@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "tip_direction=east": {
+      "model": "bwt:block/crucible",
+      "y": 90
+    },
+    "tip_direction=north": {
+      "model": "bwt:block/crucible"
+    },
+    "tip_direction=south": {
+      "model": "bwt:block/crucible",
+      "y": 180
+    },
+    "tip_direction=up": {
+      "model": "bwt:block/crucible",
+      "x": 270
+    },
+    "tip_direction=west": {
+      "model": "bwt:block/crucible",
+      "y": 270
+    }
+  }
+}
