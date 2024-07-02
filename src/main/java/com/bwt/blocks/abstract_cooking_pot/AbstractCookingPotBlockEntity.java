@@ -1,9 +1,11 @@
 package com.bwt.blocks.abstract_cooking_pot;
 
+import com.bwt.items.BwtItems;
 import com.bwt.recipes.AbstractCookingPotRecipe;
 import com.bwt.recipes.AbstractCookingPotRecipeType;
 import com.bwt.recipes.IngredientWithCount;
 import com.bwt.tags.BwtItemTags;
+import com.bwt.utils.BlockPosAndState;
 import com.bwt.utils.FireData;
 import com.bwt.utils.FireType;
 import com.bwt.utils.OrderedRecipeMatcher;
@@ -21,6 +23,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -33,17 +36,21 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class AbstractCookingPotBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, Inventory {
     protected static final int INVENTORY_SIZE = 27;
 
     // "Time" is used loosely here, since the rate of change is affected by the amount of fire surrounding the pot
     public static final int timeToCompleteCook = 150 * ( FireData.primaryFireFactor + ( FireData.secondaryFireFactor * 8 ) );
+    public static final int stackSizeToDrop = 8;
     protected int cookProgressTime;
     public int slotsOccupied;
 
@@ -119,18 +126,27 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, AbstractCookingPotBlockEntity blockEntity) {
+        if (state.get(AbstractCookingPotBlock.TIP_DIRECTION) == Direction.UP) {
+            blockEntity.cookItems(world, pos);
+        }
+        else {
+            blockEntity.dumpItems(world, pos, state);
+        }
+    }
+
+    protected void cookItems(World world, BlockPos pos) {
         FireData fireData = FireData.fromWorld(world, pos);
 
         if (fireData.fireFactor() <= 0) {
-            if (blockEntity.cookProgressTime != 0) {
-                blockEntity.cookProgressTime = 0;
-                blockEntity.markDirty();
+            if (cookProgressTime != 0) {
+                cookProgressTime = 0;
+                markDirty();
             }
             return;
         }
 
         if (fireData.fireType().equals(FireType.STOKED)) {
-            int stokedExplosivesCount = blockEntity.inventory.getHeldStacks().stream()
+            int stokedExplosivesCount = inventory.getHeldStacks().stream()
                     .filter(itemStack -> itemStack.isIn(BwtItemTags.STOKED_EXPLOSIVES))
                     .map(ItemStack::getCount)
                     .reduce(Integer::sum)
@@ -142,27 +158,63 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
         }
 
         RecipeManager recipeManager = world.getRecipeManager();
-        AbstractCookingPotRecipeType recipeTypeToGet = fireData.fireType().equals(FireType.STOKED) ? blockEntity.stokedRecipeType : blockEntity.unstokedRecipeType;
-        List<RecipeEntry<AbstractCookingPotRecipe>> matches = recipeManager.getAllMatches(recipeTypeToGet, blockEntity.inventory, world);
+        AbstractCookingPotRecipeType recipeTypeToGet = fireData.fireType().equals(FireType.STOKED) ? stokedRecipeType : unstokedRecipeType;
+        List<RecipeEntry<AbstractCookingPotRecipe>> matches = recipeManager.getAllMatches(recipeTypeToGet, inventory, world);
         if (matches.isEmpty()) {
-            if (blockEntity.cookProgressTime != 0) {
-                blockEntity.cookProgressTime = 0;
-                blockEntity.markDirty();
+            if (cookProgressTime != 0) {
+                cookProgressTime = 0;
+                markDirty();
             }
             return;
         }
 
-        blockEntity.cookProgressTime = blockEntity.cookProgressTime + fireData.fireFactor();
-        if (blockEntity.cookProgressTime >= timeToCompleteCook) {
-            blockEntity.cookProgressTime = 0;
-            blockEntity.markDirty();
+        cookProgressTime = cookProgressTime + fireData.fireFactor();
+        if (cookProgressTime >= timeToCompleteCook) {
+            cookProgressTime = 0;
+            markDirty();
         }
         else {
             return;
         }
 
         // Cook the first recipe we can
-        OrderedRecipeMatcher.getFirstRecipe(matches, blockEntity.inventory.getHeldStacks(), blockEntity::cookRecipe);
+        OrderedRecipeMatcher.getFirstRecipe(matches, inventory.getHeldStacks(), this::cookRecipe);
+    }
+
+    private void dumpItems(World world, BlockPos pos, BlockState state) {
+        Optional<ItemStack> firstItemToDump = inventory.getHeldStacks().stream()
+                .filter(itemStack -> !itemStack.isOf(BwtItems.mouldItem) && !itemStack.isEmpty())
+                .findFirst();
+        if (firstItemToDump.isEmpty()) {
+            return;
+        }
+
+        ItemStack itemStack = firstItemToDump.get();
+
+        if (itemStack.isEmpty()) {
+            return;
+        }
+
+        Direction facing = state.get(AbstractCookingPotBlock.TIP_DIRECTION);
+        BlockPosAndState dumpPosAndState = BlockPosAndState.of(world, pos.offset(facing));
+        if (!dumpPosAndState.state().isReplaceable()) {
+            return;
+        }
+        ejectStack(world, itemStack, facing, dumpPosAndState);
+    }
+
+    private void ejectStack(World world, ItemStack itemStack, Direction facing, BlockPosAndState dumpPosAndState) {
+        int stackSizeToDump = Math.min(itemStack.getCount(), stackSizeToDrop);
+
+        Vec3d entityPos = dumpPosAndState.pos().toCenterPos().subtract(0, 0.25f, 0);
+        ItemEntity itemEntity = new ItemEntity(world, entityPos.x, entityPos.y, entityPos.z, itemStack.copyWithCount(stackSizeToDump));
+        Vec3d itemVelocity = Vec3d.of(facing.getVector()).multiply(0.1);
+        itemEntity.setVelocity(itemVelocity);
+        itemEntity.setPickupDelay(10);
+
+        itemStack.decrement(stackSizeToDump);
+        markDirty();
+        world.spawnEntity(itemEntity);
     }
 
     private static void explode(World world, BlockPos pos, int stokedExplosivesCount) {

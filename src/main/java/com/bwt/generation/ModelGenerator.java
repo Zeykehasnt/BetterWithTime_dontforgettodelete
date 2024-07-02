@@ -5,6 +5,8 @@ import com.bwt.blocks.abstract_cooking_pot.AbstractCookingPotBlock;
 import com.bwt.blocks.turntable.TurntableBlock;
 import com.bwt.items.BwtItems;
 import com.bwt.utils.DyeUtils;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
@@ -24,6 +26,7 @@ import net.minecraft.util.math.Direction;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class ModelGenerator extends FabricModelProvider {
     public ModelGenerator(FabricDataOutput generator) {
@@ -187,8 +190,18 @@ public class ModelGenerator extends FabricModelProvider {
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.anchorBlock, ModelIds.getBlockModelId(BwtBlocks.anchorBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.axleBlock, ModelIds.getBlockModelId(BwtBlocks.axleBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.blockDispenserBlock, ModelIds.getBlockModelId(BwtBlocks.blockDispenserBlock));
-        blockStateModelGenerator.registerParentedItemModel(BwtBlocks.cauldronBlock, ModelIds.getBlockModelId(BwtBlocks.cauldronBlock));
-        blockStateModelGenerator.registerParentedItemModel(BwtBlocks.crucibleBlock, ModelIds.getBlockModelId(BwtBlocks.crucibleBlock));
+        blockStateModelGenerator.modelCollector.accept(ModelIds.getItemModelId(BwtBlocks.cauldronBlock.asItem()), () -> {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("parent", ModelIds.getBlockModelId(BwtBlocks.cauldronBlock).toString());
+            jsonObject.addProperty("y", 90);
+            return jsonObject;
+        });
+        blockStateModelGenerator.modelCollector.accept(ModelIds.getItemModelId(BwtBlocks.crucibleBlock.asItem()), () -> {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("parent", ModelIds.getBlockModelId(BwtBlocks.crucibleBlock).toString());
+            jsonObject.addProperty("y", 90);
+            return jsonObject;
+        });
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.detectorBlock, ModelIds.getBlockModelId(BwtBlocks.detectorBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.gearBoxBlock, ModelIds.getBlockModelId(BwtBlocks.gearBoxBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.handCrankBlock, ModelIds.getBlockModelId(BwtBlocks.handCrankBlock));

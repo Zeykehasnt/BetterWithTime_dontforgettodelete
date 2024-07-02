@@ -139,6 +139,9 @@ public abstract class AbstractCookingPotBlock extends BlockWithEntity implements
         if (world.isClient) {
             return;
         }
+        if (state.get(TIP_DIRECTION) != Direction.UP) {
+            return;
+        }
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity instanceof AbstractCookingPotBlockEntity cookingPotBlockEntity) {
             AbstractCookingPotBlockEntity.onEntityCollided(entity, cookingPotBlockEntity);

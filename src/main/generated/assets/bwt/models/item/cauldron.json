@@ -1,3 +1,4 @@
 {
-  "parent": "bwt:block/cauldron"
+  "parent": "bwt:block/cauldron",
+  "y": 90
 }
