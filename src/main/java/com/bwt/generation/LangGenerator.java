@@ -83,6 +83,11 @@ public class LangGenerator extends FabricLanguageProvider {
         translationBuilder.add(BwtItems.netheriteMattockItem, "Netherite Mattock");
         translationBuilder.add(BwtItems.netheriteBattleAxeItem, "Netherite Battle Axe");
 
+        translationBuilder.add("emi.category.bwt.crucible", "Crucible");
+        translationBuilder.add("emi.category.bwt.stoked_crucible", "Stoked Crucible");
+        translationBuilder.add("emi.category.bwt.cauldron", "Cauldron");
+        translationBuilder.add("emi.category.bwt.stoked_cauldron", "Stoked Cauldron");
+
         // Load an existing language file.
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/bwt/lang/en_us.existing.json").get();
