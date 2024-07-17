@@ -2,7 +2,6 @@ package com.bwt.emi.recipes;
 
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.emi.BwtEmiPlugin;
-import com.bwt.recipes.SawRecipe;
 import com.bwt.recipes.TurntableRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;

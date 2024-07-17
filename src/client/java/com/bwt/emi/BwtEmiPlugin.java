@@ -7,7 +7,6 @@ import com.bwt.emi.recipes.*;
 import com.bwt.recipes.BlockIngredient;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.recipes.IngredientWithCount;
-import com.google.common.collect.Comparators;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -38,6 +37,8 @@ public class BwtEmiPlugin implements EmiPlugin {
     public static EmiRecipeCategory SAW = category("saw", EmiStack.of(BwtBlocks.sawBlock));
     public static EmiRecipeCategory TURNTABLE = category("turntable", EmiStack.of(BwtBlocks.turntableBlock));
     public static EmiRecipeCategory KILN = category("kiln", EmiStack.of(Blocks.BRICKS));
+    public static EmiRecipeCategory SOUL_FORGE_ONLY = category("soul_forge_only", EmiStack.of(BwtBlocks.soulForgeBlock));
+    public static EmiRecipeCategory SOUL_FORGE = category("soul_forge", EmiStack.of(BwtBlocks.soulForgeBlock));
 
     public static EmiRecipeCategory category(String id, EmiStack icon) {
         return new EmiRecipeCategory(new Identifier("bwt", id), icon,
@@ -64,6 +65,8 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addCategory(SAW);
         reg.addCategory(TURNTABLE);
         reg.addCategory(KILN);
+        reg.addCategory(SOUL_FORGE);
+        reg.addCategory(SOUL_FORGE_ONLY);
 
         reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(CAULDRON));
         reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(STOKED_CAULDRON));
@@ -76,6 +79,8 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addWorkstation(SAW, EmiStack.of(BwtBlocks.sawBlock));
         reg.addWorkstation(TURNTABLE, EmiStack.of(BwtBlocks.turntableBlock));
         reg.addWorkstation(KILN, EmiStack.of(Blocks.BRICKS));
+        reg.addWorkstation(SOUL_FORGE, EmiStack.of(BwtBlocks.soulForgeBlock));
+        reg.addWorkstation(SOUL_FORGE_ONLY, EmiStack.of(BwtBlocks.soulForgeBlock));
 
         for (var recipe : getRecipes(reg, BwtRecipes.CAULDRON_RECIPE_TYPE)) {
             reg.addRecipe(new EmiCookingPotRecipe<>(CAULDRON, recipe.getLeft(), recipe.getRight()));
@@ -101,7 +106,9 @@ public class BwtEmiPlugin implements EmiPlugin {
         for (var recipe : getRecipes(reg, BwtRecipes.KILN_RECIPE_TYPE)) {
             reg.addRecipe(new EmiKilnRecipe(KILN, recipe.getLeft(), recipe.getRight()));
         }
-
+//        for (var r : getRecipes(reg, RecipeType.CRAFTING)) {
+//            reg.addRecipe(new EmiSoulForgeRecipe(r.getRight(),r.getLeft()));
+//        }
     }
 
     public static EmiIngredient from(IngredientWithCount ingredientWithCount) {
