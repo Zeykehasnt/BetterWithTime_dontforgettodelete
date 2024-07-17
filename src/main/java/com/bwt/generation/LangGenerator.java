@@ -84,12 +84,16 @@ public class LangGenerator extends FabricLanguageProvider {
 
         translationBuilder.add("emi.category.bwt.crucible", "Crucible");
         translationBuilder.add("emi.category.bwt.stoked_crucible", "Stoked Crucible");
+        translationBuilder.add("emi.category.bwt.stoked_crucible_reclaim", "Stoked Crucible: Reclaim");
         translationBuilder.add("emi.category.bwt.cauldron", "Cauldron");
         translationBuilder.add("emi.category.bwt.stoked_cauldron", "Stoked Cauldron");
         translationBuilder.add("emi.category.bwt.mill_stone", "Mill Stone");
         translationBuilder.add("emi.category.bwt.saw", "Saw");
         translationBuilder.add("emi.category.bwt.turntable", "Turntable");
         translationBuilder.add("emi.category.bwt.kiln", "Kiln");
+        translationBuilder.add("emi.category.bwt.hopper_souls", "Hopper: Soul Extraction");
+        translationBuilder.add("emi.tooltip.bwt.hopper_souls_power", "Mechanical Power to the Hopper is advised.");
+
 
         // Load an existing language file.
         try {

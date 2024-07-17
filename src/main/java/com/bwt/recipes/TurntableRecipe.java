@@ -1,6 +1,7 @@
 package com.bwt.recipes;
 
 import com.bwt.blocks.BwtBlocks;
+import com.bwt.generation.EmiDefaultsGenerator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -243,6 +244,17 @@ public class TurntableRecipe implements Recipe<Inventory> {
             return this;
         }
 
+        protected boolean isDefaultRecipe;
+        public JsonBuilder markDefault() {
+            this.isDefaultRecipe = true;
+            return this;
+        }
+        public void addToDefaults(Identifier recipeId) {
+            if(this.isDefaultRecipe) {
+                EmiDefaultsGenerator.addBwtRecipe(recipeId);
+            }
+        }
+
         @Override
         public Item getOutputItem() {
             return output.asItem();
@@ -255,6 +267,7 @@ public class TurntableRecipe implements Recipe<Inventory> {
 
         @Override
         public void offerTo(RecipeExporter exporter, Identifier recipeId) {
+            this.addToDefaults(recipeId);
             Advancement.Builder advancementBuilder = exporter.getAdvancementBuilder().criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(AdvancementRequirements.CriterionMerger.OR);
             TurntableRecipe turntableRecipe = new TurntableRecipe(
                     Objects.requireNonNullElse(this.group, ""),

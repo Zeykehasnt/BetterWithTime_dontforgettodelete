@@ -6,9 +6,11 @@ import com.bwt.recipes.MillStoneRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
+import dev.emi.emi.api.render.EmiTooltipComponents;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,7 +72,7 @@ public class EmiMillstoneRecipe implements EmiRecipe {
         var x = 0;
         var i = 0;
 
-        widgets.addTexture(EMPTY_GEAR, 20 * 3, y);
+        widgets.addTexture(EMPTY_GEAR, 20 * 3, y).tooltip(List.of(EmiTooltipComponents.of(Text.literal(this.id.toString()))));
         widgets.addAnimatedTexture(FULL_GEAR, 20 * 3, y, (AbstractCookingPotBlockEntity.timeToCompleteCook * 10), false, true, false);
 
         int constantInputSlots = 3;

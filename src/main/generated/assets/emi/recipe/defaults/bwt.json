@@ -1,0 +1,26 @@
+{
+  "added": [
+    "bwt:filament_from_cauldron",
+    "bwt:kiln_cook_unfired_mould",
+    "bwt:coal_dust_from_milling_coal",
+    "bwt:kiln_cook_unfired_planter",
+    "bwt:flour_from_milling_wheat",
+    "bwt:turntable_unfired_vase",
+    "bwt:nether_sludge_from_cauldron",
+    "bwt:turntable_unfired_urn",
+    "bwt:hemp_fiber_from_milling_hemp",
+    "bwt:turntable_clay",
+    "bwt:netherite_ingot_smelting",
+    "bwt:kiln_cook_unfired_urn",
+    "bwt:kiln_cook_unfired_vase",
+    "bwt:scoured_leather_from_milling_leather",
+    "bwt:turntable_unfired_planter",
+    "bwt:kiln_cook_unfired_crucible",
+    "bwt:hopper_soul_url",
+    "bwt:concentrated_hellfire_from_cauldron",
+    "bwt:tanned_leather_from_cauldron",
+    "bwt:nethercoal_from_cauldron",
+    "bwt:ground_netherrack_from_milling_netherrack",
+    "bwt:turntable_unfired_crucible"
+  ]
+}

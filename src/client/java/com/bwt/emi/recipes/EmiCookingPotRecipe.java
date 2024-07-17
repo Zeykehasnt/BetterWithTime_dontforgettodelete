@@ -6,9 +6,11 @@ import com.bwt.recipes.AbstractCookingPotRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
+import dev.emi.emi.api.render.EmiTooltipComponents;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,7 +67,7 @@ public class EmiCookingPotRecipe<R extends AbstractCookingPotRecipe> implements 
     public void addWidgets(WidgetHolder widgets) {
         var y = 0;
         var x = 0;
-        widgets.addTexture(EmiTexture.EMPTY_FLAME, 20 * 3, 0);
+        widgets.addTexture(EmiTexture.EMPTY_FLAME, 20 * 3, 0).tooltip(List.of(EmiTooltipComponents.of(Text.literal(this.id.toString()))));
         widgets.addAnimatedTexture(EmiTexture.FULL_FLAME, 20 * 3, 0, (AbstractCookingPotBlockEntity.timeToCompleteCook * 10), false, true, false);
 
         var i = 0;

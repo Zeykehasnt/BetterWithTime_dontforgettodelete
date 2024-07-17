@@ -30,7 +30,8 @@ public class EmiTurntableRecipe implements EmiRecipe {
         this.ingredient = BwtEmiPlugin.from(recipe.getIngredient());
         this.output = EmiStack.of(recipe.getOutput());
         this.drops = recipe.getDrops().stream().map(EmiStack::of).toList();
-        this.displayRows = IntStream.of((int) Math.ceil(this.drops.size() / 3.0), 1).max().orElse(1);
+
+        this.displayRows = IntStream.of(1).max().orElse(1);
     }
 
     @Override
@@ -50,12 +51,7 @@ public class EmiTurntableRecipe implements EmiRecipe {
 
     @Override
     public List<EmiStack> getOutputs() {
-        List<EmiStack> outputs = new ArrayList<>();
-        if(!this.output.isEmpty()) {
-            outputs.add(this.output);
-        }
-        outputs.addAll(this.drops);
-        return outputs;
+        return List.of(this.output);
     }
 
     @Override
@@ -81,7 +77,11 @@ public class EmiTurntableRecipe implements EmiRecipe {
         widgets.addSlot(EmiStack.of(BwtBlocks.turntableBlock), x, y).drawBack(false);
         x = 20 * 2;
 
-        for (EmiIngredient ingredient : this.getOutputs()) {
+        List<EmiStack> outputs = new ArrayList<>();
+        outputs.add(this.output);
+        outputs.addAll(this.drops);
+
+        for (EmiStack ingredient : outputs) {
             widgets.addSlot(ingredient, x + (i * 18), y);
             i++;
         }

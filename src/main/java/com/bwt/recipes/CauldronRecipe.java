@@ -11,7 +11,7 @@ import net.minecraft.recipe.book.RecipeCategory;
 import java.util.List;
 
 public class CauldronRecipe extends AbstractCookingPotRecipe {
-    public CauldronRecipe(String group, CookingRecipeCategory category, List<IngredientWithCount> ingredients, List<ItemStack> results) {
+    public CauldronRecipe(String group, CookingPotRecipeCategory category, List<IngredientWithCount> ingredients, List<ItemStack> results) {
         super(BwtRecipes.CAULDRON_RECIPE_TYPE, group, category, ingredients, results);
     }
 
@@ -31,7 +31,7 @@ public class CauldronRecipe extends AbstractCookingPotRecipe {
         }
 
         public static JsonBuilder createFood() {
-            return (JsonBuilder) create().category(RecipeCategory.FOOD).cookingCategory(CookingRecipeCategory.FOOD);
+            return (JsonBuilder) create().category(RecipeCategory.FOOD).cookingCategory(CookingPotRecipeCategory.FOOD);
         }
 
         @Override
