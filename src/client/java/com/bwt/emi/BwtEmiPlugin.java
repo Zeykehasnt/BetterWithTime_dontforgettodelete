@@ -40,6 +40,7 @@ public class BwtEmiPlugin implements EmiPlugin {
     public static EmiRecipeCategory KILN = category("kiln", EmiStack.of(Blocks.BRICKS));
     public static EmiRecipeCategory SOUL_FORGE_ONLY = category("soul_forge_only", EmiStack.of(BwtBlocks.soulForgeBlock));
     public static EmiRecipeCategory SOUL_FORGE = category("soul_forge", EmiStack.of(BwtBlocks.soulForgeBlock));
+    public static EmiRecipeCategory HOPPER = category("hopper", EmiStack.of(BwtBlocks.hopperBlock));
 
     public static EmiRecipeCategory category(String id, EmiStack icon) {
         return new EmiRecipeCategory(new Identifier("bwt", id), icon,
@@ -68,6 +69,7 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addCategory(KILN);
         reg.addCategory(SOUL_FORGE);
         reg.addCategory(SOUL_FORGE_ONLY);
+        reg.addCategory(HOPPER);
 
         reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(CAULDRON));
         reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(STOKED_CAULDRON));
@@ -83,6 +85,7 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addWorkstation(SOUL_FORGE, EmiStack.of(BwtBlocks.soulForgeBlock));
         reg.addWorkstation(SOUL_FORGE_ONLY, EmiStack.of(BwtBlocks.soulForgeBlock));
         reg.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(BwtBlocks.soulForgeBlock));
+        reg.addWorkstation(HOPPER, EmiStack.of(BwtBlocks.hopperBlock));
 
         for (var recipe : getRecipes(reg, BwtRecipes.CAULDRON_RECIPE_TYPE)) {
             reg.addRecipe(new EmiCookingPotRecipe<>(CAULDRON, recipe.getLeft(), recipe.getRight()));
@@ -111,6 +114,8 @@ public class BwtEmiPlugin implements EmiPlugin {
 //        for (var r : getRecipes(reg, RecipeType.CRAFTING)) {
 //            reg.addRecipe(new EmiSoulForgeRecipe(r.getRight(),r.getLeft()));
 //        }
+        reg.addRecipe(new EmiSoulUrnRecipe());
+        reg.addRecipe(new EmiHellfireRecipe());
     }
 
     public static EmiIngredient from(IngredientWithCount ingredientWithCount) {
