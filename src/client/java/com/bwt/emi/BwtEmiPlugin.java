@@ -4,8 +4,10 @@ import com.bwt.BetterWithTime;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.emi.recipehandlers.EmiCookingPotRecipeHandler;
 import com.bwt.emi.recipes.EmiCookingPotRecipe;
+import com.bwt.emi.recipes.EmiMillstoneRecipe;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.recipes.IngredientWithCount;
+import com.google.common.collect.Comparators;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -19,14 +21,17 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
+import java.util.Collection;
 import java.util.Comparator;
 
 public class BwtEmiPlugin implements EmiPlugin {
+    public static final Identifier WIDGETS = new Identifier("bwt", "textures/gui/container/emiwidgets.png");
 
     public static EmiRecipeCategory CAULDRON = category("cauldron", EmiStack.of(BwtBlocks.cauldronBlock));
     public static EmiRecipeCategory STOKED_CAULDRON = category("stoked_cauldron", EmiStack.of(BwtBlocks.cauldronBlock));
     public static EmiRecipeCategory CRUCIBLE = category("crucible", EmiStack.of(BwtBlocks.crucibleBlock));
     public static EmiRecipeCategory STOKED_CRUCIBLE = category("crucible", EmiStack.of(BwtBlocks.crucibleBlock));
+    public static EmiRecipeCategory MILL_STONE = category("mill_stone", EmiStack.of(BwtBlocks.millStoneBlock));
 
     public static EmiRecipeCategory category(String id, EmiStack icon) {
         return new EmiRecipeCategory(new Identifier("bwt", id), icon,
@@ -39,8 +44,8 @@ public class BwtEmiPlugin implements EmiPlugin {
     }
 
 
-    private static <C extends Inventory, T extends Recipe<C>> Iterable<Pair<Identifier, T>> getRecipes(EmiRegistry registry, RecipeType<T> type) {
-        return registry.getRecipeManager().listAllOfType(type).stream().map(e -> new Pair<>(e.id(), e.value()))::iterator;
+    private static <C extends Inventory, T extends Recipe<C>> Collection<Pair<Identifier, T>> getRecipes(EmiRegistry registry, RecipeType<T> type) {
+        return registry.getRecipeManager().listAllOfType(type).stream().map(e -> new Pair<>(e.id(), e.value())).toList();
     }
 
     @Override
@@ -49,6 +54,7 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addCategory(STOKED_CAULDRON);
         reg.addCategory(CRUCIBLE);
         reg.addCategory(STOKED_CRUCIBLE);
+        reg.addCategory(MILL_STONE);
 
         reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(CAULDRON));
         reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(STOKED_CAULDRON));
@@ -57,6 +63,7 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addWorkstation(STOKED_CAULDRON, EmiStack.of(BwtBlocks.cauldronBlock));
         reg.addWorkstation(CRUCIBLE, EmiStack.of(BwtBlocks.crucibleBlock));
         reg.addWorkstation(STOKED_CRUCIBLE, EmiStack.of(BwtBlocks.crucibleBlock));
+        reg.addWorkstation(MILL_STONE, EmiStack.of(BwtBlocks.millStoneBlock));
 
 
         for (var recipe : getRecipes(reg, BwtRecipes.CAULDRON_RECIPE_TYPE)) {
@@ -70,6 +77,10 @@ public class BwtEmiPlugin implements EmiPlugin {
         }
         for (var recipe : getRecipes(reg, BwtRecipes.STOKED_CRUCIBLE_RECIPE_TYPE)) {
             reg.addRecipe(new EmiCookingPotRecipe<>(STOKED_CRUCIBLE, recipe.getLeft(), recipe.getRight()));
+        }
+        var millstoneRecipes = getRecipes(reg, BwtRecipes.MILL_STONE_RECIPE_TYPE);
+        for (var recipe : millstoneRecipes) {
+            reg.addRecipe(new EmiMillstoneRecipe(MILL_STONE, recipe.getLeft(), recipe.getRight()));
         }
 
     }

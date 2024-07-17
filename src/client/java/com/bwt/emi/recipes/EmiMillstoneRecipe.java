@@ -2,7 +2,7 @@ package com.bwt.emi.recipes;
 
 import com.bwt.blocks.abstract_cooking_pot.AbstractCookingPotBlockEntity;
 import com.bwt.emi.BwtEmiPlugin;
-import com.bwt.recipes.AbstractCookingPotRecipe;
+import com.bwt.recipes.MillStoneRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
@@ -15,7 +15,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class EmiCookingPotRecipe<R extends AbstractCookingPotRecipe> implements EmiRecipe {
+public class EmiMillstoneRecipe implements EmiRecipe {
+
+    public static final EmiTexture EMPTY_GEAR = new EmiTexture(BwtEmiPlugin.WIDGETS, 0, 0, 14, 14);
+    public static final EmiTexture FULL_GEAR = new EmiTexture(BwtEmiPlugin.WIDGETS, 14, 0, 14, 14);
 
     private final EmiRecipeCategory category;
     private final Identifier id;
@@ -23,7 +26,7 @@ public class EmiCookingPotRecipe<R extends AbstractCookingPotRecipe> implements 
     private final List<EmiStack> results;
     private final int displayRows;
 
-    public EmiCookingPotRecipe(EmiRecipeCategory category, Identifier id, R recipe) {
+    public EmiMillstoneRecipe(EmiRecipeCategory category, Identifier id, MillStoneRecipe recipe) {
         this.category = category;
         this.id = id;
         this.ingredients = recipe.getIngredientsWithCount().stream().map(BwtEmiPlugin::from).toList();
@@ -65,10 +68,10 @@ public class EmiCookingPotRecipe<R extends AbstractCookingPotRecipe> implements 
     public void addWidgets(WidgetHolder widgets) {
         var y = 0;
         var x = 0;
-        widgets.addTexture(EmiTexture.EMPTY_FLAME, 20 * 3, 0);
-        widgets.addAnimatedTexture(EmiTexture.FULL_FLAME, 20 * 3, 0, (AbstractCookingPotBlockEntity.timeToCompleteCook * 10), false, true, false);
-
         var i = 0;
+
+        widgets.addTexture(EMPTY_GEAR, 20 * 3, y);
+        widgets.addAnimatedTexture(FULL_GEAR, 20 * 3, y, (AbstractCookingPotBlockEntity.timeToCompleteCook * 10), false, true, false);
 
         int constantInputSlots = 3;
         int constantOutputSlots = 3;
