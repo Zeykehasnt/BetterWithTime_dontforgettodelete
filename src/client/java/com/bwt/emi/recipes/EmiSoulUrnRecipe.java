@@ -6,10 +6,12 @@ import com.bwt.items.BwtItems;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
+import dev.emi.emi.api.render.EmiTooltipComponents;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.block.Blocks;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,7 +34,7 @@ public class EmiSoulUrnRecipe implements EmiRecipe {
 
     @Override
     public EmiRecipeCategory getCategory() {
-        return BwtEmiPlugin.HOPPER;
+        return BwtEmiPlugin.HOPPER_SOULS;
     }
 
     @Override
@@ -72,7 +74,7 @@ public class EmiSoulUrnRecipe implements EmiRecipe {
         y = 18;
         widgets.addSlot(EmiStack.of(Blocks.SOUL_SAND), x,y);
         widgets.addSlot(EmiStack.of(BwtBlocks.hopperBlock), x+18, y).drawBack(false);
-        widgets.addTexture(FULL_GEAR, x + 20+18, y);
+        widgets.addTexture(FULL_GEAR, x + 20+18, y).tooltip(List.of(EmiTooltipComponents.of(Text.translatable("emi.tooltip.bwt.hopper_souls_power"))));
         y = 18 * 2;
 
         widgets.addSlot(this.urn, x+18, y).drawBack(false);

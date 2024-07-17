@@ -28,7 +28,7 @@ public class EmiHellfireRecipe implements EmiRecipe {
 
     @Override
     public EmiRecipeCategory getCategory() {
-        return BwtEmiPlugin.HOPPER;
+        return BwtEmiPlugin.HOPPER_SOULS;
     }
 
     @Override
