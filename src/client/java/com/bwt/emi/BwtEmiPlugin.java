@@ -2,6 +2,8 @@ package com.bwt.emi;
 
 import com.bwt.BetterWithTime;
 import com.bwt.blocks.BwtBlocks;
+import com.bwt.blocks.mech_hopper.MechHopperBlock;
+import com.bwt.blocks.mech_hopper.MechHopperBlockEntity;
 import com.bwt.emi.recipehandlers.EmiCookingPotRecipeHandler;
 import com.bwt.emi.recipes.*;
 import com.bwt.recipes.AbstractCookingPotRecipe;
@@ -20,8 +22,10 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.block.Blocks;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Items;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
@@ -32,6 +36,7 @@ import java.util.List;
 
 public class BwtEmiPlugin implements EmiPlugin {
     public static final Identifier WIDGETS = new Identifier("bwt", "textures/gui/container/emiwidgets.png");
+
 
     public static EmiRecipeCategory CAULDRON = category("cauldron", EmiStack.of(BwtBlocks.cauldronBlock));
     public static EmiRecipeCategory STOKED_CAULDRON = category("stoked_cauldron", EmiStack.of(BwtBlocks.cauldronBlock));
@@ -46,6 +51,7 @@ public class BwtEmiPlugin implements EmiPlugin {
     public static EmiRecipeCategory SOUL_FORGE_ONLY = category("soul_forge_only", EmiStack.of(BwtBlocks.soulForgeBlock));
     public static EmiRecipeCategory SOUL_FORGE = category("soul_forge", EmiStack.of(BwtBlocks.soulForgeBlock));
     public static EmiRecipeCategory HOPPER_SOULS = category("hopper_souls", EmiStack.of(BwtBlocks.hopperBlock));
+    public static EmiRecipeCategory HOPPER_FILTERING = category("hopper_filtering", EmiStack.of(BwtBlocks.hopperBlock));
 
     public static EmiRenderable simplifiedEmiStack(EmiStack stack) {
         return stack::render;
@@ -79,6 +85,7 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addCategory(SOUL_FORGE);
         reg.addCategory(SOUL_FORGE_ONLY);
         reg.addCategory(HOPPER_SOULS);
+        reg.addCategory(HOPPER_FILTERING);
 
 
         reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(CAULDRON));
@@ -96,6 +103,7 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addWorkstation(SOUL_FORGE_ONLY, EmiStack.of(BwtBlocks.soulForgeBlock));
         reg.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(BwtBlocks.soulForgeBlock));
         reg.addWorkstation(HOPPER_SOULS, EmiStack.of(BwtBlocks.hopperBlock));
+        reg.addWorkstation(HOPPER_FILTERING, EmiStack.of(BwtBlocks.hopperBlock));
 
         for (var recipe : getRecipes(reg, BwtRecipes.CAULDRON_RECIPE_TYPE)) {
             reg.addRecipe(new EmiCookingPotRecipe<>(CAULDRON, recipe.getLeft(), recipe.getRight()));
@@ -130,6 +138,24 @@ public class BwtEmiPlugin implements EmiPlugin {
 //        }
         reg.addRecipe(new EmiSoulUrnRecipe());
         reg.addRecipe(new EmiHellfireRecipe());
+
+        reg.addRecipe(new EmiHopperFilterRecipe(
+                new Identifier("bwt", "gravel_through_wicker"),
+                EmiStack.of(BwtBlocks.wickerPaneBlock),
+                EmiStack.of(Blocks.GRAVEL),
+                EmiStack.of(Blocks.SAND),
+                EmiStack.of(Items.FLINT)
+        ));
+
+        for(var filterEntry: MechHopperBlock.filterMap.entrySet()) {
+            var filter = filterEntry.getKey();
+            var permitted = filterEntry.getValue();
+            if(permitted instanceof MechHopperBlock.TagFilter f) {
+                var emiPermitted = EmiIngredient.of(f.tagKey());
+                Identifier id = new Identifier("bwt", Registries.ITEM.getId(filter).getPath() + "_hopper_filter");
+                reg.addRecipe(new EmiHopperFilterPermitList(id, EmiStack.of(filter), emiPermitted));
+            }
+        }
     }
 
     public static EmiIngredient from(IngredientWithCount ingredientWithCount) {

@@ -92,6 +92,7 @@ public class LangGenerator extends FabricLanguageProvider {
         translationBuilder.add("emi.category.bwt.turntable", "Turntable");
         translationBuilder.add("emi.category.bwt.kiln", "Kiln");
         translationBuilder.add("emi.category.bwt.hopper_souls", "Hopper: Soul Extraction");
+        translationBuilder.add("emi.category.bwt.hopper_filtering", "Hopper: Filter");
         translationBuilder.add("emi.tooltip.bwt.hopper_souls_power", "Mechanical Power to the Hopper is advised.");
 
 
