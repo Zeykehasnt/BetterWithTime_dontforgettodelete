@@ -6,6 +6,7 @@ import com.bwt.emi.recipehandlers.EmiCookingPotRecipeHandler;
 import com.bwt.emi.recipes.EmiCookingPotRecipe;
 import com.bwt.emi.recipes.EmiMillstoneRecipe;
 import com.bwt.emi.recipes.EmiSawRecipe;
+import com.bwt.emi.recipes.EmiTurntableRecipe;
 import com.bwt.recipes.BlockIngredient;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.recipes.IngredientWithCount;
@@ -37,6 +38,7 @@ public class BwtEmiPlugin implements EmiPlugin {
     public static EmiRecipeCategory STOKED_CRUCIBLE = category("crucible", EmiStack.of(BwtBlocks.crucibleBlock));
     public static EmiRecipeCategory MILL_STONE = category("mill_stone", EmiStack.of(BwtBlocks.millStoneBlock));
     public static EmiRecipeCategory SAW = category("saw", EmiStack.of(BwtBlocks.sawBlock));
+    public static EmiRecipeCategory TURNTABLE = category("turntable", EmiStack.of(BwtBlocks.turntableBlock));
 
     public static EmiRecipeCategory category(String id, EmiStack icon) {
         return new EmiRecipeCategory(new Identifier("bwt", id), icon,
@@ -61,6 +63,7 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addCategory(STOKED_CRUCIBLE);
         reg.addCategory(MILL_STONE);
         reg.addCategory(SAW);
+        reg.addCategory(TURNTABLE);
 
         reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(CAULDRON));
         reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(STOKED_CAULDRON));
@@ -71,7 +74,7 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addWorkstation(STOKED_CRUCIBLE, EmiStack.of(BwtBlocks.crucibleBlock));
         reg.addWorkstation(MILL_STONE, EmiStack.of(BwtBlocks.millStoneBlock));
         reg.addWorkstation(SAW, EmiStack.of(BwtBlocks.sawBlock));
-
+        reg.addWorkstation(TURNTABLE, EmiStack.of(BwtBlocks.turntableBlock));
 
         for (var recipe : getRecipes(reg, BwtRecipes.CAULDRON_RECIPE_TYPE)) {
             reg.addRecipe(new EmiCookingPotRecipe<>(CAULDRON, recipe.getLeft(), recipe.getRight()));
@@ -91,7 +94,9 @@ public class BwtEmiPlugin implements EmiPlugin {
         for (var recipe : getRecipes(reg, BwtRecipes.SAW_RECIPE_TYPE)) {
             reg.addRecipe(new EmiSawRecipe(SAW, recipe.getLeft(), recipe.getRight()));
         }
-
+        for (var recipe : getRecipes(reg, BwtRecipes.TURNTABLE_RECIPE_TYPE)) {
+            reg.addRecipe(new EmiTurntableRecipe(TURNTABLE, recipe.getLeft(), recipe.getRight()));
+        }
 
     }
 
