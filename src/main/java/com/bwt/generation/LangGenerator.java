@@ -90,6 +90,7 @@ public class LangGenerator extends FabricLanguageProvider {
         translationBuilder.add("emi.category.bwt.mill_stone", "Mill Stone");
         translationBuilder.add("emi.category.bwt.saw", "Saw");
         translationBuilder.add("emi.category.bwt.turntable", "Turntable");
+        translationBuilder.add("emi.category.bwt.kiln", "Kiln");
 
         // Load an existing language file.
         try {

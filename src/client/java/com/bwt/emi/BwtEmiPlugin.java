@@ -3,10 +3,7 @@ package com.bwt.emi;
 import com.bwt.BetterWithTime;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.emi.recipehandlers.EmiCookingPotRecipeHandler;
-import com.bwt.emi.recipes.EmiCookingPotRecipe;
-import com.bwt.emi.recipes.EmiMillstoneRecipe;
-import com.bwt.emi.recipes.EmiSawRecipe;
-import com.bwt.emi.recipes.EmiTurntableRecipe;
+import com.bwt.emi.recipes.*;
 import com.bwt.recipes.BlockIngredient;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.recipes.IngredientWithCount;
@@ -18,6 +15,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import net.minecraft.block.Blocks;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
@@ -39,6 +37,7 @@ public class BwtEmiPlugin implements EmiPlugin {
     public static EmiRecipeCategory MILL_STONE = category("mill_stone", EmiStack.of(BwtBlocks.millStoneBlock));
     public static EmiRecipeCategory SAW = category("saw", EmiStack.of(BwtBlocks.sawBlock));
     public static EmiRecipeCategory TURNTABLE = category("turntable", EmiStack.of(BwtBlocks.turntableBlock));
+    public static EmiRecipeCategory KILN = category("kiln", EmiStack.of(Blocks.BRICKS));
 
     public static EmiRecipeCategory category(String id, EmiStack icon) {
         return new EmiRecipeCategory(new Identifier("bwt", id), icon,
@@ -64,6 +63,7 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addCategory(MILL_STONE);
         reg.addCategory(SAW);
         reg.addCategory(TURNTABLE);
+        reg.addCategory(KILN);
 
         reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(CAULDRON));
         reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(STOKED_CAULDRON));
@@ -75,6 +75,7 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addWorkstation(MILL_STONE, EmiStack.of(BwtBlocks.millStoneBlock));
         reg.addWorkstation(SAW, EmiStack.of(BwtBlocks.sawBlock));
         reg.addWorkstation(TURNTABLE, EmiStack.of(BwtBlocks.turntableBlock));
+        reg.addWorkstation(KILN, EmiStack.of(Blocks.BRICKS));
 
         for (var recipe : getRecipes(reg, BwtRecipes.CAULDRON_RECIPE_TYPE)) {
             reg.addRecipe(new EmiCookingPotRecipe<>(CAULDRON, recipe.getLeft(), recipe.getRight()));
@@ -96,6 +97,9 @@ public class BwtEmiPlugin implements EmiPlugin {
         }
         for (var recipe : getRecipes(reg, BwtRecipes.TURNTABLE_RECIPE_TYPE)) {
             reg.addRecipe(new EmiTurntableRecipe(TURNTABLE, recipe.getLeft(), recipe.getRight()));
+        }
+        for (var recipe : getRecipes(reg, BwtRecipes.KILN_RECIPE_TYPE)) {
+            reg.addRecipe(new EmiKilnRecipe(KILN, recipe.getLeft(), recipe.getRight()));
         }
 
     }
