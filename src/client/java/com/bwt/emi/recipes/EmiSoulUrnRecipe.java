@@ -39,7 +39,7 @@ public class EmiSoulUrnRecipe implements EmiRecipe {
 
     @Override
     public @Nullable Identifier getId() {
-        return new Identifier("bwt", "hopper_soul_url");
+        return new Identifier("bwt", "hopper_soul_urn");
     }
 
     @Override
