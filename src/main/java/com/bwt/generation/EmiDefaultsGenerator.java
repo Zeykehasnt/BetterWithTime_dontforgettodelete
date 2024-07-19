@@ -39,7 +39,9 @@ public class EmiDefaultsGenerator implements DataProvider {
 
     public void addDefaults() {
         addDefaultRecipe(new Identifier("bwt", "hopper_soul_url"));
-
+        addDefaultRecipe(new Identifier("bwt", "fabric"));
+        addDefaultRecipe(new Identifier("bwt", "wood_blade"));
+        addDefaultRecipe(new Identifier("bwt", "rope"));
 
     }
 
