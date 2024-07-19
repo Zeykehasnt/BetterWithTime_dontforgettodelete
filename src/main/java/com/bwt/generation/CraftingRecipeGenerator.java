@@ -231,6 +231,12 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('w', Items.WATER_BUCKET)
                 .criterion(hasItem(Items.BONE), conditionsFromItem(Items.BONE))
                 .offerTo(exporter);
+        ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, BwtBlocks.cauldronBlock)
+                .input(Blocks.CAULDRON)
+                .input(Items.BONE)
+                .input(Items.WATER_BUCKET)
+                .criterion(hasItem(Items.BONE), conditionsFromItem(Items.BONE))
+                .offerTo(exporter, new Identifier("bwt", "cauldron_from_vanilla"));
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, BwtBlocks.lightBlockBlock)
                 .pattern(" p ")
                 .pattern("pfp")
