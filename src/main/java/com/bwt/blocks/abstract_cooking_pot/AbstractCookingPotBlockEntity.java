@@ -12,18 +12,19 @@ import com.bwt.utils.OrderedRecipeMatcher;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SingleSlotStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.listener.ClientPlayPacketListener;
@@ -37,7 +38,6 @@ import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -143,6 +143,11 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
                 markDirty();
             }
             return;
+        }
+
+        if (inventory.containsAny(itemStack -> itemStack.isOf(BwtItems.dungItem))
+                && inventory.containsAny(itemStack -> itemStack.getComponents().get(DataComponentTypes.FOOD) != null)) {
+            spoilFood();
         }
 
         if (fireData.fireType().equals(FireType.STOKED)) {
@@ -301,6 +306,20 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
             }
             transaction.commit();
             return true;
+        }
+    }
+
+    public void spoilFood() {
+        try (Transaction transaction = Transaction.openOuter()) {
+            for (SingleSlotStorage<ItemVariant> slot : inventoryWrapper.getSlots()) {
+                ItemVariant resource = slot.getResource();
+                if (resource.toStack().getComponents().get(DataComponentTypes.FOOD) == null) {
+                    continue;
+                }
+                long count = slot.extract(resource, resource.getItem().getMaxCount(), transaction);
+                slot.insert(ItemVariant.of(BwtItems.foulFoodItem), count, transaction);
+            }
+            transaction.commit();
         }
     }
 

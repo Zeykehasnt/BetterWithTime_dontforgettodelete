@@ -45,16 +45,6 @@ public class CauldronRecipeGenerator extends FabricRecipeProvider {
 
     private void generateUnstoked(RecipeExporter exporter) {
         generateFoods(exporter);
-        // Foul foods
-        Registries.ITEM.stream()
-                .filter(item -> item.getDefaultStack().get(DataComponentTypes.FOOD) != null)
-                .filter(item -> !item.equals(BwtItems.foulFoodItem))
-                .forEach(item -> CauldronRecipe.JsonBuilder.create()
-                        .ingredient(BwtItems.dungItem)
-                        .ingredient(item)
-                        .result(BwtItems.foulFoodItem)
-                        .offerTo(exporter, "bwt:foul_food_from_" + Registries.ITEM.getId(item).getPath())
-                );
         CauldronRecipe.JsonBuilder.create().ingredient(BwtItems.dungItem).ingredient(BwtItems.scouredLeatherItem).result(BwtItems.tannedLeatherItem).offerTo(exporter);
         CauldronRecipe.JsonBuilder.create().ingredient(Items.GLOWSTONE_DUST).ingredient(Items.REDSTONE).ingredient(BwtItems.hempFiberItem).result(BwtItems.filamentItem).offerTo(exporter);
         CauldronRecipe.JsonBuilder.create().ingredient(BwtItems.hellfireDustItem, 8).result(BwtItems.concentratedHellfireItem).group("concentrated_hellfire").offerTo(exporter);
