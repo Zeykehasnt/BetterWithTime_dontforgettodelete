@@ -10,6 +10,7 @@ import com.bwt.blocks.dirt_slab.DirtSlabBlock;
 import com.bwt.blocks.dirt_slab.GrassSlabBlock;
 import com.bwt.blocks.lens.LensBeamBlock;
 import com.bwt.blocks.lens.LensBlock;
+import com.bwt.blocks.dirt_slab.MyceliumSlabBlock;
 import com.bwt.blocks.mech_hopper.MechHopperBlock;
 import com.bwt.blocks.mill_stone.MillStoneBlock;
 import com.bwt.blocks.mining_charge.MiningChargeBlock;
@@ -261,6 +262,8 @@ public class BwtBlocks implements ModInitializer {
     public static final Block dirtSlabBlock = new DirtSlabBlock(AbstractBlock.Settings.copy(Blocks.DIRT));
     public static final Block dirtPathSlabBlock = new DirtPathSlabBlock(AbstractBlock.Settings.copy(Blocks.DIRT_PATH));
     public static final Block grassSlabBlock = new GrassSlabBlock(AbstractBlock.Settings.copy(Blocks.GRASS_BLOCK));
+    public static final Block myceliumSlabBlock = new MyceliumSlabBlock(AbstractBlock.Settings.copy(Blocks.MYCELIUM));
+    public static final Block podzolSlabBlock = new MyceliumSlabBlock(AbstractBlock.Settings.copy(Blocks.PODZOL));
 
     @Override
     public void onInitialize() {
@@ -426,9 +429,14 @@ public class BwtBlocks implements ModInitializer {
         Registry.register(Registries.BLOCK, Id.of("dirt_path_slab"), dirtPathSlabBlock);
         Registry.register(Registries.ITEM, Id.of("dirt_path_slab"), new BlockItem(dirtPathSlabBlock, new Item.Settings()));
         // Grass Slab
-        Registry.register(Registries.BLOCK, Id.of("grass_slab"), grassSlabBlock);
-        Registry.register(Registries.ITEM, Id.of("grass_slab"), new BlockItem(grassSlabBlock, new Item.Settings()));
-
+        Registry.register(Registries.BLOCK, Id.of("bwt", "grass_slab"), grassSlabBlock);
+        Registry.register(Registries.ITEM, Id.of("bwt", "grass_slab"), new BlockItem(grassSlabBlock, new Item.Settings()));
+// Mycelium Slab
+        Registry.register(Registries.BLOCK, Id.of("mycelium_slab"), myceliumSlabBlock);
+        Registry.register(Registries.ITEM, Id.of("mycelium_slab"), new BlockItem(myceliumSlabBlock, new Item.Settings()));
+        // Podzol Slab
+        Registry.register(Registries.BLOCK, Id.of("podzol_slab"), podzolSlabBlock);
+        Registry.register(Registries.ITEM, Id.of("podzol_slab"), new BlockItem(podzolSlabBlock, new Item.Settings()));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(content -> {
             content.addAfter(Items.CHERRY_LOG, BwtBlocks.bloodWoodBlocks.logBlock);
             content.addAfter(Items.CHERRY_LEAVES, BwtBlocks.bloodWoodBlocks.leavesBlock);
@@ -530,9 +538,13 @@ public class BwtBlocks implements ModInitializer {
             content.add(dirtSlabBlock);
             content.add(dirtPathSlabBlock);
             content.add(grassSlabBlock);
+            content.add(myceliumSlabBlock);
+            content.add(podzolSlabBlock);
         });
 
         FlattenableBlockRegistry.register(BwtBlocks.grassSlabBlock, BwtBlocks.dirtPathSlabBlock.getDefaultState());
         FlattenableBlockRegistry.register(BwtBlocks.dirtSlabBlock, BwtBlocks.dirtPathSlabBlock.getDefaultState());
+        FlattenableBlockRegistry.register(BwtBlocks.myceliumSlabBlock, BwtBlocks.dirtPathSlabBlock.getDefaultState());
+        FlattenableBlockRegistry.register(BwtBlocks.podzolSlabBlock, BwtBlocks.dirtPathSlabBlock.getDefaultState());
     }
 }

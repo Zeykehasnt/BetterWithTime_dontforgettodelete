@@ -2,6 +2,7 @@ package com.bwt.generation;
 
 import com.bwt.blocks.*;
 import com.bwt.blocks.abstract_cooking_pot.AbstractCookingPotBlock;
+import com.bwt.blocks.dirt_slab.DirtSlabBlock;
 import com.bwt.blocks.lens.LensBeamBlock;
 import com.bwt.blocks.turntable.TurntableBlock;
 import com.bwt.items.BwtItems;
@@ -601,11 +602,54 @@ public class ModelGenerator extends FabricModelProvider {
                         .put(TextureKey.SIDE, dirtTexture),
                 Models.SLAB
         ).upload(BwtBlocks.dirtSlabBlock, blockStateModelGenerator.modelCollector);
-        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(BwtBlocks.dirtSlabBlock, BlockStateVariant.create().put(VariantSettings.MODEL, dirtSlab)));
+        Identifier snowyDirtSlab = Id.of("block/snowy_dirt_slab");
+        Identifier dirtPathSlab = Id.of("block/dirt_path_slab");
+        Identifier grassSlab = Id.of("block/grass_slab");
+        Identifier snowyGrassSlab = Id.of("block/snowy_grass_slab");
+        Identifier myceliumSlab = Id.of("block/mycelium_slab");
+        Identifier snowyMyceliumSlab = Id.of("block/snowy_mycelium_slab");
+        Identifier podzolSlab = Id.of("block/podzol_slab");
+        Identifier snowyPodzolSlab = Id.of("block/snowy_podzol_slab");
+
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(BwtBlocks.dirtSlabBlock)
+                        .coordinate(
+                                BlockStateVariantMap.create(DirtSlabBlock.SNOWY)
+                                        .register(true, BlockStateVariant.create().put(VariantSettings.MODEL, snowyDirtSlab))
+                                        .register(false, BlockStateVariant.create().put(VariantSettings.MODEL, dirtSlab))
+                        )
+
+        );
+
         //Grass Slab
-        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(BwtBlocks.grassSlabBlock, BlockStateVariant.create().put(VariantSettings.MODEL, new Identifier("bwt", "block/grass_slab"))));
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(BwtBlocks.grassSlabBlock)
+                        .coordinate(
+                                BlockStateVariantMap.create(DirtSlabBlock.SNOWY)
+                                        .register(true, BlockStateVariant.create().put(VariantSettings.MODEL, snowyGrassSlab))
+                                        .register(false, BlockStateVariant.create().put(VariantSettings.MODEL, grassSlab))
+                        )
+        );
+        //Mycelium Slab
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(BwtBlocks.myceliumSlabBlock)
+                        .coordinate(
+                                BlockStateVariantMap.create(DirtSlabBlock.SNOWY)
+                                        .register(true, BlockStateVariant.create().put(VariantSettings.MODEL, snowyMyceliumSlab))
+                                        .register(false, BlockStateVariant.create().put(VariantSettings.MODEL, myceliumSlab))
+                        )
+        );
+        //Podzol Slab
+        blockStateModelGenerator.blockStateCollector.accept(
+                VariantsBlockStateSupplier.create(BwtBlocks.podzolSlabBlock)
+                        .coordinate(
+                                BlockStateVariantMap.create(DirtSlabBlock.SNOWY)
+                                        .register(true, BlockStateVariant.create().put(VariantSettings.MODEL, snowyPodzolSlab))
+                                        .register(false, BlockStateVariant.create().put(VariantSettings.MODEL, podzolSlab))
+                        )
+        );
         //Dirt Path Slab
-        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(BwtBlocks.dirtPathSlabBlock, BlockStateVariant.create().put(VariantSettings.MODEL, new Identifier("bwt", "block/dirt_path_slab"))));
+        blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(BwtBlocks.dirtPathSlabBlock, BlockStateVariant.create().put(VariantSettings.MODEL, dirtPathSlab)));
     }
 
 }
