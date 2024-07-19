@@ -1,4 +1,3 @@
 {
-  "parent": "bwt:block/crucible",
-  "y": 90
+  "parent": "bwt:block/crucible_up"
 }

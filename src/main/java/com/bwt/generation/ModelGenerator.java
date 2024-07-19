@@ -190,18 +190,8 @@ public class ModelGenerator extends FabricModelProvider {
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.anchorBlock, ModelIds.getBlockModelId(BwtBlocks.anchorBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.axleBlock, ModelIds.getBlockModelId(BwtBlocks.axleBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.blockDispenserBlock, ModelIds.getBlockModelId(BwtBlocks.blockDispenserBlock));
-        blockStateModelGenerator.modelCollector.accept(ModelIds.getItemModelId(BwtBlocks.cauldronBlock.asItem()), () -> {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("parent", ModelIds.getBlockModelId(BwtBlocks.cauldronBlock).toString());
-            jsonObject.addProperty("y", 90);
-            return jsonObject;
-        });
-        blockStateModelGenerator.modelCollector.accept(ModelIds.getItemModelId(BwtBlocks.crucibleBlock.asItem()), () -> {
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("parent", ModelIds.getBlockModelId(BwtBlocks.crucibleBlock).toString());
-            jsonObject.addProperty("y", 90);
-            return jsonObject;
-        });
+        blockStateModelGenerator.registerParentedItemModel(BwtBlocks.cauldronBlock, ModelIds.getBlockSubModelId(BwtBlocks.cauldronBlock, "_up"));
+        blockStateModelGenerator.registerParentedItemModel(BwtBlocks.crucibleBlock, ModelIds.getBlockSubModelId(BwtBlocks.crucibleBlock, "_up"));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.detectorBlock, ModelIds.getBlockModelId(BwtBlocks.detectorBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.gearBoxBlock, ModelIds.getBlockModelId(BwtBlocks.gearBoxBlock));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.handCrankBlock, ModelIds.getBlockModelId(BwtBlocks.handCrankBlock));
