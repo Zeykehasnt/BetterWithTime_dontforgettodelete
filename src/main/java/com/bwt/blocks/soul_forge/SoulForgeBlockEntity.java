@@ -3,6 +3,7 @@ package com.bwt.blocks.soul_forge;
 import com.bwt.block_entities.BwtBlockEntities;
 import com.bwt.mixin.accessors.CraftingInventoryAccessorMixin;
 import com.bwt.recipes.BwtRecipes;
+import com.bwt.recipes.SoulForgeRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -127,7 +128,7 @@ public class SoulForgeBlockEntity extends LockableContainerBlockEntity implement
     public ItemStack getStack(int slot) {
         if (slot > 0) return this.inventory.get(slot - 1);
         if (!output.isEmpty()) return output;
-        Optional<RecipeEntry<CraftingRecipe>> recipe = getCurrentRecipe();
+        Optional<RecipeEntry<? extends CraftingRecipe>> recipe = getCurrentRecipe();
         return recipe.map(craftingRecipe -> craftingRecipe.value().craft(craftingInventory, world.getRegistryManager())).orElse(ItemStack.EMPTY);
     }
 
@@ -191,7 +192,7 @@ public class SoulForgeBlockEntity extends LockableContainerBlockEntity implement
         this.inventory.clear();
     }
 
-    private Optional<RecipeEntry<CraftingRecipe>> getCurrentRecipe() {
+    private Optional<RecipeEntry<? extends CraftingRecipe>> getCurrentRecipe() {
         // No need to find recipes if the inventory is empty. Cannot craft anything.
         if (this.world == null || this.isEmpty()) return Optional.empty();
 
@@ -200,8 +201,8 @@ public class SoulForgeBlockEntity extends LockableContainerBlockEntity implement
 
         if (lastRecipe != null) {
             List<RecipeEntry<CraftingRecipe>> regularRecipes = manager.listAllOfType(RecipeType.CRAFTING);
-            List<RecipeEntry<CraftingRecipe>> soulForgeRecipes = manager.listAllOfType(BwtRecipes.SOUL_FORGE_RECIPE_TYPE);
-            Optional<RecipeEntry<CraftingRecipe>> optionalRecipe = Stream.concat(regularRecipes.stream(), soulForgeRecipes.stream()).filter(recipe -> recipe.id().equals(lastRecipe.id())).findFirst();
+            List<RecipeEntry<SoulForgeRecipe>> soulForgeRecipes = manager.listAllOfType(BwtRecipes.SOUL_FORGE_RECIPE_TYPE);
+            Optional<RecipeEntry<? extends CraftingRecipe>> optionalRecipe = Stream.concat(regularRecipes.stream(), soulForgeRecipes.stream()).filter(recipe -> recipe.id().equals(lastRecipe.id())).findFirst();
             if (optionalRecipe.isPresent() && optionalRecipe.get().value().matches(craftingInventory, world)) {
                 return optionalRecipe;
             }
@@ -209,21 +210,21 @@ public class SoulForgeBlockEntity extends LockableContainerBlockEntity implement
         Optional<RecipeEntry<CraftingRecipe>> recipe = manager.getFirstMatch(RecipeType.CRAFTING, craftingInventory, world);
         if (recipe.isPresent()) {
             setLastRecipe(recipe.get());
-            return recipe;
+            return Optional.of(recipe.get());
         }
-        Optional<RecipeEntry<CraftingRecipe>> recipe2 = manager.getFirstMatch(BwtRecipes.SOUL_FORGE_RECIPE_TYPE, craftingInventory, world);
+        Optional<RecipeEntry<SoulForgeRecipe>> recipe2 = manager.getFirstMatch(BwtRecipes.SOUL_FORGE_RECIPE_TYPE, craftingInventory, world);
         if (recipe2.isPresent()) {
             setLastRecipe(recipe2.get());
-            return recipe2;
+            return Optional.of(recipe2.get());
         }
         return Optional.empty();
     }
 
     private ItemStack craft() {
         if (this.world == null) return ItemStack.EMPTY;
-        Optional<RecipeEntry<CraftingRecipe>> optionalRecipe = getCurrentRecipe();
+        Optional<RecipeEntry<? extends CraftingRecipe>> optionalRecipe = getCurrentRecipe();
         if (optionalRecipe.isEmpty()) return ItemStack.EMPTY;
-        RecipeEntry<CraftingRecipe> recipe = optionalRecipe.get();
+        RecipeEntry<? extends CraftingRecipe> recipe = optionalRecipe.get();
         ItemStack result = recipe.value().craft(craftingInventory, world.getRegistryManager());
         DefaultedList<ItemStack> remaining = world.getRecipeManager().getRemainingStacks(RecipeType.CRAFTING, craftingInventory, world);
         for (int i = 0; i < GRID_SIZE; i++) {

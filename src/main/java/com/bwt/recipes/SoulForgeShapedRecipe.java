@@ -23,7 +23,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.Objects;
 
-public class SoulForgeShapedRecipe extends ShapedRecipe {
+public class SoulForgeShapedRecipe extends ShapedRecipe implements SoulForgeRecipe {
     protected RawShapedRecipe raw;
 
     public SoulForgeShapedRecipe(String group, CraftingRecipeCategory category, RawShapedRecipe raw, ItemStack result, boolean showNotification) {

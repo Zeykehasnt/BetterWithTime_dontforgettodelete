@@ -27,7 +27,7 @@ import net.minecraft.util.collection.DefaultedList;
 
 import java.util.Objects;
 
-public class SoulForgeShapelessRecipe extends ShapelessRecipe {
+public class SoulForgeShapelessRecipe extends ShapelessRecipe implements SoulForgeRecipe {
 
     public SoulForgeShapelessRecipe(String group, CraftingRecipeCategory category, ItemStack result, DefaultedList<Ingredient> ingredients) {
         super(group, category, result, ingredients);

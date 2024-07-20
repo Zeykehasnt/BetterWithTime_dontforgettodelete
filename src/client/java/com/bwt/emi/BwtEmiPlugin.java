@@ -48,7 +48,6 @@ public class BwtEmiPlugin implements EmiPlugin {
     public static EmiRecipeCategory SAW = category("saw", EmiStack.of(BwtBlocks.sawBlock));
     public static EmiRecipeCategory TURNTABLE = category("turntable", EmiStack.of(BwtBlocks.turntableBlock));
     public static EmiRecipeCategory KILN = category("kiln", EmiStack.of(Blocks.BRICKS));
-    public static EmiRecipeCategory SOUL_FORGE_ONLY = category("soul_forge_only", EmiStack.of(BwtBlocks.soulForgeBlock));
     public static EmiRecipeCategory SOUL_FORGE = category("soul_forge", EmiStack.of(BwtBlocks.soulForgeBlock));
     public static EmiRecipeCategory HOPPER_SOULS = category("hopper_souls", EmiStack.of(BwtBlocks.hopperBlock));
     public static EmiRecipeCategory HOPPER_FILTERING = category("hopper_filtering", EmiStack.of(BwtBlocks.hopperBlock));
@@ -83,7 +82,6 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addCategory(TURNTABLE);
         reg.addCategory(KILN);
         reg.addCategory(SOUL_FORGE);
-        reg.addCategory(SOUL_FORGE_ONLY);
         reg.addCategory(HOPPER_SOULS);
         reg.addCategory(HOPPER_FILTERING);
 
@@ -100,7 +98,6 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addWorkstation(TURNTABLE, EmiStack.of(BwtBlocks.turntableBlock));
         reg.addWorkstation(KILN, EmiStack.of(Blocks.BRICKS));
         reg.addWorkstation(SOUL_FORGE, EmiStack.of(BwtBlocks.soulForgeBlock));
-        reg.addWorkstation(SOUL_FORGE_ONLY, EmiStack.of(BwtBlocks.soulForgeBlock));
         reg.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(BwtBlocks.soulForgeBlock));
         reg.addWorkstation(HOPPER_SOULS, EmiStack.of(BwtBlocks.hopperBlock));
         reg.addWorkstation(HOPPER_FILTERING, EmiStack.of(BwtBlocks.hopperBlock));
@@ -133,9 +130,9 @@ public class BwtEmiPlugin implements EmiPlugin {
         for (var recipe : getRecipes(reg, BwtRecipes.KILN_RECIPE_TYPE)) {
             reg.addRecipe(new EmiKilnRecipe(KILN, recipe.getLeft(), recipe.getRight()));
         }
-//        for (var r : getRecipes(reg, RecipeType.CRAFTING)) {
-//            reg.addRecipe(new EmiSoulForgeRecipe(r.getRight(),r.getLeft()));
-//        }
+        for (var r : getRecipes(reg, BwtRecipes.SOUL_FORGE_RECIPE_TYPE)) {
+            reg.addRecipe(new EmiSoulForgeRecipe(r.getRight(),r.getLeft()));
+        }
         reg.addRecipe(new EmiSoulUrnRecipe());
         reg.addRecipe(new EmiHellfireRecipe());
 
