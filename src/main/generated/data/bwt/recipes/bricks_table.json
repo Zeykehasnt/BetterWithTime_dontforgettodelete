@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "bwt:soul_forge_shaped",
   "category": "building",
   "group": "table",
   "key": {

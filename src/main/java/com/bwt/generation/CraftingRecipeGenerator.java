@@ -699,7 +699,7 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .criterion("has_wooden_moulding", conditionsFromTag(BwtItemTags.WOODEN_MOULDING_BLOCKS))
                 .offerTo(exporter, highEfficiencyId(Items.ITEM_FRAME));
         BlockFamilies.getFamilies()
-//                .filter(blockFamily -> blockFamily.getGroup().orElse("").equals("wooden"))
+                .filter(blockFamily -> blockFamily.getGroup().orElse("").equals("wooden"))
                 .forEach(blockFamily -> createHighEfficiencyBlockFamilyRecipes(blockFamily, exporter));
     }
 

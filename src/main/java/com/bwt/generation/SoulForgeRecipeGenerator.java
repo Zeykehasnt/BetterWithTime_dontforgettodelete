@@ -6,22 +6,110 @@ import com.bwt.recipes.SoulForgeShapedRecipe;
 import com.bwt.recipes.SoulForgeShapelessRecipe;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.block.Block;
+import net.minecraft.data.family.BlockFamilies;
+import net.minecraft.data.family.BlockFamily;
+import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeExporter;
-import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
+import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.Identifier;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
     public SoulForgeRecipeGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(output, registryLookup);
     }
 
+    private Identifier highEfficiencyId(ItemConvertible itemConvertible) {
+        return new Identifier("bwt", Registries.ITEM.getId(itemConvertible.asItem()).withPrefixedPath("he_").getPath());
+    }
+
+    private void createHighEfficiencyBlockFamilyRecipe(RecipeExporter exporter, BlockFamily blockFamily, BlockFamily.Variant variant, Function<Block, CraftingRecipeJsonBuilder> builder) {
+        Optional.ofNullable(blockFamily.getVariant(variant))
+                .ifPresent(result -> builder.apply(result)
+                        .group(blockFamily.getGroup().map(group -> group + "_" + variant.getName()).orElse(null))
+                        .offerTo(exporter, highEfficiencyId(result))
+                );
+    }
+
+    private void createHighEfficiencyBlockFamilyRecipes(BlockFamily blockFamily, RecipeExporter exporter) {
+        Block baseBlock = blockFamily.getBaseBlock();
+        Optional<SidingBlock> optionalSidingBlock = BwtBlocks.sidingBlocks.stream().filter(siding -> siding.fullBlock == baseBlock).findFirst();
+        Optional<MouldingBlock> optionalMouldingBlock = BwtBlocks.mouldingBlocks.stream().filter(siding -> siding.fullBlock == baseBlock).findFirst();
+        Optional<CornerBlock> optionalCornerBlock = BwtBlocks.cornerBlocks.stream().filter(siding -> siding.fullBlock == baseBlock).findFirst();
+
+        if (optionalSidingBlock.isEmpty() || optionalMouldingBlock.isEmpty() || optionalCornerBlock.isEmpty()) {
+            return;
+        }
+        SidingBlock sidingBlock = optionalSidingBlock.get();
+        MouldingBlock mouldingBlock = optionalMouldingBlock.get();
+        CornerBlock cornerBlock = optionalCornerBlock.get();
+
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.DOOR,
+                door -> SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.REDSTONE, door, 3)
+                        .input('#', Ingredient.ofItems(sidingBlock))
+                        .pattern("##")
+                        .pattern("##")
+                        .pattern("##")
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.TRAPDOOR,
+                trapdoor -> SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.REDSTONE, trapdoor, 2)
+                        .input('#', Ingredient.ofItems(sidingBlock))
+                        .pattern("###")
+                        .pattern("###")
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.PRESSURE_PLATE,
+                pressurePlate -> SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.REDSTONE, pressurePlate)
+                        .pattern("ss")
+                        .input('s', sidingBlock)
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.FENCE,
+                fence -> SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.DECORATIONS, fence, 3)
+                        .pattern("sms")
+                        .pattern("sms")
+                        .input('s', sidingBlock)
+                        .input('m', mouldingBlock)
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.FENCE_GATE,
+                fenceGate -> SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.REDSTONE, fenceGate)
+                        .pattern("msm")
+                        .pattern("msm")
+                        .input('s', sidingBlock)
+                        .input('m', mouldingBlock)
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.SIGN,
+                sign -> SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.DECORATIONS, sign)
+                        .pattern("s")
+                        .pattern("m")
+                        .input('s', sidingBlock)
+                        .input('m', mouldingBlock)
+                        .criterion("has_siding", conditionsFromItem(sidingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.STAIRS,
+                stair -> SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, stair)
+                        .pattern("m ")
+                        .pattern("mm")
+                        .input('m', mouldingBlock)
+                        .criterion("has_moulding", conditionsFromItem(mouldingBlock)));
+        createHighEfficiencyBlockFamilyRecipe(exporter, blockFamily, BlockFamily.Variant.BUTTON,
+                button -> SoulForgeShapelessRecipe.JsonBuilder.create(RecipeCategory.REDSTONE, button)
+                        .input(cornerBlock)
+                        .criterion(hasItem(cornerBlock), conditionsFromItem(cornerBlock)));
+    }
+
     @Override
     public void generate(RecipeExporter exporter) {
+        BlockFamilies.getFamilies()
+                .filter(blockFamily -> !blockFamily.getGroup().orElse("").equals("wooden"))
+                .forEach(blockFamily -> createHighEfficiencyBlockFamilyRecipes(blockFamily, exporter));
+
         for (int i = 0; i < BwtBlocks.sidingBlocks.size(); i++) {
             SidingBlock sidingBlock = BwtBlocks.sidingBlocks.get(i);
             MouldingBlock mouldingBlock = BwtBlocks.mouldingBlocks.get(i);
@@ -68,7 +156,7 @@ public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
                     .offerTo(exporter, "bwt:recombine_" + Registries.BLOCK.getId(cornerBlock).getPath());
 
             // Decorative blocks
-            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, columnBlock)
+            SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, columnBlock)
                     .pattern("#")
                     .pattern("#")
                     .pattern("#")
@@ -76,7 +164,7 @@ public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
                     .group("column")
                     .criterion(hasItem(mouldingBlock), conditionsFromItem(mouldingBlock))
                     .offerTo(exporter);
-            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, pedestalBlock, 6)
+            SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, pedestalBlock, 6)
                     .pattern(" s ")
                     .pattern("###")
                     .pattern("###")
@@ -85,7 +173,7 @@ public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
                     .group("pedestal")
                     .criterion(hasItem(sidingBlock), conditionsFromItem(sidingBlock))
                     .offerTo(exporter);
-            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, tableBlock, 4)
+            SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, tableBlock, 4)
                     .pattern("sss")
                     .pattern(" m ")
                     .pattern(" m ")
