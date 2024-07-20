@@ -21,8 +21,10 @@ public class EmiSoulUrnRecipe implements EmiRecipe {
 
     public static final EmiTexture FULL_GEAR = new EmiTexture(BwtEmiPlugin.WIDGETS, 14, 0, 14, 14);
 
-    private EmiStack urn, soulUrn;
-    private EmiStack netherrack, hellfire;
+    private final EmiStack urn;
+    private final EmiStack soulUrn;
+    private final EmiStack netherrack;
+    private final EmiStack hellfire;
 
     public EmiSoulUrnRecipe() {
         urn = EmiStack.of(BwtBlocks.urnBlock);

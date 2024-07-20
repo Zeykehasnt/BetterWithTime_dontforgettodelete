@@ -29,6 +29,7 @@ public class LangGenerator extends FabricLanguageProvider {
     public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
         addSubtitles(translationBuilder);
         addTagNames(translationBuilder);
+        addEmiNames(translationBuilder);
 
         translationBuilder.add(BwtGameRules.VANILLA_HOPPERS_DISABLED.getTranslationKey(), "Disable Vanilla Hopper Transfer");
         BwtBlocks.sidingBlocks.forEach(block -> addMaterialBlockName(translationBuilder, block, "siding"));
@@ -82,20 +83,6 @@ public class LangGenerator extends FabricLanguageProvider {
         translationBuilder.add(BwtItems.netheriteMattockItem, "Netherite Mattock");
         translationBuilder.add(BwtItems.netheriteBattleAxeItem, "Netherite Battle Axe");
 
-        translationBuilder.add("emi.category.bwt.crucible", "Crucible");
-        translationBuilder.add("emi.category.bwt.stoked_crucible", "Stoked Crucible");
-        translationBuilder.add("emi.category.bwt.stoked_crucible_reclaim", "Stoked Crucible: Reclaim");
-        translationBuilder.add("emi.category.bwt.cauldron", "Cauldron");
-        translationBuilder.add("emi.category.bwt.stoked_cauldron", "Stoked Cauldron");
-        translationBuilder.add("emi.category.bwt.mill_stone", "Mill Stone");
-        translationBuilder.add("emi.category.bwt.saw", "Saw");
-        translationBuilder.add("emi.category.bwt.turntable", "Turntable");
-        translationBuilder.add("emi.category.bwt.kiln", "Kiln");
-        translationBuilder.add("emi.category.bwt.hopper_souls", "Hopper: Soul Extraction");
-        translationBuilder.add("emi.category.bwt.hopper_filtering", "Hopper: Filter");
-        translationBuilder.add("emi.tooltip.bwt.hopper_souls_power", "Mechanical Power to the Hopper is advised.");
-
-
         // Load an existing language file.
         try {
             Path existingFilePath = dataOutput.getModContainer().findPath("assets/bwt/lang/en_us.existing.json").get();
@@ -124,6 +111,26 @@ public class LangGenerator extends FabricLanguageProvider {
         addTagName(BwtItemTags.SAW_DUSTS, "Saw Dusts", translationBuilder);
         addTagName(BwtItemTags.MINING_CHARGE_IMMUNE, "Mining Charge Immune", translationBuilder);
         addTagName(BwtItemTags.BLOOD_WOOD_LOGS, "Blood Wood Logs", translationBuilder);
+    }
+
+    protected void addEmiNames(TranslationBuilder translationBuilder) {
+        addEmiCategory("crucible", "Crucible", translationBuilder);
+        addEmiCategory("stoked_crucible", "Stoked Crucible", translationBuilder);
+        addEmiCategory("stoked_crucible_reclaim", "Stoked Crucible: Reclaim", translationBuilder);
+        addEmiCategory("cauldron", "Cauldron", translationBuilder);
+        addEmiCategory("stoked_cauldron", "Stoked Cauldron", translationBuilder);
+        addEmiCategory("mill_stone", "Mill Stone", translationBuilder);
+        addEmiCategory("saw", "Saw", translationBuilder);
+        addEmiCategory("soul_forge", "Soul Forge", translationBuilder);
+        addEmiCategory("turntable", "Turntable", translationBuilder);
+        addEmiCategory("kiln", "Kiln", translationBuilder);
+        addEmiCategory("hopper_souls", "Hopper: Soul Extraction", translationBuilder);
+        addEmiCategory("hopper_filtering", "Hopper: Filter", translationBuilder);
+        translationBuilder.add("emi.tooltip.bwt.hopper_souls_power", "Mechanical Power to the Hopper is advised.");
+    }
+
+    protected void addEmiCategory(String key, String name, TranslationBuilder translationBuilder) {
+        translationBuilder.add("emi.category.bwt." + key, name);
     }
 
     protected void addSubtitles(TranslationBuilder translationBuilder) {
