@@ -127,7 +127,7 @@ public class SoulForgeBlockEntity extends LockableContainerBlockEntity implement
     public ItemStack getStack(int slot) {
         if (slot > 0) return this.inventory.get(slot - 1);
         if (!output.isEmpty()) return output;
-        Optional<RecipeEntry<? extends CraftingRecipe>> recipe = getCurrentRecipe();
+        Optional<RecipeEntry<CraftingRecipe>> recipe = getCurrentRecipe();
         return recipe.map(craftingRecipe -> craftingRecipe.value().craft(craftingInventory, world.getRegistryManager())).orElse(ItemStack.EMPTY);
     }
 
@@ -191,7 +191,7 @@ public class SoulForgeBlockEntity extends LockableContainerBlockEntity implement
         this.inventory.clear();
     }
 
-    private Optional<RecipeEntry<? extends CraftingRecipe>> getCurrentRecipe() {
+    private Optional<RecipeEntry<CraftingRecipe>> getCurrentRecipe() {
         // No need to find recipes if the inventory is empty. Cannot craft anything.
         if (this.world == null || this.isEmpty()) return Optional.empty();
 
@@ -203,27 +203,27 @@ public class SoulForgeBlockEntity extends LockableContainerBlockEntity implement
             List<RecipeEntry<CraftingRecipe>> soulForgeRecipes = manager.listAllOfType(BwtRecipes.SOUL_FORGE_RECIPE_TYPE);
             Optional<RecipeEntry<CraftingRecipe>> optionalRecipe = Stream.concat(regularRecipes.stream(), soulForgeRecipes.stream()).filter(recipe -> recipe.id().equals(lastRecipe.id())).findFirst();
             if (optionalRecipe.isPresent() && optionalRecipe.get().value().matches(craftingInventory, world)) {
-                return Optional.of(optionalRecipe.get());
+                return optionalRecipe;
             }
         }
         Optional<RecipeEntry<CraftingRecipe>> recipe = manager.getFirstMatch(RecipeType.CRAFTING, craftingInventory, world);
         if (recipe.isPresent()) {
             setLastRecipe(recipe.get());
-            return Optional.of(recipe.get());
+            return recipe;
         }
         Optional<RecipeEntry<CraftingRecipe>> recipe2 = manager.getFirstMatch(BwtRecipes.SOUL_FORGE_RECIPE_TYPE, craftingInventory, world);
         if (recipe2.isPresent()) {
             setLastRecipe(recipe2.get());
-            return Optional.of(recipe2.get());
+            return recipe2;
         }
         return Optional.empty();
     }
 
     private ItemStack craft() {
         if (this.world == null) return ItemStack.EMPTY;
-        Optional<RecipeEntry<? extends CraftingRecipe>> optionalRecipe = getCurrentRecipe();
+        Optional<RecipeEntry<CraftingRecipe>> optionalRecipe = getCurrentRecipe();
         if (optionalRecipe.isEmpty()) return ItemStack.EMPTY;
-        RecipeEntry<? extends CraftingRecipe> recipe = optionalRecipe.get();
+        RecipeEntry<CraftingRecipe> recipe = optionalRecipe.get();
         ItemStack result = recipe.value().craft(craftingInventory, world.getRegistryManager());
         DefaultedList<ItemStack> remaining = world.getRecipeManager().getRemainingStacks(RecipeType.CRAFTING, craftingInventory, world);
         for (int i = 0; i < GRID_SIZE; i++) {
