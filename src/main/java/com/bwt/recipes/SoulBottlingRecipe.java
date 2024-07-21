@@ -125,7 +125,7 @@ public class SoulBottlingRecipe implements Recipe<Inventory> {
     }
 
     public ItemStack getResult() {
-        return result;
+        return result.copy();
     }
 
     public static class Serializer implements RecipeSerializer<SoulBottlingRecipe> {
