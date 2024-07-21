@@ -5,6 +5,7 @@ import com.bwt.blocks.BwtBlocks;
 import com.bwt.blocks.mech_hopper.MechHopperBlock;
 import com.bwt.blocks.mech_hopper.MechHopperBlockEntity;
 import com.bwt.emi.recipehandlers.EmiCookingPotRecipeHandler;
+import com.bwt.emi.recipehandlers.EmiSoulForgeRecipeHandler;
 import com.bwt.emi.recipes.*;
 import com.bwt.recipes.AbstractCookingPotRecipe;
 import com.bwt.recipes.BlockIngredient;
@@ -86,8 +87,10 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addCategory(HOPPER_FILTERING);
 
 
-        reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(CAULDRON));
-        reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(STOKED_CAULDRON));
+//        reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(CAULDRON));
+//        reg.addRecipeHandler(BetterWithTime.cauldronScreenHandler, new EmiCookingPotRecipeHandler<>(STOKED_CAULDRON));
+        reg.addRecipeHandler(BetterWithTime.soulForgeScreenHandler, new EmiSoulForgeRecipeHandler.FourByFour());
+        reg.addRecipeHandler(BetterWithTime.soulForgeScreenHandler, new EmiSoulForgeRecipeHandler.ThreeByThree());
 
         reg.addWorkstation(CAULDRON, EmiStack.of(BwtBlocks.cauldronBlock));
         reg.addWorkstation(STOKED_CAULDRON, EmiStack.of(BwtBlocks.cauldronBlock));
