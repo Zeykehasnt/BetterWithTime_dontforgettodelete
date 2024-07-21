@@ -153,9 +153,6 @@ public class BwtEmiPlugin implements EmiPlugin {
         }
 
 
-//        reg.addRecipe(new EmiSoulUrnRecipe());
-//        reg.addRecipe(new EmiHellfireRecipe());
-
         for(var filterEntry: MechHopperBlock.filterMap.entrySet()) {
             var filter = filterEntry.getKey();
             var permitted = filterEntry.getValue();
