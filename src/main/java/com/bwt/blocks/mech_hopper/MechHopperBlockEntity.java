@@ -4,6 +4,9 @@ import com.bwt.block_entities.BwtBlockEntities;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.items.BwtItems;
 import com.bwt.mixin.VanillaHopperInvoker;
+import com.bwt.recipes.BwtRecipes;
+import com.bwt.recipes.HopperFilterRecipe;
+import com.bwt.recipes.SoulBottlingRecipe;
 import com.bwt.sounds.BwtSoundEvents;
 import com.bwt.utils.SimpleSingleStackInventory;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
@@ -32,6 +35,8 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
@@ -48,6 +53,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, Inventory {
@@ -189,32 +195,51 @@ public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHan
         if (blockEntity.soulCount > 0) {
             // souls can only be trapped if there's a soul sand filter on the hopper
             if (blockEntity.getFilterItem().equals(Items.SOUL_SAND)) {
-                BlockState blockBelowState = world.getBlockState(blockEntity.getPos().down());
-                if (blockEntity.mechPower > 0) {
-                    if (!blockBelowState.isOf(BwtBlocks.urnBlock)) {
-                        blockEntity.soulCount = 0;
-                    }
-                }
-
-                if (blockEntity.soulCount >= SOUL_STORAGE_LIMIT) {
-                    if (blockEntity.mechPower > 0 && blockBelowState.isOf(BwtBlocks.urnBlock)) {
-                        // convert the urn below to a soul urn
-                        world.setBlockState(blockEntity.getPos().down(), Blocks.AIR.getDefaultState());
-                        ItemScatterer.spawn(world, blockEntity.getPos().getX(), blockEntity.getPos().getY() - 1, blockEntity.getPos().getZ(), new ItemStack(BwtItems.soulUrnItem));
-
-                        // the rest of the souls escape (if any remain)
-                        blockEntity.soulCount = 0;
-                    }
-                    else {
-                        // the hopper has become overloaded with souls.  Destroy it and generate a ghast.
-                        soulOverloadExplode(world, blockEntity);
-                    }
-                }
+                bottleSouls(world, blockEntity);
             }
             else {
                 blockEntity.soulCount = 0;
             }
         }
+    }
+
+    protected static void bottleSouls(World world, MechHopperBlockEntity blockEntity) {
+        BlockState blockBelowState = world.getBlockState(blockEntity.getPos().down());
+
+        RecipeManager recipeManager = world.getRecipeManager();
+        Optional<SoulBottlingRecipe> optionalRecipe = recipeManager.listAllOfType(BwtRecipes.SOUL_BOTTLING_RECIPE_TYPE).stream()
+                .map(RecipeEntry::value)
+                .filter(soulBottlingRecipe -> soulBottlingRecipe.matches(blockBelowState))
+                .findFirst();
+
+        // If unpowered, we just need to check for explosions
+        // Otherwise, nothing happens while unpowered
+        if (blockEntity.mechPower <= 0) {
+            if (blockEntity.soulCount >= SOUL_STORAGE_LIMIT) {
+                soulOverloadExplode(world, blockEntity);
+            }
+            return;
+        }
+
+        // If no bottle is found, souls dissipate
+        if (optionalRecipe.isEmpty()) {
+            blockEntity.soulCount = 0;
+            return;
+        }
+
+        SoulBottlingRecipe recipe = optionalRecipe.get();
+
+        // Not enough souls to fill bottle yet
+        if (blockEntity.soulCount < recipe.getSoulCount()) {
+            return;
+        }
+
+        // Powered + enough souls + bottle found? Convert
+        world.removeBlock(blockEntity.getPos().down(), false);
+        ItemScatterer.spawn(world, blockEntity.getPos().getX(), blockEntity.getPos().getY() - 1, blockEntity.getPos().getZ(), recipe.getResult());
+
+        // the rest of the souls escape (if any remain)
+        blockEntity.soulCount = 0;
     }
 
     protected static void soulOverloadExplode(World world, MechHopperBlockEntity blockEntity) {
@@ -304,40 +329,14 @@ public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHan
             return;
         }
         Item filterItem = blockEntity.getFilterItem();
-        int count = itemStack.getCount();
 
-        if (filterItem == BwtBlocks.wickerPaneBlock.asItem() && itemStack.isOf(Items.GRAVEL)) {
-            ItemStack sandStack = new ItemStack(Items.SAND, count);
-            try (Transaction transaction = Transaction.openOuter()) {
-                long inserted = StorageUtil.insertStacking(
-                        blockEntity.inventoryWrapper.parts.get(1).getSlots(),
-                        ItemVariant.of(sandStack),
-                        count,
-                        transaction
-                );
-                itemEntity.setStack(itemStack.copyWithCount((int) (count - inserted)));
-                blockEntity.itemPickupCooldown++;
-                transaction.commit();
-                blockEntity.hopperInventory.markDirty();
-                blockEntity.spawnNewItemOnTop(world, itemEntity.getPos(), new ItemStack(Items.FLINT, (int) inserted));
-            }
-            return;
-        }
-        if (filterItem == Items.SOUL_SAND && (itemStack.isOf(BwtItems.groundNetherrackItem) || itemStack.isOf(BwtItems.soulDustItem))) {
-            Item outputItem = itemStack.isOf(BwtItems.groundNetherrackItem) ? BwtItems.hellfireDustItem : BwtItems.sawDustItem;
-            Vec3d itemEntityPos = itemEntity.getPos();
-            itemEntity.kill();
-
-            int newSoulcount = blockEntity.soulCount + count;
-            if (newSoulcount > SOUL_STORAGE_LIMIT && blockEntity.mechPower <= 0) {
-                soulOverloadExplode(world, blockEntity);
-                return;
-            }
-            blockEntity.soulCount = Math.min(newSoulcount, SOUL_STORAGE_LIMIT);
-            blockEntity.spawnNewItemOnTop(world, itemEntityPos, new ItemStack(outputItem, count));
-            blockEntity.markDirty();
-            // Play ghast noise
-            world.playSound(null, blockEntity.pos, BwtSoundEvents.SOUL_CONVERSION, SoundCategory.BLOCKS, 1f, 1.5f);
+        RecipeManager recipeManager = world.getRecipeManager();
+        Optional<HopperFilterRecipe> optionalRecipe = recipeManager.listAllOfType(BwtRecipes.HOPPER_FILTER_RECIPE_TYPE).stream()
+                .map(RecipeEntry::value)
+                .filter(hopperFilterRecipe -> hopperFilterRecipe.matches(filterItem, itemStack))
+                .findFirst();
+        if (optionalRecipe.isPresent()) {
+            processRecipe(world, itemEntity, blockEntity, optionalRecipe.get(), itemStack);
             return;
         }
 
@@ -345,6 +344,7 @@ public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHan
             return;
         }
         try (Transaction transaction = Transaction.openOuter()) {
+            int count = itemStack.getCount();
             long inserted = StorageUtil.insertStacking(
                     blockEntity.inventoryWrapper.parts.get(1).getSlots(),
                     ItemVariant.of(itemStack),
@@ -355,6 +355,59 @@ public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHan
             blockEntity.itemPickupCooldown++;
             transaction.commit();
             blockEntity.hopperInventory.markDirty();
+        }
+    }
+
+    private static void processRecipe(World world, ItemEntity itemEntity, MechHopperBlockEntity blockEntity, HopperFilterRecipe recipe, ItemStack itemStack) {
+        int inputCount = itemStack.getCount();
+
+        // Results get inserted into the hopper
+        ItemStack resultStack = recipe.getResult();
+        // Byproducts get spawned on top of the hopper
+        ItemStack byproductStack = recipe.getByproduct();
+
+        // Operations may be limited by space in the hopper's inventory
+        int operationsSucceeded;
+        if (!resultStack.isEmpty()) {
+            try (Transaction transaction = Transaction.openOuter()) {
+                // If 1 input item converts to multiple output items,
+                // operationsSucceeded only counts up the number of input items accepted
+                operationsSucceeded = (int) StorageUtil.insertStacking(
+                        blockEntity.inventoryWrapper.parts.get(1).getSlots(),
+                        ItemVariant.of(resultStack),
+                        (long) inputCount * resultStack.getCount(),
+                        transaction
+                ) / resultStack.getCount();
+                blockEntity.itemPickupCooldown++;
+                transaction.commit();
+                blockEntity.hopperInventory.markDirty();
+            }
+        }
+        else {
+            // If inventory doesn't need to accept items, we can always process the whole stack
+            operationsSucceeded = itemStack.getCount();
+        }
+        itemEntity.setStack(itemStack.copyWithCount(inputCount - operationsSucceeded));
+        if (!byproductStack.isEmpty()) {
+            int itemCount = operationsSucceeded * byproductStack.getCount();
+            while (itemCount > 0) {
+                int spawnCount = Math.min(itemCount, byproductStack.getItem().getMaxCount());
+                blockEntity.spawnNewItemOnTop(world, itemEntity.getPos(), new ItemStack(byproductStack.getItem(), spawnCount));
+                itemCount -= spawnCount;
+            }
+        }
+
+        int soulsInserted = operationsSucceeded * recipe.getSoulCount();
+        if (soulsInserted > 0) {
+            int newSoulCount = blockEntity.soulCount + soulsInserted;
+            if (newSoulCount > SOUL_STORAGE_LIMIT && blockEntity.mechPower <= 0) {
+                soulOverloadExplode(world, blockEntity);
+                return;
+            }
+            blockEntity.soulCount = Math.min(newSoulCount, SOUL_STORAGE_LIMIT);
+            blockEntity.markDirty();
+            // Play ghast noise
+            world.playSound(null, blockEntity.pos, BwtSoundEvents.SOUL_CONVERSION, SoundCategory.BLOCKS, 1f, 1.5f);
         }
     }
 

@@ -67,7 +67,7 @@ public class SawRecipe implements Recipe<Inventory> {
     }
 
     public boolean matches(Block block) {
-        return this.ingredient.test(new ItemStack(block));
+        return this.ingredient.test(block);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.bwt.recipes;
 
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.block.entity.Hopper;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
@@ -21,6 +22,10 @@ public class BwtRecipes implements ModInitializer {
     public static final StokedCrucibleRecipe.Serializer STOKED_CRUCIBLE_RECIPE_SERIALIZER = new StokedCrucibleRecipe.Serializer(StokedCrucibleRecipe::new);
     public static final RecipeType<MillStoneRecipe> MILL_STONE_RECIPE_TYPE = new RecipeType<>() {};
     public static final MillStoneRecipe.Serializer MILL_STONE_RECIPE_SERIALIZER = new MillStoneRecipe.Serializer();
+    public static final RecipeType<HopperFilterRecipe> HOPPER_FILTER_RECIPE_TYPE = new RecipeType<>() {};
+    public static final HopperFilterRecipe.Serializer HOPPER_FILTER_RECIPE_SERIALIZER = new HopperFilterRecipe.Serializer();
+    public static final RecipeType<SoulBottlingRecipe> SOUL_BOTTLING_RECIPE_TYPE = new RecipeType<>() {};
+    public static final SoulBottlingRecipe.Serializer SOUL_BOTTLING_RECIPE_SERIALIZER = new SoulBottlingRecipe.Serializer();
     public static final RecipeType<SawRecipe> SAW_RECIPE_TYPE = new RecipeType<>() {};
     public static final SawRecipe.Serializer SAW_RECIPE_SERIALIZER = new SawRecipe.Serializer();
     public static final RecipeType<TurntableRecipe> TURNTABLE_RECIPE_TYPE = new RecipeType<>() {};
@@ -46,6 +51,10 @@ public class BwtRecipes implements ModInitializer {
         Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("bwt", "stoked_crucible"), STOKED_CRUCIBLE_RECIPE_SERIALIZER);
         Registry.register(Registries.RECIPE_TYPE, new Identifier("bwt", "mill_stone"), MILL_STONE_RECIPE_TYPE);
         Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("bwt", "mill_stone"), MILL_STONE_RECIPE_SERIALIZER);
+        Registry.register(Registries.RECIPE_TYPE, new Identifier("bwt", "hopper_filter"), HOPPER_FILTER_RECIPE_TYPE);
+        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("bwt", "hopper_filter"), HOPPER_FILTER_RECIPE_SERIALIZER);
+        Registry.register(Registries.RECIPE_TYPE, new Identifier("bwt", "soul_bottling"), SOUL_BOTTLING_RECIPE_TYPE);
+        Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("bwt", "soul_bottling"), SOUL_BOTTLING_RECIPE_SERIALIZER);
         Registry.register(Registries.RECIPE_TYPE, new Identifier("bwt", "saw"), SAW_RECIPE_TYPE);
         Registry.register(Registries.RECIPE_SERIALIZER, new Identifier("bwt", "saw"), SAW_RECIPE_SERIALIZER);
         Registry.register(Registries.RECIPE_TYPE, new Identifier("bwt", "turntable"), TURNTABLE_RECIPE_TYPE);

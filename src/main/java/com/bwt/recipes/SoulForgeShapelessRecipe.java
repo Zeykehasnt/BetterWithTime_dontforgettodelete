@@ -55,19 +55,27 @@ public class SoulForgeShapelessRecipe extends ShapelessRecipe implements SoulFor
     public static class Serializer implements RecipeSerializer<SoulForgeShapelessRecipe> {
         private static final MapCodec<SoulForgeShapelessRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
-                        Codec.STRING.optionalFieldOf("group", "").forGetter(ShapelessRecipe::getGroup),
-                        CraftingRecipeCategory.CODEC.fieldOf("category").orElse(CraftingRecipeCategory.MISC).forGetter(ShapelessRecipe::getCategory),
-                        ItemStack.VALIDATED_CODEC.fieldOf("result").forGetter(SoulForgeShapelessRecipe::getResult),
-                        Ingredient.DISALLOW_EMPTY_CODEC.listOf().fieldOf("ingredients").flatXmap(ingredients -> {
-                            Ingredient[] ingredients2 = ingredients.stream().filter(ingredient -> !ingredient.isEmpty()).toArray(Ingredient[]::new);
-                            if (ingredients2.length == 0) {
-                                return DataResult.error(() -> "No ingredients for shapeless recipe");
-                            }
-                            if (ingredients2.length > 9) {
-                                return DataResult.error(() -> "Too many ingredients for shapeless recipe");
-                            }
-                            return DataResult.success(DefaultedList.copyOf(Ingredient.EMPTY, ingredients2));
-                        }, DataResult::success).forGetter(ShapelessRecipe::getIngredients)
+                        Codec.STRING.optionalFieldOf("group", "")
+                                .forGetter(ShapelessRecipe::getGroup),
+                        CraftingRecipeCategory.CODEC.fieldOf("category")
+                                .orElse(CraftingRecipeCategory.MISC)
+                                .forGetter(ShapelessRecipe::getCategory),
+                        ItemStack.VALIDATED_CODEC.fieldOf("result")
+                                .forGetter(SoulForgeShapelessRecipe::getResult),
+                        Ingredient.DISALLOW_EMPTY_CODEC
+                                .listOf()
+                                .fieldOf("ingredients")
+                                .flatXmap(ingredients -> {
+                                    Ingredient[] ingredients2 = ingredients.stream().filter(ingredient -> !ingredient.isEmpty()).toArray(Ingredient[]::new);
+                                    if (ingredients2.length == 0) {
+                                        return DataResult.error(() -> "No ingredients for shapeless recipe");
+                                    }
+                                    if (ingredients2.length > 16) {
+                                        return DataResult.error(() -> "Too many ingredients for shapeless recipe");
+                                    }
+                                    return DataResult.success(DefaultedList.copyOf(Ingredient.EMPTY, ingredients2));
+                                }, DataResult::success)
+                                .forGetter(ShapelessRecipe::getIngredients)
                 ).apply(instance, SoulForgeShapelessRecipe::new));
         public static final PacketCodec<RegistryByteBuf, SoulForgeShapelessRecipe> PACKET_CODEC = PacketCodec.ofStatic(
                 SoulForgeShapelessRecipe.Serializer::write,

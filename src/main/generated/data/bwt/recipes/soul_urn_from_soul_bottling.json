@@ -1,0 +1,12 @@
+{
+  "type": "bwt:soul_bottling",
+  "bottle": {
+    "block": "bwt:urn"
+  },
+  "category": "misc",
+  "result": {
+    "count": 1,
+    "id": "bwt:soul_urn"
+  },
+  "soulCount": 8
+}
