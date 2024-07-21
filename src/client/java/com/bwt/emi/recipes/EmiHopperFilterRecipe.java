@@ -132,7 +132,6 @@ public class EmiHopperFilterRecipe implements EmiRecipe {
     public void addWidgets(WidgetHolder widgets) {
         widgets.addTexture(BACKGROUND, 0,0, 18*5, 18*4, 0,0);
         widgets.addSlot(this.getIngredient(), 9, 0).drawBack(true).recipeContext(this);
-        widgets.addTexture(EMPTY_GEAR, 10, 20);
         var byproduct = getByproduct();
         if (byproduct != null) {
             widgets.addSlot(byproduct, 9 * 7, 0).drawBack(true).recipeContext(this);
