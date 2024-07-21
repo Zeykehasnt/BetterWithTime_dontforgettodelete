@@ -136,16 +136,25 @@ public class BwtEmiPlugin implements EmiPlugin {
         for (var r : getRecipes(reg, BwtRecipes.SOUL_FORGE_RECIPE_TYPE)) {
             reg.addRecipe(new EmiSoulForgeRecipe(r.getRight(),r.getLeft()));
         }
-        reg.addRecipe(new EmiSoulUrnRecipe());
-        reg.addRecipe(new EmiHellfireRecipe());
+        var hopperFilterRecipes = getRecipes(reg, BwtRecipes.HOPPER_FILTER_RECIPE_TYPE);
+        var soulBottlingRecipes = getRecipes(reg, BwtRecipes.SOUL_BOTTLING_RECIPE_TYPE);
 
-        reg.addRecipe(new EmiHopperFilterRecipe(
-                new Identifier("bwt", "gravel_through_wicker"),
-                EmiStack.of(BwtBlocks.wickerPaneBlock),
-                EmiStack.of(Blocks.GRAVEL),
-                EmiStack.of(Blocks.SAND),
-                EmiStack.of(Items.FLINT)
-        ));
+        var hopperFilterRecipesNoSouls = hopperFilterRecipes.stream().filter(r -> r.getRight().getSoulCount() == 0).toList();
+        for(var r: hopperFilterRecipesNoSouls) {
+            reg.addRecipe(new EmiHopperFilterRecipe(HOPPER_FILTERING, r.getLeft() , r.getRight()));
+        }
+
+        var hopperFilterRecipesWithSouls = hopperFilterRecipes.stream().filter(r -> r.getRight().getSoulCount() == 1).toList();
+        for(var hopperFilterRecipe: hopperFilterRecipesWithSouls) {
+            reg.addRecipe(new EmiHopperFilterRecipe(HOPPER_SOULS, hopperFilterRecipe.getLeft(), hopperFilterRecipe.getRight()));
+            for(var soulBottleRecipe: soulBottlingRecipes) {
+                reg.addRecipe(new EmiHopperFilterRecipe(HOPPER_SOULS, hopperFilterRecipe.getLeft(), hopperFilterRecipe.getRight()).withSoulBottlingRecipe(soulBottleRecipe.getLeft(), soulBottleRecipe.getRight()));
+            }
+        }
+
+
+//        reg.addRecipe(new EmiSoulUrnRecipe());
+//        reg.addRecipe(new EmiHellfireRecipe());
 
         for(var filterEntry: MechHopperBlock.filterMap.entrySet()) {
             var filter = filterEntry.getKey();
