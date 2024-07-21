@@ -144,7 +144,7 @@ public class BwtEmiPlugin implements EmiPlugin {
             reg.addRecipe(new EmiHopperFilterRecipe(HOPPER_FILTERING, r.getLeft() , r.getRight()));
         }
 
-        var hopperFilterRecipesWithSouls = hopperFilterRecipes.stream().filter(r -> r.getRight().getSoulCount() == 1).toList();
+        var hopperFilterRecipesWithSouls = hopperFilterRecipes.stream().filter(r -> r.getRight().getSoulCount() >= 1).toList();
         for(var hopperFilterRecipe: hopperFilterRecipesWithSouls) {
             reg.addRecipe(new EmiHopperFilterRecipe(HOPPER_SOULS, hopperFilterRecipe.getLeft(), hopperFilterRecipe.getRight()));
             for(var soulBottleRecipe: soulBottlingRecipes) {
