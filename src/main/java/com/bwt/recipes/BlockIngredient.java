@@ -46,9 +46,8 @@ public record BlockIngredient(Optional<TagKey<Block>> optionalBlockTagKey, Optio
     }
 
     @Override
-    @Nullable
     public List<ItemStack> getMatchingStacks() {
-        return null;
+        return List.of();
     }
 
     @Override
