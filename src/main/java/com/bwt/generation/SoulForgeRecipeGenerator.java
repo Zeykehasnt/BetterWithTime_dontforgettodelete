@@ -308,7 +308,7 @@ public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
                 .criterion(hasItem(Items.LAPIS_LAZULI), conditionsFromItem(Items.LAPIS_LAZULI))
                 .offerTo(exporter);
 
-        SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, BwtBlocks.detectorBlock)
+        SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.REDSTONE, BwtBlocks.detectorBlock)
                 .pattern("cccc")
                 .pattern("ette")
                 .pattern("srrs")
@@ -320,7 +320,7 @@ public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
                 .input('r', Items.REDSTONE)
                 .criterion(hasItem(BwtItems.redstoneEyeItem), conditionsFromItem(BwtItems.redstoneEyeItem))
                 .offerTo(exporter);
-        SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, BwtBlocks.buddyBlock)
+        SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.REDSTONE, BwtBlocks.buddyBlock)
                 .pattern("sses")
                 .pattern("etts")
                 .pattern("stte")
@@ -331,7 +331,7 @@ public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
                 .criterion(hasItem(BwtItems.redstoneEyeItem), conditionsFromItem(BwtItems.redstoneEyeItem))
                 .offerTo(exporter);
 
-        SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, BwtBlocks.blockDispenserBlock)
+        SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.REDSTONE, BwtBlocks.blockDispenserBlock)
                 .pattern("mmmm")
                 .pattern("muum")
                 .pattern("stts")

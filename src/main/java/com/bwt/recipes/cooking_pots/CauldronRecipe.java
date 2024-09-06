@@ -33,7 +33,7 @@ public class CauldronRecipe extends AbstractCookingPotRecipe {
         }
 
         public static CauldronRecipe.JsonBuilder createFood() {
-            return (CauldronRecipe.JsonBuilder) create().category(RecipeCategory.FOOD).cookingCategory(CookingRecipeCategory.FOOD);
+            return (CauldronRecipe.JsonBuilder) create().category(RecipeCategory.FOOD).cookingCategory(CookingPotRecipeCategory.FOOD);
         }
 
         @Override

@@ -2,7 +2,7 @@ package com.bwt.emi.recipes;
 
 import com.bwt.blocks.abstract_cooking_pot.AbstractCookingPotBlockEntity;
 import com.bwt.emi.BwtEmiPlugin;
-import com.bwt.recipes.MillStoneRecipe;
+import com.bwt.recipes.mill_stone.MillStoneRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;

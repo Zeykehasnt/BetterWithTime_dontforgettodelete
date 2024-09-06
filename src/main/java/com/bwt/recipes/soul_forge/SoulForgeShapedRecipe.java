@@ -2,6 +2,7 @@ package com.bwt.recipes.soul_forge;
 
 import com.bwt.mixin.accessors.ShapedRecipeJsonBuilderAccessorMixin;
 import com.bwt.recipes.BwtRecipes;
+import com.bwt.recipes.SoulForgeRecipe;
 import com.bwt.utils.Id;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

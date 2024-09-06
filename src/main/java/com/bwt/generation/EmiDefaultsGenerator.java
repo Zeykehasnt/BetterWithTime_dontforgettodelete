@@ -28,7 +28,7 @@ public class EmiDefaultsGenerator implements DataProvider {
         defaultRecipeIdentifiers.add(identifier);
     }
     public static void addBwtRecipe(Identifier identifier) {
-        addDefaultRecipe(new Identifier("bwt", identifier.getPath()));
+        addDefaultRecipe(Identifier.of("bwt", identifier.getPath()));
     }
 
 
@@ -38,10 +38,10 @@ public class EmiDefaultsGenerator implements DataProvider {
     }
 
     public void addDefaults() {
-        addDefaultRecipe(new Identifier("bwt", "hopper_soul_urn"));
-        addDefaultRecipe(new Identifier("bwt", "fabric"));
-        addDefaultRecipe(new Identifier("bwt", "wood_blade"));
-        addDefaultRecipe(new Identifier("bwt", "rope"));
+        addDefaultRecipe(Identifier.of("bwt", "hopper_soul_urn"));
+        addDefaultRecipe(Identifier.of("bwt", "fabric"));
+        addDefaultRecipe(Identifier.of("bwt", "wood_blade"));
+        addDefaultRecipe(Identifier.of("bwt", "rope"));
 
     }
 
@@ -50,7 +50,7 @@ public class EmiDefaultsGenerator implements DataProvider {
         addDefaults();
 
         var recipeDefaults = this.output.getResolver(DataOutput.OutputType.RESOURCE_PACK, "recipe/defaults");
-        var bwtRecipeDefaultsFile = recipeDefaults.resolveJson(new Identifier("emi", "bwt"));
+        var bwtRecipeDefaultsFile = recipeDefaults.resolveJson(Identifier.of("emi", "bwt"));
 
         JsonObject object = new JsonObject();
         var added = new JsonArray();

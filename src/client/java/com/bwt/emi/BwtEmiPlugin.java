@@ -3,29 +3,28 @@ package com.bwt.emi;
 import com.bwt.BetterWithTime;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.blocks.mech_hopper.MechHopperBlock;
-import com.bwt.blocks.mech_hopper.MechHopperBlockEntity;
-import com.bwt.emi.recipehandlers.EmiCookingPotRecipeHandler;
 import com.bwt.emi.recipehandlers.EmiSoulForgeRecipeHandler;
 import com.bwt.emi.recipes.*;
-import com.bwt.recipes.AbstractCookingPotRecipe;
 import com.bwt.recipes.BlockIngredient;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.recipes.IngredientWithCount;
+import com.bwt.recipes.cooking_pots.AbstractCookingPotRecipe;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
-import dev.emi.emi.api.render.EmiRender;
 import dev.emi.emi.api.render.EmiRenderable;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.block.Blocks;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Items;
+import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.recipe.input.RecipeInput;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
@@ -34,9 +33,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class BwtEmiPlugin implements EmiPlugin {
-    public static final Identifier WIDGETS = new Identifier("bwt", "textures/gui/container/emiwidgets.png");
+    public static final Identifier WIDGETS = Identifier.of("bwt", "textures/gui/container/emiwidgets.png");
 
 
     public static EmiRecipeCategory CAULDRON = category("cauldron", EmiStack.of(BwtBlocks.cauldronBlock));
@@ -58,18 +58,23 @@ public class BwtEmiPlugin implements EmiPlugin {
     }
 
     public static EmiRecipeCategory category(String id, EmiStack icon) {
-        return new EmiRecipeCategory(new Identifier("bwt", id), icon, icon::render);
+        return new EmiRecipeCategory(Identifier.of("bwt", id), icon, icon::render);
     }
 
     public static EmiRecipeCategory category(String id, EmiStack icon, Comparator<EmiRecipe> comp) {
-        return new EmiRecipeCategory(new Identifier("btw", id), icon,
-                new EmiTexture(new Identifier("emi", "textures/simple_icons/" + id + ".png"), 0, 0, 16, 16, 16, 16, 16, 16), comp);
+        return new EmiRecipeCategory(Identifier.of("btw", id), icon,
+                new EmiTexture(Identifier.of("emi", "textures/simple_icons/" + id + ".png"), 0, 0, 16, 16, 16, 16, 16, 16), comp);
     }
 
 
-    private static <C extends Inventory, T extends Recipe<C>> Collection<Pair<Identifier, T>> getRecipes(EmiRegistry registry, RecipeType<T> type) {
+    private static <C extends RecipeInput, T extends Recipe<C>> Collection<Pair<Identifier, T>> getRecipes(EmiRegistry registry, RecipeType<T> type) {
         return registry.getRecipeManager().listAllOfType(type).stream().map(e -> new Pair<>(e.id(), e.value())).toList();
     }
+
+    private static <C extends RecipeInput, T extends CraftingRecipe> Collection<Pair<Identifier, T>> getRecipes(EmiRegistry registry, RecipeType<T> type, Predicate<CraftingRecipeCategory> category) {
+        return registry.getRecipeManager().listAllOfType(type).stream().filter(r -> category.test(r.value().getCategory())).map(e -> new Pair<>(e.id(), e.value())).toList();
+    }
+
 
     @Override
     public void register(EmiRegistry reg) {
@@ -133,18 +138,24 @@ public class BwtEmiPlugin implements EmiPlugin {
         for (var recipe : getRecipes(reg, BwtRecipes.KILN_RECIPE_TYPE)) {
             reg.addRecipe(new EmiKilnRecipe(KILN, recipe.getLeft(), recipe.getRight()));
         }
-        for (var r : getRecipes(reg, BwtRecipes.SOUL_FORGE_RECIPE_TYPE)) {
+        for (var r : getRecipes(reg, BwtRecipes.SOUL_FORGE_RECIPE_TYPE, c -> c != CraftingRecipeCategory.BUILDING)
+                .stream()
+                .sorted(Comparator.comparingInt(r -> r.getRight().getCategory().ordinal()))
+                .toList()) {
+            reg.addRecipe(new EmiSoulForgeRecipe(r.getRight(),r.getLeft()));
+        }
+        for (var r : getRecipes(reg, BwtRecipes.SOUL_FORGE_RECIPE_TYPE, c -> c == CraftingRecipeCategory.BUILDING)) {
             reg.addRecipe(new EmiSoulForgeRecipe(r.getRight(),r.getLeft()));
         }
         var hopperFilterRecipes = getRecipes(reg, BwtRecipes.HOPPER_FILTER_RECIPE_TYPE);
         var soulBottlingRecipes = getRecipes(reg, BwtRecipes.SOUL_BOTTLING_RECIPE_TYPE);
 
-        var hopperFilterRecipesNoSouls = hopperFilterRecipes.stream().filter(r -> r.getRight().getSoulCount() == 0).toList();
+        var hopperFilterRecipesNoSouls = hopperFilterRecipes.stream().filter(r -> r.getRight().soulCount() == 0).toList();
         for(var r: hopperFilterRecipesNoSouls) {
             reg.addRecipe(new EmiHopperFilterRecipe(HOPPER_FILTERING, r.getLeft() , r.getRight()));
         }
 
-        var hopperFilterRecipesWithSouls = hopperFilterRecipes.stream().filter(r -> r.getRight().getSoulCount() >= 1).toList();
+        var hopperFilterRecipesWithSouls = hopperFilterRecipes.stream().filter(r -> r.getRight().soulCount() >= 1).toList();
         for(var hopperFilterRecipe: hopperFilterRecipesWithSouls) {
             reg.addRecipe(new EmiHopperFilterRecipe(HOPPER_SOULS, hopperFilterRecipe.getLeft(), hopperFilterRecipe.getRight()));
             for(var soulBottleRecipe: soulBottlingRecipes) {
@@ -158,7 +169,7 @@ public class BwtEmiPlugin implements EmiPlugin {
             var permitted = filterEntry.getValue();
             if(permitted instanceof MechHopperBlock.TagFilter f) {
                 var emiPermitted = EmiIngredient.of(f.tagKey());
-                Identifier id = new Identifier("bwt", Registries.ITEM.getId(filter).getPath() + "_hopper_filter");
+                Identifier id = Identifier.of("bwt", Registries.ITEM.getId(filter).getPath() + "_hopper_filter");
                 reg.addRecipe(new EmiHopperFilterPermitList(id, EmiStack.of(filter), emiPermitted));
             }
         }

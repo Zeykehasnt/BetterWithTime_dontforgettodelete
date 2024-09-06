@@ -33,7 +33,7 @@ public class CrucibleRecipe extends AbstractCookingPotRecipe {
         }
 
         public static CrucibleRecipe.JsonBuilder createFood() {
-            return (CrucibleRecipe.JsonBuilder) create().category(RecipeCategory.FOOD).cookingCategory(CookingRecipeCategory.FOOD);
+            return (CrucibleRecipe.JsonBuilder) create().category(RecipeCategory.FOOD).cookingCategory(CookingPotRecipeCategory.FOOD);
         }
 
         @Override

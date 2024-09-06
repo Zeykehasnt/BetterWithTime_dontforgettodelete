@@ -3,7 +3,6 @@ package com.bwt.blocks.soul_forge;
 import com.bwt.block_entities.BwtBlockEntities;
 import com.bwt.mixin.accessors.CraftingInventoryAccessorMixin;
 import com.bwt.recipes.BwtRecipes;
-import com.bwt.recipes.SoulForgeRecipe;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

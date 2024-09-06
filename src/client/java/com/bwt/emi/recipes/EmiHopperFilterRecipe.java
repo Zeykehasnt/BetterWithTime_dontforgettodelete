@@ -2,8 +2,8 @@ package com.bwt.emi.recipes;
 
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.emi.BwtEmiPlugin;
-import com.bwt.recipes.HopperFilterRecipe;
-import com.bwt.recipes.SoulBottlingRecipe;
+import com.bwt.recipes.hopper_filter.HopperFilterRecipe;
+import com.bwt.recipes.soul_bottling.SoulBottlingRecipe;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
@@ -23,7 +23,7 @@ public class EmiHopperFilterRecipe implements EmiRecipe {
     public static final EmiTexture EMPTY_GEAR = new EmiTexture(BwtEmiPlugin.WIDGETS, 0, 0, 14, 14);
     public static final EmiTexture FULL_GEAR = new EmiTexture(BwtEmiPlugin.WIDGETS, 14, 0, 14, 14);
     public static final EmiTexture ARROW = new EmiTexture(BwtEmiPlugin.WIDGETS, 28, 0, 22, 15);
-    public static final Identifier BACKGROUND = new Identifier("bwt", "textures/gui/container/hopper_recipe.png");
+    public static final Identifier BACKGROUND = Identifier.of("bwt", "textures/gui/container/hopper_recipe.png");
 
     private final Identifier id;
     protected final EmiRecipeCategory category;
@@ -35,7 +35,7 @@ public class EmiHopperFilterRecipe implements EmiRecipe {
     protected EmiSoulBottlingRecipe soulBottlingRecipe;
 
     public EmiHopperFilterRecipe(EmiRecipeCategory category, Identifier id, HopperFilterRecipe recipe) {
-        this(category, id, EmiIngredient.of(recipe.getIngredient()), EmiIngredient.of(recipe.getFilter()), recipe.getSoulCount(), EmiStack.of(recipe.getResult()), EmiStack.of(recipe.getByproduct()));
+        this(category, id, EmiIngredient.of(recipe.ingredient()), EmiIngredient.of(recipe.filter()), recipe.soulCount(), EmiStack.of(recipe.result()), EmiStack.of(recipe.byproduct()));
     }
 
     public EmiHopperFilterRecipe(EmiRecipeCategory category, Identifier id, EmiIngredient ingredient, EmiIngredient filter, int soulCount, EmiStack result, EmiStack byproduct) {
@@ -63,7 +63,7 @@ public class EmiHopperFilterRecipe implements EmiRecipe {
     @Override
     public @Nullable Identifier getId() {
         if(this.soulBottlingRecipe != null) {
-            return new Identifier("bwt", String.format("%s-%s", this.id.getPath(), this.soulBottlingRecipe.getId().getPath()));
+            return Identifier.of("bwt", String.format("%s-%s", this.id.getPath(), this.soulBottlingRecipe.getId().getPath()));
         }
         return this.id;
     }

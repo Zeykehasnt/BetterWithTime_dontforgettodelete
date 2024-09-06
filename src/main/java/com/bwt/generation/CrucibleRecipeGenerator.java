@@ -2,9 +2,8 @@ package com.bwt.generation;
 
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.items.BwtItems;
+import com.bwt.recipes.cooking_pots.AbstractCookingPotRecipe;
 import com.bwt.recipes.cooking_pots.StokedCrucibleRecipe;
-import com.bwt.recipes.AbstractCookingPotRecipe;
-import com.bwt.recipes.StokedCrucibleRecipe;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.server.recipe.RecipeExporter;
@@ -14,7 +13,8 @@ import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
-import static com.bwt.recipes.AbstractCookingPotRecipe.CookingPotRecipeCategory.RECLAIM;
+import static com.bwt.recipes.cooking_pots.AbstractCookingPotRecipe.CookingPotRecipeCategory.RECLAIM;
+
 
 public class CrucibleRecipeGenerator extends FabricRecipeProvider {
     public CrucibleRecipeGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
