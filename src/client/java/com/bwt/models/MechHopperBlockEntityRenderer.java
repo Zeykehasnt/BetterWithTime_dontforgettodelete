@@ -61,7 +61,7 @@ public class MechHopperBlockEntityRenderer implements BlockEntityRenderer<MechHo
             matrixStack.push();
             matrixStack.scale(0.99f, 1, 0.99f);
             matrixStack.translate(0.01f, (hopperBlockEntity.slotsOccupied * (14f - 7f) / (MechHopperBlockEntity.INVENTORY_SIZE - 1f) + 7f) / 16f, 0.01f);
-            this.model.render(matrixStack, vertexConsumer, light, OverlayTexture.getUv(0.0f, false), 1, 1, 1, 1);
+            this.model.render(matrixStack, vertexConsumer, light, OverlayTexture.getUv(0.0f, false), -1);
             matrixStack.pop();
         }
         // Render the filter
@@ -70,7 +70,7 @@ public class MechHopperBlockEntityRenderer implements BlockEntityRenderer<MechHo
             matrixStack.push();
             matrixStack.scale(0.99f, 1, 0.99f);
             matrixStack.translate(0.01f, 15f / 16f, 0.01f);
-            this.model.render(matrixStack, vertexConsumer, light, OverlayTexture.getUv(0.0f, false), 1, 1, 1, 1);
+            this.model.render(matrixStack, vertexConsumer, light, OverlayTexture.getUv(0.0f, false), -1);
             matrixStack.pop();
         }
     }

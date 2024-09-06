@@ -2,6 +2,7 @@ package com.bwt.models;
 
 import com.bwt.entities.BroadheadArrowEntity;
 import com.bwt.entities.DynamiteEntity;
+import com.bwt.utils.Id;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.OverlayTexture;

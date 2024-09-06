@@ -2,6 +2,7 @@ package com.bwt.models;
 
 import com.bwt.BetterWithTimeClient;
 import com.bwt.entities.WindmillEntity;
+import com.bwt.utils.Id;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.util.Identifier;
 

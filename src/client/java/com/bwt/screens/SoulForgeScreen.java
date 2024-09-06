@@ -1,6 +1,7 @@
 package com.bwt.screens;
 
 import com.bwt.blocks.soul_forge.SoulForgeScreenHandler;
+import com.bwt.utils.Id;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawContext;
