@@ -2,15 +2,13 @@ package com.bwt.generation;
 
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.items.BwtItems;
-import com.bwt.recipes.CauldronRecipe;
-import com.bwt.recipes.StokedCauldronRecipe;
+import com.bwt.recipes.cooking_pots.CauldronRecipe;
+import com.bwt.recipes.cooking_pots.StokedCauldronRecipe;
 import com.bwt.tags.BwtItemTags;
 import com.bwt.utils.DyeUtils;
 import com.google.common.collect.Maps;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.component.DataComponentType;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.data.server.recipe.CookingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;

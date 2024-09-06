@@ -22,9 +22,10 @@ import com.bwt.items.BwtItems;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.sounds.BwtSoundEvents;
 import com.bwt.tags.BwtItemTags;
+import com.bwt.utils.Id;
 import com.bwt.utils.TrackedDataHandlers;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
+import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.fabricmc.fabric.api.registry.TillableBlockRegistry;
@@ -40,8 +41,8 @@ import net.minecraft.loot.LootPool;
 import net.minecraft.loot.condition.*;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.function.EnchantedCountIncreaseLootFunction;
 import net.minecraft.loot.function.FurnaceSmeltLootFunction;
-import net.minecraft.loot.function.LootingEnchantLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.predicate.entity.EntityFlagsPredicate;
@@ -50,7 +51,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,13 +78,13 @@ public class BetterWithTime implements ModInitializer {
 	public static ScreenHandlerType<SoulForgeScreenHandler> soulForgeScreenHandler = new ScreenHandlerType<>(SoulForgeScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
 
 	static {
-		blockDispenserScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "block_dispenser"), blockDispenserScreenHandler);
-		cauldronScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "cauldron"), cauldronScreenHandler);
-		crucibleScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "crucible"), crucibleScreenHandler);
-		millStoneScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "mill_stone"), millStoneScreenHandler);
-		pulleyScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "pulley"), pulleyScreenHandler);
-		mechHopperScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "hopper"), mechHopperScreenHandler);
-		soulForgeScreenHandler = Registry.register(Registries.SCREEN_HANDLER, new Identifier("bwt", "soul_forge"), soulForgeScreenHandler);
+		blockDispenserScreenHandler = Registry.register(Registries.SCREEN_HANDLER, Id.of("block_dispenser"), blockDispenserScreenHandler);
+		cauldronScreenHandler = Registry.register(Registries.SCREEN_HANDLER, Id.of("cauldron"), cauldronScreenHandler);
+		crucibleScreenHandler = Registry.register(Registries.SCREEN_HANDLER, Id.of("crucible"), crucibleScreenHandler);
+		millStoneScreenHandler = Registry.register(Registries.SCREEN_HANDLER, Id.of("mill_stone"), millStoneScreenHandler);
+		pulleyScreenHandler = Registry.register(Registries.SCREEN_HANDLER, Id.of("pulley"), pulleyScreenHandler);
+		mechHopperScreenHandler = Registry.register(Registries.SCREEN_HANDLER, Id.of("hopper"), mechHopperScreenHandler);
+		soulForgeScreenHandler = Registry.register(Registries.SCREEN_HANDLER, Id.of("soul_forge"), soulForgeScreenHandler);
 	}
 
 	@Override
@@ -138,7 +138,7 @@ public class BetterWithTime implements ModInitializer {
 		HorizontalBlockAttachmentHelper.registerDefaults();
 		VerticalBlockAttachmentHelper.registerDefaults();
 
-		LootTableEvents.MODIFY.register((key, tableBuilder, source) -> {
+		LootTableEvents.MODIFY.register((key, tableBuilder, source, wrapperLookup) -> {
 			if (!source.isBuiltin()) {
 				return;
 			}
@@ -151,7 +151,7 @@ public class BetterWithTime implements ModInitializer {
                                         .conditionally(
                                                 EntityPropertiesLootCondition.builder(LootContext.EntityTarget.THIS, EntityPredicate.Builder.create().flags(EntityFlagsPredicate.Builder.create().onFire(true)))
                                         )
-						).apply(LootingEnchantLootFunction.builder(UniformLootNumberProvider.create(0.0f, 1.0f)));
+						).apply(EnchantedCountIncreaseLootFunction.builder(wrapperLookup, UniformLootNumberProvider.create(0.0f, 1.0f)));
 
 				tableBuilder.pool(poolBuilder);
 			}
