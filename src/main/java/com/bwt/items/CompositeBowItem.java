@@ -1,15 +1,16 @@
 package com.bwt.items;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
-import net.minecraft.item.ArrowItem;
-import net.minecraft.item.BowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -17,17 +18,22 @@ import net.minecraft.stat.Stats;
 import net.minecraft.world.World;
 
 public class CompositeBowItem extends BowItem {
-    public CompositeBowItem(Settings settings) {
+    public CompositeBowItem(Item.Settings settings) {
         super(settings);
     }
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        RegistryWrapper.Impl<Enchantment> enchantmentRegistry = world.getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT);
+        RegistryEntry.Reference<Enchantment> infinity = enchantmentRegistry.getOrThrow(Enchantments.INFINITY);
+        RegistryEntry.Reference<Enchantment> punch = enchantmentRegistry.getOrThrow(Enchantments.PUNCH);
+        RegistryEntry.Reference<Enchantment> power = enchantmentRegistry.getOrThrow(Enchantments.POWER);
+
         boolean bl2;
         if (!(user instanceof PlayerEntity playerEntity)) {
             return;
         }
-        boolean infiniteArrows = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(Enchantments.INFINITY, stack) > 0;
+        boolean infiniteArrows = playerEntity.getAbilities().creativeMode || EnchantmentHelper.getLevel(infinity, stack) > 0;
         ItemStack itemStack = playerEntity.getProjectileType(stack);
         if (itemStack.isEmpty() && !infiniteArrows) {
             return;
@@ -35,7 +41,7 @@ public class CompositeBowItem extends BowItem {
         if (itemStack.isEmpty()) {
             itemStack = new ItemStack(Items.ARROW);
         }
-        float pullProgress = BowItem.getPullProgress(this.getMaxUseTime(stack) - remainingUseTicks);
+        float pullProgress = BowItem.getPullProgress(this.getMaxUseTime(stack, user) - remainingUseTicks);
         if (pullProgress < 0.1f) {
             return;
         }
@@ -46,8 +52,8 @@ public class CompositeBowItem extends BowItem {
             return;
         }
         if (!world.isClient) {
-            int punchLevel = EnchantmentHelper.getLevel(Enchantments.PUNCH, stack);
-            int powerLevel = EnchantmentHelper.getLevel(Enchantments.POWER, stack);
+            int punchLevel = EnchantmentHelper.getLevel(punch, stack);
+            int powerLevel = EnchantmentHelper.getLevel(power, stack);
             PersistentProjectileEntity persistentProjectileEntity = arrowItem.createArrow(world, itemStack, playerEntity);
             persistentProjectileEntity.setVelocity(playerEntity, playerEntity.getPitch(), playerEntity.getYaw(), 0.0f, pullProgress * 6.0f, 1.0f);
             if (pullProgress == 1.0f) {

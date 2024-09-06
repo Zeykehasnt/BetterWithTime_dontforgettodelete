@@ -1,6 +1,8 @@
-package com.bwt.recipes;
+package com.bwt.recipes.soul_bottling;
 
 import com.bwt.items.BwtItems;
+import com.bwt.recipes.BlockIngredient;
+import com.bwt.recipes.BwtRecipes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -14,7 +16,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;
@@ -32,21 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class SoulBottlingRecipe implements Recipe<Inventory> {
-    protected final String group;
-    protected final CraftingRecipeCategory category;
-    protected final BlockIngredient bottle;
-    protected final int soulCount;
-    protected final ItemStack result;
-
-    public SoulBottlingRecipe(String group, CraftingRecipeCategory category, BlockIngredient bottle, int soulCount, ItemStack result) {
-        this.group = group;
-        this.category = category;
-        this.bottle = bottle;
-        this.soulCount = soulCount;
-        this.result = result;
-    }
-
+public record SoulBottlingRecipe(String group, CraftingRecipeCategory category, BlockIngredient bottle, int soulCount, ItemStack result) implements Recipe<SoulBottlingRecipeInput> {
     @Override
     public ItemStack createIcon() {
         return new ItemStack(BwtItems.soulUrnItem);
@@ -58,16 +45,8 @@ public class SoulBottlingRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public boolean matches(Inventory inventory, World world) {
-        return true;
-    }
-
-    public boolean matches(Block block) {
-        return bottle.test(block);
-    }
-
-    public boolean matches(BlockState blockState) {
-        return matches(blockState.getBlock());
+    public boolean matches(SoulBottlingRecipeInput input, World world) {
+        return bottle.test(input.block());
     }
 
     @Override
@@ -82,14 +61,6 @@ public class SoulBottlingRecipe implements Recipe<Inventory> {
         return defaultedList;
     }
 
-    public BlockIngredient getBottle() {
-        return bottle;
-    }
-
-    public int getSoulCount() {
-        return soulCount;
-    }
-
     @Override
     public String getGroup() {
         return this.group;
@@ -98,10 +69,6 @@ public class SoulBottlingRecipe implements Recipe<Inventory> {
     @Override
     public RecipeType<?> getType() {
         return BwtRecipes.SOUL_BOTTLING_RECIPE_TYPE;
-    }
-
-    public CraftingRecipeCategory getCategory() {
-        return this.category;
     }
 
     @Override
@@ -115,7 +82,7 @@ public class SoulBottlingRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public ItemStack craft(Inventory inventory, RegistryWrapper.WrapperLookup lookup) {
+    public ItemStack craft(SoulBottlingRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
         return getResult(lookup);
     }
 
@@ -132,18 +99,18 @@ public class SoulBottlingRecipe implements Recipe<Inventory> {
         protected static final MapCodec<SoulBottlingRecipe> CODEC = RecordCodecBuilder.mapCodec(
                 instance->instance.group(
                         Codec.STRING.optionalFieldOf("group", "")
-                                .forGetter(recipe -> recipe.group),
+                                .forGetter(SoulBottlingRecipe::group),
                         CraftingRecipeCategory.CODEC.fieldOf("category")
                                 .orElse(CraftingRecipeCategory.MISC)
-                                .forGetter(recipe -> recipe.category),
+                                .forGetter(SoulBottlingRecipe::category),
                         BlockIngredient.Serializer.CODEC
                                 .fieldOf("bottle")
-                                .forGetter(SoulBottlingRecipe::getBottle),
+                                .forGetter(SoulBottlingRecipe::bottle),
                         Codec.INT.fieldOf("soulCount")
-                                .forGetter(SoulBottlingRecipe::getSoulCount),
+                                .forGetter(SoulBottlingRecipe::soulCount),
                         ItemStack.OPTIONAL_CODEC
                                 .fieldOf("result")
-                                .forGetter(SoulBottlingRecipe::getResult)
+                                .forGetter(SoulBottlingRecipe::result)
                 ).apply(instance, SoulBottlingRecipe::new)
         );
         public static final PacketCodec<RegistryByteBuf, SoulBottlingRecipe> PACKET_CODEC = PacketCodec.ofStatic(
@@ -175,7 +142,7 @@ public class SoulBottlingRecipe implements Recipe<Inventory> {
         public static void write(RegistryByteBuf buf, SoulBottlingRecipe recipe) {
             buf.writeString(recipe.group);
             buf.writeEnumConstant(recipe.category);
-            BlockIngredient.Serializer.PACKET_CODEC.encode(buf, recipe.getBottle());
+            BlockIngredient.Serializer.PACKET_CODEC.encode(buf, recipe.bottle);
             buf.writeVarInt(recipe.soulCount);
             ItemStack.PACKET_CODEC.encode(buf, recipe.getResult());
         }

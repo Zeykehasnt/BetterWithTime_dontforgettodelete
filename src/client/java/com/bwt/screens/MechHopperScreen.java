@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class MechHopperScreen extends HandledScreen<MechHopperScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier("bwt", "textures/gui/container/hopper.png");
+    private static final Identifier TEXTURE = Id.of("textures/gui/container/hopper.png");
 
     static final int gearIconHeight = 14;
 

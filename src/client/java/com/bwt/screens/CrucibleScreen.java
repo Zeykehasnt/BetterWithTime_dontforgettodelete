@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class CrucibleScreen extends HandledScreen<CrucibleScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier("bwt", "textures/gui/container/crucible.png");
+    private static final Identifier TEXTURE = Id.of("textures/gui/container/crucible.png");
 
     static final int fireIconHeight = 14;
 

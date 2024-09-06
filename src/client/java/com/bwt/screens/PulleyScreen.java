@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class PulleyScreen extends HandledScreen<PulleyScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier("bwt", "textures/gui/container/pulley.png");
+    private static final Identifier TEXTURE = Id.of("textures/gui/container/pulley.png");
 
     static final int gearIconHeight = 14;
 

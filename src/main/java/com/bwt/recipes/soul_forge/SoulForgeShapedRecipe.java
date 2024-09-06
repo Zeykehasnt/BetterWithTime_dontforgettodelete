@@ -1,7 +1,8 @@
-package com.bwt.recipes;
+package com.bwt.recipes.soul_forge;
 
 import com.bwt.mixin.accessors.ShapedRecipeJsonBuilderAccessorMixin;
-import com.mojang.datafixers.kinds.Applicative;
+import com.bwt.recipes.BwtRecipes;
+import com.bwt.utils.Id;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -119,7 +120,7 @@ public class SoulForgeShapedRecipe extends ShapedRecipe {
 
         @Override
         public void offerTo(RecipeExporter exporter, Identifier recipeId) {
-            recipeId = new Identifier("bwt", recipeId.getPath());
+            recipeId = Id.of(recipeId.getPath());
             ShapedRecipeJsonBuilderAccessorMixin accessor = ((ShapedRecipeJsonBuilderAccessorMixin) this);
             RawShapedRecipe rawShapedRecipe = validate(recipeId);
             Advancement.Builder builder = exporter.getAdvancementBuilder().criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(AdvancementRequirements.CriterionMerger.OR);

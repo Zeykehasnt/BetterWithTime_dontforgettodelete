@@ -13,6 +13,6 @@ public class WindmillEntityRenderer extends HorizontalMechPowerSourceEntityRende
 
     @Override
     public Identifier getTexture(WindmillEntity entity) {
-        return new Identifier("bwt", "textures/entity/windmill.png");
+        return Id.of("textures/entity/windmill.png");
     }
 }

@@ -1,6 +1,8 @@
-package com.bwt.recipes;
+package com.bwt.recipes.saw;
 
 import com.bwt.blocks.BwtBlocks;
+import com.bwt.recipes.BlockIngredient;
+import com.bwt.recipes.BwtRecipes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,24 +14,20 @@ import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
 import net.minecraft.block.Block;
 import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeExporter;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +36,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class SawRecipe implements Recipe<Inventory> {
+public class SawRecipe implements Recipe<SawRecipeInput> {
     protected final String group;
     protected final CraftingRecipeCategory category;
     final BlockIngredient ingredient;
@@ -62,12 +60,8 @@ public class SawRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public boolean matches(@Nullable Inventory inventory, World world) {
-        return true;
-    }
-
-    public boolean matches(Block block) {
-        return this.ingredient.test(block);
+    public boolean matches(SawRecipeInput input, World world) {
+        return this.ingredient.test(input.block());
     }
 
     @Override
@@ -109,7 +103,7 @@ public class SawRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public ItemStack craft(Inventory inventory, RegistryWrapper.WrapperLookup lookup) {
+    public ItemStack craft(SawRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
         return getResult(lookup);
     }
 

@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class CauldronScreen extends HandledScreen<CauldronScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier("bwt", "textures/gui/container/cauldron.png");
+    private static final Identifier TEXTURE = Id.of("textures/gui/container/cauldron.png");
 
     static final int fireIconHeight = 14;
 

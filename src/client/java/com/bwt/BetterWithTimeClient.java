@@ -6,6 +6,7 @@ import com.bwt.entities.BwtEntities;
 import com.bwt.items.BwtItems;
 import com.bwt.models.*;
 import com.bwt.screens.*;
+import com.bwt.utils.Id;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -13,7 +14,6 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.client.color.world.GrassColors;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
@@ -22,21 +22,22 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.GrassColors;
 
 @Environment(EnvType.CLIENT)
 public class BetterWithTimeClient implements ClientModInitializer {
-	public static final EntityModelLayer MODEL_WINDMILL_LAYER = new EntityModelLayer(new Identifier("bwt", "windmill"), "main");
-	public static final EntityModelLayer MODEL_WATER_WHEEL_LAYER = new EntityModelLayer(new Identifier("bwt", "water_wheel"), "main");
-	public static final EntityModelLayer MECH_HOPPER_FILL_LAYER = new EntityModelLayer(new Identifier("bwt", "mech_hopper_fill"), "main");
-	public static final EntityModelLayer CAULDRON_FILL_LAYER = new EntityModelLayer(new Identifier("bwt", "cauldron_fill"), "main");
-	public static final EntityModelLayer CRUCIBLE_FILL_LAYER = new EntityModelLayer(new Identifier("bwt", "crucible_fill"), "main");
+	public static final EntityModelLayer MODEL_WINDMILL_LAYER = new EntityModelLayer(Id.of("windmill"), "main");
+	public static final EntityModelLayer MODEL_WATER_WHEEL_LAYER = new EntityModelLayer(Id.of("water_wheel"), "main");
+	public static final EntityModelLayer MECH_HOPPER_FILL_LAYER = new EntityModelLayer(Id.of("mech_hopper_fill"), "main");
+	public static final EntityModelLayer CAULDRON_FILL_LAYER = new EntityModelLayer(Id.of("cauldron_fill"), "main");
+	public static final EntityModelLayer CRUCIBLE_FILL_LAYER = new EntityModelLayer(Id.of("crucible_fill"), "main");
 
 	@Override
 	public void onInitializeClient() {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 		BlockEntityRendererFactories.register(BwtBlockEntities.mechHopperBlockEntity, MechHopperBlockEntityRenderer::new);
-		BlockEntityRendererFactories.register(BwtBlockEntities.cauldronBlockEntity, ctx -> new CookingPotEntityRenderer(ctx, new Identifier("bwt", "textures/block/cauldron_stew.png")));
-		BlockEntityRendererFactories.register(BwtBlockEntities.crucibleBlockEntity, ctx -> new CookingPotEntityRenderer(ctx, new Identifier("bwt", "textures/block/crucible_fill.png")));
+		BlockEntityRendererFactories.register(BwtBlockEntities.cauldronBlockEntity, ctx -> new CookingPotEntityRenderer(ctx, Id.of("textures/block/cauldron_stew.png")));
+		BlockEntityRendererFactories.register(BwtBlockEntities.crucibleBlockEntity, ctx -> new CookingPotEntityRenderer(ctx, Id.of("textures/block/crucible_fill.png")));
 		EntityRendererRegistry.register(BwtEntities.windmillEntity, WindmillEntityRenderer::new);
 		EntityRendererRegistry.register(BwtEntities.waterWheelEntity, WaterWheelEntityRenderer::new);
 		EntityRendererRegistry.register(BwtEntities.movingRopeEntity, MovingRopeEntityRenderer::new);
@@ -88,14 +89,14 @@ public class BetterWithTimeClient implements ClientModInitializer {
 		}, BwtBlocks.grassPlanterBlock);
 		ColorProviderRegistry.ITEM.register((stack, tintIndex) -> GrassColors.getDefaultColor(), BwtBlocks.grassPlanterBlock);
 
-		ModelPredicateProviderRegistry.register(BwtItems.compositeBowItem, new Identifier("pull"), (itemStack, clientWorld, livingEntity, seed) -> {
+		ModelPredicateProviderRegistry.register(BwtItems.compositeBowItem, Id.mc("pull"), (itemStack, clientWorld, livingEntity, seed) -> {
 			if (livingEntity == null) {
 				return 0.0F;
 			}
-			return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / 20.0F;
+			return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime(livingEntity) - livingEntity.getItemUseTimeLeft()) / 20.0F;
 		});
 
-		ModelPredicateProviderRegistry.register(BwtItems.compositeBowItem, new Identifier("pulling"), (itemStack, clientWorld, livingEntity, seed) -> {
+		ModelPredicateProviderRegistry.register(BwtItems.compositeBowItem, Id.mc("pulling"), (itemStack, clientWorld, livingEntity, seed) -> {
 			if (livingEntity == null) {
 				return 0.0F;
 			}

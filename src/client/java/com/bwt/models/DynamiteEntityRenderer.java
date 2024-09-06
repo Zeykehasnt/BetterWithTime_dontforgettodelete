@@ -20,7 +20,7 @@ import net.minecraft.util.math.RotationAxis;
 
 @Environment(value= EnvType.CLIENT)
 public class DynamiteEntityRenderer extends EntityRenderer<DynamiteEntity> {
-    public static final Identifier TEXTURE = new Identifier("bwt", "textures/item/dynamite.png");
+    public static final Identifier TEXTURE = Id.of("textures/item/dynamite.png");
     private final ItemRenderer itemRenderer;
     private final float scale;
     private final boolean lit;

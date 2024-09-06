@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class BlockDispenserScreen extends HandledScreen<BlockDispenserScreenHandler> {
-    private static final Identifier TEXTURE = new Identifier("bwt", "textures/gui/container/block_dispenser.png");
+    private static final Identifier TEXTURE = Id.of("textures/gui/container/block_dispenser.png");
     static final int selectionIconWidth = 20;
     static final int selectionIconHeight = 20;
 

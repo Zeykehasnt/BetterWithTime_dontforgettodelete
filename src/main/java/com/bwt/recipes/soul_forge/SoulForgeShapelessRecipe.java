@@ -1,6 +1,7 @@
-package com.bwt.recipes;
+package com.bwt.recipes.soul_forge;
 
 import com.bwt.mixin.accessors.ShapelessRecipeJsonBuilderAccessorMixin;
+import com.bwt.recipes.BwtRecipes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;

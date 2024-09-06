@@ -13,6 +13,6 @@ public class WaterWheelEntityRenderer extends HorizontalMechPowerSourceEntityRen
 
     @Override
     public Identifier getTexture(WaterWheelEntity entity) {
-        return new Identifier("bwt", "textures/entity/water_wheel.png");
+        return Id.of("textures/entity/water_wheel.png");
     }
 }

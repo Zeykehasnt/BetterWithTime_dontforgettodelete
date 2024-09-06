@@ -1,6 +1,7 @@
-package com.bwt.recipes;
+package com.bwt.recipes.hopper_filter;
 
 import com.bwt.blocks.BwtBlocks;
+import com.bwt.recipes.BwtRecipes;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,7 +13,6 @@ import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
 import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;
@@ -25,31 +25,20 @@ import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class HopperFilterRecipe implements Recipe<Inventory> {
-    protected final String group;
-    protected final CraftingRecipeCategory category;
-    protected final Ingredient ingredient;
-    protected final Ingredient filter;
-    protected final int soulCount;
-    protected final ItemStack result;
-    protected final ItemStack byproduct;
-
-    public HopperFilterRecipe(String group, CraftingRecipeCategory category, Ingredient ingredient, Ingredient filter, int soulCount, ItemStack result, ItemStack byproduct) {
-        this.group = group;
-        this.category = category;
-        this.ingredient = ingredient;
-        this.filter = filter;
-        this.soulCount = soulCount;
-        this.result = result;
-        this.byproduct = byproduct;
-    }
-
+public record HopperFilterRecipe(
+        String group,
+        CraftingRecipeCategory category,
+        Ingredient ingredient,
+        Ingredient filter,
+        int soulCount,
+        ItemStack result,
+        ItemStack byproduct
+) implements Recipe<HopperFilterRecipeInput> {
     @Override
     public ItemStack createIcon() {
         return new ItemStack(BwtBlocks.hopperBlock);
@@ -61,40 +50,13 @@ public class HopperFilterRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public boolean matches(Inventory inventory, World world) {
-        return true;
-    }
-
-    public boolean matches(Item filter, ItemStack stack) {
-        return this.filter.test(filter.getDefaultStack()) && ingredient.test(stack);
+    public boolean matches(HopperFilterRecipeInput input, World world) {
+        return this.filter.test(input.filterItem().getDefaultStack()) && this.ingredient.test(input.itemStack());
     }
 
     @Override
     public boolean fits(int width, int height) {
         return true;
-    }
-
-    @Override
-    public DefaultedList<Ingredient> getIngredients() {
-        DefaultedList<Ingredient> defaultedList = DefaultedList.of();
-        defaultedList.add(ingredient);
-        return defaultedList;
-    }
-
-    public Ingredient getIngredient() {
-        return ingredient;
-    }
-
-    public Ingredient getFilter() {
-        return filter;
-    }
-
-    public int getSoulCount() {
-        return soulCount;
-    }
-
-    public ItemStack getByproduct() {
-        return byproduct;
     }
 
     @Override
@@ -122,16 +84,12 @@ public class HopperFilterRecipe implements Recipe<Inventory> {
     }
 
     @Override
-    public ItemStack craft(Inventory inventory, RegistryWrapper.WrapperLookup lookup) {
+    public ItemStack craft(HopperFilterRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
         return getResult(lookup);
     }
 
     @Override
     public ItemStack getResult(RegistryWrapper.WrapperLookup wrapperLookup) {
-        return result;
-    }
-
-    public ItemStack getResult() {
         return result;
     }
 
@@ -145,18 +103,18 @@ public class HopperFilterRecipe implements Recipe<Inventory> {
                                 .forGetter(recipe -> recipe.category),
                         Ingredient.DISALLOW_EMPTY_CODEC
                                 .fieldOf("ingredient")
-                                .forGetter(HopperFilterRecipe::getIngredient),
+                                .forGetter(HopperFilterRecipe::ingredient),
                         Ingredient.DISALLOW_EMPTY_CODEC
                                 .fieldOf("filter")
-                                .forGetter(HopperFilterRecipe::getFilter),
+                                .forGetter(HopperFilterRecipe::filter),
                         Codec.INT.fieldOf("soulCount")
-                                .forGetter(HopperFilterRecipe::getSoulCount),
+                                .forGetter(HopperFilterRecipe::soulCount),
                         ItemStack.OPTIONAL_CODEC
                                 .fieldOf("result")
-                                .forGetter(HopperFilterRecipe::getResult),
+                                .forGetter(HopperFilterRecipe::result),
                         ItemStack.OPTIONAL_CODEC
                                 .fieldOf("byproduct")
-                                .forGetter(HopperFilterRecipe::getByproduct)
+                                .forGetter(HopperFilterRecipe::byproduct)
                 ).apply(instance, HopperFilterRecipe::new)
         );
         public static final PacketCodec<RegistryByteBuf, HopperFilterRecipe> PACKET_CODEC = PacketCodec.ofStatic(
@@ -193,8 +151,8 @@ public class HopperFilterRecipe implements Recipe<Inventory> {
             Ingredient.PACKET_CODEC.encode(buf, recipe.ingredient);
             Ingredient.PACKET_CODEC.encode(buf, recipe.filter);
             buf.writeVarInt(recipe.soulCount);
-            ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, recipe.getResult());
-            ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, recipe.getByproduct());
+            ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, recipe.result);
+            ItemStack.OPTIONAL_PACKET_CODEC.encode(buf, recipe.byproduct);
         }
     }
 

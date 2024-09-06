@@ -1,7 +1,7 @@
 package com.bwt.generation;
 
 import com.bwt.blocks.BwtBlocks;
-import com.bwt.recipes.TurntableRecipe;
+import com.bwt.recipes.turntable.TurntableRecipe;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Blocks;

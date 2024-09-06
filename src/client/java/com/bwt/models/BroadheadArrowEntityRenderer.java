@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 
 @Environment(value= EnvType.CLIENT)
 public class BroadheadArrowEntityRenderer extends ProjectileEntityRenderer<BroadheadArrowEntity> {
-    public static final Identifier TEXTURE = new Identifier("bwt", "textures/entity/broadhead_arrows.png");
+    public static final Identifier TEXTURE = Id.of("textures/entity/broadhead_arrows.png");
 
     public BroadheadArrowEntityRenderer(EntityRendererFactory.Context context) {
         super(context);

@@ -1,6 +1,8 @@
-package com.bwt.recipes;
+package com.bwt.recipes.cooking_pots;
 
 import com.bwt.blocks.BwtBlocks;
+import com.bwt.recipes.BwtRecipes;
+import com.bwt.recipes.IngredientWithCount;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.item.ItemStack;
@@ -26,16 +28,16 @@ public class CauldronRecipe extends AbstractCookingPotRecipe {
     }
 
     public static class JsonBuilder extends AbstractCookingPotRecipe.JsonBuilder<CauldronRecipe> {
-        public static JsonBuilder create() {
-            return ((JsonBuilder) new JsonBuilder().category(RecipeCategory.MISC));
+        public static CauldronRecipe.JsonBuilder create() {
+            return (CauldronRecipe.JsonBuilder) new CauldronRecipe.JsonBuilder().category(RecipeCategory.MISC);
         }
 
-        public static JsonBuilder createFood() {
-            return (JsonBuilder) create().category(RecipeCategory.FOOD).cookingCategory(CookingRecipeCategory.FOOD);
+        public static CauldronRecipe.JsonBuilder createFood() {
+            return (CauldronRecipe.JsonBuilder) create().category(RecipeCategory.FOOD).cookingCategory(CookingRecipeCategory.FOOD);
         }
 
         @Override
-        RecipeFactory<CauldronRecipe> getRecipeFactory() {
+        protected RecipeFactory<CauldronRecipe> getRecipeFactory() {
             return CauldronRecipe::new;
         }
 

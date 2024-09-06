@@ -1,7 +1,6 @@
-package com.bwt.recipes;
+package com.bwt.recipes.cooking_pots;
 
-import com.bwt.blocks.BwtBlocks;
-import com.bwt.blocks.mill_stone.MillStoneBlockEntity;
+import com.bwt.recipes.IngredientWithCount;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -13,16 +12,16 @@ import net.minecraft.advancement.criterion.RecipeUnlockedCriterion;
 import net.minecraft.data.server.recipe.CraftingRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeProvider;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.recipe.*;
+import net.minecraft.recipe.book.CookingRecipeCategory;
+import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
@@ -31,13 +30,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MillStoneRecipe implements Recipe<MillStoneBlockEntity.Inventory> {
+public abstract class AbstractCookingPotRecipe implements Recipe<CookingPotRecipeInput> {
+    protected final AbstractCookingPotRecipeType type;
     protected final String group;
-    protected final CraftingRecipeCategory category;
+    protected final CookingRecipeCategory category;
     final DefaultedList<IngredientWithCount> ingredients;
     protected final DefaultedList<ItemStack> results;
 
-    public MillStoneRecipe(String group, CraftingRecipeCategory category, List<IngredientWithCount> ingredients, List<ItemStack> results) {
+    public AbstractCookingPotRecipe(AbstractCookingPotRecipeType type, String group, CookingRecipeCategory category, List<IngredientWithCount> ingredients, List<ItemStack> results) {
+        this.type = type;
         this.group = group;
         this.category = category;
         this.ingredients = DefaultedList.copyOf(IngredientWithCount.EMPTY, ingredients.toArray(new IngredientWithCount[0]));
@@ -45,27 +46,8 @@ public class MillStoneRecipe implements Recipe<MillStoneBlockEntity.Inventory> {
     }
 
     @Override
-    public ItemStack createIcon() {
-        return new ItemStack(BwtBlocks.millStoneBlock);
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return BwtRecipes.MILL_STONE_RECIPE_SERIALIZER;
-    }
-
-    @Override
-    public boolean matches(MillStoneBlockEntity.Inventory inventory, World world) {
-        for (IngredientWithCount ingredient : ingredients) {
-            Optional<Integer> matchingCount = inventory.getHeldStacks().stream()
-                    .filter(stack -> ingredient.ingredient().test(stack))
-                    .map(ItemStack::getCount)
-                    .reduce(Integer::sum);
-            if (matchingCount.orElse(0) < ingredient.count()) {
-                return false;
-            }
-        }
-        return true;
+    public boolean matches(CookingPotRecipeInput input, World world) {
+        return ingredients.stream().allMatch(input::matches);
     }
 
     @Override
@@ -95,10 +77,10 @@ public class MillStoneRecipe implements Recipe<MillStoneBlockEntity.Inventory> {
 
     @Override
     public RecipeType<?> getType() {
-        return BwtRecipes.MILL_STONE_RECIPE_TYPE;
+        return this.type;
     }
 
-    public CraftingRecipeCategory getCategory() {
+    public CookingRecipeCategory getCategory() {
         return this.category;
     }
 
@@ -112,62 +94,67 @@ public class MillStoneRecipe implements Recipe<MillStoneBlockEntity.Inventory> {
         return false;
     }
 
+
     @Override
-    public ItemStack craft(MillStoneBlockEntity.Inventory inventory, RegistryWrapper.WrapperLookup lookup) {
+    public ItemStack craft(CookingPotRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
         return getResult(lookup);
     }
 
     @Override
-    public ItemStack getResult(RegistryWrapper.WrapperLookup wrapperLookup) {
+    public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
         return results.get(0);
     }
 
-    public static class Serializer implements RecipeSerializer<MillStoneRecipe> {
-        protected static final MapCodec<MillStoneRecipe> CODEC = RecordCodecBuilder.mapCodec(
-                instance->instance.group(
-                        Codec.STRING.optionalFieldOf("group", "")
-                                .forGetter(recipe -> recipe.group),
-                        CraftingRecipeCategory.CODEC.fieldOf("category")
-                                .orElse(CraftingRecipeCategory.MISC)
-                                .forGetter(recipe -> recipe.category),
-                        IngredientWithCount.Serializer.DISALLOW_EMPTY_CODEC.codec()
-                                .listOf()
-                                .fieldOf("ingredients")
-                                .forGetter(recipe -> recipe.ingredients),
-                        ItemStack.CODEC
-                                .listOf()
-                                .fieldOf("results")
-                                .forGetter(MillStoneRecipe::getResults)
-                ).apply(instance, MillStoneRecipe::new)
-        );
-        public static final PacketCodec<RegistryByteBuf, MillStoneRecipe> PACKET_CODEC = PacketCodec.ofStatic(
-                Serializer::write, Serializer::read
-        );
+    public static class Serializer implements RecipeSerializer<AbstractCookingPotRecipe> {
+        private final RecipeFactory<AbstractCookingPotRecipe> recipeFactory;
+        public final MapCodec<AbstractCookingPotRecipe> CODEC;
+        public final PacketCodec<RegistryByteBuf, AbstractCookingPotRecipe> PACKET_CODEC;
 
-        public Serializer() {
+        public Serializer(RecipeFactory<AbstractCookingPotRecipe> recipeFactory) {
+            this.recipeFactory = recipeFactory;
+            this.CODEC = RecordCodecBuilder.mapCodec(
+                    instance->instance.group(
+                            Codec.STRING.fieldOf("group")
+                                    .forGetter(recipe -> recipe.group),
+                            CookingRecipeCategory.CODEC.fieldOf("category")
+                                    .orElse(CookingRecipeCategory.MISC)
+                                    .forGetter(recipe -> recipe.category),
+                            IngredientWithCount.Serializer.DISALLOW_EMPTY_CODEC.codec()
+                                    .listOf()
+                                    .fieldOf("ingredients")
+                                    .forGetter(recipe -> recipe.ingredients),
+                            ItemStack.CODEC
+                                    .listOf()
+                                    .fieldOf("results")
+                                    .forGetter(AbstractCookingPotRecipe::getResults)
+                    ).apply(instance, recipeFactory::create)
+            );
+            this.PACKET_CODEC = PacketCodec.ofStatic(
+                    this::write, this::read
+            );
         }
 
         @Override
-        public MapCodec<MillStoneRecipe> codec() {
+        public MapCodec<AbstractCookingPotRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public PacketCodec<RegistryByteBuf, MillStoneRecipe> packetCodec() {
+        public PacketCodec<RegistryByteBuf, AbstractCookingPotRecipe> packetCodec() {
             return PACKET_CODEC;
         }
 
-        public static MillStoneRecipe read(RegistryByteBuf buf) {
+        protected AbstractCookingPotRecipe read(RegistryByteBuf buf) {
             String group = buf.readString();
-            CraftingRecipeCategory category = buf.readEnumConstant(CraftingRecipeCategory.class);
+            CookingRecipeCategory category = buf.readEnumConstant(CookingRecipeCategory.class);
             int ingredientsSize = buf.readVarInt();
             DefaultedList<IngredientWithCount> ingredients = DefaultedList.ofSize(ingredientsSize, IngredientWithCount.EMPTY);
             ingredients.replaceAll(ignored -> IngredientWithCount.Serializer.read(buf));
             List<ItemStack> results = ItemStack.LIST_PACKET_CODEC.decode(buf);
-            return new MillStoneRecipe(group, category, ingredients, results);
+            return this.recipeFactory.create(group, category, ingredients, results);
         }
 
-        public static void write(RegistryByteBuf buf, MillStoneRecipe recipe) {
+        protected void write(RegistryByteBuf buf, AbstractCookingPotRecipe recipe) {
             buf.writeString(recipe.group);
             buf.writeEnumConstant(recipe.category);
             buf.writeVarInt(recipe.ingredients.size());
@@ -178,75 +165,93 @@ public class MillStoneRecipe implements Recipe<MillStoneBlockEntity.Inventory> {
         }
     }
 
-    public static class JsonBuilder implements CraftingRecipeJsonBuilder {
-        protected CraftingRecipeCategory category = CraftingRecipeCategory.MISC;
+    public interface RecipeFactory<T extends AbstractCookingPotRecipe> {
+        T create(String group, CookingRecipeCategory category, List<IngredientWithCount> ingredients, List<ItemStack> results);
+    }
+
+    public abstract static class JsonBuilder<T extends AbstractCookingPotRecipe>
+            implements CraftingRecipeJsonBuilder {
+        protected RecipeCategory category;
+        protected CookingRecipeCategory cookingCategory;
         protected DefaultedList<IngredientWithCount> ingredients = DefaultedList.of();
         protected DefaultedList<ItemStack> results = DefaultedList.of();
         protected final Map<String, AdvancementCriterion<?>> criteria = new LinkedHashMap<>();
         @Nullable
         protected String group;
+        protected abstract RecipeFactory<T> getRecipeFactory();
 
-        public static JsonBuilder create() {
-            return new JsonBuilder();
-        }
-
-        public JsonBuilder category(CraftingRecipeCategory category) {
+        public JsonBuilder<T> category(RecipeCategory category) {
             this.category = category;
             return this;
         }
 
-        public JsonBuilder ingredients(IngredientWithCount... ingredients) {
+        public JsonBuilder<T> cookingCategory(CookingRecipeCategory cookingCategory) {
+            this.cookingCategory = cookingCategory;
+            return this;
+        }
+
+        public JsonBuilder<T> ingredients(IngredientWithCount... ingredients) {
             for (IngredientWithCount ingredient : ingredients) {
                 this.ingredient(ingredient);
             }
             return this;
         }
 
-        public JsonBuilder ingredient(IngredientWithCount ingredient) {
+        public JsonBuilder<T> ingredient(IngredientWithCount ingredient) {
             this.ingredients.add(ingredient);
             return this;
         }
 
-        public JsonBuilder ingredient(ItemStack itemStack) {
+        public JsonBuilder<T> ingredient(ItemStack itemStack) {
             this.criterion(RecipeProvider.hasItem(itemStack.getItem()), RecipeProvider.conditionsFromItem(itemStack.getItem()));
             return this.ingredient(IngredientWithCount.fromStack(itemStack));
         }
 
-        public JsonBuilder ingredient(Item item, int count) {
+        public JsonBuilder<T> ingredient(Item item, int count) {
             return this.ingredient(new ItemStack(item, count));
         }
 
-        public JsonBuilder ingredient(Item item) {
+        public JsonBuilder<T> ingredient(Item item) {
             return this.ingredient(item, 1);
         }
 
-        public JsonBuilder results(ItemStack... itemStacks) {
+        public JsonBuilder<T> ingredient(TagKey<Item> itemTag, int count) {
+            this.criterion("has_" + itemTag.id().getPath(), RecipeProvider.conditionsFromTag(itemTag));
+            return this.ingredient(IngredientWithCount.fromTag(itemTag, count));
+        }
+
+        public JsonBuilder<T> ingredient(TagKey<Item> itemTag) {
+            return this.ingredient(itemTag, 1);
+        }
+
+
+        public JsonBuilder<T> results(ItemStack... itemStacks) {
             this.results.addAll(Arrays.asList(itemStacks));
             return this;
         }
 
-        public JsonBuilder result(ItemStack itemStack) {
+        public JsonBuilder<T> result(ItemStack itemStack) {
             this.results.add(itemStack);
             return this;
         }
 
-        public JsonBuilder result(Item item, int count) {
+        public JsonBuilder<T> result(Item item, int count) {
             this.results.add(new ItemStack(item, count));
             return this;
         }
 
-        public JsonBuilder result(Item item) {
+        public JsonBuilder<T> result(Item item) {
             return this.result(item, 1);
         }
 
         @Override
-        public JsonBuilder criterion(String string, AdvancementCriterion<?> advancementCriterion) {
+        public JsonBuilder<T> criterion(String string, AdvancementCriterion<?> advancementCriterion) {
             this.criteria.put(string, advancementCriterion);
             return this;
         }
 
         @Override
-        public JsonBuilder group(@Nullable String string) {
+        public JsonBuilder<T> group(@Nullable String string) {
             this.group = string;
             return this;
         }
@@ -257,26 +262,28 @@ public class MillStoneRecipe implements Recipe<MillStoneBlockEntity.Inventory> {
         }
 
         @Override
-        public void offerTo(RecipeExporter exporter) {
-            this.offerTo(exporter,
-                    RecipeProvider.getItemPath(results.get(0).getItem())
-                    + "_from_milling_"
-                    + RecipeProvider.getItemPath(this.ingredients.get(0).getMatchingStacks().get(0).getItem())
-            );
-        }
-
-        @Override
         public void offerTo(RecipeExporter exporter, Identifier recipeId) {
             this.validate(recipeId);
+            if (cookingCategory == null) {
+                cookingCategory(getCookingRecipeCategory(results));
+            }
+
             Advancement.Builder advancementBuilder = exporter.getAdvancementBuilder().criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(AdvancementRequirements.CriterionMerger.OR);
             this.criteria.forEach(advancementBuilder::criterion);
-            MillStoneRecipe millStoneRecipe = new MillStoneRecipe(
+            AbstractCookingPotRecipe cookingPotRecipe = this.getRecipeFactory().create(
                     Objects.requireNonNullElse(this.group, ""),
-                    this.category,
+                    this.cookingCategory,
                     this.ingredients,
                     this.results
             );
-            exporter.accept(recipeId, millStoneRecipe, advancementBuilder.build(recipeId.withPrefixedPath("recipes/" + this.category.asString() + "/")));
+            exporter.accept(recipeId, cookingPotRecipe, advancementBuilder.build(recipeId.withPrefixedPath("recipes/" + this.category.getName() + "/")));
+        }
+
+        private static CookingRecipeCategory getCookingRecipeCategory(DefaultedList<ItemStack> results) {
+            if (results.stream().anyMatch(result -> result.getItem() instanceof BlockItem)) {
+                return CookingRecipeCategory.BLOCKS;
+            }
+            return CookingRecipeCategory.MISC;
         }
 
         private void validate(Identifier recipeId) {

@@ -18,7 +18,7 @@ import net.minecraft.util.Identifier;
 public class SoulForgeScreen
         extends HandledScreen<SoulForgeScreenHandler>
         implements RecipeBookProvider {
-    private static final Identifier TEXTURE = new Identifier("bwt", "textures/gui/container/soul_forge.png");
+    private static final Identifier TEXTURE = Id.of("textures/gui/container/soul_forge.png");
     private final RecipeBookWidget recipeBook = new RecipeBookWidget();
     private boolean narrow;
 

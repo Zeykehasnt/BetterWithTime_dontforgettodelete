@@ -1,8 +1,9 @@
-package com.bwt.recipes;
+package com.bwt.recipes.block_dispenser_clump;
 
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.blocks.block_dispenser.BlockDispenserBlockEntity;
-import com.mojang.serialization.Codec;
+import com.bwt.recipes.BwtRecipes;
+import com.bwt.recipes.IngredientWithCount;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.advancement.Advancement;
@@ -16,15 +17,12 @@ import net.minecraft.data.server.recipe.RecipeProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.book.CookingRecipeCategory;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
@@ -33,22 +31,9 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
-public class BlockDispenserClumpRecipe implements Recipe<BlockDispenserBlockEntity> {
-    private final IngredientWithCount item;
-    private final ItemStack block;
-
-    public BlockDispenserClumpRecipe(IngredientWithCount item, ItemStack block) {
-        this.item = item;
-        this.block = block;
-    }
-
-    public IngredientWithCount getIngredient() {
-        return item;
-    }
-
+public record BlockDispenserClumpRecipe(IngredientWithCount item, ItemStack block) implements Recipe<BlockDispenserClumpRecipeInput> {
     public Ingredient getItem() {
         return item.ingredient();
     }
@@ -57,15 +42,11 @@ public class BlockDispenserClumpRecipe implements Recipe<BlockDispenserBlockEnti
         return item.count();
     }
 
-    public ItemStack getOutput() {
-        return block;
-    }
-
     @Override
-    public boolean matches(BlockDispenserBlockEntity inventory, World world) {
+    public boolean matches(BlockDispenserClumpRecipeInput input, World world) {
         // We could make this >= itemCount, but we want to match any number of ingredients
         // That way, if you have < itemCount, the ingredient doesn't get spit out
-        return inventory.getItems().stream().filter(getItem()).mapToInt(ItemStack::getCount).sum() > 0;
+        return input.items().stream().filter(getItem()).mapToInt(ItemStack::getCount).sum() > 0;
     }
 
     public boolean canAfford(BlockDispenserBlockEntity inventory) {
@@ -74,8 +55,8 @@ public class BlockDispenserClumpRecipe implements Recipe<BlockDispenserBlockEnti
     }
 
     @Override
-    public ItemStack craft(BlockDispenserBlockEntity inventory, RegistryWrapper.WrapperLookup lookup) {
-        return this.getOutput().copy();
+    public ItemStack craft(BlockDispenserClumpRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
+        return this.block.copy();
     }
 
     @Override
@@ -154,7 +135,7 @@ public class BlockDispenserClumpRecipe implements Recipe<BlockDispenserBlockEnti
                 instance->instance.group(
                     IngredientWithCount.Serializer.DISALLOW_EMPTY_CODEC
                             .fieldOf("ingredient")
-                            .forGetter(BlockDispenserClumpRecipe::getIngredient),
+                            .forGetter(BlockDispenserClumpRecipe::item),
                     Registries.ITEM
                             .getEntryCodec()
                             .fieldOf("block")
@@ -186,7 +167,7 @@ public class BlockDispenserClumpRecipe implements Recipe<BlockDispenserBlockEnti
         }
 
         protected static void write(RegistryByteBuf buf, BlockDispenserClumpRecipe recipe) {
-            IngredientWithCount.Serializer.PACKET_CODEC.encode(buf, recipe.getIngredient());
+            IngredientWithCount.Serializer.PACKET_CODEC.encode(buf, recipe.item);
             ItemStack.PACKET_CODEC.encode(buf, recipe.block);
         }
     }
