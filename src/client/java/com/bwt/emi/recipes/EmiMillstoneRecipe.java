@@ -90,11 +90,11 @@ public class EmiMillstoneRecipe implements EmiRecipe {
         i = 0;
         x = 20 * 4;
         for (EmiIngredient ingredient : this.results) {
-            widgets.addSlot(ingredient, x + (i * 18), y);
+            widgets.addSlot(ingredient, x + (i * 18), y).recipeContext(this);
             i++;
         }
         while (i < constantOutputSlots) {
-            widgets.addSlot(EmiStack.EMPTY, x + (i % 3 * 18), y + (i / 3 * 18));
+            widgets.addSlot(EmiStack.EMPTY, x + (i % 3 * 18), y + (i / 3 * 18)).recipeContext(this);
             i++;
         }
     }

@@ -75,11 +75,11 @@ public class EmiKilnRecipe implements EmiRecipe {
         x = 20 * 2;
 
         for (EmiIngredient ingredient : this.getOutputs()) {
-            widgets.addSlot(ingredient, x + (i * 18), y);
+            widgets.addSlot(ingredient, x + (i * 18), y).recipeContext(this);
             i++;
         }
         while (i < constantOutputSlots) {
-            widgets.addSlot(EmiStack.EMPTY, x + (i % 3 * 18), y + (i / 3 * 18));
+            widgets.addSlot(EmiStack.EMPTY, x + (i % 3 * 18), y + (i / 3 * 18)).recipeContext(this);
             i++;
         }
     }
