@@ -1,0 +1,25 @@
+{
+  "type": "bwt:soul_forge_shaped",
+  "category": "redstone",
+  "key": {
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "g": {
+      "item": "minecraft:gold_ingot"
+    },
+    "p": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "pattern": [
+    "gddg",
+    "g  g",
+    "g  g",
+    "gppg"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:lens"
+  }
+}

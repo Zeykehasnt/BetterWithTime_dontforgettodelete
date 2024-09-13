@@ -343,5 +343,16 @@ public class SoulForgeRecipeGenerator extends FabricRecipeProvider {
                 .input('r', Items.REDSTONE)
                 .criterion(hasItem(BwtItems.soulUrnItem), conditionsFromItem(BwtItems.soulUrnItem))
                 .offerTo(exporter);
+
+        SoulForgeShapedRecipe.JsonBuilder.create(RecipeCategory.REDSTONE, BwtBlocks.lensBlock)
+                .pattern("gddg")
+                .pattern("g  g")
+                .pattern("g  g")
+                .pattern("gppg")
+                .input('g', Items.GOLD_INGOT)
+                .input('d', Items.DIAMOND)
+                .input('p', Items.GLASS_PANE)
+                .criterion(hasItem(Items.DIAMOND), conditionsFromItem(Items.DIAMOND))
+                .offerTo(exporter);
     }
 }
