@@ -11,6 +11,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
@@ -176,7 +177,7 @@ public class KilnBlock extends Block {
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         super.randomDisplayTick(state, world, pos, random);
         BlockState blockAboveState = world.getBlockState(pos.up());
-        if (blockAboveState.isAir()) {
+        if (blockAboveState.isIn(BlockTags.AIR)) {
             return;
         }
         Optional<KilnRecipe> recipe = getRecipe(world, blockAboveState);

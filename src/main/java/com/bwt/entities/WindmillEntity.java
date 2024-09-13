@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
@@ -85,7 +86,7 @@ public class WindmillEntity extends HorizontalMechPowerSourceEntity {
 
     @Override
     public Predicate<BlockPos> getBlockInterferencePredicate() {
-        return blockPos -> !getWorld().getBlockState(blockPos).isAir();
+        return blockPos -> !getWorld().getBlockState(blockPos).isIn(BlockTags.AIR);
     }
 
     @Override

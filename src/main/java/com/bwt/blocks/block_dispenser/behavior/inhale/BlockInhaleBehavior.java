@@ -6,6 +6,7 @@ import com.bwt.blocks.block_dispenser.BlockDispenserBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
@@ -30,7 +31,7 @@ public interface BlockInhaleBehavior {
     void inhale(BlockPointer blockPointer);
 
     default void breakBlockNoItems(ServerWorld world, BlockState state, BlockPos pos) {
-        if (state.isAir()) {
+        if (state.isIn(BlockTags.AIR)) {
             return;
         }
         world.removeBlock(pos, false);

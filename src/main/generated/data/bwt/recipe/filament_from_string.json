@@ -15,7 +15,7 @@
     },
     {
       "ingredient": {
-        "item": "bwt:hemp_fiber"
+        "item": "minecraft:string"
       }
     }
   ],

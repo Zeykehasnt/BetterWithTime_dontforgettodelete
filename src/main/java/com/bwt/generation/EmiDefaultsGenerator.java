@@ -1,5 +1,6 @@
 package com.bwt.generation;
 
+import com.bwt.utils.Id;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -28,7 +29,7 @@ public class EmiDefaultsGenerator implements DataProvider {
         defaultRecipeIdentifiers.add(identifier);
     }
     public static void addBwtRecipe(Identifier identifier) {
-        addDefaultRecipe(Identifier.of("bwt", identifier.getPath()));
+        addDefaultRecipe(Id.of(identifier.getPath()));
     }
 
 
@@ -38,11 +39,10 @@ public class EmiDefaultsGenerator implements DataProvider {
     }
 
     public void addDefaults() {
-        addDefaultRecipe(Identifier.of("bwt", "hopper_soul_urn"));
-        addDefaultRecipe(Identifier.of("bwt", "fabric"));
-        addDefaultRecipe(Identifier.of("bwt", "wood_blade"));
-        addDefaultRecipe(Identifier.of("bwt", "rope"));
-
+        addDefaultRecipe(Id.of("hopper_soul_urn"));
+        addDefaultRecipe(Id.of("fabric"));
+        addDefaultRecipe(Id.of("wood_blade"));
+        addDefaultRecipe(Id.of("rope"));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class EmiDefaultsGenerator implements DataProvider {
         addDefaults();
 
         var recipeDefaults = this.output.getResolver(DataOutput.OutputType.RESOURCE_PACK, "recipe/defaults");
-        var bwtRecipeDefaultsFile = recipeDefaults.resolveJson(Identifier.of("emi", "bwt"));
+        var bwtRecipeDefaultsFile = recipeDefaults.resolveJson(Id.of("emi", "bwt"));
 
         JsonObject object = new JsonObject();
         var added = new JsonArray();

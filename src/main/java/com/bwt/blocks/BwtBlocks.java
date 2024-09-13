@@ -5,6 +5,8 @@ import com.bwt.blocks.cauldron.CauldronBlock;
 import com.bwt.blocks.crucible.CrucibleBlock;
 import com.bwt.blocks.detector.DetectorBlock;
 import com.bwt.blocks.detector.DetectorLogicBlock;
+import com.bwt.blocks.lens.LensBeamBlock;
+import com.bwt.blocks.lens.LensBlock;
 import com.bwt.blocks.mech_hopper.MechHopperBlock;
 import com.bwt.blocks.mill_stone.MillStoneBlock;
 import com.bwt.blocks.mining_charge.MiningChargeBlock;
@@ -85,7 +87,11 @@ public class BwtBlocks implements ModInitializer {
 	public static final Block detectorBlock = new DetectorBlock(AbstractBlock.Settings.copy(Blocks.DISPENSER)
             .hardness(3.5f)
     );
-	public static final Block detectorLogicBlock = new DetectorLogicBlock(AbstractBlock.Settings.copy(Blocks.AIR));
+	public static final Block detectorLogicBlock = new DetectorLogicBlock(AbstractBlock.Settings.create()
+            .replaceable()
+            .noCollision()
+            .dropsNothing()
+    );
     public static final Block dungBlock = new Block(AbstractBlock.Settings.create().hardness(2f).mapColor(MapColor.BROWN).sounds(BlockSoundGroup.HONEY));
     public static final Block gearBoxBlock = new GearBoxBlock(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS)
             .hardness(2F)
@@ -120,7 +126,21 @@ public class BwtBlocks implements ModInitializer {
     );
 //	public static final Block infernalEnchanterBlock = new InfernalEnchanterBlock(AbstractBlock.Settings.create());
 	public static final Block kilnBlock = new KilnBlock(AbstractBlock.Settings.copy(Blocks.BRICKS));
-//	public static final Block lensBlock = new LensBlock(AbstractBlock.Settings.create());
+	public static final LensBlock lensBlock = new LensBlock(AbstractBlock.Settings.create()
+            .hardness(3.5f)
+            .sounds(BlockSoundGroup.METAL)
+            .solid()
+            .nonOpaque()
+            .pistonBehavior(PistonBehavior.BLOCK)
+            .luminance(state -> state.get(LensBlock.LIT) ? 14 : 0)
+    );
+    public static final LensBeamBlock lensBeamBlock = new LensBeamBlock(AbstractBlock.Settings.create()
+            .replaceable()
+            .noCollision()
+            .dropsNothing()
+            .luminance(state -> state.get(LensBeamBlock.TERMINUS) ? 14 : 0)
+            .emissiveLighting(((state, world, pos) -> state.get(LensBeamBlock.TERMINUS)))
+    );
 	public static final Block lightBlockBlock = new LightBlock(AbstractBlock.Settings.copy(Blocks.GLASS)
             .strength(0.4f)
             .luminance(Blocks.createLightLevelFromLitBlockState(15))
@@ -392,6 +412,10 @@ public class BwtBlocks implements ModInitializer {
         // Vine trap
         Registry.register(Registries.BLOCK, Id.of("vine_trap"), vineTrapBlock);
         Registry.register(Registries.ITEM, Id.of("vine_trap"), new BlockItem(vineTrapBlock, new Item.Settings()));
+        // Lens
+        Registry.register(Registries.BLOCK, Id.of("lens"), lensBlock);
+        Registry.register(Registries.ITEM, Id.of("lens"), new BlockItem(lensBlock, new Item.Settings()));
+        Registry.register(Registries.BLOCK, Id.of("lens_beam"), lensBeamBlock);
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(content -> {
             content.addAfter(Items.CHERRY_LOG, BwtBlocks.bloodWoodBlocks.logBlock);
@@ -427,6 +451,7 @@ public class BwtBlocks implements ModInitializer {
             content.add(cauldronBlock);
             content.add(crucibleBlock);
             content.add(soulForgeBlock);
+            content.add(lensBlock);
             content.addAfter(Items.TNT, miningChargeBlock);
         });
 

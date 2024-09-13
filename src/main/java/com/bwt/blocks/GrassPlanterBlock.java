@@ -5,6 +5,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.Fertilizable;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -41,7 +42,7 @@ public class GrassPlanterBlock extends PlanterBlock {
             if (aboveNeighborState.isOf(shortGrassState.getBlock()) && random.nextInt(10) == 0) {
                 ((Fertilizable) shortGrassState.getBlock()).grow(world, random, aboveNeighborPos, aboveNeighborState);
             }
-            if (!aboveNeighborState.isAir()) continue;
+            if (!aboveNeighborState.isIn(BlockTags.AIR)) continue;
             if (random.nextInt(8) == 0) {
                 List<ConfiguredFeature<?, ?>> list = world.getBiome(aboveNeighborPos).value().getGenerationSettings().getFlowerFeatures();
                 if (list.isEmpty()) continue;

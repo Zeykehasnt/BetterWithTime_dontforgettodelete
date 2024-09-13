@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.*;
@@ -45,7 +46,7 @@ public class WaterWheelEntity extends HorizontalMechPowerSourceEntity {
 
     @Override
     public Predicate<BlockPos> getBlockInterferencePredicate() {
-        return blockPos -> !getWorld().getBlockState(blockPos).isAir() && !getWorld().getFluidState(blockPos).isIn(FluidTags.WATER);
+        return blockPos -> !getWorld().getBlockState(blockPos).isIn(BlockTags.AIR) && !getWorld().getFluidState(blockPos).isIn(FluidTags.WATER);
     }
 
     @Override

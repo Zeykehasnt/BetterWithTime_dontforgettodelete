@@ -336,6 +336,8 @@
   "emi.category.bwt.turntable": "Turntable",
   "emi.tooltip.bwt.hopper_souls_power": "Mechanical Power to the Hopper is advised.",
   "gamerule.disableVanillaHopperTransfer": "Disable Vanilla Hopper Transfer",
+  "gamerule.lensBeamRange": "Lens Beam Range",
+  "gamerule.lensBeamRange.description": "Impacts performance!",
   "item.bwt.armor_plate": "Armor Plate",
   "item.bwt.belt": "Belt",
   "item.bwt.breeding_harness": "Breeding Harness",

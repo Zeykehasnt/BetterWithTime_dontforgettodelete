@@ -4,6 +4,7 @@ import com.bwt.blocks.BwtBlocks;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -49,7 +50,7 @@ public interface RotationProcessHelper {
 
     static void defaultRotationProcessor(World world, BlockPos pos, BlockState originalState, BlockState rotatedState, BlockEntity rotatingBlockEntity) {
         rotatedState = Block.postProcessState(rotatedState, world, pos);
-        if (rotatedState.isAir()) {
+        if (rotatedState.isIn(BlockTags.AIR)) {
             Block.dropStacks(originalState, world, pos, rotatingBlockEntity, null, ItemStack.EMPTY);
             return;
         }
