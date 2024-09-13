@@ -38,6 +38,7 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -272,7 +273,7 @@ public class MechHopperBlockEntity extends BlockEntity implements NamedScreenHan
         BlockPos belowPos = pos.down();
         BlockState blockBelowState = world.getBlockState(belowPos);
 
-        if (blockBelowState.isAir() || blockBelowState.isReplaceable()) {
+        if (blockBelowState.isIn(BlockTags.AIR) || blockBelowState.isReplaceable()) {
             ItemStack ejectStack = invStack.copyWithCount(stackCountToDrop);
             ejectStack(world, getPos(), ejectStack);
             removeStack(stackIndex, stackCountToDrop);

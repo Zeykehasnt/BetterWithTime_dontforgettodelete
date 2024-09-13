@@ -24,6 +24,7 @@ import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeManager;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
@@ -203,7 +204,7 @@ public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
         // check if we have something to cut in front of us
         BlockPos targetPos = pos.offset(state.get(FACING));
         BlockState targetState = world.getBlockState(targetPos);
-        if (!targetState.isAir()) {
+        if (!targetState.isIn(BlockTags.AIR)) {
             world.scheduleBlockTick(pos, this, m_iSawTimeBaseTickRate + world.random.nextInt(m_iSawTimeTickRateVariance));
         }
     }
@@ -235,7 +236,7 @@ public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
         BlockPos targetPos = pos.offset(state.get(FACING));
         BlockState targetState = world.getBlockState(targetPos);
 
-        if (targetState.isAir()) {
+        if (targetState.isIn(BlockTags.AIR)) {
             return;
         }
 

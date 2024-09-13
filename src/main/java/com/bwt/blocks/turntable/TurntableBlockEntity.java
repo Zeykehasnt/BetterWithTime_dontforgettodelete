@@ -15,6 +15,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.ItemScatterer;
@@ -91,7 +92,7 @@ public class TurntableBlockEntity extends BlockEntity {
         for (int j = 1; j <= blocksAboveToRotate; j++) {
             BlockPos blockAbovePos = turntablePos.up(j);
             BlockState blockAboveState = world.getBlockState(blockAbovePos);
-            if (blockAboveState.isAir()) {
+            if (blockAboveState.isIn(BlockTags.AIR)) {
                 break;
             }
             if (!CanRotateHelper.canRotate(world, blockAbovePos, blockAboveState)) {

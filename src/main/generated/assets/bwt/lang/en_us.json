@@ -323,6 +323,8 @@
   "bwt.subtitles.entity.wolf.dung.production": "Wolf produces dung",
   "container.bwt.block_dispenser": "Block Dispenser",
   "gamerule.disableVanillaHopperTransfer": "Disable Vanilla Hopper Transfer",
+  "gamerule.lensBeamRange": "Lens Beam Range",
+  "gamerule.lensBeamRange.description": "Impacts performance!",
   "item.bwt.armor_plate": "Armor Plate",
   "item.bwt.belt": "Belt",
   "item.bwt.breeding_harness": "Breeding Harness",

@@ -35,7 +35,7 @@ public class MinecartDispenserBehavior extends ItemDispenserBehavior {
         if (blockState.isIn(BlockTags.RAILS)) {
             g = railShape.isAscending() ? 0.6 : 0.1;
         }
-        else if (blockState.isAir() && serverWorld.getBlockState(blockPos.down()).isIn(BlockTags.RAILS)) {
+        else if (blockState.isIn(BlockTags.AIR) && serverWorld.getBlockState(blockPos.down()).isIn(BlockTags.RAILS)) {
             RailShape railShape22;
             BlockState blockState2 = serverWorld.getBlockState(blockPos.down());
             railShape22 = blockState2.getBlock() instanceof AbstractRailBlock ? blockState2.get(((AbstractRailBlock) blockState2.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;

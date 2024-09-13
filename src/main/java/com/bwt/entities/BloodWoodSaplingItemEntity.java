@@ -4,6 +4,7 @@ import com.bwt.blocks.BwtBlocks;
 import com.bwt.tags.BwtBlockTags;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -19,7 +20,7 @@ public class BloodWoodSaplingItemEntity extends ItemEntity {
             return;
         }
         BlockPos belowPos = supportingBlockPos.get();
-        if (getWorld().getBlockState(belowPos.up()).isAir() && getWorld().getBlockState(belowPos).isIn(BwtBlockTags.BLOOD_WOOD_PLANTABLE_ON)) {
+        if (getWorld().getBlockState(belowPos.up()).isIn(BlockTags.AIR) && getWorld().getBlockState(belowPos).isIn(BwtBlockTags.BLOOD_WOOD_PLANTABLE_ON)) {
             this.discard();
             getWorld().setBlockState(belowPos.up(), BwtBlocks.bloodWoodBlocks.saplingBlock.getDefaultState());
         }

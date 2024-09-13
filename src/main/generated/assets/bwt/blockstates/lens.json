@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "bwt:block/lens",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "bwt:block/lens",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "bwt:block/lens"
+    },
+    "facing=south": {
+      "model": "bwt:block/lens",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "bwt:block/lens",
+      "x": 270
+    },
+    "facing=west": {
+      "model": "bwt:block/lens",
+      "y": 270
+    }
+  }
+}

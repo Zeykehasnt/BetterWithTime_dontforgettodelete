@@ -10,6 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DustParticleEffect;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
@@ -145,7 +146,7 @@ public class DetectorBlock extends SimpleFacingBlock {
         BlockPos targetPos = pos.offset(facing);
         BlockState targetState = world.getBlockState(targetPos);
 
-        if (targetState.isAir() && !targetState.isOf(BwtBlocks.detectorLogicBlock)) {
+        if (targetState.isIn(BlockTags.AIR) && !targetState.isOf(BwtBlocks.detectorLogicBlock) && !targetState.isOf(BwtBlocks.lensBeamBlock)) {
             world.setBlockState(targetPos, BwtBlocks.detectorLogicBlock.getDefaultState());
             return true;
         }

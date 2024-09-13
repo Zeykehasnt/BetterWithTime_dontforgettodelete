@@ -23,6 +23,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
@@ -420,7 +421,7 @@ public class MovingRopeEntity extends RectangularEntity implements VoxelShapedEn
 
             BlockState placementState = getEntityWorld().getBlockState(pos);
 
-            if (!(placementState.isAir() || placementState.isReplaceable())) {
+            if (!(placementState.isIn(BlockTags.AIR) || placementState.isReplaceable())) {
                 blocked.add(pos);
             }
         });

@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -294,7 +295,7 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         BlockState state = world.getBlockState(ropePos);
         BlockState defaultRopeState = BwtBlocks.ropeBlock.getDefaultState();
         if (!up) {
-            if ((world.isAir(ropePos) || state.isReplaceable()) && defaultRopeState.canPlaceAt(world, ropePos) && hasRope()) {
+            if (state.isReplaceable() && defaultRopeState.canPlaceAt(world, ropePos) && hasRope()) {
                 world.playSound(null, pulleyPos.down(), defaultRopeState.getSoundGroup().getPlaceSound(), SoundCategory.BLOCKS, 0.4F, 1.0F);
                 world.setBlockState(ropePos, defaultRopeState);
                 takeRope(false);
@@ -308,7 +309,7 @@ public class PulleyBlockEntity extends BlockEntity implements NamedScreenHandler
         if ((rope.isMovingUp() ? canGoUp(world, pulleyPos, pulleyState) : canGoDown(world, pulleyPos, pulleyState, true)) && !rope.isPathBlocked()) {
             rope.setTargetY(targetY + (rope.isMovingUp() ? 1 : -1));
             if (up) {
-                if (!world.isAir(ropePos.up())) {
+                if (!world.getBlockState(ropePos.up()).isIn(BlockTags.AIR)) {
                     world.playSound(null, pulleyPos.down(), defaultRopeState.getSoundGroup().getBreakSound(), SoundCategory.BLOCKS,
                             0.4F + (world.random.nextFloat() * 0.1F), 1.0F);
                     world.removeBlock(ropePos.up(), false);

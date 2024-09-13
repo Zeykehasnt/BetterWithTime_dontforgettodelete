@@ -66,7 +66,6 @@ public class BlockLootTableGenerator extends FabricBlockLootTableProvider {
         addDrop(BwtBlocks.companionSlabBlock);
         addDrop(BwtBlocks.crucibleBlock);
         addDrop(BwtBlocks.detectorBlock);
-        addDrop(BwtBlocks.detectorLogicBlock);
         addDrop(BwtBlocks.gearBoxBlock);
         addDrop(BwtBlocks.grateBlock);
         addDrop(BwtBlocks.handCrankBlock);

@@ -4,6 +4,7 @@ import com.bwt.tags.BwtBlockTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -169,7 +170,7 @@ public class BloodWoodLogBlock extends PillarBlock {
 
     public boolean attemptToGrowIntoBlock(World world, BlockPos pos, Direction growthDirection) {
         BlockState state = world.getBlockState(pos);
-        if (!(state.isAir() || state.isOf(BwtBlocks.bloodWoodBlocks.leavesBlock)) || countBloodWoodNeighboringOnBlockWithSoulSand(world, pos) >= 2) {
+        if (!(state.isIn(BlockTags.AIR) || state.isOf(BwtBlocks.bloodWoodBlocks.leavesBlock)) || countBloodWoodNeighboringOnBlockWithSoulSand(world, pos) >= 2) {
             // not empty, or too much neighboring wood to grow further
             return false;
         }
@@ -183,7 +184,7 @@ public class BloodWoodLogBlock extends PillarBlock {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
                 for (int k = -1; k <= 1; k++) {
-                    if (world.isAir(pos.add(i, j, k))) {
+                    if (world.getBlockState(pos.add(i, j, k)).isIn(BlockTags.AIR)) {
                         world.setBlockState(pos.add(i, j, k), BwtBlocks.bloodWoodBlocks.leavesBlock.getDefaultState());
                     }
                 }

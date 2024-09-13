@@ -3,6 +3,7 @@ package com.bwt.blocks;
 import com.bwt.items.BwtItems;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -104,12 +105,12 @@ public class HempCropBlock extends CropBlock {
 
     @Override
     public boolean canGrow(World world, Random random, BlockPos pos, BlockState state) {
-        return !world.getBlockState(pos.down()).isOf(this) && world.getBlockState(pos.up()).isAir();
+        return !world.getBlockState(pos.down()).isOf(this) && world.getBlockState(pos.up()).isIn(BlockTags.AIR);
     }
 
     @Override
     public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
-        return !isMature(state) || world.getBlockState(pos.up()).isAir();
+        return !isMature(state) || world.getBlockState(pos.up()).isIn(BlockTags.AIR);
     }
 
     @Override
@@ -126,7 +127,7 @@ public class HempCropBlock extends CropBlock {
         int maxAge = getMaxAge();
         if (newAge > maxAge) {
             newAge = maxAge;
-            if (world.getBlockState(pos.up()).isAir()) {
+            if (world.getBlockState(pos.up()).isIn(BlockTags.AIR)) {
                 world.setBlockState(pos.up(), getDefaultState().with(AGE, maxAge));
             }
         }

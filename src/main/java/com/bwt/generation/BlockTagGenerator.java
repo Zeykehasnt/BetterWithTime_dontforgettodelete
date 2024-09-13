@@ -21,7 +21,14 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
-        getOrCreateTagBuilder(BlockTags.REPLACEABLE).add(BwtBlocks.detectorLogicBlock);
+        getOrCreateTagBuilder(BlockTags.AIR).add(
+                BwtBlocks.detectorLogicBlock,
+                BwtBlocks.lensBeamBlock
+        );
+        getOrCreateTagBuilder(BlockTags.REPLACEABLE).add(
+                BwtBlocks.detectorLogicBlock,
+                BwtBlocks.lensBeamBlock
+        );
         getOrCreateTagBuilder(BlockTags.CLIMBABLE).add(BwtBlocks.ropeBlock);
         getOrCreateTagBuilder(BlockTags.RAILS).add(BwtBlocks.stoneDetectorRailBlock, BwtBlocks.obsidianDetectorRailBlock);
         getOrCreateTagBuilder(BlockTags.PRESSURE_PLATES).add(BwtBlocks.obsidianPressuePlateBlock);

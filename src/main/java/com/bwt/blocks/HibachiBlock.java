@@ -54,7 +54,7 @@ public class HibachiBlock extends Block {
             world.setBlockState(pos, state.cycle(LIT), Block.NOTIFY_ALL);
         }
         if (lit) {
-            if (world.getBlockState(pos.up()).isAir()) {
+            if (world.getBlockState(pos.up()).isIn(BlockTags.AIR)) {
                 world.playSound(null, pos, BwtSoundEvents.HIBACHI_IGNITE,
                         SoundCategory.BLOCKS, 1F, world.random.nextFloat() * 0.4F + 1F);
                 world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
