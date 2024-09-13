@@ -10,6 +10,7 @@ import dev.emi.emi.api.render.EmiTooltipComponents;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +28,10 @@ public class EmiMillstoneRecipe implements EmiRecipe {
     private final List<EmiIngredient> ingredients;
     private final List<EmiStack> results;
     private final int displayRows;
+
+    public EmiMillstoneRecipe(EmiRecipeCategory category, RecipeEntry<MillStoneRecipe> recipeEntry) {
+        this(category, recipeEntry.id(), recipeEntry.value());
+    }
 
     public EmiMillstoneRecipe(EmiRecipeCategory category, Identifier id, MillStoneRecipe recipe) {
         this.category = category;

@@ -2,12 +2,14 @@ package com.bwt.emi.recipes;
 
 import com.bwt.emi.BwtEmiPlugin;
 import com.bwt.recipes.soul_bottling.SoulBottlingRecipe;
+import com.bwt.utils.Id;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,13 +18,16 @@ import java.util.List;
 public class EmiSoulBottlingRecipe implements EmiRecipe {
 
     public static final EmiTexture FULL_GEAR = new EmiTexture(BwtEmiPlugin.WIDGETS, 14, 0, 14, 14);
-    public static final Identifier BACKGROUND = Identifier.of("bwt", "textures/gui/container/hopper_recipe.png");
+    public static final Identifier BACKGROUND = Id.of("textures/gui/container/hopper_recipe.png");
 
     private final Identifier id;
     protected final EmiIngredient bottle;
     protected final int soulCount;
     protected final EmiStack result;
 
+    public EmiSoulBottlingRecipe(RecipeEntry<SoulBottlingRecipe> recipeEntry) {
+        this(recipeEntry.id(), recipeEntry.value());
+    }
 
     public EmiSoulBottlingRecipe(Identifier id, SoulBottlingRecipe recipe) {
         this(id, BwtEmiPlugin.from(recipe.bottle()), recipe.soulCount(), EmiStack.of(recipe.getResult()));

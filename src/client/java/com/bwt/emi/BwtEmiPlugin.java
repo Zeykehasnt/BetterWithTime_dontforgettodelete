@@ -9,6 +9,9 @@ import com.bwt.recipes.BlockIngredient;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.recipes.IngredientWithCount;
 import com.bwt.recipes.cooking_pots.AbstractCookingPotRecipe;
+import com.bwt.recipes.hopper_filter.HopperFilterRecipe;
+import com.bwt.recipes.soul_bottling.SoulBottlingRecipe;
+import com.bwt.utils.Id;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipe;
@@ -19,24 +22,23 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.block.Blocks;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.recipe.input.RecipeInput;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class BwtEmiPlugin implements EmiPlugin {
-    public static final Identifier WIDGETS = Identifier.of("bwt", "textures/gui/container/emiwidgets.png");
+    public static final Identifier WIDGETS = Id.of("textures/gui/container/emiwidgets.png");
 
 
     public static EmiRecipeCategory CAULDRON = category("cauldron", EmiStack.of(BwtBlocks.cauldronBlock));
@@ -58,7 +60,7 @@ public class BwtEmiPlugin implements EmiPlugin {
     }
 
     public static EmiRecipeCategory category(String id, EmiStack icon) {
-        return new EmiRecipeCategory(Identifier.of("bwt", id), icon, icon::render);
+        return new EmiRecipeCategory(Id.of(id), icon, icon::render);
     }
 
     public static EmiRecipeCategory category(String id, EmiStack icon, Comparator<EmiRecipe> comp) {
@@ -67,12 +69,12 @@ public class BwtEmiPlugin implements EmiPlugin {
     }
 
 
-    private static <C extends RecipeInput, T extends Recipe<C>> Collection<Pair<Identifier, T>> getRecipes(EmiRegistry registry, RecipeType<T> type) {
-        return registry.getRecipeManager().listAllOfType(type).stream().map(e -> new Pair<>(e.id(), e.value())).toList();
+    private static <C extends RecipeInput, T extends Recipe<C>> List<RecipeEntry<T>> getRecipes(EmiRegistry registry, RecipeType<T> type) {
+        return registry.getRecipeManager().listAllOfType(type);
     }
 
-    private static <C extends RecipeInput, T extends CraftingRecipe> Collection<Pair<Identifier, T>> getRecipes(EmiRegistry registry, RecipeType<T> type, Predicate<CraftingRecipeCategory> category) {
-        return registry.getRecipeManager().listAllOfType(type).stream().filter(r -> category.test(r.value().getCategory())).map(e -> new Pair<>(e.id(), e.value())).toList();
+    private static <C extends RecipeInput, T extends CraftingRecipe> List<RecipeEntry<T>> getRecipes(EmiRegistry registry, RecipeType<T> type, Predicate<CraftingRecipeCategory> category) {
+        return registry.getRecipeManager().listAllOfType(type).stream().filter(r -> category.test(r.value().getCategory())).toList();
     }
 
 
@@ -110,69 +112,68 @@ public class BwtEmiPlugin implements EmiPlugin {
         reg.addWorkstation(HOPPER_SOULS, EmiStack.of(BwtBlocks.hopperBlock));
         reg.addWorkstation(HOPPER_FILTERING, EmiStack.of(BwtBlocks.hopperBlock));
 
-        for (var recipe : getRecipes(reg, BwtRecipes.CAULDRON_RECIPE_TYPE)) {
-            reg.addRecipe(new EmiCookingPotRecipe<>(CAULDRON, recipe.getLeft(), recipe.getRight()));
-        }
-        for (var recipe : getRecipes(reg, BwtRecipes.STOKED_CAULDRON_RECIPE_TYPE)) {
-            reg.addRecipe(new EmiCookingPotRecipe<>(STOKED_CAULDRON, recipe.getLeft(), recipe.getRight()));
-        }
-        for (var recipe : getRecipes(reg, BwtRecipes.CRUCIBLE_RECIPE_TYPE)) {
-            reg.addRecipe(new EmiCookingPotRecipe<>(CRUCIBLE, recipe.getLeft(), recipe.getRight()));
-        }
-        for (var recipe : getRecipes(reg, BwtRecipes.STOKED_CRUCIBLE_RECIPE_TYPE)) {
-            var category = STOKED_CRUCIBLE;
-            if( recipe.getRight().getCategory().equals(AbstractCookingPotRecipe.CookingPotRecipeCategory.RECLAIM)) {
-                category = STOKED_CRUCIBLE_RECLAIM;
-            }
-            reg.addRecipe(new EmiCookingPotRecipe<>(category, recipe.getLeft(), recipe.getRight()));
-        }
-        for (var recipe : getRecipes(reg, BwtRecipes.MILL_STONE_RECIPE_TYPE)) {
-            reg.addRecipe(new EmiMillstoneRecipe(MILL_STONE, recipe.getLeft(), recipe.getRight()));
-        }
-        for (var recipe : getRecipes(reg, BwtRecipes.SAW_RECIPE_TYPE)) {
-            reg.addRecipe(new EmiSawRecipe(SAW, recipe.getLeft(), recipe.getRight()));
-        }
-        for (var recipe : getRecipes(reg, BwtRecipes.TURNTABLE_RECIPE_TYPE)) {
-            reg.addRecipe(new EmiTurntableRecipe(TURNTABLE, recipe.getLeft(), recipe.getRight()));
-        }
-        for (var recipe : getRecipes(reg, BwtRecipes.KILN_RECIPE_TYPE)) {
-            reg.addRecipe(new EmiKilnRecipe(KILN, recipe.getLeft(), recipe.getRight()));
-        }
-        for (var r : getRecipes(reg, BwtRecipes.SOUL_FORGE_RECIPE_TYPE, c -> c != CraftingRecipeCategory.BUILDING)
-                .stream()
-                .sorted(Comparator.comparingInt(r -> r.getRight().getCategory().ordinal()))
-                .toList()) {
-            reg.addRecipe(new EmiSoulForgeRecipe(r.getRight(),r.getLeft()));
-        }
-        for (var r : getRecipes(reg, BwtRecipes.SOUL_FORGE_RECIPE_TYPE, c -> c == CraftingRecipeCategory.BUILDING)) {
-            reg.addRecipe(new EmiSoulForgeRecipe(r.getRight(),r.getLeft()));
-        }
-        var hopperFilterRecipes = getRecipes(reg, BwtRecipes.HOPPER_FILTER_RECIPE_TYPE);
-        var soulBottlingRecipes = getRecipes(reg, BwtRecipes.SOUL_BOTTLING_RECIPE_TYPE);
+        getRecipes(reg, BwtRecipes.CAULDRON_RECIPE_TYPE).stream()
+                .map(recipeEntry -> new EmiCookingPotRecipe<>(CAULDRON, recipeEntry))
+                .forEach(reg::addRecipe);
+        getRecipes(reg, BwtRecipes.STOKED_CAULDRON_RECIPE_TYPE).stream()
+                .map(recipeEntry -> new EmiCookingPotRecipe<>(STOKED_CAULDRON, recipeEntry))
+                .forEach(reg::addRecipe);
+        getRecipes(reg, BwtRecipes.CRUCIBLE_RECIPE_TYPE).stream()
+                .map(recipeEntry -> new EmiCookingPotRecipe<>(CRUCIBLE, recipeEntry))
+                .forEach(reg::addRecipe);
+        getRecipes(reg, BwtRecipes.STOKED_CRUCIBLE_RECIPE_TYPE).stream()
+                .map(recipeEntry -> new EmiCookingPotRecipe<>(
+                        recipeEntry.value().getCategory().equals(AbstractCookingPotRecipe.CookingPotRecipeCategory.RECLAIM)
+                                ? STOKED_CRUCIBLE_RECLAIM
+                                : STOKED_CRUCIBLE,
+                        recipeEntry)
+                ).forEach(reg::addRecipe);
+        getRecipes(reg, BwtRecipes.MILL_STONE_RECIPE_TYPE).stream()
+                .map(recipeEntry -> new EmiMillstoneRecipe(MILL_STONE, recipeEntry))
+                .forEach(reg::addRecipe);
+        getRecipes(reg, BwtRecipes.SAW_RECIPE_TYPE).stream()
+                .map(recipeEntry -> new EmiSawRecipe(SAW, recipeEntry))
+                .forEach(reg::addRecipe);
+        getRecipes(reg, BwtRecipes.TURNTABLE_RECIPE_TYPE).stream()
+                .map(recipeEntry -> new EmiTurntableRecipe(TURNTABLE, recipeEntry))
+                .forEach(reg::addRecipe);
+        getRecipes(reg, BwtRecipes.KILN_RECIPE_TYPE).stream()
+                .map(recipeEntry -> new EmiKilnRecipe(KILN, recipeEntry))
+                .forEach(reg::addRecipe);
+        getRecipes(reg, BwtRecipes.SOUL_FORGE_RECIPE_TYPE, c -> c != CraftingRecipeCategory.BUILDING).stream()
+                .sorted(Comparator.comparingInt(r -> r.value().getCategory().ordinal()))
+                .map(EmiSoulForgeRecipe::new)
+                .forEach(reg::addRecipe);
+        getRecipes(reg, BwtRecipes.SOUL_FORGE_RECIPE_TYPE, c -> c == CraftingRecipeCategory.BUILDING).stream()
+                .map(EmiSoulForgeRecipe::new)
+                .forEach(reg::addRecipe);
+        List<RecipeEntry<HopperFilterRecipe>> hopperFilterRecipes = getRecipes(reg, BwtRecipes.HOPPER_FILTER_RECIPE_TYPE);
+        List<RecipeEntry<SoulBottlingRecipe>> soulBottlingRecipes = getRecipes(reg, BwtRecipes.SOUL_BOTTLING_RECIPE_TYPE);
 
-        var hopperFilterRecipesNoSouls = hopperFilterRecipes.stream().filter(r -> r.getRight().soulCount() == 0).toList();
-        for(var r: hopperFilterRecipesNoSouls) {
-            reg.addRecipe(new EmiHopperFilterRecipe(HOPPER_FILTERING, r.getLeft() , r.getRight()));
-        }
+        Stream<RecipeEntry<HopperFilterRecipe>> hopperFilterRecipesNoSouls = hopperFilterRecipes.stream()
+                .filter(r -> r.value().soulCount() == 0);
 
-        var hopperFilterRecipesWithSouls = hopperFilterRecipes.stream().filter(r -> r.getRight().soulCount() >= 1).toList();
-        for(var hopperFilterRecipe: hopperFilterRecipesWithSouls) {
-            reg.addRecipe(new EmiHopperFilterRecipe(HOPPER_SOULS, hopperFilterRecipe.getLeft(), hopperFilterRecipe.getRight()));
-            for(var soulBottleRecipe: soulBottlingRecipes) {
-                reg.addRecipe(new EmiHopperFilterRecipe(HOPPER_SOULS, hopperFilterRecipe.getLeft(), hopperFilterRecipe.getRight()).withSoulBottlingRecipe(soulBottleRecipe.getLeft(), soulBottleRecipe.getRight()));
-            }
-        }
+        hopperFilterRecipesNoSouls
+                .map(r -> new EmiHopperFilterRecipe(HOPPER_FILTERING, r))
+                .forEach(reg::addRecipe);
+
+        hopperFilterRecipes.stream()
+                .filter(r -> r.value().soulCount() >= 1)
+                .forEach(hopperFilterRecipeEntry -> {
+                    reg.addRecipe(new EmiHopperFilterRecipe(HOPPER_SOULS, hopperFilterRecipeEntry));
+                    soulBottlingRecipes.stream()
+                            .map(soulBottleRecipeEntry -> new EmiHopperFilterRecipe(HOPPER_SOULS, hopperFilterRecipeEntry).withSoulBottlingRecipe(soulBottleRecipeEntry))
+                            .forEach(reg::addRecipe);
+                });
 
 
-        for(var filterEntry: MechHopperBlock.filterMap.entrySet()) {
-            var filter = filterEntry.getKey();
-            var permitted = filterEntry.getValue();
-            if(permitted instanceof MechHopperBlock.TagFilter f) {
+        MechHopperBlock.filterMap.forEach((filter, permitted) -> {
+            if (permitted instanceof MechHopperBlock.TagFilter f) {
                 var emiPermitted = EmiIngredient.of(f.tagKey());
-                Identifier id = Identifier.of("bwt", Registries.ITEM.getId(filter).getPath() + "_hopper_filter");
+                Identifier id = Id.of(Registries.ITEM.getId(filter).getPath() + "_hopper_filter");
                 reg.addRecipe(new EmiHopperFilterPermitList(id, EmiStack.of(filter), emiPermitted));
             }
-        }
+        });
     }
 
     public static EmiIngredient from(IngredientWithCount ingredientWithCount) {

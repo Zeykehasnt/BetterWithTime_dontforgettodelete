@@ -8,6 +8,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +22,10 @@ public class EmiSawRecipe implements EmiRecipe {
     private final EmiIngredient ingredient;
     private final List<EmiStack> results;
     private final int displayRows;
+
+    public EmiSawRecipe(EmiRecipeCategory category, RecipeEntry<SawRecipe> recipeEntry) {
+        this(category, recipeEntry.id(), recipeEntry.value());
+    }
 
     public EmiSawRecipe(EmiRecipeCategory category, Identifier id, SawRecipe recipe) {
         this.category = category;

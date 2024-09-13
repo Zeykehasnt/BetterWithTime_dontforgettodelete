@@ -10,6 +10,7 @@ import dev.emi.emi.api.render.EmiTooltipComponents;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +25,10 @@ public class EmiCookingPotRecipe<R extends AbstractCookingPotRecipe> implements 
     private final List<EmiIngredient> ingredients;
     private final List<EmiStack> results;
     private final int displayRows;
+
+    public EmiCookingPotRecipe(EmiRecipeCategory category, RecipeEntry<R> recipeEntry) {
+        this(category, recipeEntry.id(), recipeEntry.value());
+    }
 
     public EmiCookingPotRecipe(EmiRecipeCategory category, Identifier id, R recipe) {
         this.category = category;

@@ -4,6 +4,7 @@ import com.bwt.blocks.BwtBlocks;
 import com.bwt.emi.BwtEmiPlugin;
 import com.bwt.recipes.hopper_filter.HopperFilterRecipe;
 import com.bwt.recipes.soul_bottling.SoulBottlingRecipe;
+import com.bwt.utils.Id;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
@@ -11,6 +12,7 @@ import dev.emi.emi.api.render.EmiTooltipComponents;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -23,7 +25,7 @@ public class EmiHopperFilterRecipe implements EmiRecipe {
     public static final EmiTexture EMPTY_GEAR = new EmiTexture(BwtEmiPlugin.WIDGETS, 0, 0, 14, 14);
     public static final EmiTexture FULL_GEAR = new EmiTexture(BwtEmiPlugin.WIDGETS, 14, 0, 14, 14);
     public static final EmiTexture ARROW = new EmiTexture(BwtEmiPlugin.WIDGETS, 28, 0, 22, 15);
-    public static final Identifier BACKGROUND = Identifier.of("bwt", "textures/gui/container/hopper_recipe.png");
+    public static final Identifier BACKGROUND = Id.of("textures/gui/container/hopper_recipe.png");
 
     private final Identifier id;
     protected final EmiRecipeCategory category;
@@ -33,6 +35,10 @@ public class EmiHopperFilterRecipe implements EmiRecipe {
     protected final EmiStack result;
     protected final EmiStack byproduct;
     protected EmiSoulBottlingRecipe soulBottlingRecipe;
+
+    public EmiHopperFilterRecipe(EmiRecipeCategory category, RecipeEntry<HopperFilterRecipe> recipeEntry) {
+        this(category, recipeEntry.id(), recipeEntry.value());
+    }
 
     public EmiHopperFilterRecipe(EmiRecipeCategory category, Identifier id, HopperFilterRecipe recipe) {
         this(category, id, EmiIngredient.of(recipe.ingredient()), EmiIngredient.of(recipe.filter()), recipe.soulCount(), EmiStack.of(recipe.result()), EmiStack.of(recipe.byproduct()));
@@ -54,6 +60,9 @@ public class EmiHopperFilterRecipe implements EmiRecipe {
         return this;
     }
 
+    public EmiHopperFilterRecipe withSoulBottlingRecipe(RecipeEntry<SoulBottlingRecipe> recipeEntry) {
+        return withSoulBottlingRecipe(recipeEntry.id(), recipeEntry.value());
+    }
 
     @Override
     public EmiRecipeCategory getCategory() {
@@ -63,7 +72,7 @@ public class EmiHopperFilterRecipe implements EmiRecipe {
     @Override
     public @Nullable Identifier getId() {
         if(this.soulBottlingRecipe != null) {
-            return Identifier.of("bwt", String.format("%s-%s", this.id.getPath(), this.soulBottlingRecipe.getId().getPath()));
+            return Id.of(String.format("%s-%s", this.id.getPath(), this.soulBottlingRecipe.getId().getPath()));
         }
         return this.id;
     }

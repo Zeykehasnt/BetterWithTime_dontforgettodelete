@@ -8,6 +8,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,6 +24,10 @@ public class EmiTurntableRecipe implements EmiRecipe {
     private final List<EmiStack> drops;
     private final EmiStack output;
     private final int displayRows;
+
+    public EmiTurntableRecipe(EmiRecipeCategory category, RecipeEntry<TurntableRecipe> recipeEntry) {
+        this(category, recipeEntry.id(), recipeEntry.value());
+    }
 
     public EmiTurntableRecipe(EmiRecipeCategory category, Identifier id, TurntableRecipe recipe) {
         this.category = category;

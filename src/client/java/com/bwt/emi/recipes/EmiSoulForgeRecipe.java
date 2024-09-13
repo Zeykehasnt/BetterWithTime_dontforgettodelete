@@ -2,6 +2,7 @@ package com.bwt.emi.recipes;
 
 import com.bwt.emi.BwtEmiPlugin;
 import com.bwt.recipes.soul_forge.SoulForgeShapedRecipe;
+import com.bwt.utils.Id;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
@@ -10,6 +11,8 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.ShapelessRecipe;
 import net.minecraft.util.Identifier;
 
@@ -23,9 +26,12 @@ public class EmiSoulForgeRecipe implements EmiRecipe {
     private final int size;
     private final CraftingRecipe recipe;
 
+    public EmiSoulForgeRecipe(RecipeEntry<CraftingRecipe> recipeEntry) {
+        this(recipeEntry.value(), recipeEntry.id());
+    }
 
     public EmiSoulForgeRecipe(CraftingRecipe recipe, Identifier id) {
-        this.id = Identifier.of("bwt", String.format("%s-%s-%s", "soulforge", id.getNamespace(), id.getPath()));
+        this.id = Id.of(String.format("%s-%s-%s", "soulforge", id.getNamespace(), id.getPath()));
         this.input = recipe.getIngredients().stream().map(EmiIngredient::of).toList();
         this.output = EmiStack.of(recipe.getResult(null));
         this.recipe = recipe;

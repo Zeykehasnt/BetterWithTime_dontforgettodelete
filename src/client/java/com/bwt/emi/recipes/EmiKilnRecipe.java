@@ -9,6 +9,7 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.block.Blocks;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +23,10 @@ public class EmiKilnRecipe implements EmiRecipe {
     private final EmiIngredient ingredient;
     private final List<EmiStack> drops;
     private final int displayRows;
+
+    public EmiKilnRecipe(EmiRecipeCategory category, RecipeEntry<KilnRecipe> recipeEntry) {
+        this(category, recipeEntry.id(), recipeEntry.value());
+    }
 
     public EmiKilnRecipe(EmiRecipeCategory category, Identifier id, KilnRecipe recipe) {
         this.category = category;
