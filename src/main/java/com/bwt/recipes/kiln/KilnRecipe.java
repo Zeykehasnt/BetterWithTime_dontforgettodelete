@@ -3,6 +3,7 @@ package com.bwt.recipes.kiln;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.recipes.BlockIngredient;
 import com.bwt.recipes.BwtRecipes;
+import com.bwt.generation.EmiDefaultsGenerator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -246,6 +247,17 @@ public class KilnRecipe implements Recipe<KilnRecipeInput> {
             return this;
         }
 
+        protected boolean isDefaultRecipe;
+        public JsonBuilder markDefault() {
+            this.isDefaultRecipe = true;
+            return this;
+        }
+        public void addToDefaults(Identifier recipeId) {
+            if(this.isDefaultRecipe) {
+                EmiDefaultsGenerator.addBwtRecipe(recipeId);
+            }
+        }
+
         @Override
         public Item getOutputItem() {
             return drops.get(0).getItem();
@@ -258,6 +270,7 @@ public class KilnRecipe implements Recipe<KilnRecipeInput> {
 
         @Override
         public void offerTo(RecipeExporter exporter, Identifier recipeId) {
+            this.addToDefaults(recipeId);
             Advancement.Builder advancementBuilder = exporter.getAdvancementBuilder().criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(AdvancementRequirements.CriterionMerger.OR);
             KilnRecipe kilnRecipe = new KilnRecipe(
                     Objects.requireNonNullElse(this.group, ""),

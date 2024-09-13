@@ -1,6 +1,6 @@
 {
   "type": "bwt:soul_forge_shaped",
-  "category": "building",
+  "category": "redstone",
   "key": {
     "m": {
       "item": "minecraft:mossy_cobblestone"

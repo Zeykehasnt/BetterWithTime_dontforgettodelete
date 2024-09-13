@@ -13,7 +13,7 @@ import net.minecraft.recipe.book.RecipeCategory;
 import java.util.List;
 
 public class StokedCrucibleRecipe extends AbstractCookingPotRecipe {
-    public StokedCrucibleRecipe(String group, CookingRecipeCategory category, List<IngredientWithCount> ingredients, List<ItemStack> results) {
+    public StokedCrucibleRecipe(String group, CookingPotRecipeCategory category, List<IngredientWithCount> ingredients, List<ItemStack> results) {
         super(BwtRecipes.STOKED_CRUCIBLE_RECIPE_TYPE, group, category, ingredients, results);
     }
 

@@ -3,6 +3,8 @@ package com.bwt.recipes.mill_stone;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.recipes.IngredientWithCount;
+import com.bwt.blocks.mill_stone.MillStoneBlockEntity;
+import com.bwt.generation.EmiDefaultsGenerator;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -252,6 +254,17 @@ public class MillStoneRecipe implements Recipe<MillStoneRecipeInput> {
             return this;
         }
 
+        protected boolean isDefaultRecipe;
+        public JsonBuilder markDefault() {
+            this.isDefaultRecipe = true;
+            return this;
+        }
+        public void addToDefaults(Identifier recipeId) {
+            if(this.isDefaultRecipe) {
+                EmiDefaultsGenerator.addBwtRecipe(recipeId);
+            }
+        }
+
         @Override
         public Item getOutputItem() {
             return results.get(0).getItem();
@@ -269,6 +282,7 @@ public class MillStoneRecipe implements Recipe<MillStoneRecipeInput> {
         @Override
         public void offerTo(RecipeExporter exporter, Identifier recipeId) {
             this.validate(recipeId);
+            this.addToDefaults(recipeId);
             Advancement.Builder advancementBuilder = exporter.getAdvancementBuilder().criterion("has_the_recipe", RecipeUnlockedCriterion.create(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).criteriaMerger(AdvancementRequirements.CriterionMerger.OR);
             this.criteria.forEach(advancementBuilder::criterion);
             MillStoneRecipe millStoneRecipe = new MillStoneRecipe(

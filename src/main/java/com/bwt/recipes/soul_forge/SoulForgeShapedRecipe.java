@@ -2,6 +2,7 @@ package com.bwt.recipes.soul_forge;
 
 import com.bwt.mixin.accessors.ShapedRecipeJsonBuilderAccessorMixin;
 import com.bwt.recipes.BwtRecipes;
+import com.bwt.recipes.SoulForgeRecipe;
 import com.bwt.utils.Id;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -24,7 +25,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.Objects;
 
-public class SoulForgeShapedRecipe extends ShapedRecipe {
+public class SoulForgeShapedRecipe extends ShapedRecipe implements SoulForgeRecipe {
     protected RawShapedRecipe raw;
 
     public SoulForgeShapedRecipe(String group, CraftingRecipeCategory category, RawShapedRecipe raw, ItemStack result, boolean showNotification) {

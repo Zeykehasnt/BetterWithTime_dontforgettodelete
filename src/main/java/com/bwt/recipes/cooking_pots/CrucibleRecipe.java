@@ -13,7 +13,7 @@ import net.minecraft.recipe.book.RecipeCategory;
 import java.util.List;
 
 public class CrucibleRecipe extends AbstractCookingPotRecipe {
-    public CrucibleRecipe(String group, CookingRecipeCategory category, List<IngredientWithCount> ingredients, List<ItemStack> results) {
+    public CrucibleRecipe(String group, CookingPotRecipeCategory category, List<IngredientWithCount> ingredients, List<ItemStack> results) {
         super(BwtRecipes.CRUCIBLE_RECIPE_TYPE, group, category, ingredients, results);
     }
 
@@ -33,7 +33,7 @@ public class CrucibleRecipe extends AbstractCookingPotRecipe {
         }
 
         public static CrucibleRecipe.JsonBuilder createFood() {
-            return (CrucibleRecipe.JsonBuilder) create().category(RecipeCategory.FOOD).cookingCategory(CookingRecipeCategory.FOOD);
+            return (CrucibleRecipe.JsonBuilder) create().category(RecipeCategory.FOOD).cookingCategory(CookingPotRecipeCategory.FOOD);
         }
 
         @Override

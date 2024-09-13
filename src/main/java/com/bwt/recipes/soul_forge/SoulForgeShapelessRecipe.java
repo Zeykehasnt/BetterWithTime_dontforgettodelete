@@ -2,6 +2,7 @@ package com.bwt.recipes.soul_forge;
 
 import com.bwt.mixin.accessors.ShapelessRecipeJsonBuilderAccessorMixin;
 import com.bwt.recipes.BwtRecipes;
+import com.bwt.recipes.SoulForgeRecipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
@@ -28,7 +29,7 @@ import net.minecraft.util.collection.DefaultedList;
 
 import java.util.Objects;
 
-public class SoulForgeShapelessRecipe extends ShapelessRecipe {
+public class SoulForgeShapelessRecipe extends ShapelessRecipe implements SoulForgeRecipe {
 
     public SoulForgeShapelessRecipe(String group, CraftingRecipeCategory category, ItemStack result, DefaultedList<Ingredient> ingredients) {
         super(group, category, result, ingredients);

@@ -92,7 +92,7 @@ public record SoulBottlingRecipe(String group, CraftingRecipeCategory category, 
     }
 
     public ItemStack getResult() {
-        return result;
+        return result.copy();
     }
 
     public static class Serializer implements RecipeSerializer<SoulBottlingRecipe> {

@@ -9,7 +9,6 @@ import com.bwt.tags.BwtItemTags;
 import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.TagKey;
@@ -30,6 +29,7 @@ public class LangGenerator extends FabricLanguageProvider {
     public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
         addSubtitles(translationBuilder);
         addTagNames(translationBuilder);
+        addEmiNames(translationBuilder);
 
         translationBuilder.add(BwtGameRules.VANILLA_HOPPERS_DISABLED.getTranslationKey(), "Disable Vanilla Hopper Transfer");
         translationBuilder.add(BwtGameRules.LENS_BEAM_RANGE.getTranslationKey(), "Lens Beam Range");
@@ -113,6 +113,26 @@ public class LangGenerator extends FabricLanguageProvider {
         addTagName(BwtItemTags.SAW_DUSTS, "Saw Dusts", translationBuilder);
         addTagName(BwtItemTags.MINING_CHARGE_IMMUNE, "Mining Charge Immune", translationBuilder);
         addTagName(BwtItemTags.BLOOD_WOOD_LOGS, "Blood Wood Logs", translationBuilder);
+    }
+
+    protected void addEmiNames(TranslationBuilder translationBuilder) {
+        addEmiCategory("crucible", "Crucible", translationBuilder);
+        addEmiCategory("stoked_crucible", "Stoked Crucible", translationBuilder);
+        addEmiCategory("stoked_crucible_reclaim", "Stoked Crucible: Reclaim", translationBuilder);
+        addEmiCategory("cauldron", "Cauldron", translationBuilder);
+        addEmiCategory("stoked_cauldron", "Stoked Cauldron", translationBuilder);
+        addEmiCategory("mill_stone", "Mill Stone", translationBuilder);
+        addEmiCategory("saw", "Saw", translationBuilder);
+        addEmiCategory("soul_forge", "Soul Forge", translationBuilder);
+        addEmiCategory("turntable", "Turntable", translationBuilder);
+        addEmiCategory("kiln", "Kiln", translationBuilder);
+        addEmiCategory("hopper_souls", "Hopper: Soul Extraction", translationBuilder);
+        addEmiCategory("hopper_filtering", "Hopper: Filter", translationBuilder);
+        translationBuilder.add("emi.tooltip.bwt.hopper_souls_power", "Mechanical Power to the Hopper is advised.");
+    }
+
+    protected void addEmiCategory(String key, String name, TranslationBuilder translationBuilder) {
+        translationBuilder.add("emi.category.bwt." + key, name);
     }
 
     protected void addSubtitles(TranslationBuilder translationBuilder) {
