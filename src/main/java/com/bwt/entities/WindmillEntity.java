@@ -85,6 +85,12 @@ public class WindmillEntity extends HorizontalMechPowerSourceEntity {
     }
 
     @Override
+    public boolean shouldRender(double distance) {
+        double d = 128.0 * getRenderDistanceMultiplier();
+        return distance < d * d;
+    }
+
+    @Override
     public Predicate<BlockPos> getBlockInterferencePredicate() {
         return blockPos -> !getWorld().getBlockState(blockPos).isIn(BlockTags.AIR);
     }
