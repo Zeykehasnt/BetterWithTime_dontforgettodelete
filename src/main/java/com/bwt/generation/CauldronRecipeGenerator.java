@@ -45,6 +45,7 @@ public class CauldronRecipeGenerator extends FabricRecipeProvider {
         generateFoods(exporter);
         CauldronRecipe.JsonBuilder.create().ingredient(BwtItems.dungItem).ingredient(BwtItems.scouredLeatherItem).result(BwtItems.tannedLeatherItem).offerTo(exporter);
         CauldronRecipe.JsonBuilder.create().ingredient(Items.GLOWSTONE_DUST).ingredient(Items.REDSTONE).ingredient(BwtItems.hempFiberItem).result(BwtItems.filamentItem).offerTo(exporter);
+        CauldronRecipe.JsonBuilder.create().ingredient(Items.GLOWSTONE_DUST).ingredient(Items.REDSTONE).ingredient(Items.STRING).result(BwtItems.filamentItem).offerTo(exporter, RecipeProvider.getItemPath(BwtItems.filamentItem) + "_from_string");
         CauldronRecipe.JsonBuilder.create().ingredient(BwtItems.hellfireDustItem, 8).result(BwtItems.concentratedHellfireItem).group("concentrated_hellfire").offerTo(exporter);
         CauldronRecipe.JsonBuilder.create().ingredient(BwtItems.hellfireDustItem).ingredient(BwtItems.coalDustItem).result(BwtItems.nethercoalItem, 2).offerTo(exporter);
         CauldronRecipe.JsonBuilder.create().ingredient(BwtItems.hellfireDustItem, 8).ingredient(BwtItems.potashItem).result(BwtItems.netherSludgeItem, 8).offerTo(exporter);
