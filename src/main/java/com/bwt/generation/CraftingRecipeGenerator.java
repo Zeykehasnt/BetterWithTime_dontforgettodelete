@@ -699,6 +699,12 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('t', BwtItems.tannedLeatherItem)
                 .criterion("has_wooden_moulding", conditionsFromTag(BwtItemTags.WOODEN_MOULDING_BLOCKS))
                 .offerTo(exporter, highEfficiencyId(Items.ITEM_FRAME));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, BwtBlocks.axleBlock)
+                .pattern("prp")
+                .input('p', BwtItemTags.WOODEN_MOULDING_BLOCKS)
+                .input('r', BwtItems.ropeItem)
+                .criterion(hasItem(BwtItems.ropeItem), conditionsFromItem(BwtItems.ropeItem))
+                .offerTo(exporter, highEfficiencyId(BwtBlocks.axleBlock));
         BlockFamilies.getFamilies()
                 .filter(blockFamily -> blockFamily.getGroup().orElse("").equals("wooden"))
                 .forEach(blockFamily -> createHighEfficiencyBlockFamilyRecipes(blockFamily, exporter));

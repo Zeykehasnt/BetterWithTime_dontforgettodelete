@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "p": {
+      "tag": "bwt:wooden_moulding_blocks"
+    },
+    "r": {
+      "item": "bwt:rope"
+    }
+  },
+  "pattern": [
+    "prp"
+  ],
+  "result": {
+    "count": 1,
+    "id": "bwt:axle"
+  }
+}
