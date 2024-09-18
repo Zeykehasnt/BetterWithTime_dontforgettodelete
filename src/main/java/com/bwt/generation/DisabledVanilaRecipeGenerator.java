@@ -3,8 +3,10 @@ package com.bwt.generation;
 import com.bwt.recipes.DisabledRecipe;
 import com.bwt.utils.Id;
 import com.google.common.collect.Sets;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.mojang.serialization.JsonOps;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
@@ -12,6 +14,7 @@ import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.impl.datagen.FabricDataGenHelper;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementEntry;
+import net.minecraft.data.DataOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.DataWriter;
 import net.minecraft.data.server.recipe.RecipeExporter;
@@ -22,9 +25,9 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -36,8 +39,8 @@ public class DisabledVanilaRecipeGenerator extends FabricRecipeProvider {
 
     public DisabledVanilaRecipeGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
-        this.recipesPathResolver = output.getResolver(FabricDataOutput.OutputType.DATA_PACK, "recipes");
-        this.advancementsPathResolver = output.getResolver(FabricDataOutput.OutputType.DATA_PACK, "advancements");
+        this.recipesPathResolver = output.getResolver(FabricDataOutput.OutputType.DATA_PACK, "recipe");
+        this.advancementsPathResolver = output.getResolver(FabricDataOutput.OutputType.DATA_PACK, "advancement");
     }
 
     @Override
