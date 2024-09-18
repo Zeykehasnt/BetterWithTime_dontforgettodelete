@@ -34,19 +34,12 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class DisabledVanilaRecipeGenerator extends FabricRecipeProvider {
-    final FabricDataOutput.PathResolver recipesPathResolver;
-    final FabricDataOutput.PathResolver advancementsPathResolver;
-
     public DisabledVanilaRecipeGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
-        this.recipesPathResolver = output.getResolver(FabricDataOutput.OutputType.DATA_PACK, "recipe");
-        this.advancementsPathResolver = output.getResolver(FabricDataOutput.OutputType.DATA_PACK, "advancement");
     }
 
     @Override
-    public void generate(RecipeExporter exporter) {/* this is not called */}
-
-    public void disableRecipes(RecipeExporter exporter) {
+    public void generate(RecipeExporter exporter) {
         disableVanilla(Items.BONE_MEAL, exporter);
         disableVanilla(Items.BREAD, exporter);
 
@@ -77,41 +70,6 @@ public class DisabledVanilaRecipeGenerator extends FabricRecipeProvider {
 
     public void disableVanilla(ItemConvertible itemConvertible, String suffix, RecipeExporter exporter) {
         disableVanilla(Registries.ITEM.getId(itemConvertible.asItem()).withSuffixedPath(suffix).getPath(), exporter);
-    }
-
-    @Override
-    public CompletableFuture<?> run(DataWriter writer, RegistryWrapper.WrapperLookup wrapperLookup) {
-        Set<Identifier> generatedRecipes = Sets.newHashSet();
-        List<CompletableFuture<?>> list = new ArrayList<>();
-        disableRecipes(new RecipeExporter() {
-            @Override
-            public void accept(Identifier recipeId, @Nullable Recipe<?> recipe, @Nullable AdvancementEntry advancement) {
-                Identifier identifier = getRecipeIdentifier(recipeId);
-
-                if (!generatedRecipes.add(identifier)) {
-                    throw new IllegalStateException("Duplicate recipe " + identifier);
-                }
-
-                RegistryOps<JsonElement> registryOps = wrapperLookup.getOps(JsonOps.INSTANCE);
-                JsonObject recipeJson = Recipe.CODEC.encodeStart(registryOps, recipe).getOrThrow(IllegalStateException::new).getAsJsonObject();
-                ResourceCondition[] conditions = FabricDataGenHelper.consumeConditions(recipe);
-                FabricDataGenHelper.addConditions(recipeJson, conditions);
-
-                list.add(DataProvider.writeToPath(writer, recipeJson, recipesPathResolver.resolveJson(identifier)));
-
-                if (advancement != null) {
-                    JsonObject advancementJson = Advancement.CODEC.encodeStart(registryOps, advancement.value()).getOrThrow(IllegalStateException::new).getAsJsonObject();
-                    FabricDataGenHelper.addConditions(advancementJson, conditions);
-                    list.add(DataProvider.writeToPath(writer, advancementJson, advancementsPathResolver.resolveJson(getRecipeIdentifier(advancement.id()))));
-                }
-            }
-
-            @Override
-            public Advancement.Builder getAdvancementBuilder() {
-                return Advancement.Builder.createUntelemetered();
-            }
-        });
-        return CompletableFuture.allOf(list.toArray(CompletableFuture[]::new));
     }
 
     @Override
