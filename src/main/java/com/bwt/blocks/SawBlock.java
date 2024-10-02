@@ -23,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -47,40 +46,40 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
-    private static final int m_iPowerChangeTickRate = 10;
+    private static final int powerChangeTickRate = 10;
 
-    private static final int m_iSawTimeBaseTickRate = 15;
-    private static final int m_iSawTimeTickRateVariance = 4;
+    private static final int sawTimeBaseTickRate = 15;
+    private static final int sawTimeTickRateVariance = 4;
 
     // This base height prevents chickens slipping through grinders, while allowing items to pass
 
-    public static final float m_fBaseHeight = 16f - 4f;
+    public static final float baseHeight = 16f - 4f;
 
-    public static final float m_fBladeLength = 10f;
-    public static final float m_fBladeHalfLength = m_fBladeLength * 0.5F;
+    public static final float bladeLength = 10f;
+    public static final float bladeHalfLength = bladeLength * 0.5F;
 
-    public static final float m_fBladeWidth = 0.25f;
-    public static final float m_fBladeHalfWidth = m_fBladeWidth * 0.5F;
+    public static final float bladeWidth = 0.25f;
+    public static final float bladeHalfWidth = bladeWidth * 0.5F;
 
-    public static final float m_fBladeHeight = 16F - m_fBaseHeight;
-    protected static final Box UPWARD_BASE_BOX = new Box(0f, 0f, 0f, 16f, m_fBaseHeight, 16F);
-    protected static final Box UPWARD_BLADE_BOX = new Box(8f - m_fBladeHalfLength, m_fBaseHeight, 8f - m_fBladeHalfWidth, 8f + m_fBladeHalfLength, m_fBaseHeight + m_fBladeHeight, 8f + m_fBladeHalfWidth);
-    protected static final Box DOWNWARD_BLADE_BOX = new Box(8f - m_fBladeHalfLength, 0, 8f - m_fBladeHalfWidth, 8f + m_fBladeHalfLength, m_fBladeHeight, 8f + m_fBladeHalfWidth);
+    public static final float bladeHeight = 16F - baseHeight;
+    protected static final Box UPWARD_BASE_BOX = new Box(0f, 0f, 0f, 16f, baseHeight, 16F);
+    protected static final Box UPWARD_BLADE_BOX = new Box(8f - bladeHalfLength, baseHeight, 8f - bladeHalfWidth, 8f + bladeHalfLength, baseHeight + bladeHeight, 8f + bladeHalfWidth);
+    protected static final Box DOWNWARD_BLADE_BOX = new Box(8f - bladeHalfLength, 0, 8f - bladeHalfWidth, 8f + bladeHalfLength, bladeHeight, 8f + bladeHalfWidth);
     protected static final Box NORTH_BLADE_BOX = new Box(
-            8f - m_fBladeHalfLength, 8f - m_fBladeHalfWidth, 16f - m_fBaseHeight,
-            8f + m_fBladeHalfLength, 8f + m_fBladeHalfWidth, 16f - m_fBaseHeight - m_fBladeHeight
+            8f - bladeHalfLength, 8f - bladeHalfWidth, 16f - baseHeight,
+            8f + bladeHalfLength, 8f + bladeHalfWidth, 16f - baseHeight - bladeHeight
     );
     protected static final Box SOUTH_BLADE_BOX = new Box(
-            8f - m_fBladeHalfLength, 8f - m_fBladeHalfWidth, m_fBaseHeight,
-            8f + m_fBladeHalfLength, 8f + m_fBladeHalfWidth, m_fBaseHeight + m_fBladeHeight
+            8f - bladeHalfLength, 8f - bladeHalfWidth, baseHeight,
+            8f + bladeHalfLength, 8f + bladeHalfWidth, baseHeight + bladeHeight
     );
     protected static final Box EAST_BLADE_BOX = new Box(
-            16f - m_fBaseHeight, 8f - m_fBladeHalfWidth, 8f - m_fBladeHalfLength,
-            16f - m_fBaseHeight - m_fBladeHeight, 8f + m_fBladeHalfWidth, 8f + m_fBladeHalfLength
+            16f - baseHeight, 8f - bladeHalfWidth, 8f - bladeHalfLength,
+            16f - baseHeight - bladeHeight, 8f + bladeHalfWidth, 8f + bladeHalfLength
     );
     protected static final Box WEST_BLADE_BOX = new Box(
-            (m_fBaseHeight), 8f - m_fBladeHalfWidth, 8f - m_fBladeHalfLength,
-            m_fBaseHeight + m_fBladeHeight, 8f + m_fBladeHalfWidth, 8f + m_fBladeHalfLength
+            (baseHeight), 8f - bladeHalfWidth, 8f - bladeHalfLength,
+            baseHeight + bladeHeight, 8f + bladeHalfWidth, 8f + bladeHalfLength
     );
 
     protected static final List<VoxelShape> COLLISION_SHAPES = Arrays.stream(Direction.values())
@@ -120,7 +119,7 @@ public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
         super.onPlaced(world, pos, state, placer, itemStack);
         // note that we can't validate if the update is required here as the block will have
         // its facing set after being added
-        world.scheduleBlockTick(pos, this, m_iPowerChangeTickRate);
+        world.scheduleBlockTick(pos, this, powerChangeTickRate);
     }
 
     @Override
@@ -194,7 +193,7 @@ public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
 
     protected void scheduleUpdateIfRequired(World world, BlockState state, BlockPos pos) {
         if (isMechPowered(state) != isReceivingMechPower(world, state, pos)) {
-            world.scheduleBlockTick(pos, this, m_iPowerChangeTickRate);
+            world.scheduleBlockTick(pos, this, powerChangeTickRate);
             return;
         }
         if (!isMechPowered(state)) {
@@ -205,7 +204,7 @@ public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
         BlockPos targetPos = pos.offset(state.get(FACING));
         BlockState targetState = world.getBlockState(targetPos);
         if (!targetState.isIn(BlockTags.AIR)) {
-            world.scheduleBlockTick(pos, this, m_iSawTimeBaseTickRate + world.random.nextInt(m_iSawTimeTickRateVariance));
+            world.scheduleBlockTick(pos, this, sawTimeBaseTickRate + world.random.nextInt(sawTimeTickRateVariance));
         }
     }
 
@@ -250,10 +249,12 @@ public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
         if (recipe.isEmpty()) {
             if (targetState.isIn(BwtBlockTags.SAW_BREAKS_NO_DROPS)) {
                 world.breakBlock(targetPos, false);
+                playBangSound(world, pos);
                 return;
             }
             if (targetState.isIn(BwtBlockTags.SAW_BREAKS_DROPS_LOOT)) {
                 world.breakBlock(targetPos, true);
+                playBangSound(world, pos);
                 return;
             }
             if (!targetState.isIn(BwtBlockTags.SURVIVES_SAW_BLOCK)) {
