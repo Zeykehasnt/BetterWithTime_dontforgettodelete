@@ -80,6 +80,8 @@ public class LangGenerator extends FabricLanguageProvider {
         translationBuilder.add(BwtBlocks.soulForgeBlock, "Soul Forge");
         translationBuilder.add(BwtBlocks.vineTrapBlock, "Vine Trap");
         translationBuilder.add(BwtItems.rawEggItem, "Raw Egg");
+        translationBuilder.add(BwtItems.friedEggItem, "Fried Egg");
+        translationBuilder.add(BwtItems.poachedEggItem, "Poached Egg");
         translationBuilder.add(BwtItems.screwItem, "Screw");
         translationBuilder.add(BwtItems.breedingHarnessItem, "Breeding Harness");
         translationBuilder.add(BwtItems.netheriteMattockItem, "Netherite Mattock");
