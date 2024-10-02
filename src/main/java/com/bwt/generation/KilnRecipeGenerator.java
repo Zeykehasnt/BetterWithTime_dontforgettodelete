@@ -5,6 +5,8 @@ import com.bwt.items.BwtItems;
 import com.bwt.recipes.kiln.KilnRecipe;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.item.Items;
@@ -31,6 +33,10 @@ public class KilnRecipeGenerator extends FabricRecipeProvider {
         KilnRecipe.JsonBuilder.create(BlockTags.LAPIS_ORES).drops(Items.LAPIS_LAZULI).offerTo(exporter);
         KilnRecipe.JsonBuilder.create(BlockTags.REDSTONE_ORES).drops(Items.REDSTONE).offerTo(exporter);
         KilnRecipe.JsonBuilder.create(Blocks.ANCIENT_DEBRIS).drops(Items.NETHERITE_SCRAP).offerTo(exporter);
+        // Ore blocks
+        KilnRecipe.JsonBuilder.create(ConventionalBlockTags.STORAGE_BLOCKS_RAW_IRON).drops(Items.IRON_INGOT, 9).offerTo(exporter);
+        KilnRecipe.JsonBuilder.create(ConventionalBlockTags.STORAGE_BLOCKS_RAW_GOLD).drops(Items.GOLD_INGOT, 9).offerTo(exporter);
+        KilnRecipe.JsonBuilder.create(ConventionalBlockTags.STORAGE_BLOCKS_RAW_COPPER).drops(Items.COPPER_INGOT, 9).offerTo(exporter);
         // Charcoal
         KilnRecipe.JsonBuilder.create(BlockTags.LOGS).drops(Items.CHARCOAL).offerTo(exporter);
         // Pottery

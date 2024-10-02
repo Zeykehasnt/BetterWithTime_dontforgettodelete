@@ -19,5 +19,8 @@ public class BlockDispenserClumpRecipeGenerator extends FabricRecipeProvider {
     public void generate(RecipeExporter exporter) {
         BlockDispenserClumpRecipe.JsonBuilder.create().ingredient(Items.CLAY_BALL).count(4).output(Blocks.CLAY).offerTo(exporter);
         BlockDispenserClumpRecipe.JsonBuilder.create().ingredient(Items.SNOWBALL).count(4).output(Blocks.SNOW_BLOCK).offerTo(exporter);
+        BlockDispenserClumpRecipe.JsonBuilder.create().ingredient(Items.RAW_IRON).count(9).output(Blocks.RAW_IRON_BLOCK).offerTo(exporter);
+        BlockDispenserClumpRecipe.JsonBuilder.create().ingredient(Items.RAW_GOLD).count(9).output(Blocks.RAW_GOLD_BLOCK).offerTo(exporter);
+        BlockDispenserClumpRecipe.JsonBuilder.create().ingredient(Items.RAW_COPPER).count(9).output(Blocks.RAW_COPPER_BLOCK).offerTo(exporter);
     }
 }

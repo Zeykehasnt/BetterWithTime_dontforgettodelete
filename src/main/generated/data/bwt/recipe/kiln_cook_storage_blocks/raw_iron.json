@@ -1,0 +1,14 @@
+{
+  "type": "bwt:kiln",
+  "category": "misc",
+  "cookingTime": 1,
+  "drops": [
+    {
+      "count": 9,
+      "id": "minecraft:iron_ingot"
+    }
+  ],
+  "ingredient": {
+    "blockTag": "#c:storage_blocks/raw_iron"
+  }
+}
