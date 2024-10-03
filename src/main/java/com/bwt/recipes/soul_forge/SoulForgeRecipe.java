@@ -1,4 +1,4 @@
-package com.bwt.recipes;
+package com.bwt.recipes.soul_forge;
 
 import net.minecraft.recipe.CraftingRecipe;
 

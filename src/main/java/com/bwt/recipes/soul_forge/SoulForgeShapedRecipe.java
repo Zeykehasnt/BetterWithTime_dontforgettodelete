@@ -2,7 +2,6 @@ package com.bwt.recipes.soul_forge;
 
 import com.bwt.mixin.accessors.ShapedRecipeJsonBuilderAccessorMixin;
 import com.bwt.recipes.BwtRecipes;
-import com.bwt.recipes.SoulForgeRecipe;
 import com.bwt.utils.Id;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -61,7 +60,7 @@ public class SoulForgeShapedRecipe extends ShapedRecipe implements SoulForgeReci
                 instance -> instance.group(
                         Codec.STRING.optionalFieldOf("group", "").forGetter(ShapedRecipe::getGroup),
                         CraftingRecipeCategory.CODEC.fieldOf("category").orElse(CraftingRecipeCategory.MISC).forGetter(ShapedRecipe::getCategory),
-                        RawShapedRecipe.CODEC.forGetter(SoulForgeShapedRecipe::getRaw),
+                        RawSoulForgeShapedRecipe.CODEC.forGetter(SoulForgeShapedRecipe::getRaw),
                         ItemStack.VALIDATED_CODEC.fieldOf("result").forGetter(SoulForgeShapedRecipe::getResult),
                         Codec.BOOL.optionalFieldOf("show_notification", true).forGetter(ShapedRecipe::showNotification)
                 ).apply(instance, SoulForgeShapedRecipe::new));

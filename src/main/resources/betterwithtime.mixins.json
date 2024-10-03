@@ -24,6 +24,7 @@
     "accessors.DyeItemAccessorMixin",
     "accessors.MinecartItemAccessorMixin",
     "accessors.MobEntityAccessorMixin",
+    "accessors.RawShapedRecipeAccessorMixin",
     "accessors.ShapedRecipeJsonBuilderAccessorMixin",
     "accessors.ShapelessRecipeJsonBuilderAccessorMixin",
     "animals.ChickenEntityMixin",
