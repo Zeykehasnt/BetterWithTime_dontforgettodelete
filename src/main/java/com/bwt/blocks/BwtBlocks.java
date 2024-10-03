@@ -219,27 +219,27 @@ public class BwtBlocks implements ModInitializer {
     );
 	public static final UnfiredPotteryBlock unfiredCrucibleBlock = new UnfiredCrucibleBlock(AbstractBlock.Settings.copy(Blocks.CLAY)
             .nonOpaque()
-            .solidBlock(Blocks::never)
+            .solid()
     );
 	public static final UnfiredPotteryBlock unfiredPlanterBlock = new UnfiredPlanterBlock(AbstractBlock.Settings.copy(Blocks.CLAY)
             .nonOpaque()
-            .solidBlock(Blocks::never)
+            .solid()
     );
 	public static final UnfiredPotteryBlock unfiredVaseBlock = new UnfiredVaseBlock(AbstractBlock.Settings.copy(Blocks.CLAY)
             .nonOpaque()
-            .solidBlock(Blocks::never)
+            .solid()
     );
 	public static final UnfiredPotteryBlock unfiredUrnBlock = new UnfiredUrnBlock(AbstractBlock.Settings.copy(Blocks.CLAY)
             .nonOpaque()
-            .solidBlock(Blocks::never)
+            .solid()
     );
 	public static final UnfiredPotteryBlock unfiredMouldBlock = new UnfiredMouldBlock(AbstractBlock.Settings.copy(Blocks.CLAY)
             .nonOpaque()
-            .solidBlock(Blocks::never)
+            .solid()
     );
 	public static final Block urnBlock = new UrnBlock(AbstractBlock.Settings.copy(Blocks.TERRACOTTA)
             .nonOpaque()
-            .solidBlock(Blocks::never)
+            .solid()
             .allowsSpawning(Blocks::never)
             .hardness(2f)
     );
