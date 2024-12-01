@@ -280,7 +280,11 @@ public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
                 results.get(0).setCount(1);
                 world.setBlockState(targetPos, BwtBlocks.companionSlabBlock.getDefaultState());
             }
-        } else {
+            else {
+                world.breakBlock(targetPos, false);
+            }
+        }
+        else {
             world.breakBlock(targetPos, false);
         }
         playBangSound(world, pos);
