@@ -3,13 +3,11 @@ package com.bwt.generation;
 import com.bwt.blocks.*;
 import com.bwt.blocks.abstract_cooking_pot.AbstractCookingPotBlock;
 import com.bwt.blocks.lens.LensBeamBlock;
-import com.bwt.blocks.lens.LensBlock;
 import com.bwt.blocks.turntable.TurntableBlock;
 import com.bwt.items.BwtItems;
 import com.bwt.utils.DyeUtils;
 import com.bwt.utils.Id;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.common.collect.ImmutableList;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
@@ -17,10 +15,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.enums.BlockFace;
 import net.minecraft.block.enums.BlockHalf;
-import net.minecraft.block.enums.SlabType;
 import net.minecraft.data.client.*;
-import net.minecraft.data.family.BlockFamilies;
-import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.Items;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.DyeColor;
@@ -29,7 +24,6 @@ import net.minecraft.util.math.Direction;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 public class ModelGenerator extends FabricModelProvider {
     public ModelGenerator(FabricDataOutput generator) {
@@ -40,6 +34,7 @@ public class ModelGenerator extends FabricModelProvider {
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
         generateCompanionBlocks(blockStateModelGenerator);
         generateBloodWoodBlocks(blockStateModelGenerator);
+        generateStokedFireBlock(blockStateModelGenerator);
         blockStateModelGenerator.blockStateCollector.accept(
                 VariantsBlockStateSupplier.create(
                         BwtBlocks.sawBlock,
@@ -116,14 +111,6 @@ public class ModelGenerator extends FabricModelProvider {
                         )
                 )
         );
-        List<Identifier> list = blockStateModelGenerator.getFireFloorModels(BwtBlocks.stokedFireBlock);
-        List<Identifier> list2 = blockStateModelGenerator.getFireSideModels(BwtBlocks.stokedFireBlock);
-        blockStateModelGenerator.blockStateCollector.accept(MultipartBlockStateSupplier.create(BwtBlocks.stokedFireBlock)
-                .with(BlockStateModelGenerator.buildBlockStateVariants(list, blockStateVariant -> blockStateVariant))
-                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant))
-                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R90)))
-                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R180)))
-                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R270))));
         Identifier bellowsId = TexturedModel.ORIENTABLE_WITH_BOTTOM.upload(BwtBlocks.bellowsBlock, blockStateModelGenerator.modelCollector);
         Identifier bellowsCompressedId = bellowsId.withSuffixedPath("_compressed");
         blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(BwtBlocks.bellowsBlock)
@@ -318,6 +305,17 @@ public class ModelGenerator extends FabricModelProvider {
         ).upload(BwtBlocks.companionSlabBlock, blockStateModelGenerator.modelCollector);
         blockStateModelGenerator.blockStateCollector.accept(BlockStateModelGenerator.createSlabBlockState(BwtBlocks.companionSlabBlock, companionSlabBottom, companionSlabTop, companionCubeModelId));
         blockStateModelGenerator.registerParentedItemModel(BwtBlocks.companionSlabBlock, companionSlabBottom);
+    }
+
+    private void generateStokedFireBlock(BlockStateModelGenerator blockStateModelGenerator) {
+        List<Identifier> list = blockStateModelGenerator.getFireFloorModels(BwtBlocks.stokedFireBlock);
+        List<Identifier> list2 = blockStateModelGenerator.getFireSideModels(BwtBlocks.stokedFireBlock);
+        blockStateModelGenerator.blockStateCollector.accept(MultipartBlockStateSupplier.create(BwtBlocks.stokedFireBlock)
+                .with(BlockStateModelGenerator.buildBlockStateVariants(list, blockStateVariant -> blockStateVariant))
+                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant))
+                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R90)))
+                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R180)))
+                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R270))));
     }
 
     private void generateMiningChargeBlock(BlockStateModelGenerator blockStateModelGenerator) {
