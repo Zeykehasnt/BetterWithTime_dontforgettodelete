@@ -14,6 +14,7 @@ public class BwtSoundEvents implements ModInitializer {
     public static SoundEvent MECH_CREAK = register("block.mech.creak");
     public static SoundEvent ANCHOR_RETRACT = register("block.anchor.retract");
     public static SoundEvent BELLOWS_COMPRESS = register("block.bellows.compress");
+    public static SoundEvent COMPANION_CUBE_WHINE = register("block.companion_cube.whine");
     public static SoundEvent COMPANION_CUBE_DEATH = register("block.companion_cube.death");
     public static SoundEvent GEAR_BOX_ACTIVATE = register("block.gear_box.activate");
     public static SoundEvent HAND_CRANK_CLICK = register("block.hand_crank.click");
