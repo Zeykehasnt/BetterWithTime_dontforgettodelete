@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 public class SoulForgeBlock extends HorizontalFacingBlock {
     public static final VoxelShape NORTH_SOUTH_SHAPE = Block.createCuboidShape(4, 0, 0, 12, 16, 16);
     public static final VoxelShape EAST_WEST_SHAPE = Block.createCuboidShape(0, 0, 4, 16, 16, 12);
-    private static final Text TITLE = Text.translatable("container.crafting");
+    public static final Text TITLE = Text.translatable("container.bwt.soul_forge");
 
     public SoulForgeBlock(Settings settings) {
         super(settings);

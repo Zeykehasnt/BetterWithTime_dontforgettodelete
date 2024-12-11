@@ -2,6 +2,7 @@ package com.bwt.generation;
 
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.blocks.MaterialInheritedBlock;
+import com.bwt.blocks.soul_forge.SoulForgeBlock;
 import com.bwt.gamerules.BwtGameRules;
 import com.bwt.items.BwtItems;
 import com.bwt.sounds.BwtSoundEvents;
@@ -34,6 +35,7 @@ public class LangGenerator extends FabricLanguageProvider {
         translationBuilder.add(BwtGameRules.VANILLA_HOPPERS_DISABLED.getTranslationKey(), "Disable Vanilla Hopper Transfer");
         translationBuilder.add(BwtGameRules.LENS_BEAM_RANGE.getTranslationKey(), "Lens Beam Range");
         translationBuilder.add(BwtGameRules.LENS_BEAM_RANGE.getTranslationKey() + ".description", "Impacts performance!");
+        translationBuilder.add("container.bwt.soul_forge", "Soul Forge");
         BwtBlocks.sidingBlocks.forEach(block -> addMaterialBlockName(translationBuilder, block, "siding"));
         BwtBlocks.mouldingBlocks.forEach(block -> addMaterialBlockName(translationBuilder, block, "moulding"));
         BwtBlocks.cornerBlocks.forEach(block -> addMaterialBlockName(translationBuilder, block, "corner"));
