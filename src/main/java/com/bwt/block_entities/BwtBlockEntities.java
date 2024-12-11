@@ -7,7 +7,6 @@ import com.bwt.blocks.crucible.CrucibleBlockEntity;
 import com.bwt.blocks.mech_hopper.MechHopperBlockEntity;
 import com.bwt.blocks.mill_stone.MillStoneBlockEntity;
 import com.bwt.blocks.pulley.PulleyBlockEntity;
-import com.bwt.blocks.soul_forge.SoulForgeBlockEntity;
 import com.bwt.blocks.turntable.TurntableBlockEntity;
 import com.bwt.utils.Id;
 import net.fabricmc.api.ModInitializer;
@@ -46,11 +45,6 @@ public class BwtBlockEntities implements ModInitializer {
             Registries.BLOCK_ENTITY_TYPE,
             Id.of("mech_hopper_block_entity"),
             BlockEntityType.Builder.create(MechHopperBlockEntity::new, BwtBlocks.hopperBlock).build()
-    );
-    public static final BlockEntityType<SoulForgeBlockEntity> soulForgeBlockEntity = Registry.register(
-            Registries.BLOCK_ENTITY_TYPE,
-            Id.of("soul_forge_block_entity"),
-            BlockEntityType.Builder.create(SoulForgeBlockEntity::new, BwtBlocks.soulForgeBlock).build()
     );
     public static final BlockEntityType<TurntableBlockEntity> turntableBlockEntity = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,

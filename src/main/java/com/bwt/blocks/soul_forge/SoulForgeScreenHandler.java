@@ -1,38 +1,56 @@
 package com.bwt.blocks.soul_forge;
 
 import com.bwt.BetterWithTime;
+import com.bwt.blocks.BwtBlocks;
+import com.bwt.recipes.BwtRecipes;
+import com.bwt.recipes.soul_forge.SoulForgeRecipe;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.recipe.*;
 import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.screen.AbstractRecipeScreenHandler;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class SoulForgeScreenHandler extends AbstractRecipeScreenHandler<CraftingRecipeInput, CraftingRecipe> {
-    private final Inventory inventory;
+    private static final int WIDTH = 4;
+    private static final int HEIGHT = 4;
+    private final RecipeInputInventory input = new CraftingInventory(this, WIDTH, HEIGHT);
+    private final CraftingResultInventory result = new CraftingResultInventory();
+    private final ScreenHandlerContext context;
     private final PlayerEntity player;
+    private boolean filling;
 
     public SoulForgeScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(SoulForgeBlockEntity.INVENTORY_SIZE));
+        this(syncId, playerInventory, ScreenHandlerContext.EMPTY);
     }
 
-    public SoulForgeScreenHandler(int id, PlayerInventory playerInventory, Inventory inventory) {
+    public SoulForgeScreenHandler(int id, PlayerInventory playerInventory, ScreenHandlerContext context) {
         super(BetterWithTime.soulForgeScreenHandler, id);
-        this.inventory = inventory;
+        this.context = context;
         this.player = playerInventory.player;
+        this.addSlots(playerInventory);
+    }
 
-        this.addSlot(new OutputSlot(this.inventory, this.player, 0, 139, 44));
+    protected void addSlots(PlayerInventory playerInventory) {
+        this.addSlot(new CraftingResultSlot(this.player, this.input, this.result, 0, 139, 44));
 
-        for(int y = 0; y < SoulForgeBlockEntity.HEIGHT; ++y) {
-            for(int x = 0; x < SoulForgeBlockEntity.HEIGHT; ++x) {
-                this.addSlot(new Slot(inventory, x + y * SoulForgeBlockEntity.WIDTH + 1, 26 + x * 18, 17 + y * 18));
+        for(int y = 0; y < HEIGHT; ++y) {
+            for(int x = 0; x < WIDTH; ++x) {
+                this.addSlot(new Slot(input, x + y * WIDTH, 26 + x * 18, 17 + y * 18));
             }
         }
 
@@ -47,31 +65,137 @@ public class SoulForgeScreenHandler extends AbstractRecipeScreenHandler<Crafting
         }
     }
 
+    protected static void updateResult(
+            ScreenHandler handler,
+            World world,
+            PlayerEntity player,
+            RecipeInputInventory craftingInventory,
+            CraftingResultInventory resultInventory,
+            @Nullable RecipeEntry<CraftingRecipe> recipe
+    ) {
+        if (world.isClient) {
+            return;
+        }
+        CraftingRecipeInput craftingRecipeInput = craftingInventory.createRecipeInput();
+        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)player;
+        ItemStack itemStack = ItemStack.EMPTY;
+        Optional<RecipeEntry<CraftingRecipe>> optional = Objects.requireNonNull(world.getServer()).getRecipeManager().getFirstMatch(
+                BwtRecipes.SOUL_FORGE_RECIPE_TYPE,
+                craftingRecipeInput,
+                world,
+                recipe
+        );
+        if (optional.isPresent()) {
+            RecipeEntry<CraftingRecipe> recipeEntry = optional.get();
+            CraftingRecipe craftingRecipe = recipeEntry.value();
+            if (resultInventory.shouldCraftRecipe(world, serverPlayerEntity, recipeEntry)) {
+                ItemStack itemStack2 = craftingRecipe.craft(craftingRecipeInput, world.getRegistryManager());
+                if (itemStack2.isItemEnabled(world.getEnabledFeatures())) {
+                    itemStack = itemStack2;
+                }
+            }
+        }
+
+        resultInventory.setStack(0, itemStack);
+        handler.setPreviousTrackedSlot(0, itemStack);
+        serverPlayerEntity.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(handler.syncId, handler.nextRevision(), 0, itemStack));
+    }
+
+    @Override
+    public void onContentChanged(Inventory inventory) {
+        if (!this.filling) {
+            this.context.run((world, pos) -> updateResult(this, world, this.player, this.input, this.result, null));
+        }
+    }
+
+    @Override
+    public void onInputSlotFillStart() {
+        this.filling = true;
+    }
+
+    @Override
+    public void onInputSlotFillFinish(RecipeEntry<CraftingRecipe> recipe) {
+        this.filling = false;
+        this.context.run((world, pos) -> updateResult(this, world, this.player, this.input, this.result, recipe));
+    }
+
     @Override
     public void populateRecipeFinder(RecipeMatcher finder) {
-        if (inventory instanceof SoulForgeBlockEntity soulForgeBlockEntity) {
-            soulForgeBlockEntity.provideRecipeInputs(finder);
-        }
+        this.input.provideRecipeInputs(finder);
     }
 
     @Override
     public void clearCraftingSlots() {
-        if (inventory instanceof SoulForgeBlockEntity soulForgeBlockEntity) {
-            soulForgeBlockEntity.clear();
-        }
-    }
-
-    @Override
-    public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
-        return canInsertIntoSlot(slot.id) && super.canInsertIntoSlot(stack, slot);
+        this.input.clear();
+        this.result.clear();
     }
 
     @Override
     public boolean matches(RecipeEntry<CraftingRecipe> recipe) {
-        if (inventory instanceof SoulForgeBlockEntity soulForgeBlockEntity) {
-            return soulForgeBlockEntity.matches(recipe.value());
+        return recipe.value().matches(this.input.createRecipeInput(), this.player.getWorld());
+    }
+
+    @Override
+    public void onClosed(PlayerEntity player) {
+        super.onClosed(player);
+        this.context.run((world, pos) -> this.dropInventory(player, this.input));
+    }
+
+    @Override
+    public boolean canUse(PlayerEntity player) {
+        return canUse(this.context, player, BwtBlocks.soulForgeBlock);
+    }
+
+    @Override
+    public ItemStack quickMove(PlayerEntity player, int slot) {
+        ItemStack itemStack = ItemStack.EMPTY;
+        Slot slot2 = this.slots.get(slot);
+        if (slot2.hasStack()) {
+            ItemStack itemStack2 = slot2.getStack();
+            itemStack = itemStack2.copy();
+            if (slot == 0) {
+                this.context.run((world, pos) -> itemStack2.getItem().onCraftByPlayer(itemStack2, world, player));
+                if (!this.insertItem(itemStack2, 10, 46, true)) {
+                    return ItemStack.EMPTY;
+                }
+
+                slot2.onQuickTransfer(itemStack2, itemStack);
+            } else if (slot >= 17 && slot < 53) {
+                if (!this.insertItem(itemStack2, 1, 17, false)) {
+                    if (slot < 44) {
+                        if (!this.insertItem(itemStack2, 44, 53, false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    } else if (!this.insertItem(itemStack2, 17, 44, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            } else if (!this.insertItem(itemStack2, 17, 53, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemStack2.isEmpty()) {
+                slot2.setStack(ItemStack.EMPTY);
+            } else {
+                slot2.markDirty();
+            }
+
+            if (itemStack2.getCount() == itemStack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot2.onTakeItem(player, itemStack2);
+            if (slot == 0) {
+                player.dropItem(itemStack2, false);
+            }
         }
-        return false;
+
+        return itemStack;
+    }
+
+    @Override
+    public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
+        return slot.inventory != this.result && super.canInsertIntoSlot(stack, slot);
     }
 
     @Override
@@ -81,17 +205,17 @@ public class SoulForgeScreenHandler extends AbstractRecipeScreenHandler<Crafting
 
     @Override
     public int getCraftingWidth() {
-        return SoulForgeBlockEntity.WIDTH;
+        return this.input.getWidth();
     }
 
     @Override
     public int getCraftingHeight() {
-        return SoulForgeBlockEntity.HEIGHT;
+        return this.input.getHeight();
     }
 
     @Override
     public int getCraftingSlotCount() {
-        return SoulForgeBlockEntity.GRID_SIZE + 1;
+        return 10;
     }
 
     @Override
@@ -102,114 +226,5 @@ public class SoulForgeScreenHandler extends AbstractRecipeScreenHandler<Crafting
     @Override
     public boolean canInsertIntoSlot(int index) {
         return index != this.getCraftingResultSlotIndex();
-    }
-
-    @Override
-    public void onContentChanged(Inventory inv) {
-        if (this.player instanceof ServerPlayerEntity) {
-            ServerPlayNetworkHandler netHandler = ((ServerPlayerEntity) this.player).networkHandler;
-            netHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(this.syncId, 0, 0, inventory.getStack(0)));
-        }
-    }
-
-    @Override
-    public ItemStack quickMove(PlayerEntity player, int index) {
-        ItemStack remainderResultStack = ItemStack.EMPTY;
-        if (!(inventory instanceof SoulForgeBlockEntity soulForgeBlockEntity)) {
-            return remainderResultStack;
-        }
-
-        Slot slot = this.slots.get(index);
-        if (slot.hasStack()) {
-            ItemStack original = slot.getStack();
-            ItemStack resultStack = original.copy();
-            remainderResultStack = resultStack.copy();
-            if (index == 0) {
-                if (!this.insertItem(resultStack, SoulForgeBlockEntity.INVENTORY_SIZE, SoulForgeBlockEntity.INVENTORY_SIZE + 36, true)) return ItemStack.EMPTY;
-                soulForgeBlockEntity.removeStack(index, original.getCount() - resultStack.getCount());
-                // this sets recipe in container
-                if(
-                        player instanceof ServerPlayerEntity
-                        && soulForgeBlockEntity.getLastRecipe() != null
-                        && !soulForgeBlockEntity.shouldCraftRecipe(player.getWorld(), (ServerPlayerEntity) player, soulForgeBlockEntity.getLastRecipe())
-                ) {
-                    return ItemStack.EMPTY;
-                }
-                slots.get(0).onQuickTransfer(resultStack, original); // calls onCrafted if different
-            } else if (index >= SoulForgeBlockEntity.INVENTORY_SIZE && index < SoulForgeBlockEntity.INVENTORY_SIZE + 36) {
-                if (!this.insertItem(resultStack, 1, SoulForgeBlockEntity.INVENTORY_SIZE, false)) {
-                    if (index < SoulForgeBlockEntity.INVENTORY_SIZE + 27) {
-                        if (!this.insertItem(resultStack, SoulForgeBlockEntity.INVENTORY_SIZE + 27, SoulForgeBlockEntity.INVENTORY_SIZE + 36, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (!this.insertItem(resultStack, SoulForgeBlockEntity.INVENTORY_SIZE, SoulForgeBlockEntity.INVENTORY_SIZE + 27, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-            } else if (!this.insertItem(resultStack, SoulForgeBlockEntity.INVENTORY_SIZE, SoulForgeBlockEntity.INVENTORY_SIZE + 36, false)) {
-                return ItemStack.EMPTY;
-            }
-
-            if (resultStack.isEmpty()) {
-                slot.setStack(ItemStack.EMPTY);
-            } else {
-                slot.markDirty();
-            }
-
-            if (resultStack.getCount() == remainderResultStack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTakeItem(player, resultStack);
-        }
-        return remainderResultStack;
-    }
-
-    @Override
-    public void onClosed(PlayerEntity player) {
-        ItemStack cursorStack = this.player.currentScreenHandler.getCursorStack();
-        if (!cursorStack.isEmpty()) {
-            player.dropItem(cursorStack, false);
-            this.player.currentScreenHandler.setCursorStack(ItemStack.EMPTY);
-        }
-        if (inventory instanceof SoulForgeBlockEntity soulForgeBlockEntity) {
-            soulForgeBlockEntity.onContainerClose(this);
-        }
-    }
-
-    private class OutputSlot extends Slot {
-        private final PlayerEntity player;
-        OutputSlot(Inventory inv, PlayerEntity player, int index, int x, int y) {
-            super(inv, index, x, y);
-            this.player = player;
-        }
-
-        @Override
-        public boolean canInsert(ItemStack itemStack_1) {
-            return false;
-        }
-
-        @Override
-        protected void onTake(int amount) {
-            SoulForgeScreenHandler.this.inventory.removeStack(0, amount);
-        }
-
-        @Override
-        protected void onCrafted(ItemStack stack, int amount) {
-            super.onCrafted(stack); // from CraftingResultsSlot onCrafted
-            if (amount > 0) stack.onCraftByPlayer(this.player.getWorld(), this.player, amount);
-            if (this.inventory instanceof RecipeUnlocker) ((RecipeUnlocker)this.inventory).unlockLastRecipe(this.player, getStacks());
-        }
-
-        @Override
-        public void onTakeItem(PlayerEntity player, ItemStack stack) {
-            onCrafted(stack, stack.getCount());
-            super.onTakeItem(player, stack);
-        }
-    }
-
-    @Override
-    public boolean canUse(PlayerEntity player) {
-        return inventory.canPlayerUse(player);
     }
 }

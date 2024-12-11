@@ -5,8 +5,10 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.*;
+import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -18,9 +20,10 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class SoulForgeBlock extends HorizontalFacingBlock implements BlockEntityProvider {
+public class SoulForgeBlock extends HorizontalFacingBlock {
     public static final VoxelShape NORTH_SOUTH_SHAPE = Block.createCuboidShape(4, 0, 0, 12, 16, 16);
     public static final VoxelShape EAST_WEST_SHAPE = Block.createCuboidShape(0, 0, 4, 16, 16, 12);
+    private static final Text TITLE = Text.translatable("container.crafting");
 
     public SoulForgeBlock(Settings settings) {
         super(settings);
@@ -49,39 +52,19 @@ public class SoulForgeBlock extends HorizontalFacingBlock implements BlockEntity
     }
 
     @Override
-    public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        ItemScatterer.onStateReplaced(state, newState, world, pos);
-        super.onStateReplaced(state, world, pos, newState, moved);
+    protected NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
+        return new SimpleNamedScreenHandlerFactory(
+                (syncId, inventory, player) -> new SoulForgeScreenHandler(syncId, inventory, ScreenHandlerContext.create(world, pos)), TITLE
+        );
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new SoulForgeBlockEntity(pos, state);
-    }
-
-    @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (world.isClient) return ActionResult.SUCCESS;
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof SoulForgeBlockEntity soulForgeBlockEntity) {
-            player.openHandledScreen(soulForgeBlockEntity);
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (world.isClient) {
+            return ActionResult.SUCCESS;
+        } else {
+            player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
+            return ActionResult.CONSUME;
         }
-        return ActionResult.CONSUME;
-    }
-
-    @Override
-    public boolean hasComparatorOutput(BlockState state) {
-        return true;
-    }
-
-    @Override
-    public int getComparatorOutput(BlockState state, World world, BlockPos pos) {
-        return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
     }
 }
