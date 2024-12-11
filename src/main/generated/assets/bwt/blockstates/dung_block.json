@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "bwt:block/dung_block"
-    }
+    "": [
+      {
+        "model": "bwt:block/dung_block"
+      },
+      {
+        "model": "bwt:block/dung_block",
+        "y": 90
+      },
+      {
+        "model": "bwt:block/dung_block",
+        "y": 180
+      },
+      {
+        "model": "bwt:block/dung_block",
+        "y": 270
+      }
+    ]
   }
 }
