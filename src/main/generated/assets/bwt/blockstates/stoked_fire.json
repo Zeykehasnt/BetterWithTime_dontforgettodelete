@@ -8,7 +8,23 @@
         {
           "model": "bwt:block/stoked_fire_floor1"
         }
-      ]
+      ],
+      "when": {
+        "two_high": "false"
+      }
+    },
+    {
+      "apply": [
+        {
+          "model": "bwt:block/stoked_fire_tall_floor0"
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_floor1"
+        }
+      ],
+      "when": {
+        "two_high": "true"
+      }
     },
     {
       "apply": [
@@ -24,7 +40,29 @@
         {
           "model": "bwt:block/stoked_fire_side_alt1"
         }
-      ]
+      ],
+      "when": {
+        "two_high": "false"
+      }
+    },
+    {
+      "apply": [
+        {
+          "model": "bwt:block/stoked_fire_tall_side0"
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side1"
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side_alt0"
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side_alt1"
+        }
+      ],
+      "when": {
+        "two_high": "true"
+      }
     },
     {
       "apply": [
@@ -44,7 +82,33 @@
           "model": "bwt:block/stoked_fire_side_alt1",
           "y": 90
         }
-      ]
+      ],
+      "when": {
+        "two_high": "false"
+      }
+    },
+    {
+      "apply": [
+        {
+          "model": "bwt:block/stoked_fire_tall_side0",
+          "y": 90
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side1",
+          "y": 90
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side_alt0",
+          "y": 90
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side_alt1",
+          "y": 90
+        }
+      ],
+      "when": {
+        "two_high": "true"
+      }
     },
     {
       "apply": [
@@ -64,7 +128,33 @@
           "model": "bwt:block/stoked_fire_side_alt1",
           "y": 180
         }
-      ]
+      ],
+      "when": {
+        "two_high": "false"
+      }
+    },
+    {
+      "apply": [
+        {
+          "model": "bwt:block/stoked_fire_tall_side0",
+          "y": 180
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side1",
+          "y": 180
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side_alt0",
+          "y": 180
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side_alt1",
+          "y": 180
+        }
+      ],
+      "when": {
+        "two_high": "true"
+      }
     },
     {
       "apply": [
@@ -84,7 +174,33 @@
           "model": "bwt:block/stoked_fire_side_alt1",
           "y": 270
         }
-      ]
+      ],
+      "when": {
+        "two_high": "false"
+      }
+    },
+    {
+      "apply": [
+        {
+          "model": "bwt:block/stoked_fire_tall_side0",
+          "y": 270
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side1",
+          "y": 270
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side_alt0",
+          "y": 270
+        },
+        {
+          "model": "bwt:block/stoked_fire_tall_side_alt1",
+          "y": 270
+        }
+      ],
+      "when": {
+        "two_high": "true"
+      }
     }
   ]
 }

@@ -4,9 +4,11 @@ import com.bwt.blocks.mining_charge.MiningChargeBlock;
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.block.*;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -16,6 +18,7 @@ import net.minecraft.world.*;
 
 public class StokedFireBlock extends AbstractFireBlock {
     public static final IntProperty AGE = Properties.AGE_2;
+    public static final BooleanProperty TWO_HIGH = BooleanProperty.of("two_high");
     public static final int tickRate = 42;
 
     public static final MapCodec<StokedFireBlock> CODEC = SoulFireBlock.createCodec(StokedFireBlock::new);
@@ -26,16 +29,38 @@ public class StokedFireBlock extends AbstractFireBlock {
 
     public StokedFireBlock(Settings settings) {
         super(settings, 4.0f);
-        setDefaultState(getDefaultState().with(AGE, 0));
+        setDefaultState(getDefaultState().with(AGE, 0).with(TWO_HIGH, true));
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        builder.add(AGE, TWO_HIGH);
+    }
+
+    @Override
+    public BlockState getPlacementState(ItemPlacementContext ctx) {
+        BlockState state = super.getPlacementState(ctx);
+        return getPlacementState(ctx.getWorld(), ctx.getBlockPos(), state);
+    }
+
+    public BlockState getPlacementState(World world, BlockPos pos) {
+        return getPlacementState(world, pos, getDefaultState());
+    }
+
+    public BlockState getPlacementState(World world, BlockPos pos, BlockState state) {
+        if (state == null || !state.isOf(this)) {
+            return state;
+        }
+        return state.with(TWO_HIGH, world.getBlockState(pos.up()).isAir());
     }
 
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+        state = super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+        if (direction == Direction.UP) {
+            return state.with(TWO_HIGH, neighborState.isAir());
+        }
         return state;
-//        if (this.canPlaceAt(state, world, pos)) {
-//            return this.getStateWithAge(state.get(AGE));
-//        }
-//        return Blocks.AIR.getDefaultState();
     }
 
     @Override
@@ -123,10 +148,5 @@ public class StokedFireBlock extends AbstractFireBlock {
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         world.scheduleBlockTick(pos, this, tickRate);
-    }
-
-    @Override
-    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(AGE);
     }
 }

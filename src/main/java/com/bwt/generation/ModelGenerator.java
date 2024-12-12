@@ -7,6 +7,7 @@ import com.bwt.blocks.turntable.TurntableBlock;
 import com.bwt.items.BwtItems;
 import com.bwt.utils.DyeUtils;
 import com.bwt.utils.Id;
+import com.google.common.collect.ImmutableList;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.block.Block;
@@ -307,14 +308,34 @@ public class ModelGenerator extends FabricModelProvider {
     }
 
     private void generateStokedFireBlock(BlockStateModelGenerator blockStateModelGenerator) {
-        List<Identifier> list = blockStateModelGenerator.getFireFloorModels(BwtBlocks.stokedFireBlock);
-        List<Identifier> list2 = blockStateModelGenerator.getFireSideModels(BwtBlocks.stokedFireBlock);
+        Model tallFireFloorTemplate = new Model(Optional.of(Id.of("block/template_tall_fire_floor")), Optional.empty(), TextureKey.FIRE);
+        Model tallFireSideTemplate = new Model(Optional.of(Id.of("block/template_tall_fire_side")), Optional.empty(), TextureKey.FIRE);
+        Model tallFireSideAltTemplate = new Model(Optional.of(Id.of("block/template_tall_fire_side_alt")), Optional.empty(), TextureKey.FIRE);
+        List<Identifier> tallFloorIdentifiers = ImmutableList.of(
+                tallFireFloorTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_tall_floor0"), TextureMap.fire0(BwtBlocks.stokedFireBlock), blockStateModelGenerator.modelCollector),
+                tallFireFloorTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_tall_floor1"), TextureMap.fire1(BwtBlocks.stokedFireBlock), blockStateModelGenerator.modelCollector)
+        );
+        List<Identifier> tallSideIdentifiers = ImmutableList.of(
+                tallFireSideTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_tall_side0"), TextureMap.fire0(BwtBlocks.stokedFireBlock), blockStateModelGenerator.modelCollector),
+                tallFireSideTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_tall_side1"), TextureMap.fire1(BwtBlocks.stokedFireBlock), blockStateModelGenerator.modelCollector),
+                tallFireSideAltTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_tall_side_alt0"), TextureMap.fire0(BwtBlocks.stokedFireBlock), blockStateModelGenerator.modelCollector),
+                tallFireSideAltTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_tall_side_alt1"), TextureMap.fire1(BwtBlocks.stokedFireBlock), blockStateModelGenerator.modelCollector)
+        );
+        List<Identifier> shortFloorIdentifiers = blockStateModelGenerator.getFireFloorModels(BwtBlocks.stokedFireBlock);
+        List<Identifier> shortSideIdentifiers = blockStateModelGenerator.getFireSideModels(BwtBlocks.stokedFireBlock);
+        When whenShort = When.create().set(StokedFireBlock.TWO_HIGH, false);
+        When whenTall = When.create().set(StokedFireBlock.TWO_HIGH, true);
         blockStateModelGenerator.blockStateCollector.accept(MultipartBlockStateSupplier.create(BwtBlocks.stokedFireBlock)
-                .with(BlockStateModelGenerator.buildBlockStateVariants(list, blockStateVariant -> blockStateVariant))
-                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant))
-                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R90)))
-                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R180)))
-                .with(BlockStateModelGenerator.buildBlockStateVariants(list2, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R270))));
+                .with(whenShort, BlockStateModelGenerator.buildBlockStateVariants(shortFloorIdentifiers, blockStateVariant -> blockStateVariant))
+                .with(whenTall, BlockStateModelGenerator.buildBlockStateVariants(tallFloorIdentifiers, blockStateVariant -> blockStateVariant))
+                .with(whenShort, BlockStateModelGenerator.buildBlockStateVariants(shortSideIdentifiers, blockStateVariant -> blockStateVariant))
+                .with(whenTall, BlockStateModelGenerator.buildBlockStateVariants(tallSideIdentifiers, blockStateVariant -> blockStateVariant))
+                .with(whenShort, BlockStateModelGenerator.buildBlockStateVariants(shortSideIdentifiers, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R90)))
+                .with(whenTall, BlockStateModelGenerator.buildBlockStateVariants(tallSideIdentifiers, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R90)))
+                .with(whenShort, BlockStateModelGenerator.buildBlockStateVariants(shortSideIdentifiers, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R180)))
+                .with(whenTall, BlockStateModelGenerator.buildBlockStateVariants(tallSideIdentifiers, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R180)))
+                .with(whenShort, BlockStateModelGenerator.buildBlockStateVariants(shortSideIdentifiers, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R270)))
+                .with(whenTall, BlockStateModelGenerator.buildBlockStateVariants(tallSideIdentifiers, blockStateVariant -> blockStateVariant.put(VariantSettings.Y, VariantSettings.Rotation.R270))));
     }
 
     private void generateMiningChargeBlock(BlockStateModelGenerator blockStateModelGenerator) {

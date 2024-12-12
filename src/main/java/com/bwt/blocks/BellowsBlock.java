@@ -110,7 +110,7 @@ public class BellowsBlock extends Block implements MechPowerBlockBase {
                 if (!hibachiState.isOf(BwtBlocks.hibachiBlock)) {
                     continue;
                 }
-                world.setBlockState(firePos, BwtBlocks.stokedFireBlock.getDefaultState(), Block.NOTIFY_ALL);
+                world.setBlockState(firePos, BwtBlocks.stokedFireBlock.getPlacementState(world, firePos), Block.NOTIFY_ALL);
             }
         }
     }
