@@ -205,6 +205,11 @@ public class DirtSlabBlock extends Block implements Waterloggable {
     }
 
     @Override
+    protected boolean hasRandomTicks(BlockState state) {
+        return super.hasRandomTicks(state) || state.get(SNOWY);
+    }
+
+    @Override
     protected void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         meltSnowFromLight(world, pos, state);
     }
