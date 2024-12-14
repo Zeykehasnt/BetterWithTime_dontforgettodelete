@@ -431,7 +431,7 @@ public class BwtBlocks implements ModInitializer {
         // Grass Slab
         Registry.register(Registries.BLOCK, Id.of("bwt", "grass_slab"), grassSlabBlock);
         Registry.register(Registries.ITEM, Id.of("bwt", "grass_slab"), new BlockItem(grassSlabBlock, new Item.Settings()));
-// Mycelium Slab
+        // Mycelium Slab
         Registry.register(Registries.BLOCK, Id.of("mycelium_slab"), myceliumSlabBlock);
         Registry.register(Registries.ITEM, Id.of("mycelium_slab"), new BlockItem(myceliumSlabBlock, new Item.Settings()));
         // Podzol Slab
@@ -441,6 +441,11 @@ public class BwtBlocks implements ModInitializer {
             content.addAfter(Items.CHERRY_LOG, BwtBlocks.bloodWoodBlocks.logBlock);
             content.addAfter(Items.CHERRY_LEAVES, BwtBlocks.bloodWoodBlocks.leavesBlock);
             content.addAfter(Items.CHERRY_SAPLING, BwtBlocks.bloodWoodBlocks.saplingBlock);
+            content.addAfter(Blocks.DIRT, dirtSlabBlock);
+            content.addAfter(Blocks.DIRT_PATH, dirtPathSlabBlock);
+            content.addAfter(Blocks.GRASS_BLOCK, grassSlabBlock);
+            content.addAfter(Blocks.MYCELIUM, myceliumSlabBlock);
+            content.addAfter(Blocks.PODZOL, podzolSlabBlock);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(content -> {
