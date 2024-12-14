@@ -117,6 +117,11 @@ public class BlockLootTableGenerator extends FabricBlockLootTableProvider {
         BwtBlocks.columnBlocks.forEach(this::addDrop);
         BwtBlocks.pedestalBlocks.forEach(this::addDrop);
         BwtBlocks.tableBlocks.forEach(this::addDrop);
+        addDrop(BwtBlocks.dirtSlabBlock);
+        addDrop(BwtBlocks.dirtPathSlabBlock, BwtBlocks.dirtSlabBlock);
+        addDrop(BwtBlocks.grassSlabBlock, drops(BwtBlocks.grassSlabBlock, BwtBlocks.dirtSlabBlock));
+        addDrop(BwtBlocks.myceliumSlabBlock, drops(BwtBlocks.myceliumSlabBlock, BwtBlocks.dirtSlabBlock));
+        addDrop(BwtBlocks.podzolSlabBlock, drops(BwtBlocks.podzolSlabBlock, BwtBlocks.dirtSlabBlock));
     }
 
     private void addHempDrop() {

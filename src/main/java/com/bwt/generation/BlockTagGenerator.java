@@ -5,7 +5,6 @@ import com.bwt.tags.BwtBlockTags;
 import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
@@ -165,7 +164,12 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.unfiredPlanterBlock)
                 .add(BwtBlocks.unfiredVaseBlock)
                 .add(BwtBlocks.unfiredUrnBlock)
-                .add(BwtBlocks.unfiredMouldBlock);
+                .add(BwtBlocks.unfiredMouldBlock)
+                .add(BwtBlocks.dirtSlabBlock)
+                .add(BwtBlocks.dirtPathSlabBlock)
+                .add(BwtBlocks.grassSlabBlock)
+                .add(BwtBlocks.myceliumSlabBlock)
+                .add(BwtBlocks.podzolSlabBlock);
 
         getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
                 .add(BwtBlocks.axleBlock)
@@ -355,5 +359,19 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.wickerPaneBlock)
                 .add(BwtBlocks.hempCropBlock)
                 .add(BwtBlocks.companionSlabBlock);
+
+        getOrCreateTagBuilder(BwtBlockTags.CAN_CONVERT_TO_PODZOL)
+                .add(Blocks.DIRT)
+                .add(Blocks.GRASS_BLOCK)
+                .add(Blocks.COARSE_DIRT)
+                .add(Blocks.MYCELIUM)
+                .add(Blocks.ROOTED_DIRT)
+                .add(Blocks.MOSS_BLOCK)
+                .add(Blocks.MUD)
+                .add(Blocks.MUDDY_MANGROVE_ROOTS);
+        getOrCreateTagBuilder(BwtBlockTags.CAN_CONVERT_TO_PODZOL_SLAB)
+                .add(BwtBlocks.dirtSlabBlock)
+                .add(BwtBlocks.grassSlabBlock)
+                .add(BwtBlocks.myceliumSlabBlock);
     }
 }
