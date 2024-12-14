@@ -5,25 +5,13 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "condition": "minecraft:match_tool",
-          "predicate": {
-            "predicates": {
-              "minecraft:enchantments": [
-                {
-                  "enchantment": "minecraft:silk_touch",
-                  "levels": {
-                    "min": 1
-                  }
-                }
-              ]
-            }
-          }
+          "condition": "minecraft:survives_explosion"
         }
       ],
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "bwt:dirt_path_slab"
+          "name": "bwt:dirt_slab"
         }
       ],
       "rolls": 1.0

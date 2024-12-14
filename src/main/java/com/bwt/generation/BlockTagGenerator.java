@@ -5,7 +5,6 @@ import com.bwt.tags.BwtBlockTags;
 import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
@@ -169,7 +168,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.dirtSlabBlock)
                 .add(BwtBlocks.dirtPathSlabBlock)
                 .add(BwtBlocks.grassSlabBlock)
-                .add(BwtBlocks.myceliumSlabBlock);
+                .add(BwtBlocks.myceliumSlabBlock)
+                .add(BwtBlocks.podzolSlabBlock);
 
         getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
                 .add(BwtBlocks.axleBlock)
