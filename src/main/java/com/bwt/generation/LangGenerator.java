@@ -188,7 +188,7 @@ public class LangGenerator extends FabricLanguageProvider {
     }
 
     protected void addMaterialBlockName(TranslationBuilder translationBuilder, MaterialInheritedBlock materialInheritedBlock, String suffix) {
-        translationBuilder.add(materialInheritedBlock, nameKeyToTitleCase(materialInheritedBlock.fullBlock.getName().getString().replaceFirst("_planks", "") + "_" + suffix));
+        translationBuilder.add(materialInheritedBlock, nameKeyToTitleCase(materialInheritedBlock.fullBlock.getTranslationKey().replaceFirst("_planks", "") + "_" + suffix));
     }
 
     public static String nameKeyToTitleCase(String snakeString) {
