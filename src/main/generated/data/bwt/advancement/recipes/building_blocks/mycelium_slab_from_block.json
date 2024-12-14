@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_dirt": {
+    "has_mycelium": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:dirt"
+            "items": "minecraft:mycelium"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "bwt:dirt_slab"
+        "recipe": "bwt:mycelium_slab_from_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_dirt"
+      "has_mycelium"
     ]
   ],
   "rewards": {
     "recipes": [
-      "bwt:dirt_slab"
+      "bwt:mycelium_slab_from_block"
     ]
   }
 }
