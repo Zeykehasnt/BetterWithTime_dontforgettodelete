@@ -108,10 +108,6 @@ public class DirtSlabBlock extends Block implements Waterloggable {
     }
 
     @Override
-    protected boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-        return world.getBlockState(pos.down()).isSideSolid(world, pos, Direction.UP, SideShapeType.FULL);
-    }
-
     protected FluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
