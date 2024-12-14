@@ -96,12 +96,14 @@ public class DirtSlabBlock extends Block implements Waterloggable {
     }
 
     @Override
-    @Nullable
     public BlockState getPlacementState(ItemPlacementContext context) {
-        if (context.canReplaceExisting() && context.getSide().equals(Direction.UP)) {
-            return Blocks.DIRT.getDefaultState();
+        BlockPos blockPos = context.getBlockPos();
+        BlockState blockState = context.getWorld().getBlockState(blockPos);
+        // No double slab, just convert back to full block
+        if (blockState.isOf(this)) {
+            return fullBlock.getDefaultState();
         }
-        FluidState fluidState = context.getWorld().getFluidState(context.getBlockPos());
+        FluidState fluidState = context.getWorld().getFluidState(blockPos);
         return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
     }
 
