@@ -3,6 +3,7 @@ package com.bwt.generation;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.blocks.MaterialInheritedBlock;
 import com.bwt.blocks.soul_forge.SoulForgeBlock;
+import com.bwt.entities.BwtEntities;
 import com.bwt.gamerules.BwtGameRules;
 import com.bwt.items.BwtItems;
 import com.bwt.sounds.BwtSoundEvents;
@@ -76,6 +77,7 @@ public class LangGenerator extends FabricLanguageProvider {
         BwtBlocks.woolSlabBlocks.entrySet().stream().sorted(DyeUtils.COMPARE_DYE_COLOR_ENTRY).forEach(entry -> translationBuilder.add(entry.getValue(), nameKeyToTitleCase(entry.getKey().getName() + "_wool_slab")));
         translationBuilder.add(BwtBlocks.soilPlanterBlock, "Soil Planter");
         translationBuilder.add(BwtBlocks.soulSandPlanterBlock, "Soul Sand Planter");
+        translationBuilder.add(BwtBlocks.stokedFireBlock, "Stoked Fire");
         translationBuilder.add(BwtBlocks.grassPlanterBlock, "Grass Planter");
         translationBuilder.add(BwtBlocks.stoneDetectorRailBlock, "Stone Detector Rail");
         translationBuilder.add(BwtBlocks.obsidianDetectorRailBlock, "Obsidian Detector Rail");
@@ -88,6 +90,14 @@ public class LangGenerator extends FabricLanguageProvider {
         translationBuilder.add(BwtItems.breedingHarnessItem, "Breeding Harness");
         translationBuilder.add(BwtItems.netheriteMattockItem, "Netherite Mattock");
         translationBuilder.add(BwtItems.netheriteBattleAxeItem, "Netherite Battle Axe");
+
+        translationBuilder.add(BwtEntities.broadheadArrowEntity, "Broadhead Arrow");
+        translationBuilder.add(BwtEntities.dynamiteEntity, "Dynamite");
+        translationBuilder.add(BwtEntities.miningChargeEntity, "Mining Charge");
+        translationBuilder.add(BwtEntities.movingRopeEntity, "Moving Rope");
+        translationBuilder.add(BwtEntities.rottedArrowEntity, "Rotted Arrow");
+        translationBuilder.add(BwtEntities.waterWheelEntity, "Water Wheel");
+        translationBuilder.add(BwtEntities.windmillEntity, "Windmill");
 
         // Load an existing language file.
         try {
