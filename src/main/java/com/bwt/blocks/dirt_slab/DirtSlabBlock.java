@@ -117,6 +117,19 @@ public class DirtSlabBlock extends Block implements Waterloggable {
     }
 
     @Override
+    public boolean tryFillWithFluid(WorldAccess world, BlockPos pos, BlockState state, FluidState fluidState) {
+        if (state.get(Properties.WATERLOGGED) || fluidState.getFluid() != Fluids.WATER) {
+            return false;
+        }
+        if (!world.isClient()) {
+            // The key difference from the default Waterloggable behavior here is that we unset the snowy property
+            world.setBlockState(pos, state.with(Properties.WATERLOGGED, Boolean.TRUE).with(SNOWY, false), Block.NOTIFY_ALL);
+            world.scheduleFluidTick(pos, fluidState.getFluid(), fluidState.getFluid().getTickRate(world));
+        }
+        return true;
+    }
+
+    @Override
     protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (!state.canPlaceAt(world, pos)) {
             return Blocks.AIR.getDefaultState();
