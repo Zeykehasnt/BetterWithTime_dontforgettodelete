@@ -2,6 +2,7 @@ package com.bwt.generation;
 
 import com.bwt.blocks.*;
 import com.bwt.tags.BwtBlockTags;
+import com.bwt.tags.CompatibilityTags;
 import com.bwt.utils.DyeUtils;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -83,6 +84,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         addWoolSlabs();
         addSawTags();
         addBloodWoodTags();
+        addCompatibilityTags();
     }
 
     private void addBloodWoodTags() {
@@ -373,5 +375,9 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.dirtSlabBlock)
                 .add(BwtBlocks.grassSlabBlock)
                 .add(BwtBlocks.myceliumSlabBlock);
+    }
+
+    protected void addCompatibilityTags() {
+        getOrCreateTagBuilder(CompatibilityTags.UNAFFECTED_BY_RICH_SOIL).add(BwtBlocks.hempCropBlock);
     }
 }
