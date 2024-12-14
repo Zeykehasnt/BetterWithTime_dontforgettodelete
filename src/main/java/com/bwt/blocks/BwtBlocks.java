@@ -29,7 +29,6 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -259,11 +258,11 @@ public class BwtBlocks implements ModInitializer {
             .allowsSpawning(Blocks::never)
             .noCollision()
     );
-    public static final Block dirtSlabBlock = new DirtSlabBlock(AbstractBlock.Settings.copy(Blocks.DIRT));
-    public static final Block dirtPathSlabBlock = new DirtPathSlabBlock(AbstractBlock.Settings.copy(Blocks.DIRT_PATH));
-    public static final Block grassSlabBlock = new GrassSlabBlock(AbstractBlock.Settings.copy(Blocks.GRASS_BLOCK));
-    public static final Block myceliumSlabBlock = new MyceliumSlabBlock(AbstractBlock.Settings.copy(Blocks.MYCELIUM));
-    public static final Block podzolSlabBlock = new MyceliumSlabBlock(AbstractBlock.Settings.copy(Blocks.PODZOL));
+    public static final Block dirtSlabBlock = new DirtSlabBlock(AbstractBlock.Settings.copy(Blocks.DIRT), Blocks.DIRT);
+    public static final Block dirtPathSlabBlock = new DirtPathSlabBlock(AbstractBlock.Settings.copy(Blocks.DIRT_PATH), Blocks.DIRT_PATH);
+    public static final Block grassSlabBlock = new GrassSlabBlock(AbstractBlock.Settings.copy(Blocks.GRASS_BLOCK), Blocks.GRASS_BLOCK);
+    public static final Block myceliumSlabBlock = new MyceliumSlabBlock(AbstractBlock.Settings.copy(Blocks.MYCELIUM), Blocks.MYCELIUM);
+    public static final Block podzolSlabBlock = new MyceliumSlabBlock(AbstractBlock.Settings.copy(Blocks.PODZOL), Blocks.PODZOL);
 
     @Override
     public void onInitialize() {

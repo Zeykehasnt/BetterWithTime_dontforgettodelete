@@ -2,6 +2,7 @@ package com.bwt.blocks.dirt_slab;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -16,8 +17,8 @@ import net.minecraft.world.World;
 public class DirtPathSlabBlock extends DirtSlabBlock {
     protected static final VoxelShape BOTTOM_PATH_SHAPE;
 
-    public DirtPathSlabBlock(Settings settings) {
-        super(settings);
+    public DirtPathSlabBlock(Settings settings, Block fullBlock) {
+        super(settings, fullBlock);
     }
 
     @Override

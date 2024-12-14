@@ -1,6 +1,5 @@
 package com.bwt.blocks.dirt_slab;
 
-import com.bwt.blocks.BwtBlocks;
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.*;
@@ -27,14 +26,14 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.event.GameEvent;
-import org.jetbrains.annotations.Nullable;
 
 public class DirtSlabBlock extends Block implements Waterloggable {
     public static final BooleanProperty WATERLOGGED;
     protected static final VoxelShape BOTTOM_SHAPE, SNOW_LAYER;
     public static final BooleanProperty SNOWY;
+    public Block fullBlock = Blocks.DIRT;
 
-    public static boolean isPlayerLookingAtSnowLayer(BlockView world, PlayerEntity playerEntity, BlockPos pos) {
+    public static boolean isPlayerLookingAtSnowLayer(PlayerEntity playerEntity, BlockPos pos) {
         float tickDelta = 0;
         double maxDistance = playerEntity.getBlockInteractionRange();
         Vec3d vec3d = playerEntity.getCameraPosVec(tickDelta);
@@ -49,6 +48,11 @@ public class DirtSlabBlock extends Block implements Waterloggable {
         setDefaultState(this.getDefaultState().with(WATERLOGGED, false).with(SNOWY, false));
     }
 
+    public DirtSlabBlock(Settings settings, Block fullBlock) {
+        this(settings);
+        this.fullBlock = fullBlock;
+    }
+
     public static final MapCodec<Block> CODEC = Block.createCodec(DirtSlabBlock::new);
 
     @Override
@@ -61,6 +65,7 @@ public class DirtSlabBlock extends Block implements Waterloggable {
         return true;
     }
 
+    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED, SNOWY);
     }
@@ -81,7 +86,7 @@ public class DirtSlabBlock extends Block implements Waterloggable {
             if (context instanceof EntityShapeContext ec) {
                 Entity entity = ec.getEntity();
                 if (entity instanceof PlayerEntity playerEntity) {
-                    if (isPlayerLookingAtSnowLayer(world, playerEntity, pos)) {
+                    if (isPlayerLookingAtSnowLayer(playerEntity, pos)) {
                         return SNOW_LAYER;
                     }
                 }
@@ -109,6 +114,7 @@ public class DirtSlabBlock extends Block implements Waterloggable {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
+    @Override
     protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (!state.canPlaceAt(world, pos)) {
             return Blocks.AIR.getDefaultState();
@@ -123,7 +129,7 @@ public class DirtSlabBlock extends Block implements Waterloggable {
     static {
         PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
             if (state.getBlock() instanceof DirtSlabBlock && state.get(DirtSlabBlock.SNOWY) && !player.isCreative()) {
-                if (isPlayerLookingAtSnowLayer(world, player, pos)) {
+                if (isPlayerLookingAtSnowLayer(player, pos)) {
                     world.setBlockState(pos, state.with(DirtSlabBlock.SNOWY, false));
                     BlockState snowLayer = Blocks.SNOW.getDefaultState();
                     ItemStack itemStack = player.getMainHandStack();
@@ -166,9 +172,10 @@ public class DirtSlabBlock extends Block implements Waterloggable {
         return super.onUseWithItem(itemStack, state, world, pos, player, hand, hit);
     }
 
+    @Override
     protected boolean canReplace(BlockState state, ItemPlacementContext context) {
         ItemStack itemStack = context.getStack();
-        if (itemStack.isOf(BwtBlocks.dirtSlabBlock.asItem()) && context.canReplaceExisting()) {
+        if (itemStack.isOf(this.asItem()) && context.canReplaceExisting()) {
             boolean bl = context.getHitPos().y - (double) context.getBlockPos().getY() > 0.5;
             Direction direction = context.getSide();
             return direction == Direction.UP || bl && direction.getAxis().isHorizontal();
@@ -189,7 +196,7 @@ public class DirtSlabBlock extends Block implements Waterloggable {
         return true;
     }
 
-    protected void meltSnowFromLight(World world, BlockPos pos, BlockState state, Random random) {
+    protected void meltSnowFromLight(World world, BlockPos pos, BlockState state) {
         if (world.getLightLevel(LightType.BLOCK, pos) > 11) {
             world.setBlockState(pos, state.with(SNOWY, false));
         }
@@ -197,7 +204,7 @@ public class DirtSlabBlock extends Block implements Waterloggable {
 
     @Override
     protected void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        meltSnowFromLight(world, pos, state, random);
+        meltSnowFromLight(world, pos, state);
     }
 
     static {

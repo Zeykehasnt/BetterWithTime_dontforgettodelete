@@ -1,14 +1,16 @@
 package com.bwt.blocks.dirt_slab;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class MyceliumSlabBlock extends DirtSlabBlock {
-    public MyceliumSlabBlock(Settings settings) {
-        super(settings);
+    public MyceliumSlabBlock(Settings settings, Block fullBlock) {
+        super(settings, fullBlock);
     }
 
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
