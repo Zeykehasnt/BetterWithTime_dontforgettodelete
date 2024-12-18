@@ -49,7 +49,7 @@ public interface MechPowerBlockBase {
         return Arrays.stream(Direction.values())
                 .filter(direction -> {
                     BlockState inputBlockState = world.getBlockState(pos.offset(direction));
-                    return (axlePredicate.test(direction) && inputBlockState.getBlock() instanceof AxleBlock && AxleBlock.isPowered(inputBlockState))
+                    return (axlePredicate.test(direction) && inputBlockState.getBlock() instanceof AxleBlock && AxleBlock.isPowered(inputBlockState) && inputBlockState.get(AxleBlock.AXIS).test(direction))
                             || (handCrankPredicate.test(direction) && inputBlockState.getBlock() instanceof HandCrankBlock && HandCrankBlock.isPowered(inputBlockState));
                 });
     }
