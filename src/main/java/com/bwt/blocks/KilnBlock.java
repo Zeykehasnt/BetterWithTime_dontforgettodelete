@@ -3,7 +3,7 @@ package com.bwt.blocks;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.recipes.kiln.KilnRecipe;
 import com.bwt.recipes.kiln.KilnRecipeInput;
-import com.bwt.utils.FireData;
+import com.bwt.utils.FireDataCluster;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -161,8 +161,8 @@ public class KilnBlock extends Block {
     }
 
     private int computeTickRateBasedOnFireFactor(World world, BlockPos pos) {
-        FireData fireData = FireData.fromWorld(world, pos);
-        int additionalFireCount = (fireData.fireFactor() - FireData.primaryFireFactor) / FireData.secondaryFireFactor;
+        FireDataCluster fireDataCluster = FireDataCluster.fromWorld(world, pos);
+        int additionalFireCount = fireDataCluster.getStokedCount() - 1;
 //        return maxFireFactorBaseTickRate - (additionalFireCount / 8) * (maxFireFactorBaseTickRate - minFireFactorBaseTickRate);
         return ( ( maxFireFactorBaseTickRate - minFireFactorBaseTickRate ) *
                 ( 8 - additionalFireCount ) / 8 ) + minFireFactorBaseTickRate;

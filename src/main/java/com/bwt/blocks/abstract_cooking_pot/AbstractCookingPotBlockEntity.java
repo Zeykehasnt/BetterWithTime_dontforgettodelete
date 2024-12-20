@@ -7,8 +7,7 @@ import com.bwt.recipes.IngredientWithCount;
 import com.bwt.recipes.cooking_pots.CookingPotRecipeInput;
 import com.bwt.tags.BwtItemTags;
 import com.bwt.utils.BlockPosAndState;
-import com.bwt.utils.FireData;
-import com.bwt.utils.FireType;
+import com.bwt.utils.FireDataCluster;
 import com.bwt.utils.OrderedRecipeMatcher;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -50,7 +49,7 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
     protected static final int INVENTORY_SIZE = 27;
 
     // "Time" is used loosely here, since the rate of change is affected by the amount of fire surrounding the pot
-    public static final int timeToCompleteCook = 150 * ( FireData.primaryFireFactor + ( FireData.secondaryFireFactor * 8 ) );
+    public static final int timeToCompleteCook = 150 * ( FireDataCluster.primaryFireFactor + ( FireDataCluster.secondaryFireFactor * 8 ) );
     public static final int stackSizeToDrop = 8;
     protected int cookProgressTime;
     public int slotsOccupied;
@@ -136,9 +135,9 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
     }
 
     protected void cookItems(World world, BlockPos pos) {
-        FireData fireData = FireData.fromWorld(world, pos);
+        FireDataCluster fireDataCluster = FireDataCluster.fromWorld(world, pos);
 
-        if (fireData.fireFactor() <= 0) {
+        if (!fireDataCluster.anyFirePresent()) {
             if (cookProgressTime != 0) {
                 cookProgressTime = 0;
                 markDirty();
@@ -151,7 +150,7 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
             spoilFood();
         }
 
-        if (fireData.fireType().equals(FireType.STOKED)) {
+        if (fireDataCluster.getStokedFactor() > 0) {
             int stokedExplosivesCount = inventory.getHeldStacks().stream()
                     .filter(itemStack -> itemStack.isIn(BwtItemTags.STOKED_EXPLOSIVES))
                     .map(ItemStack::getCount)
@@ -164,7 +163,7 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
         }
 
         RecipeManager recipeManager = world.getRecipeManager();
-        AbstractCookingPotRecipeType recipeTypeToGet = fireData.fireType().equals(FireType.STOKED) ? stokedRecipeType : unstokedRecipeType;
+        AbstractCookingPotRecipeType recipeTypeToGet = fireDataCluster.isStoked() ? stokedRecipeType : unstokedRecipeType;
 
         CookingPotRecipeInput recipeInput = new CookingPotRecipeInput(inventory.getHeldStacks());
         List<RecipeEntry<AbstractCookingPotRecipe>> matches = recipeManager.getAllMatches(recipeTypeToGet, recipeInput, world);
@@ -176,7 +175,7 @@ public abstract class AbstractCookingPotBlockEntity extends BlockEntity implemen
             return;
         }
 
-        cookProgressTime = cookProgressTime + fireData.fireFactor();
+        cookProgressTime = cookProgressTime + fireDataCluster.getDominantFireTypeFactor();
         if (cookProgressTime >= timeToCompleteCook) {
             cookProgressTime = 0;
             markDirty();
