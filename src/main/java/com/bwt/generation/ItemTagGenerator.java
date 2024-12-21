@@ -51,6 +51,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
         getOrCreateTagBuilder(ItemTags.SOUL_FIRE_BASE_BLOCKS).add(BwtBlocks.soulSandPlanterBlock.asItem());
         getOrCreateTagBuilder(ItemTags.WOOL).add(BwtBlocks.companionCubeBlock.asItem(), BwtBlocks.companionSlabBlock.asItem());
 
+        getOrCreateTagBuilder(ConventionalItemTags.COOKED_MEAT_FOODS).add(BwtItems.cookedWolfChopItem);
+
         addHopperFilters();
     }
 
