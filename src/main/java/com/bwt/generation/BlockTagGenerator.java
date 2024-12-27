@@ -83,8 +83,9 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         addVases();
         addWoolSlabs();
         addSawTags();
+        addDirtSlabCompatibilityTags();
         addBloodWoodTags();
-        addCompatibilityTags();
+        addModCompatibilityTags();
     }
 
     private void addBloodWoodTags() {
@@ -332,6 +333,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(Blocks.REDSTONE_WIRE)
                 .add(Blocks.SEA_PICKLE)
                 .add(Blocks.SEAGRASS)
+                .add(Blocks.SHORT_GRASS)
                 .add(Blocks.SMALL_DRIPLEAF)
                 .add(Blocks.SOUL_CAMPFIRE)
                 .add(Blocks.SOUL_TORCH)
@@ -361,7 +363,9 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.wickerPaneBlock)
                 .add(BwtBlocks.hempCropBlock)
                 .add(BwtBlocks.companionSlabBlock);
+    }
 
+    protected void addDirtSlabCompatibilityTags() {
         getOrCreateTagBuilder(BwtBlockTags.CAN_CONVERT_TO_PODZOL)
                 .add(Blocks.DIRT)
                 .add(Blocks.GRASS_BLOCK)
@@ -377,7 +381,7 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                 .add(BwtBlocks.myceliumSlabBlock);
     }
 
-    protected void addCompatibilityTags() {
+    protected void addModCompatibilityTags() {
         getOrCreateTagBuilder(CompatibilityTags.UNAFFECTED_BY_RICH_SOIL).add(BwtBlocks.hempCropBlock);
     }
 }
