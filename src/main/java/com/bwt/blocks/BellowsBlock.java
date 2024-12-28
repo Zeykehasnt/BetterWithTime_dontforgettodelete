@@ -5,15 +5,21 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
+import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
@@ -22,7 +28,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -94,6 +99,9 @@ public class BellowsBlock extends Block implements MechPowerBlockBase {
         if (isReceivingMechPower) {
             stokeFire(world, pos, state);
         }
+        else {
+            liftEntities(world, pos);
+        }
     }
 
     public void stokeFire(World world, BlockPos pos, BlockState state) {
@@ -113,5 +121,21 @@ public class BellowsBlock extends Block implements MechPowerBlockBase {
                 world.setBlockState(firePos, BwtBlocks.stokedFireBlock.getPlacementState(world, firePos), Block.NOTIFY_ALL);
             }
         }
+    }
+
+    public void liftEntities(ServerWorld world, BlockPos pos) {
+        Box intersectionBox = new Box(0.01, 0.5, 0.01, 0.99, 0.99, 0.99).offset(pos);
+        List<Entity> list =  world.getEntitiesByClass(
+                Entity.class,
+                intersectionBox,
+                EntityPredicates.EXCEPT_SPECTATOR
+        );
+        list.stream().filter(Entity::isPushable).forEach(entity -> {
+            entity.setOnGround(false);
+            entity.setPosition(entity.getX(), pos.getY() + 1, entity.getZ());
+            if(entity instanceof ServerPlayerEntity){
+                ((ServerPlayerEntity) entity).networkHandler.sendPacket(new EntityPositionS2CPacket(entity));
+            }
+        });
     }
 }
