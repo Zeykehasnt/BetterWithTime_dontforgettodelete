@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_stone": {
+    "has_smooth_stone": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:stone"
+            "items": "minecraft:smooth_stone"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_stone"
+      "has_smooth_stone"
     ]
   ],
   "rewards": {

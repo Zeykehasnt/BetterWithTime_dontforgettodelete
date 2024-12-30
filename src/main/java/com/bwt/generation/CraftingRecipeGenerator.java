@@ -311,8 +311,8 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .pattern(" i ")
                 .pattern("sss")
                 .input('i', Items.IRON_INGOT)
-                .input('s', Items.STONE)
-                .criterion(hasItem(Items.STONE), conditionsFromItem(Items.STONE))
+                .input('s', Items.SMOOTH_STONE)
+                .criterion(hasItem(Items.SMOOTH_STONE), conditionsFromItem(Items.SMOOTH_STONE))
                 .offerTo(exporter);
     }
 
