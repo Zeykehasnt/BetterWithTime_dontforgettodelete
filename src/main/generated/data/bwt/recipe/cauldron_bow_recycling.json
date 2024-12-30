@@ -1,0 +1,22 @@
+{
+  "type": "bwt:stoked_cauldron",
+  "category": "blocks",
+  "group": "",
+  "ingredients": [
+    {
+      "ingredient": {
+        "item": "minecraft:bow"
+      }
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:stick"
+    },
+    {
+      "count": 2,
+      "id": "minecraft:string"
+    }
+  ]
+}
