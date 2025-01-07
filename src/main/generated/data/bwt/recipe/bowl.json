@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "tag": "bwt:wooden_corner_blocks"
+    }
+  },
+  "pattern": [
+    "c c",
+    " c "
+  ],
+  "result": {
+    "count": 4,
+    "id": "minecraft:bowl"
+  }
+}

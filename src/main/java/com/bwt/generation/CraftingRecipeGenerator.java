@@ -713,6 +713,12 @@ public class CraftingRecipeGenerator extends FabricRecipeProvider {
                 .input('r', BwtItems.ropeItem)
                 .criterion(hasItem(BwtItems.ropeItem), conditionsFromItem(BwtItems.ropeItem))
                 .offerTo(exporter, highEfficiencyId(BwtBlocks.axleBlock));
+        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, Items.BOWL, 4)
+                .input('c', BwtItemTags.WOODEN_CORNER_BLOCKS)
+                .pattern("c c")
+                .pattern(" c ")
+                .criterion("has_wooden_corner", conditionsFromTag(BwtItemTags.WOODEN_CORNER_BLOCKS))
+                .offerTo(exporter);
         BlockFamilies.getFamilies()
                 .filter(blockFamily -> blockFamily.getGroup().orElse("").equals("wooden"))
                 .forEach(blockFamily -> createHighEfficiencyBlockFamilyRecipes(blockFamily, exporter));
