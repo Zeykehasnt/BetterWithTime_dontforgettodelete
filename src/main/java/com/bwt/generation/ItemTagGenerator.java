@@ -4,11 +4,13 @@ import com.bwt.blocks.BwtBlocks;
 import com.bwt.items.BwtItems;
 import com.bwt.tags.BwtBlockTags;
 import com.bwt.tags.BwtItemTags;
+import com.bwt.tags.CompatibilityTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.ItemTags;
 
 import java.util.concurrent.CompletableFuture;
@@ -20,13 +22,38 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
 
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
+        copy(BlockTags.RAILS, ItemTags.RAILS);
+        copy(BlockTags.SLABS, ItemTags.SLABS);
+        copy(BlockTags.DIRT, ItemTags.DIRT);
+        copy(BlockTags.SOUL_FIRE_BASE_BLOCKS, ItemTags.SOUL_FIRE_BASE_BLOCKS);
+        copy(BlockTags.WOOL, ItemTags.WOOL);
         copy(BwtBlockTags.BLOOD_WOOD_LOGS, BwtItemTags.BLOOD_WOOD_LOGS);
+        copy(BlockTags.LOGS, ItemTags.LOGS);
+        copy(BlockTags.LEAVES, ItemTags.LEAVES);
+        copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
+        copy(BlockTags.PLANKS, ItemTags.PLANKS);
+        copy(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
+        copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
+        copy(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES);
+        copy(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
+        copy(BlockTags.STANDING_SIGNS, ItemTags.SIGNS);
+        copy(BlockTags.CEILING_HANGING_SIGNS, ItemTags.HANGING_SIGNS);
+        copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
+        copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
+        copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
+        copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
         copy(BwtBlockTags.WOODEN_SIDING_BLOCKS, BwtItemTags.WOODEN_SIDING_BLOCKS);
         copy(BwtBlockTags.WOODEN_MOULDING_BLOCKS, BwtItemTags.WOODEN_MOULDING_BLOCKS);
         copy(BwtBlockTags.WOODEN_CORNER_BLOCKS, BwtItemTags.WOODEN_CORNER_BLOCKS);
         copy(BwtBlockTags.SIDING_BLOCKS, BwtItemTags.SIDING_BLOCKS);
         copy(BwtBlockTags.MOULDING_BLOCKS, BwtItemTags.MOULDING_BLOCKS);
         copy(BwtBlockTags.CORNER_BLOCKS, BwtItemTags.CORNER_BLOCKS);
+        copy(BwtBlockTags.WOODEN_COLUMN_BLOCKS, BwtItemTags.WOODEN_COLUMN_BLOCKS);
+        copy(BwtBlockTags.COLUMN_BLOCKS, BwtItemTags.COLUMN_BLOCKS);
+        copy(BwtBlockTags.WOODEN_PEDESTAL_BLOCKS, BwtItemTags.WOODEN_PEDESTAL_BLOCKS);
+        copy(BwtBlockTags.PEDESTAL_BLOCKS, BwtItemTags.PEDESTAL_BLOCKS);
+        copy(BwtBlockTags.WOODEN_TABLE_BLOCKS, BwtItemTags.WOODEN_TABLE_BLOCKS);
+        copy(BwtBlockTags.TABLE_BLOCKS, BwtItemTags.TABLE_BLOCKS);
         copy(BwtBlockTags.VASES, BwtItemTags.VASES);
         copy(BwtBlockTags.WOOL_SLABS, BwtItemTags.WOOL_SLABS);
 
@@ -44,12 +71,8 @@ public class ItemTagGenerator extends FabricTagProvider.ItemTagProvider {
                 .add(Items.ANCIENT_DEBRIS);
 
         getOrCreateTagBuilder(ItemTags.ARROWS).add(BwtItems.broadheadArrowItem, BwtItems.rottedArrowItem);
-        getOrCreateTagBuilder(ItemTags.RAILS).add(BwtBlocks.stoneDetectorRailBlock.asItem(), BwtBlocks.obsidianDetectorRailBlock.asItem());
-        getOrCreateTagBuilder(ItemTags.SLABS).add(BwtBlocks.companionSlabBlock.asItem());
 
-        getOrCreateTagBuilder(ItemTags.DIRT).add(BwtBlocks.soilPlanterBlock.asItem(), BwtBlocks.grassPlanterBlock.asItem());
-        getOrCreateTagBuilder(ItemTags.SOUL_FIRE_BASE_BLOCKS).add(BwtBlocks.soulSandPlanterBlock.asItem());
-        getOrCreateTagBuilder(ItemTags.WOOL).add(BwtBlocks.companionCubeBlock.asItem(), BwtBlocks.companionSlabBlock.asItem());
+        getOrCreateTagBuilder(ItemTags.WOOL).add(BwtBlocks.companionSlabBlock.asItem());
 
         getOrCreateTagBuilder(ConventionalItemTags.RAW_MEAT_FOODS).add(BwtItems.wolfChopItem);
         getOrCreateTagBuilder(ConventionalItemTags.COOKED_MEAT_FOODS).add(BwtItems.cookedWolfChopItem);

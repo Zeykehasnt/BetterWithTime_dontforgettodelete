@@ -1,0 +1,24 @@
+{
+  "values": [
+    "#bwt:wooden_column_blocks",
+    "bwt:stone_column",
+    "bwt:stone_bricks_column",
+    "bwt:mossy_stone_bricks_column",
+    "bwt:sandstone_column",
+    "bwt:red_sandstone_column",
+    "bwt:bricks_column",
+    "bwt:nether_bricks_column",
+    "bwt:diorite_column",
+    "bwt:polished_diorite_column",
+    "bwt:andesite_column",
+    "bwt:polished_andesite_column",
+    "bwt:granite_column",
+    "bwt:polished_granite_column",
+    "bwt:cobbled_deepslate_column",
+    "bwt:tuff_column",
+    "bwt:mud_bricks_column",
+    "bwt:prismarine_column",
+    "bwt:end_stone_bricks_column",
+    "bwt:purpur_block_column"
+  ]
+}
