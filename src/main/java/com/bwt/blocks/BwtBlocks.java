@@ -497,6 +497,7 @@ public class BwtBlocks implements ModInitializer {
                     BwtBlocks.bloodWoodBlocks.signBlock,
                     BwtBlocks.bloodWoodBlocks.hangingSignBlock
             );
+            content.addAfter(Items.SCAFFOLDING, BwtBlocks.vineTrapBlock);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(content -> {
