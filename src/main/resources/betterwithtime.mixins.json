@@ -12,6 +12,7 @@
     "LandPathNodeMakerMixin",
     "MiningChargeExplosionImmunityMixin",
     "MovableBlockEntityMixin",
+    "NetherWartGrowthMixin",
     "ShapedRecipeDimensionsMixin",
     "SkeletonRottenArrowMixin",
     "SpawnerMossyCobbleMixin",
