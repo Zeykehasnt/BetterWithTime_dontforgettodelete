@@ -17,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.NotNull;
 
 public class LensBlock extends SimpleFacingBlock implements RotateWithEmptyHand {
@@ -57,10 +58,11 @@ public class LensBlock extends SimpleFacingBlock implements RotateWithEmptyHand 
     }
 
     @Override
-    protected void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
+    protected BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
         if (!world.getBlockTickScheduler().isTicking(pos, this)) {
             world.scheduleBlockTick(pos, this, lensTickRate);
         }
+        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 
     @Override
