@@ -19,8 +19,6 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 import java.util.Optional;
 
 public class SoulForgeScreenHandler extends AbstractRecipeScreenHandler<CraftingRecipeInput, CraftingRecipe> {
@@ -44,7 +42,7 @@ public class SoulForgeScreenHandler extends AbstractRecipeScreenHandler<Crafting
     }
 
     protected void addSlots(PlayerInventory playerInventory) {
-        this.addSlot(new CraftingResultSlot(this.player, this.input, this.result, 0, 139, 44));
+        this.addSlot(new SoulForgeCraftingResultSlot(this.player, this.input, this.result, 0, 139, 44));
 
         for(int y = 0; y < HEIGHT; ++y) {
             for(int x = 0; x < WIDTH; ++x) {
