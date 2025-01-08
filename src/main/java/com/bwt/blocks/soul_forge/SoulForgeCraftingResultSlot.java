@@ -1,13 +1,17 @@
 package com.bwt.blocks.soul_forge;
 
 import com.bwt.recipes.BwtRecipes;
+import com.bwt.utils.OrderedRecipeMatcher;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.util.collection.DefaultedList;
+
+import java.util.List;
 
 public class SoulForgeCraftingResultSlot extends CraftingResultSlot {
     private final RecipeInputInventory input;
@@ -26,7 +30,11 @@ public class SoulForgeCraftingResultSlot extends CraftingResultSlot {
         CraftingRecipeInput craftingRecipeInput = positioned.input();
         int i = positioned.left();
         int j = positioned.top();
-        DefaultedList<ItemStack> defaultedList = player.getWorld().getRecipeManager().getRemainingStacks(BwtRecipes.SOUL_FORGE_RECIPE_TYPE, craftingRecipeInput, player.getWorld());
+        DefaultedList<ItemStack> defaultedList = OrderedRecipeMatcher.getRemainingStacks(
+                player.getWorld(),
+                craftingRecipeInput,
+                List.of(BwtRecipes.SOUL_FORGE_RECIPE_TYPE, RecipeType.CRAFTING)
+        );
 
         for (int k = 0; k < craftingRecipeInput.getHeight(); k++) {
             for (int l = 0; l < craftingRecipeInput.getWidth(); l++) {

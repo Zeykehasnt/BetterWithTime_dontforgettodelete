@@ -3,6 +3,7 @@ package com.bwt.blocks.soul_forge;
 import com.bwt.BetterWithTime;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.recipes.BwtRecipes;
+import com.bwt.utils.OrderedRecipeMatcher;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.*;
@@ -19,6 +20,8 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 import java.util.Optional;
 
 public class SoulForgeScreenHandler extends AbstractRecipeScreenHandler<CraftingRecipeInput, CraftingRecipe> {
@@ -75,20 +78,11 @@ public class SoulForgeScreenHandler extends AbstractRecipeScreenHandler<Crafting
         CraftingRecipeInput craftingRecipeInput = craftingInventory.createRecipeInput();
         ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)player;
         ItemStack itemStack = ItemStack.EMPTY;
-        Optional<RecipeEntry<CraftingRecipe>> optional = world.getServer().getRecipeManager().getFirstMatch(
-                BwtRecipes.SOUL_FORGE_RECIPE_TYPE,
-                craftingRecipeInput,
+        Optional<RecipeEntry<CraftingRecipe>> optional = OrderedRecipeMatcher.getFirstRecipeOfMultipleTypes(
                 world,
-                recipe
+                craftingRecipeInput,
+                List.of(BwtRecipes.SOUL_FORGE_RECIPE_TYPE, RecipeType.CRAFTING)
         );
-        if (optional.isEmpty()) {
-            optional = world.getServer().getRecipeManager().getFirstMatch(
-                    RecipeType.CRAFTING,
-                    craftingRecipeInput,
-                    world,
-                    recipe
-            );
-        }
         if (optional.isPresent()) {
             RecipeEntry<CraftingRecipe> recipeEntry = optional.get();
             CraftingRecipe craftingRecipe = recipeEntry.value();
