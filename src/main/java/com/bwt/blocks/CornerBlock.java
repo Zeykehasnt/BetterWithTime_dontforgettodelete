@@ -68,9 +68,9 @@ public class CornerBlock extends MiniBlock {
         double zDistFromCenter = hitPos.getZ() - 0.5;
 
         int orientation = (yDistFromCenter > 0 ? 4 : 0) +
-                xDistFromCenter > 0
+                (xDistFromCenter > 0
                     ? zDistFromCenter > 0 ? 2 : 1
-                    : zDistFromCenter > 0 ? 3 : 0;
+                    : zDistFromCenter > 0 ? 3 : 0);
 
         return state.with(ORIENTATION, orientation);
     }
