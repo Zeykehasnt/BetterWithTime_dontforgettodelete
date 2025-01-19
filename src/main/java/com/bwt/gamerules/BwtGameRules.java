@@ -14,7 +14,7 @@ public class BwtGameRules implements ModInitializer {
         VANILLA_HOPPERS_DISABLED = GameRuleRegistry.register(
                 "disableVanillaHopperTransfer",
                 GameRules.Category.MISC,
-                GameRuleFactory.createBooleanRule(true)
+                GameRuleFactory.createBooleanRule(false)
         );
         LENS_BEAM_RANGE = GameRuleRegistry.register(
                 "lensBeamRange",
