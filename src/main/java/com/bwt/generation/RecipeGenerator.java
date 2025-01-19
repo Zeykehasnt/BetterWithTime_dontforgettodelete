@@ -17,6 +17,7 @@ public class RecipeGenerator extends FabricRecipeProvider {
     protected DisabledVanilaRecipeGenerator disabledVanilaRecipeGenerator;
     protected HopperRecipeGenerator hopperRecipeGenerator;
     protected MillStoneRecipeGenerator millStoneRecipeGenerator;
+    protected MobSpawnerConversionRecipeGenerator mobSpawnerConversionRecipeGenerator;
     protected SawRecipeGenerator sawRecipeGenerator;
     protected TurntableRecipeGenerator turntableRecipeGenerator;
     protected KilnRecipeGenerator kilnRecipeGenerator;
@@ -32,6 +33,7 @@ public class RecipeGenerator extends FabricRecipeProvider {
         this.disabledVanilaRecipeGenerator = new DisabledVanilaRecipeGenerator(output, registriesFuture);
         this.hopperRecipeGenerator = new HopperRecipeGenerator(output, registriesFuture);
         this.millStoneRecipeGenerator = new MillStoneRecipeGenerator(output, registriesFuture);
+        this.mobSpawnerConversionRecipeGenerator = new MobSpawnerConversionRecipeGenerator(output, registriesFuture);
         this.sawRecipeGenerator = new SawRecipeGenerator(output, registriesFuture);
         this.turntableRecipeGenerator = new TurntableRecipeGenerator(output, registriesFuture);
         this.kilnRecipeGenerator = new KilnRecipeGenerator(output, registriesFuture);
@@ -47,6 +49,7 @@ public class RecipeGenerator extends FabricRecipeProvider {
         vanillaRecipeGenerator.generate(exporter);
         hopperRecipeGenerator.generate(exporter);
         millStoneRecipeGenerator.generate(exporter);
+        mobSpawnerConversionRecipeGenerator.generate(exporter);
         sawRecipeGenerator.generate(exporter);
         turntableRecipeGenerator.generate(exporter);
         kilnRecipeGenerator.generate(exporter);

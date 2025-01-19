@@ -5,6 +5,7 @@ import com.bwt.recipes.cooking_pots.*;
 import com.bwt.recipes.hopper_filter.HopperFilterRecipe;
 import com.bwt.recipes.kiln.KilnRecipe;
 import com.bwt.recipes.mill_stone.MillStoneRecipe;
+import com.bwt.recipes.mob_spawner_conversion.MobSpawnerConversionRecipe;
 import com.bwt.recipes.saw.SawRecipe;
 import com.bwt.recipes.soul_bottling.SoulBottlingRecipe;
 import com.bwt.recipes.soul_forge.SoulForgeShapedRecipe;
@@ -31,6 +32,8 @@ public class BwtRecipes implements ModInitializer {
     public static final StokedCrucibleRecipe.Serializer STOKED_CRUCIBLE_RECIPE_SERIALIZER = new StokedCrucibleRecipe.Serializer(StokedCrucibleRecipe::new);
     public static final RecipeType<MillStoneRecipe> MILL_STONE_RECIPE_TYPE = new RecipeType<>() {};
     public static final MillStoneRecipe.Serializer MILL_STONE_RECIPE_SERIALIZER = new MillStoneRecipe.Serializer();
+    public static final RecipeType<MobSpawnerConversionRecipe> MOB_SPAWNER_CONVERSION_RECIPE_TYPE = new RecipeType<>() {};
+    public static final MobSpawnerConversionRecipe.Serializer MOB_SPAWNER_CONVERSION_RECIPE_SERIALIZER = new MobSpawnerConversionRecipe.Serializer();
     public static final RecipeType<HopperFilterRecipe> HOPPER_FILTER_RECIPE_TYPE = new RecipeType<>() {};
     public static final HopperFilterRecipe.Serializer HOPPER_FILTER_RECIPE_SERIALIZER = new HopperFilterRecipe.Serializer();
     public static final RecipeType<SoulBottlingRecipe> SOUL_BOTTLING_RECIPE_TYPE = new RecipeType<>() {};
@@ -60,6 +63,8 @@ public class BwtRecipes implements ModInitializer {
         Registry.register(Registries.RECIPE_SERIALIZER, Id.of("stoked_crucible"), STOKED_CRUCIBLE_RECIPE_SERIALIZER);
         Registry.register(Registries.RECIPE_TYPE, Id.of("mill_stone"), MILL_STONE_RECIPE_TYPE);
         Registry.register(Registries.RECIPE_SERIALIZER, Id.of("mill_stone"), MILL_STONE_RECIPE_SERIALIZER);
+        Registry.register(Registries.RECIPE_TYPE, Id.of("mob_spawner_conversion"), MOB_SPAWNER_CONVERSION_RECIPE_TYPE);
+        Registry.register(Registries.RECIPE_SERIALIZER, Id.of("mob_spawner_conversion"), MOB_SPAWNER_CONVERSION_RECIPE_SERIALIZER);
         Registry.register(Registries.RECIPE_TYPE, Id.of("hopper_filter"), HOPPER_FILTER_RECIPE_TYPE);
         Registry.register(Registries.RECIPE_SERIALIZER, Id.of("hopper_filter"), HOPPER_FILTER_RECIPE_SERIALIZER);
         Registry.register(Registries.RECIPE_TYPE, Id.of("soul_bottling"), SOUL_BOTTLING_RECIPE_TYPE);
