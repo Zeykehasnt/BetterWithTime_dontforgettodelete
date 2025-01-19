@@ -1,4 +1,4 @@
-package com.bwt.mixin.planter_functionality;
+package com.bwt.mixin.planter_and_vase_functionality;
 
 import com.bwt.blocks.BwtBlocks;
 import net.minecraft.block.BlockState;

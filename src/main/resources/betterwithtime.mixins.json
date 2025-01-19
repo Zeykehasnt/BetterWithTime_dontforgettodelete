@@ -35,12 +35,14 @@
     "animals.PigEntityMixin",
     "animals.SheepEntityMixin",
     "animals.WolfEntityMixin",
-    "planter_functionality.CropPlantOnMixin",
-    "planter_functionality.NetherWartPlantOnMixin",
-    "planter_functionality.PitcherPlantPlantOnMixin",
-    "planter_functionality.PlantPlantOnMixin",
-    "planter_functionality.StemBlockPlantOnMixin",
-    "planter_functionality.SugarCanePlantOnMixin"
+    "planter_and_vase_functionality.CropPlantOnMixin",
+    "planter_and_vase_functionality.FlowerBlockOffsetMixin",
+    "planter_and_vase_functionality.FlowerBlockOffsetMixin",
+    "planter_and_vase_functionality.NetherWartPlantOnMixin",
+    "planter_and_vase_functionality.PitcherPlantPlantOnMixin",
+    "planter_and_vase_functionality.PlantPlantOnMixin",
+    "planter_and_vase_functionality.StemBlockPlantOnMixin",
+    "planter_and_vase_functionality.SugarCanePlantOnMixin"
   ],
   "injectors": {
     "defaultRequire": 1
