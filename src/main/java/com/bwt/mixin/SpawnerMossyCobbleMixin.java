@@ -1,10 +1,8 @@
 package com.bwt.mixin;
 
-import com.bwt.blocks.block_dispenser.BlockDispenserPlacementContext;
 import com.bwt.recipes.BwtRecipes;
 import com.bwt.recipes.mob_spawner_conversion.MobSpawnerConversionRecipe;
 import com.bwt.recipes.mob_spawner_conversion.MobSpawnerConversionRecipeInput;
-import com.bwt.utils.MobSpawnerPlacementContext;
 import com.google.common.collect.Maps;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -13,7 +11,6 @@ import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 @Mixin(MobSpawnerLogic.class)
 public class SpawnerMossyCobbleMixin {
