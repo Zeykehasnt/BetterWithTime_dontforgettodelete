@@ -3,10 +3,10 @@
     {
       "apply": [
         {
-          "model": "bwt:block/stoked_fire_floor0"
+          "model": "bwt:block/stoked_fire_short_floor0"
         },
         {
-          "model": "bwt:block/stoked_fire_floor1"
+          "model": "bwt:block/stoked_fire_short_floor1"
         }
       ],
       "when": {
@@ -29,16 +29,16 @@
     {
       "apply": [
         {
-          "model": "bwt:block/stoked_fire_side0"
+          "model": "bwt:block/stoked_fire_short_side0"
         },
         {
-          "model": "bwt:block/stoked_fire_side1"
+          "model": "bwt:block/stoked_fire_short_side1"
         },
         {
-          "model": "bwt:block/stoked_fire_side_alt0"
+          "model": "bwt:block/stoked_fire_short_side_alt0"
         },
         {
-          "model": "bwt:block/stoked_fire_side_alt1"
+          "model": "bwt:block/stoked_fire_short_side_alt1"
         }
       ],
       "when": {
@@ -67,19 +67,19 @@
     {
       "apply": [
         {
-          "model": "bwt:block/stoked_fire_side0",
+          "model": "bwt:block/stoked_fire_short_side0",
           "y": 90
         },
         {
-          "model": "bwt:block/stoked_fire_side1",
+          "model": "bwt:block/stoked_fire_short_side1",
           "y": 90
         },
         {
-          "model": "bwt:block/stoked_fire_side_alt0",
+          "model": "bwt:block/stoked_fire_short_side_alt0",
           "y": 90
         },
         {
-          "model": "bwt:block/stoked_fire_side_alt1",
+          "model": "bwt:block/stoked_fire_short_side_alt1",
           "y": 90
         }
       ],
@@ -113,19 +113,19 @@
     {
       "apply": [
         {
-          "model": "bwt:block/stoked_fire_side0",
+          "model": "bwt:block/stoked_fire_short_side0",
           "y": 180
         },
         {
-          "model": "bwt:block/stoked_fire_side1",
+          "model": "bwt:block/stoked_fire_short_side1",
           "y": 180
         },
         {
-          "model": "bwt:block/stoked_fire_side_alt0",
+          "model": "bwt:block/stoked_fire_short_side_alt0",
           "y": 180
         },
         {
-          "model": "bwt:block/stoked_fire_side_alt1",
+          "model": "bwt:block/stoked_fire_short_side_alt1",
           "y": 180
         }
       ],
@@ -159,19 +159,19 @@
     {
       "apply": [
         {
-          "model": "bwt:block/stoked_fire_side0",
+          "model": "bwt:block/stoked_fire_short_side0",
           "y": 270
         },
         {
-          "model": "bwt:block/stoked_fire_side1",
+          "model": "bwt:block/stoked_fire_short_side1",
           "y": 270
         },
         {
-          "model": "bwt:block/stoked_fire_side_alt0",
+          "model": "bwt:block/stoked_fire_short_side_alt0",
           "y": 270
         },
         {
-          "model": "bwt:block/stoked_fire_side_alt1",
+          "model": "bwt:block/stoked_fire_short_side_alt1",
           "y": 270
         }
       ],

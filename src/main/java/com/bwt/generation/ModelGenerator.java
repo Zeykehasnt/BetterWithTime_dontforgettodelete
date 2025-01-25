@@ -312,11 +312,20 @@ public class ModelGenerator extends FabricModelProvider {
 
     private void generateStokedFireBlock(BlockStateModelGenerator blockStateModelGenerator) {
         Model tallFireFloorTemplate = new Model(Optional.of(Id.of("block/template_tall_fire_floor")), Optional.empty(), TextureKey.FIRE);
+        Model shortFireFloorTemplate = new Model(Optional.of(Id.of("block/template_short_fire_floor")), Optional.empty(), TextureKey.FIRE);
         Model tallFireSideTemplate = new Model(Optional.of(Id.of("block/template_tall_fire_side")), Optional.empty(), TextureKey.FIRE);
+        Model shortFireSideTemplate = new Model(Optional.of(Id.of("block/template_short_fire_side")), Optional.empty(), TextureKey.FIRE);
         Model tallFireSideAltTemplate = new Model(Optional.of(Id.of("block/template_tall_fire_side_alt")), Optional.empty(), TextureKey.FIRE);
+        Model shortFireSideAltTemplate = new Model(Optional.of(Id.of("block/template_short_fire_side_alt")), Optional.empty(), TextureKey.FIRE);
+        TextureMap short0 = new TextureMap().put(TextureKey.FIRE, TextureMap.getSubId(BwtBlocks.stokedFireBlock, "_short_0"));
+        TextureMap short1 = new TextureMap().put(TextureKey.FIRE, TextureMap.getSubId(BwtBlocks.stokedFireBlock, "_short_1"));
         List<Identifier> tallFloorIdentifiers = ImmutableList.of(
                 tallFireFloorTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_tall_floor0"), TextureMap.fire0(BwtBlocks.stokedFireBlock), blockStateModelGenerator.modelCollector),
                 tallFireFloorTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_tall_floor1"), TextureMap.fire1(BwtBlocks.stokedFireBlock), blockStateModelGenerator.modelCollector)
+        );
+        List<Identifier> shortFloorIdentifiers = ImmutableList.of(
+                tallFireFloorTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_short_floor0"), short0, blockStateModelGenerator.modelCollector),
+                tallFireFloorTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_short_floor1"), short1, blockStateModelGenerator.modelCollector)
         );
         List<Identifier> tallSideIdentifiers = ImmutableList.of(
                 tallFireSideTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_tall_side0"), TextureMap.fire0(BwtBlocks.stokedFireBlock), blockStateModelGenerator.modelCollector),
@@ -324,8 +333,12 @@ public class ModelGenerator extends FabricModelProvider {
                 tallFireSideAltTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_tall_side_alt0"), TextureMap.fire0(BwtBlocks.stokedFireBlock), blockStateModelGenerator.modelCollector),
                 tallFireSideAltTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_tall_side_alt1"), TextureMap.fire1(BwtBlocks.stokedFireBlock), blockStateModelGenerator.modelCollector)
         );
-        List<Identifier> shortFloorIdentifiers = blockStateModelGenerator.getFireFloorModels(BwtBlocks.stokedFireBlock);
-        List<Identifier> shortSideIdentifiers = blockStateModelGenerator.getFireSideModels(BwtBlocks.stokedFireBlock);
+        List<Identifier> shortSideIdentifiers = ImmutableList.of(
+                tallFireSideTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_short_side0"), short0, blockStateModelGenerator.modelCollector),
+                tallFireSideTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_short_side1"), short1, blockStateModelGenerator.modelCollector),
+                tallFireSideAltTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_short_side_alt0"), short0, blockStateModelGenerator.modelCollector),
+                tallFireSideAltTemplate.upload(ModelIds.getBlockSubModelId(BwtBlocks.stokedFireBlock, "_short_side_alt1"), short1, blockStateModelGenerator.modelCollector)
+        );
         When whenShort = When.create().set(StokedFireBlock.TWO_HIGH, false);
         When whenTall = When.create().set(StokedFireBlock.TWO_HIGH, true);
         blockStateModelGenerator.blockStateCollector.accept(MultipartBlockStateSupplier.create(BwtBlocks.stokedFireBlock)

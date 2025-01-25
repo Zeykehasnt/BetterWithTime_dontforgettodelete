@@ -1,0 +1,6 @@
+{
+  "parent": "bwt:block/template_tall_fire_floor",
+  "textures": {
+    "fire": "bwt:block/stoked_fire_short_0"
+  }
+}
