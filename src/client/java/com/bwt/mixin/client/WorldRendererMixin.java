@@ -77,22 +77,24 @@ public abstract class WorldRendererMixin implements KilnBlockCookProgressSetter 
 
         for (Long2ObjectMap.Entry<KilnBlockCookingInfo> entry : this.kilnBlockCookingInfos.long2ObjectEntrySet()) {
             BlockPos blockPos = BlockPos.fromLong(entry.getLongKey());
-            Vec3d vec3d = camera.getPos();
-            double d = vec3d.getX();
-            double e = vec3d.getY();
-            double g = vec3d.getZ();
-            double l = (double)blockPos.getX() - d;
-            double m = (double)blockPos.getY() - e;
-            double n = (double)blockPos.getZ() - g;
-            if (!(l * l + m * m + n * n > 1024.0)) {
+            Vec3d cameraPos = camera.getPos();
+            double cameraX = cameraPos.getX();
+            double cameraY = cameraPos.getY();
+            double cameraZ = cameraPos.getZ();
+            double distX = blockPos.getX() - cameraX;
+            double distY = blockPos.getY() - cameraY;
+            double distZ = blockPos.getZ() - cameraZ;
+            if (!(cameraPos.squaredDistanceTo(Vec3d.of(blockPos)) > 1024.0)) {
                 KilnBlockCookingInfo kilnBlockCookingInfo = entry.getValue();
                 if (kilnBlockCookingInfo != null) {
                     int stage = kilnBlockCookingInfo.getStage();
                     matrixStack.push();
-                    matrixStack.translate((double)blockPos.getX() - d, (double)blockPos.getY() - e, (double)blockPos.getZ() - g);
-                    MatrixStack.Entry entry3 = matrixStack.peek();
+                    matrixStack.translate(distX, distY, distZ);
+                    MatrixStack.Entry matrixStackEntry = matrixStack.peek();
                     VertexConsumer vertexConsumer2 = new OverlayVertexConsumer(
-                            getBufferBuilders().getEffectVertexConsumers().getBuffer(KilnBlockCookingRenderLayer.KILN_COOKING_RENDER_LAYERS.get(stage)), entry3, 1.0F
+                            getBufferBuilders().getEffectVertexConsumers().getBuffer(KilnBlockCookingRenderLayer.KILN_COOKING_RENDER_LAYERS.get(stage)),
+                            matrixStackEntry,
+                            1.0F
                     );
                     getClient().getBlockRenderManager().renderDamage(getWorld().getBlockState(blockPos), blockPos, getWorld(), matrixStack, vertexConsumer2);
                     matrixStack.pop();
