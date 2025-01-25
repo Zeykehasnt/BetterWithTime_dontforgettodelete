@@ -5,7 +5,6 @@ import net.minecraft.util.math.BlockPos;
 public class KilnBlockCookingInfo implements Comparable<KilnBlockCookingInfo> {
     private final BlockPos pos;
     private int stage;
-    private int lastUpdateTick;
 
     public KilnBlockCookingInfo(BlockPos pos) {
         this.pos = pos;
@@ -25,14 +24,6 @@ public class KilnBlockCookingInfo implements Comparable<KilnBlockCookingInfo> {
 
     public int getStage() {
         return this.stage;
-    }
-
-    public void setLastUpdateTick(int lastUpdateTick) {
-        this.lastUpdateTick = lastUpdateTick;
-    }
-
-    public int getLastUpdateTick() {
-        return this.lastUpdateTick;
     }
 
     public boolean equals(Object o) {

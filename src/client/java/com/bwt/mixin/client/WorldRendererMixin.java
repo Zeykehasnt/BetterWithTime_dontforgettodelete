@@ -52,7 +52,6 @@ public abstract class WorldRendererMixin implements KilnBlockCookProgressSetter 
             }
 
             kilnBlockCookingInfo.setStage(stage);
-            kilnBlockCookingInfo.setLastUpdateTick(this.getTicks());
         } else {
             this.removeKilnBlockCookingInfo(pos);
         }
