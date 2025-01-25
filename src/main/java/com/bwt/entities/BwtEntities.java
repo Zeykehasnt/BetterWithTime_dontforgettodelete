@@ -16,7 +16,7 @@ public class BwtEntities implements ModInitializer {
             EntityType.Builder.create(
                     (EntityType.EntityFactory<WindmillEntity>) WindmillEntity::new,
                     SpawnGroup.MISC
-            ).build()
+            ).maxTrackingRange(10).build()
     );
     public static final EntityType<WaterWheelEntity> waterWheelEntity = Registry.register(
             Registries.ENTITY_TYPE,
@@ -24,7 +24,7 @@ public class BwtEntities implements ModInitializer {
             EntityType.Builder.create(
                 (EntityType.EntityFactory<WaterWheelEntity>) WaterWheelEntity::new,
                 SpawnGroup.MISC
-            ).build()
+            ).maxTrackingRange(10).build()
     );
     public static final EntityType<MovingRopeEntity> movingRopeEntity = Registry.register(
             Registries.ENTITY_TYPE,
