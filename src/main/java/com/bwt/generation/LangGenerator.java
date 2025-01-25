@@ -119,6 +119,12 @@ public class LangGenerator extends FabricLanguageProvider {
         addTagName(BwtItemTags.MOULDING_BLOCKS, "Moulding Blocks", translationBuilder);
         addTagName(BwtItemTags.WOODEN_MOULDING_BLOCKS, "Wooden Moulding Blocks", translationBuilder);
         addTagName(BwtItemTags.CORNER_BLOCKS, "Corner Blocks", translationBuilder);
+        addTagName(BwtItemTags.COLUMN_BLOCKS, "Column Blocks", translationBuilder);
+        addTagName(BwtItemTags.PEDESTAL_BLOCKS, "Pedestal Blocks", translationBuilder);
+        addTagName(BwtItemTags.TABLE_BLOCKS, "Table Blocks", translationBuilder);
+        addTagName(BwtItemTags.WOODEN_COLUMN_BLOCKS, "Wooden Column Blocks", translationBuilder);
+        addTagName(BwtItemTags.WOODEN_PEDESTAL_BLOCKS, "Wooden Pedestal Blocks", translationBuilder);
+        addTagName(BwtItemTags.WOODEN_TABLE_BLOCKS, "Wooden Table Blocks", translationBuilder);
         addTagName(BwtItemTags.VASES, "Vases", translationBuilder);
         addTagName(BwtItemTags.WOOL_SLABS, "Wool Slabs", translationBuilder);
         addTagName(BwtItemTags.WOODEN_CORNER_BLOCKS, "Wooden Corner Blocks", translationBuilder);
