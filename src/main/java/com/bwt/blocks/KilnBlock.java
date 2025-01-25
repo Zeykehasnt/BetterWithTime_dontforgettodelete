@@ -4,6 +4,7 @@ import com.bwt.recipes.BwtRecipes;
 import com.bwt.recipes.kiln.KilnRecipe;
 import com.bwt.recipes.kiln.KilnRecipeInput;
 import com.bwt.utils.FireDataCluster;
+import com.bwt.utils.kiln_block_cook_overlay.KilnBlockCookOverlay;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -90,7 +91,7 @@ public class KilnBlock extends Block {
         if (oldCookCounter != newCookCounter) {
             world.setBlockState(pos, state.with(COOK_TIME, newCookCounter));
             // The 10 here is the max block breaking progress
-            world.setBlockBreakingInfo(0, pos.up(), ((int) MathHelper.clampedLerp(-1, 9, ((float) newCookCounter) / 15f)));
+            KilnBlockCookOverlay.setKilnBlockCookingInfo(world, pos.up(), ((int) MathHelper.clampedLerp(-1, 9, ((float) newCookCounter) / 15f)));
             if (cookingBlockState.contains(UnfiredPotteryBlock.COOKING) && cookingBlockState.get(UnfiredPotteryBlock.COOKING).equals(false)) {
                 world.setBlockState(cookingBlockPos, cookingBlockState.with(UnfiredPotteryBlock.COOKING, true));
             }
@@ -148,7 +149,7 @@ public class KilnBlock extends Block {
         if (cookingBlockState.contains(UnfiredPotteryBlock.COOKING) && cookingBlockState.get(UnfiredPotteryBlock.COOKING).equals(true)) {
             world.setBlockState(cookingBlockPos, cookingBlockState.with(UnfiredPotteryBlock.COOKING, false));
         }
-        world.setBlockBreakingInfo(0, cookingBlockPos, -1);
+        KilnBlockCookOverlay.setKilnBlockCookingInfo(world, cookingBlockPos, -1);
     }
 
     private boolean checkKilnIntegrity(World world, BlockPos pos) {

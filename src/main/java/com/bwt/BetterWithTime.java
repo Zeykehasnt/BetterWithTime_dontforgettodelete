@@ -24,8 +24,10 @@ import com.bwt.sounds.BwtSoundEvents;
 import com.bwt.tags.BwtItemTags;
 import com.bwt.utils.Id;
 import com.bwt.utils.TrackedDataHandlers;
+import com.bwt.utils.kiln_block_cook_overlay.KilnBlockCookingProgressPayload;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.fabricmc.fabric.api.registry.TillableBlockRegistry;
@@ -181,5 +183,7 @@ public class BetterWithTime implements ModInitializer {
 				}
 			}
 		);
+
+		PayloadTypeRegistry.playS2C().register(KilnBlockCookingProgressPayload.ID, KilnBlockCookingProgressPayload.CODEC);
 	}
 }

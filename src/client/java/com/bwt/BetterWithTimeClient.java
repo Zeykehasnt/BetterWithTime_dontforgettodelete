@@ -4,6 +4,8 @@ import com.bwt.block_entities.BwtBlockEntities;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.entities.BwtEntities;
 import com.bwt.items.BwtItems;
+import com.bwt.utils.KilnBlockCookProgressSetter;
+import com.bwt.utils.kiln_block_cook_overlay.KilnBlockCookingProgressPayload;
 import com.bwt.models.*;
 import com.bwt.screens.*;
 import com.bwt.utils.Id;
@@ -11,16 +13,17 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.GrassColors;
 
@@ -114,6 +117,14 @@ public class BetterWithTimeClient implements ClientModInitializer {
 				return 0.0F;
 			}
 			return livingEntity.isUsingItem() && livingEntity.getActiveItem() == itemStack ? 1.0F : 0.0F;
+		});
+
+		ClientPlayNetworking.registerGlobalReceiver(KilnBlockCookingProgressPayload.ID, (payload, context) -> {
+			context.client().execute(() -> {
+				if (context.client().worldRenderer instanceof KilnBlockCookProgressSetter cookProgressSetter) {
+					cookProgressSetter.betterWithTime$setKilnBlockCookingInfo(payload.blockPos(), payload.progress());
+				}
+			});
 		});
 	}
 }
