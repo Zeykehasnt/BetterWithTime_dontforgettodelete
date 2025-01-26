@@ -1,7 +1,9 @@
 {
   "parent": "bwt:block/vase",
   "textures": {
-    "particle": "bwt:block/vase_purple",
-    "texture": "bwt:block/vase_purple"
+    "bottom": "bwt:block/vase_purple_bottom",
+    "particle": "bwt:block/vase_purple_side",
+    "side": "bwt:block/vase_purple_side",
+    "top": "bwt:block/vase_purple_top"
   }
 }

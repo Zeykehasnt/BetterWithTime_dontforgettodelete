@@ -548,7 +548,17 @@ public class ModelGenerator extends FabricModelProvider {
     }
 
     public void generateVaseBlock(BlockStateModelGenerator blockStateModelGenerator, VaseBlock vaseBlock) {
-        Identifier modelId = new Model(Optional.of(Id.of("block/vase")), Optional.empty(), TextureKey.TEXTURE, TextureKey.PARTICLE).upload(ModelIds.getBlockModelId(vaseBlock), TextureMap.texture(vaseBlock).put(TextureKey.PARTICLE, TextureMap.getId(vaseBlock)), blockStateModelGenerator.modelCollector);
+        Identifier modelId = new Model(
+                Optional.of(Id.of("block/vase")),
+                Optional.empty(),
+                TextureKey.PARTICLE,
+                TextureKey.TOP,
+                TextureKey.SIDE,
+                TextureKey.BOTTOM
+        ).upload(
+                ModelIds.getBlockModelId(vaseBlock),
+                TextureMap.sideTopBottom(vaseBlock).put(TextureKey.PARTICLE, TextureMap.getSubId(vaseBlock, "_side")
+        ), blockStateModelGenerator.modelCollector);
         blockStateModelGenerator.blockStateCollector.accept(VariantsBlockStateSupplier.create(vaseBlock, BlockStateVariant.create().put(VariantSettings.MODEL, modelId)));
     }
 
