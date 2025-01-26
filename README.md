@@ -1,4 +1,4 @@
-<img src="better_with_time_logo.png" alt="drawing" width="200"/>
+<img src="images/better_with_time_logo.png" alt="drawing" width="192"/>
 
 # Better With Time
 
