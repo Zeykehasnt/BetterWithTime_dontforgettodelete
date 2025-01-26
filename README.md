@@ -1,3 +1,5 @@
+<img src="better_with_time_logo.png" alt="drawing" width="200"/>
+
 # Better With Time
 
 Better With Time is a **tech-focused** adaptation of the [Better Than Wolves](https://github.com/BTW-Community/BTW-Public) mod for modern versions of Minecraft (1.21+). Though not as direct of an inspiration, it also shares many similarities with [Better With Mods](https://www.curseforge.com/minecraft/mc-mods/bwm-suite).
@@ -14,7 +16,12 @@ See the instructions for installing Fabric mods on the Fabric website for furthe
 An important note: Due to changes to the mod and viral YouTube videos, Better Than Wolves, in recent years, has taken on a new identity of being a brutally challenging, early game survival experience first, tech mod second.
 Better With Time does not, and will not ever replicate these features. It will not materially affect your ability to survive the early game.
 
-Better With Time's design goals are entirely focused on delivering a satisfying, cohesive "Technical Minecraft" experience. 
+Better With Time's design goals are entirely focused on delivering a satisfying, cohesive "Technical Minecraft" experience.
+
+## 🤝 Mod Compatibility
+
+Better Than Wolves was notoriously incompatible with most other mods. Better With Time, however, aims to be as compatible with other mods as possible.
+If you encounter compatibility issues with another mod, please follow the instructions below for reporting an issue.
 
 ## 📝 License
 
@@ -23,10 +30,13 @@ Better With Time's design goals are entirely focused on delivering a satisfying,
 This project is made possible by the work of FlowerChild, the original developer of Better Than Wolves.
 Though Better With Time is largely a complete rewrite from scratch, it utilizes image assets, as well as references some specific values and functions directly from FlowerChild's release of the Better Than Wolves source code, obtained [here](https://forum.btwce.com/viewtopic.php?t=9863).
 
-## 🤝 Mod Compatibility
+## 💜 Contributors
 
-Better Than Wolves was notoriously incompatible with most other mods. Better With Time, however, aims to be as compatible with other mods as possible.
-If you encounter compatibility issues with another mod, please follow the instructions below for reporting an issue.
+Better With Time began as a solo project, but has since received some awesome contributions from other folks:
+
+- [Primetoxinz](https://github.com/primetoxinz), one of the primary devs of Better With Mods, contributed several code features, including EMI integration
+- Stohun on Discord made the mod's logo, and retextured and remodeled several blocks.
+- Ikabod on Discord made the stoked fire's animated texture
 
 ## 🐞 Bugs
 
