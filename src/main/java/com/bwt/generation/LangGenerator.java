@@ -3,12 +3,14 @@ package com.bwt.generation;
 import com.bwt.blocks.BwtBlocks;
 import com.bwt.blocks.MaterialInheritedBlock;
 import com.bwt.blocks.soul_forge.SoulForgeBlock;
+import com.bwt.damage_types.BwtDamageTypes;
 import com.bwt.entities.BwtEntities;
 import com.bwt.gamerules.BwtGameRules;
 import com.bwt.items.BwtItems;
 import com.bwt.sounds.BwtSoundEvents;
 import com.bwt.tags.BwtItemTags;
 import com.bwt.utils.DyeUtils;
+import com.bwt.utils.Id;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.item.Item;
@@ -33,6 +35,7 @@ public class LangGenerator extends FabricLanguageProvider {
         addTagNames(translationBuilder);
         addEmiNames(translationBuilder);
 
+        translationBuilder.add("death.attack.bwt.saw", "%1$s was sawed in half");
         translationBuilder.add(BwtGameRules.VANILLA_HOPPERS_DISABLED.getTranslationKey(), "Disable Vanilla Hopper Transfer");
         translationBuilder.add(BwtGameRules.LENS_BEAM_RANGE.getTranslationKey(), "Lens Beam Range");
         translationBuilder.add(BwtGameRules.LENS_BEAM_RANGE.getTranslationKey() + ".description", "Impacts performance!");

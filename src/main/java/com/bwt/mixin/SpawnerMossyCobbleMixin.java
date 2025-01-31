@@ -26,15 +26,23 @@ public class SpawnerMossyCobbleMixin {
     private static final Map<BlockState, BlockState> REGULAR_TO_MOSSY_STATE_MAP = Maps.newIdentityHashMap();
 
     @Unique
-    private static BlockState copyProperties(BlockState fromState, Block toBlock) {
-        return REGULAR_TO_MOSSY_STATE_MAP.computeIfAbsent(fromState, infestedState -> {
-            BlockState blockState = toBlock.getDefaultState();
+    private static <T extends Comparable<T>> BlockState copyProperty(Property<T> property, BlockState fromState, BlockState toState) {
+        if (toState.contains(property)) {
+            return toState.with(property, fromState.get(property));
+        }
+        return toState;
+    }
 
-            for (Property property : infestedState.getProperties()) {
-                blockState = blockState.contains(property) ? blockState.with(property, infestedState.get(property)) : blockState;
+    @Unique
+    private static BlockState copyProperties(BlockState fromState, Block toBlock) {
+        return REGULAR_TO_MOSSY_STATE_MAP.computeIfAbsent(fromState, innerFromState -> {
+            BlockState toState = toBlock.getDefaultState();
+
+            for (Property<?> property : innerFromState.getProperties()) {
+                toState = copyProperty(property, innerFromState, toState);
             }
 
-            return blockState;
+            return toState;
         });
     }
 

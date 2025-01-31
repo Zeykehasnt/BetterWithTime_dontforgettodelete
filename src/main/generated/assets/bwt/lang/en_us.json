@@ -330,6 +330,7 @@
   "bwt.subtitles.entity.wolf.dung.production": "Wolf produces dung",
   "container.bwt.block_dispenser": "Block Dispenser",
   "container.bwt.soul_forge": "Soul Forge",
+  "death.attack.bwt.saw": "%1$s was sawed in half",
   "emi.category.bwt.cauldron": "Cauldron",
   "emi.category.bwt.crucible": "Crucible",
   "emi.category.bwt.hopper_filtering": "Hopper: Filter",
