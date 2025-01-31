@@ -10,10 +10,7 @@ import com.bwt.sounds.BwtSoundEvents;
 import com.bwt.tags.BwtBlockTags;
 import com.bwt.utils.BlockUtils;
 import com.bwt.utils.CustomItemScatterer;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.SlabBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -247,6 +244,9 @@ public class SawBlock extends SimpleFacingBlock implements MechPowerBlockBase {
         ).map(RecipeEntry::value);
         // Cutting
         if (recipe.isEmpty()) {
+            if (targetState.getBlock() instanceof FluidBlock) {
+                return;
+            }
             if (targetState.isIn(BwtBlockTags.SAW_BREAKS_NO_DROPS)) {
                 world.breakBlock(targetPos, false);
                 playBangSound(world, pos);
